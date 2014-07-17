@@ -12,4 +12,4 @@
     * Comentar decentemente.
   * Nombres de variables y procedimientos:
     * Letras en minúsculas y "_" para separar palabras (Aún discutible).
-  * El idioma del código (variables y comentarios) será en inglés (Revisar con Saúl 17/7/14).
+  * El idioma del código (variables, funciones y comentarios) será en inglés.
