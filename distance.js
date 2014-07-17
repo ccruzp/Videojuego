@@ -1,4 +1,8 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+var width = 800;
+var height = 700;
+
+
+var game = new Phaser.Game(width, height, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
 function preload() {
 
@@ -6,15 +10,17 @@ function preload() {
     game.load.image('starfield', 'assets/img/background4.png');
     game.load.image('star', 'assets/bullet.png');
     game.load.image('diamond', 'assets/bullet.png');
-    game.load.image('firstaid', 'assets/firstaid.png');
+    game.load.image('enemy', 'assets/enemy1.png');
 
 
 }
 
 var TOTAL_TIME = 3;
+var ENEMY_VELOCITY = 100;
 
 var diamonds;
 var enemys;
+var enemy;
 var star;
 
 var ball;
@@ -27,11 +33,12 @@ var lives = 3;
 var score = 0;
 var contador = TOTAL_TIME;
 
-var scoreText;
+var velocityText;
 var timeText;
 var livesText;
 var introText;
 var lost = false;
+var start = false;
 var s;
 
 function create() {
@@ -42,6 +49,8 @@ function create() {
     game.physics.arcade.checkCollision.down = false;
 
     s = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+
+    makeGrid(width,height);
 
     // bricks = game.add.group();
     // bricks.enableBody = true;
@@ -87,10 +96,10 @@ function create() {
     enemys.physicsBodyType = Phaser.Physics.ARCADE;
 
 
-    enemy = enemys.create(game.world.centerX, 100, 'firstaid');
+    enemy = enemys.create(game.world.centerX, 100, 'enemy');
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.body.collideWorldBounds = true;
-    enemy.body.velocity.y = 100;
+    // enemy.body.velocity.y = 100;
     
     diamonds = game.add.group();
     diamonds.enableBody = true;
@@ -98,14 +107,14 @@ function create() {
     diamonds.setAll('anchor.x', 0.5);
     diamonds.setAll('anchor.y', 0.5);
     
-    // scoreText = game.add.text(32, 550, 'score: 0', { font: "20px Arial", fill: "#ffffff", align: "left" });
+    velocityText = game.add.text(50, 100, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" });
     timeText = game.add.text(50, 50, 'time: 0', { font: "20px Arial", fill: "#ffffff", align: "left" });
-    livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
-    introText = game.add.text(game.world.centerX, 400, '- click to start -', { font: "40px Arial", fill: "#ffffff", align: "center" });
+    livesText = game.add.text(width - 120, height - 50, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
+    introText = game.add.text(game.world.centerX, game.world.centerY + 100, '- click to start -', { font: "40px Arial", fill: "#ffffff", align: "center" });
     introText.anchor.setTo(0.5, 0.5);
 
     game.input.onDown.add(releaseBall, this);
-    game.time.events.loop(Phaser.Timer.SECOND, sumar, this);
+    game.time.events.loop(Phaser.Timer.SECOND, countdown, this);
 }
 
 function update () {
@@ -144,26 +153,35 @@ function update () {
 function try_destroy (enemy, bullet) {
     if (contador == 0) {
 	enemy.kill();
+	you_won();
     } else {
 	bullet.kill();
 	game_over();
     }
 }
 
-function sumar () {
+function countdown () {
 
-    if (!lost) {
-	contador -= 1;
+    if (start) {
+	
+	if (!lost) {
+	    contador -= 1;
+	}
+	if (contador < 0) {
+	    game_over();
+	}
     }
 }
 
 function releaseBall () {
     
+    start = true;
     if (!lost) {
 	introText.visible = false;
 	diam = diamonds.create(star.body.x + 5, star.body.y + 5, 'diamond');
 	diam.anchor.setTo(0.5, 0.5);
     }
+    enemy.body.velocity.y = ENEMY_VELOCITY;
     // if (ballOnStar)
     // {
     //     ballOnStar = false;
@@ -172,6 +190,32 @@ function releaseBall () {
     //     ball.animations.play('spin');
     //     introText.visible = false;
     // }
+
+}
+
+function makeGrid(width, height) {
+	var graphics = game.add.graphics(0, 0);
+	
+	//space between lines
+	var space = 20;
+	
+	//adding lines
+	graphics.lineStyle(1, 0x33FF00,0.5);
+	for (y = space; y < height; y = y+space){
+		graphics.moveTo(0,y); 
+		graphics.lineTo(width-space,y);
+	}
+	
+	//adding line numbers.
+	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
+	var end = height/space;
+	for (y = space; y < height; y = y+space){
+		end--;
+		game.add.text(width-space,y-10,String(end),style);
+	}
+	
+	
+
 
 }
 
@@ -195,18 +239,28 @@ function releaseBall () {
 
 // }
 
-function game_over () {
+function you_won () {
 
     // ball.body.velocity.setTo(0, 0);
     
-    introText.text = 'Game Over!';
+    introText.text = '¡Ganaste!';
     introText.visible = true;
     lost = true;
     star.visible = false;
     enemys.visible = false;
     // diamonds.visible = false;
+}
 
+function game_over () {
 
+    // ball.body.velocity.setTo(0, 0);
+    
+    introText.text = '¡Perdiste!';
+    introText.visible = true;
+    lost = true;
+    star.visible = false;
+    enemys.visible = false;
+    // diamonds.visible = false;
 }
 
 // function ballHitBrick (_ball, _brick) {
@@ -215,14 +269,14 @@ function game_over () {
 
 //     score += 10;
 
-//     scoreText.text = 'score: ' + score;
+//     velocityText.text = 'score: ' + score;
 
 //     //  Are they any bricks left?
 //     if (bricks.countLiving() == 0)
 //     {
 //         //  New level starts
 //         score += 1000;
-//         scoreText.text = 'score: ' + score;
+//         velocityText.text = 'score: ' + score;
 //         introText.text = '- Next Level -';
 
 //         //  Let's move the ball back to the star
