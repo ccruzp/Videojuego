@@ -10,6 +10,8 @@
     * Mantener el estilo de javascript.
     * Variables, procedimientos y archivos con nombres mnemotécnicos.
     * Comentar decentemente.
-  * Nombres de variables y procedimientos:
-    * Letras en minúsculas y "_" para separar palabras (Aún discutible).
+  * Nombres de constantes, variables y procedimientos:
+    * Constantes: Todo en mayúscula y separado por '\_' (LA_CONSTANTE).
+    * Variables: camelCase con la primera letra en minúscula (variableOsom).
+    * Procedimientos y funciones: camelCase y separado por '\_' (el_Procedimiento).
   * El idioma del código (variables, funciones y comentarios) será en inglés.
