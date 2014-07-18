@@ -1,22 +1,6 @@
-<!doctype html> 
-<html lang="en"> 
-<head> 
-	<meta charset="UTF-8" />
-	<title>Phaser - Making your first game, part 1</title>
-	<script type="text/javascript" src="js/phaser.min.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-
-<script type="text/javascript">
-
 
 var width = 800;
-var height = 700;
+var height = 600;
 
 
 var game = new Phaser.Game(width, height, Phaser.AUTO, 'phaser-test', { preload: preload, create: create, update: update });
@@ -31,7 +15,7 @@ function preload() {
     game.load.image('firstaid', 'assets/firstaid.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     game.load.spritesheet('enemy', 'assets/stuff.png', 105, 84);
-	game.load.spritesheet('base', 'assets/basesheet2.png', 95, 100,2);
+    game.load.spritesheet('base', 'assets/basesheet2.png', 95, 100,2);
     game.load.image('bullet', 'assets/bullet.png', 32, 48);
 }
 
@@ -75,12 +59,12 @@ function create() {
 
     // // This stops it from falling away when you jump on it
     ground.body.immovable = true;
-	
-	
-	game.add.sprite(0, 0, 'sky');
+    
+    
+    game.add.sprite(0, 0, 'sky');
 
 
-	makeGrid(width,height);
+    makeGrid(width,height);
 
     // The player and its settings
     // player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -134,27 +118,27 @@ function create() {
 }
 
 function makeGrid(width, height) {
-	var graphics = game.add.graphics(0, 0);
-	
-	//space between lines
-	space = 20;
-	
-	//adding lines
-	graphics.lineStyle(1, 0x33FF00,0.5);
-	for (y = space; y < height; y = y+space){
-		graphics.moveTo(0,y); 
-		graphics.lineTo(width-space,y);
-	}
-	
-	//adding line numbers.
-	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
-	var end = height/space;
-	for (y = space; y < height; y = y+space){
-		end--;
-		game.add.text(width-space,y-10,String(end),style);
-	}
-	
-	
+    var graphics = game.add.graphics(0, 0);
+    
+    //space between lines
+    space = 20;
+    
+    //adding lines
+    graphics.lineStyle(1, 0x33FF00,0.5);
+    for (y = space; y < height; y = y+space){
+        graphics.moveTo(0,y); 
+        graphics.lineTo(width-space,y);
+    }
+    
+    //adding line numbers.
+    var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
+    var end = height/space;
+    for (y = space; y < height; y = y+space){
+        end--;
+        game.add.text(width-space,y-10,String(end),style);
+    }
+    
+    
 
 
 }
@@ -170,11 +154,11 @@ function update() {
 
     if (cursors.left.isDown) {
 
-	player.body.velocity.x = -150;
+    player.body.velocity.x = -150;
 
     } else if (cursors.right.isDown) {
 
-	player.body.velocity.x = 150;
+    player.body.velocity.x = 150;
 
     } 
 
@@ -256,12 +240,12 @@ function deactivateShield(){
 function fireDiamond() {
 
     if (game.time.now > diamondTime) {
-    	diamond = diamonds.getFirstExists(false);
-    	if (diamond) {
-    	    diamond.reset(player.x + player.width/2, player.y);
-    	    diamond.body.velocity.y = -20 * projectileSpeed;
-    	    diamondTime = game.time.now + 200;
-    	}
+        diamond = diamonds.getFirstExists(false);
+        if (diamond) {
+            diamond.reset(player.x + player.width/2, player.y);
+            diamond.body.velocity.y = -20 * projectileSpeed;
+            diamondTime = game.time.now + 200;
+        }
     }
 }
 
@@ -292,7 +276,7 @@ function createAliens () {
 
 
     alien.x = 300;
-    alien.y = 160;
+    alien.y = 60;
 
 }
 
@@ -309,8 +293,3 @@ function checkShield(player,diamond){
     }
 
 }
-
-</script>
-
-</body>
-</html>
