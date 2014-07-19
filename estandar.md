@@ -12,6 +12,6 @@
     * Comentar decentemente.
   * Nombres de constantes, variables y procedimientos:
     * Constantes: Todo en mayúscula y separado por '\_' (LA_CONSTANTE).
-    * Variables: camelCase con la primera letra en minúscula (variableOsom).
+    * Variables: camelCase con la primera letra en minúscula (laVariable).
     * Procedimientos y funciones: camelCase y separado por '\_' (el_Procedimiento).
   * El idioma del código (variables, funciones y comentarios) será en inglés.
