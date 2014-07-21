@@ -1,7 +1,7 @@
 
 var WIDTH = 800;
 var HEIGHT = 600;
-var NUMBER_OF_BULLETS = 999;
+var NUMBER_OF_BULLETS = 1;
 
 var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'phaser-test', { preload: preload, create: create, update: update });
 
@@ -16,30 +16,37 @@ function preload() {
     game.load.image('bullet', 'assets/bullet.png', 32, 48);
 }
 
-
+// Map variables
 var platforms;
 var ground;
 
+//Diamond variables, 
+var fireButton;
 var diamond;  
 var diamondTime = 0;
 
+//Projectile speed variables
 var speedTime = 0;
 var speedText;
 var projectileSpeed = 1;
 
+// Score variables
 var score = 0;
 var scoreText;
 
-
+// Shield Speed variables
 var shieldText;
-var shieldInterval = 0;
-var fireButton;
-var alien;
-
 var shieldSpeed = 0;
-var shieldUp;
-var shieldDown;
+
+// The alien and its shield
+var alien;
+var shieldUpButton;
+var shieldDownButton;
 var shielded = true;
+
+//Variables to test the functionality of the shield sprite
+var activateShieldButton;
+var manualShieldTime = 0;
 
 function create() {
 
@@ -106,10 +113,13 @@ function create() {
 	// Add keys to use in the game-------------------------------------------------------------------------
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+	
+	// Keys to modify the speed of the alien speed
+    shieldUpButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    shieldDownButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
 
-    shieldUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
-    shieldDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
-
+	// Variable to test the functionality of the shield sprite
+	activateShieldButton = game.input.keyboard.addKey(Phaser.Keyboard.Y);
 }
 
 function update() {
@@ -129,32 +139,40 @@ function update() {
     } 
 
     if (shielded) {
-        alien.frame = 2;
+		alien.frame = 0;
     } else {
         alien.frame = 1;
     }
-   
+    
     if (cursors.up.isDown || cursors.down.isDown) {
         update_Speed();
     }
 
-    if (shieldUp.isDown || shieldDown.isDown) {
+    if (shieldUpButton.isDown || shieldDownButton.isDown) {
         update_Speed2();
     }
-
+    
+	// Activate the shield using Y
+	if (activateShieldButton.isDown) {
+		manual_Activate_Shield();
+	}
+	
+	// Fire the bullet, and count the time given in "shieldSpeed"
     if (fireButton.isDown) {
         fire_Diamond();
-		
         if (shieldSpeed > 0){
-            game.time.events.add(Phaser.Timer.SECOND * shieldSpeed*0.90, deactivate_Shield, this);
-            game.time.events.add(Phaser.Timer.SECOND * shieldSpeed + Phaser.Timer.SECOND * 0.1, activate_Shield, this);
+
+            game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed*0.80), deactivate_Shield, this);
+			game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed + 0.2), activate_Shield, this);	
         }
-        
     }
+    
+    // Display some things
     speedText.text = 'Speed: ' + projectileSpeed;
     shieldText.text = 'Shield: ' + shieldSpeed + ' segs.' ;
 }
 
+// Displays a grid in the background
 function make_Grid(WIDTH, HEIGHT) {
 	var graphics = game.add.graphics(0, 0);
 	
@@ -177,6 +195,7 @@ function make_Grid(WIDTH, HEIGHT) {
 	}
 }
 
+// Update speed of the bullet
 function update_Speed(){
     if (game.time.now > speedTime) {
         if (cursors.down.isDown && (projectileSpeed > 1)){
@@ -190,18 +209,20 @@ function update_Speed(){
     }
 }
 
+// Update speed of the shield
 function update_Speed2(){
     if (game.time.now > speedTime) {
-        if (shieldDown.isDown && (shieldSpeed > 1)){
+        if (shieldDownButton.isDown && (shieldSpeed > 1)){
             shieldSpeed = shieldSpeed -1;
             speedTime = game.time.now + 150;
         }
-        if (shieldUp.isDown && (shieldSpeed < 30)){
+        if (shieldUpButton.isDown && (shieldSpeed < 30)){
             shieldSpeed = shieldSpeed + 1;
             speedTime = game.time.now + 150;
         }
     }
 }
+
 
 function activate_Shield(){
     shielded = true;
@@ -211,6 +232,7 @@ function deactivate_Shield(){
     shielded = false;
 }
 
+//Fire all the bullets available
 function fire_Diamond() {
     if (game.time.now > diamondTime) {
 		
@@ -223,6 +245,15 @@ function fire_Diamond() {
     }
 }
 
+// Function to activate the shield manually using the "Y" key
+function manual_Activate_Shield() {
+	if (game.time.now > manualShieldTime) {
+		shielded = !shielded;
+		manualShieldTime = game.time.now + 150;
+	}
+}
+
+// Create the enemy ship
 function create_Aliens () {
     alien = aliens.create( 200, 50, 'enemy');
     alien.anchor.setTo( 0.5, 0.5);
@@ -231,13 +262,6 @@ function create_Aliens () {
     aliens.y = 0;
     alien.x = 300;
     alien.y = 60;
-}
-
-function kill_Both(alien, diamond) {
-    if (!shielded) {
-        alien.kill();
-    } 
-    diamond.kil();
 }
 
 function check_Shield(player,diamond){
