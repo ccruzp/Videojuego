@@ -6,7 +6,10 @@ var NUMBER_OF_BULLETS = 1;
 var MIN_BULLET_SPEED = 1;
 var MAX_BULLET_SPEED = 20;
 
-var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'phaser-test', { preload: preload, create: create, update: update });
+var GRID_SPACE = 50;
+
+var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'phaser-test',
+ {preload: preload, create: create, update: update });
 
 function preload() {
     game.load.image('sky', 'assets/img/background2.png');
@@ -65,11 +68,11 @@ var lastTimeClockReset = 0;
 var clock = 99;
 
 //Used as a counter in the for loops
-var indexAux = 1
+var indexAux = 1;
 
 function create() {
 
-	// Configure the game platforms and background---------------------------
+    // Configure the game platforms and background---------------------------
     // The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
 
@@ -101,34 +104,34 @@ function create() {
     player.body.collideWorldBounds = true;
 		
     // Enabling physics for the group of enemies (aliens)--------------------
-	aliens = game.add.group();
+    aliens = game.add.group();
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
-	// Procedure to create the aliens
+    // Procedure to create the aliens
     create_Aliens();
 
-	// The text available in the game--------------------------------------    
-	// Speed of the bullet
-	speedText = game.add.text(
+    // The text available in the game--------------------------------------    
+    // Speed of the bullet
+    speedText = game.add.text(
         16, HEIGHT-32, '', { font: '24px Arial', fill: '#ffffff' }
     );
 	
-	// Time needed to a perfect shot
+    // Time needed to a perfect shot
     shieldText = game.add.text(
         16, HEIGHT-32-36, '', { font: '24px Arial', fill: '#ffffff' }
     );
 	
-	// Time for the next enemy to appear
-	nextAlienText = game.add.text(
-		WIDTH-350,HEIGHT-32-36,'',{ font: '24px Arial', fill: '#ffffff' }
-	);
+    // Time for the next enemy to appear
+    nextAlienText = game.add.text(
+	WIDTH-350,HEIGHT-32-36,'',{ font: '24px Arial', fill: '#ffffff' }
+    );
 	
-	scoreText = game.add.text(
-		WIDTH-350,HEIGHT-32,'',{ font: '24px Arial', fill: '#ffffff' }
-	);
+    scoreText = game.add.text(
+	WIDTH-350,HEIGHT-32,'',{ font: '24px Arial', fill: '#ffffff' }
+    );
 	
-	// Set options for the bullets of the player---------------------------
+    // Set options for the bullets of the player---------------------------
     diamonds = game.add.group();
     diamonds.enableBody = true;
     diamonds.physicsBodyType = Phaser.Physics.ARCADE;
@@ -138,56 +141,55 @@ function create() {
     diamonds.setAll('outOfBoundsKill', true);
     diamonds.setAll('checkWorldBounds', true);
 
-	// Add keys to use in the game---------------------------------------------
+    // Add keys to use in the game---------------------------------------------
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	
-	// Keys to modify the speed of the alien speed
+    // Keys to modify the speed of the alien speed
     shieldUpButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
     shieldDownButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
 
-	// Variable to test the functionality of the shield sprite
-	activateShieldButton = game.input.keyboard.addKey(Phaser.Keyboard.Y);
+    // Variable to test the functionality of the shield sprite
+    activateShieldButton = game.input.keyboard.addKey(Phaser.Keyboard.Y);
 	
-	// Variable to manually reset the next alien Time
-	resetNextAlienButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
+    // Variable to manually reset the next alien Time
+    resetNextAlienButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
 	
-	//Initializes the clock reset
-	lastTimeClockReset = game.time.now;
+    //Initializes the clock reset
+    lastTimeClockReset = game.time.now;
 	
-	//Shoot with the mouse
-	game.input.onDown.add(fire_Diamond_Mouse, this);
+    //Shoot with the mouse
+    game.input.onDown.add(fire_Diamond, this);
 }
 
 function update() {
-
 	
     game.physics.arcade.overlap(aliens, diamonds, check_Shield, null, this);
 
     // Reset the players velocity (movement)
     player.body.velocity.x = 0;
 	
-	//Move the player with your mouse
-	player.body.x = game.input.x - 48;
-	player.body.y = game.input.y - 36;
+    //Move the player with your mouse
+    player.body.x = game.input.x - 48;
+    //player.body.y = game.input.y - 36;
 
-	if( 0 > clock){
-		
-		lastTimeClockReset = game.time.now;
-		update_Aliens();
-	}
-	
+    if( 0 > clock){	
+	lastTimeClockReset = game.time.now;
+	update_Aliens();
+    }
+
+    /* NOT USED WHEN CONTROLLING WITH THE MOUSE
     if (cursors.left.isDown) {
 
-		player.body.velocity.x = -150;
+	player.body.velocity.x = -150;
 		
     } else if (cursors.right.isDown) {
 		
-		player.body.velocity.x = 150;
-    } 
+	player.body.velocity.x = 150;
+    } */
 
     if (shielded) {
-		alien.frame = 0;
+	alien.frame = 0;
     } else {
         alien.frame = 1;
     }
@@ -200,32 +202,27 @@ function update() {
         update_Speed2();
     }
     
-	// Activate the shield using Y
-	if (activateShieldButton.isDown) {
-		manual_Activate_Shield();
-	}
+    // Activate the shield using Y
+    if (activateShieldButton.isDown) {
+	manual_Activate_Shield();
+    }
 	
-	// Reset the clock when the T is pressed
-	if (resetNextAlienButton.isDown) {
-		lastTimeClockReset = game.time.now;
-		update_Aliens();
-	}
+    // Reset the clock when the T is pressed
+    if (resetNextAlienButton.isDown) {
+	lastTimeClockReset = game.time.now;
+	update_Aliens();
+    }
 	
-	// Fire the bullet, and count the time given in "shieldSpeed"
+    // Fire the bullet, and count the time given in "shieldSpeed"
     if (fireButton.isDown) {
         fire_Diamond();
-        if (shieldSpeed > 0){
-            game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed*0.80), deactivate_Shield, this);
-			game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed + 0.2), activate_Shield, this);	
-        }
     }
     
-	// Check if the clock reaches zero
-	if( 0 > clock){	
-		lastTimeClockReset = game.time.now;
-		update_Aliens();
-		
-	}
+    // Check if the clock reaches zero
+    if( 0 > clock){	
+	lastTimeClockReset = game.time.now;
+	update_Aliens();	
+    }
     
     //SUPER DEATH CLOCK
     //Displays the time in mS
@@ -234,29 +231,25 @@ function update() {
     // Display some things
     speedText.text = 'Rapidez: ' + projectileSpeed;
     shieldText.text = 'Escudo: ' + shieldSpeed + ' segs.' ;
-	scoreText.text = 'Puntaje: ' + score;
-	nextAlienText.text = 'Siguiente nave en: ' + clock.toPrecision(4) +' segs.';
+    scoreText.text = 'Puntaje: ' + score;
+    nextAlienText.text = 'Siguiente nave en: ' + clock.toPrecision(4) +' segs.';
 	
 }
 
 // Displays a grid in the background
 function make_Grid(WIDTH, HEIGHT) {
-	var graphics = game.add.graphics(0, 0);
+    var graphics = game.add.graphics(0, 0);
+		
+    //adding lines & numbers
+    graphics.lineStyle(1, 0x33FF00,0.5);
+    var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
 	
-	//space between lines
-	linesSpace = 50;
-	
-	//adding lines & numbers
-	graphics.lineStyle(1, 0x33FF00,0.5);
-	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
-	
-	for (indexAux = 0; indexAux < 10; indexAux = indexAux + 1){
-		y = (indexAux * linesSpace) + 50;
-		graphics.moveTo(0, y); 
-		graphics.lineTo(WIDTH-20,y);
-		game.add.text(WIDTH-20,y-10,String((10-indexAux)),style);
-	}
-	
+    for (indexAux = 0; indexAux < 10; indexAux = indexAux + 1){
+	y = (indexAux * GRID_SPACE) + 50;
+	graphics.moveTo(0, y); 
+	graphics.lineTo(WIDTH-20,y);
+	game.add.text(WIDTH-20,y-10,String((10-indexAux)),style);
+    }	
 }
 
 // Update speed of the bullet
@@ -304,6 +297,13 @@ function fire_Diamond() {
             diamond.reset(player.x + player.width/2, player.y);
             diamond.body.velocity.y = -50 * projectileSpeed;
             diamondTime = game.time.now + 200;
+
+	    if (shieldSpeed > 0){
+		game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed*0.80),
+				     deactivate_Shield, this);
+		game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed + 0.2),
+				     activate_Shield, this);	
+	    }
         }
     }
 }
@@ -311,8 +311,8 @@ function fire_Diamond() {
 // Function to activate the shield manually using the "Y" key
 function manual_Activate_Shield() {
 	if (game.time.now > manualShieldTime) {
-		shielded = !shielded;
-		manualShieldTime = game.time.now + 150;
+	    shielded = !shielded;
+	    manualShieldTime = game.time.now + 150;
 	}
 }
 
@@ -323,36 +323,23 @@ function create_Aliens() {
     alien.body.moves = false;
     aliens.x = 0;
     aliens.y = 0;
-	alien.x = game.rnd.integerInRange(50, (WIDTH-50));
+    alien.x = game.rnd.integerInRange(50, (WIDTH-50));
     alien.y = 40;
 }
 function check_Shield(player,diamond){
     diamond.kill();
 	if (!shielded){
-		score = score + 1;
-        alien.kill();
+	    score = score + 1;
+	    alien.kill();
     } else {
         //diamond.kill();
     }
 }
 
 function update_Aliens(){
-	
-	if (game.time.now > updateAlienTime) {
-		//alienExists = aliens.getFirstExists(false);
-		//if (alienExists) {
-			alien.kill();
-		//}
-		create_Aliens();
-		updateAlienTime = game.time.now + 150;
-		
-	}
-}
-
-function fire_Diamond_Mouse(){
-	fire_Diamond();
-	if (shieldSpeed > 0){
-		game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed*0.80), deactivate_Shield, this);
-		game.time.events.add(Phaser.Timer.SECOND * (shieldSpeed + 0.2), activate_Shield, this);	
-	}
+    if (game.time.now > updateAlienTime) {
+	alien.kill();
+	create_Aliens();
+	updateAlienTime = game.time.now + 150;	
+    }
 }
