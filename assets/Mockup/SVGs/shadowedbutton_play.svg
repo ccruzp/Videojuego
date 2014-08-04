@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg13523"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="New document 36">
+  <defs
+     id="defs13525">
+    <filter
+       id="filter12359"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur12361"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite12363"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite12365"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter4395"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4397"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         in2="result6"
+         id="feComposite4399"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         in2="SourceAlpha"
+         id="feComposite4401"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter15664"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur15666"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         in2="result6"
+         id="feComposite15668"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         in2="SourceAlpha"
+         id="feComposite15670"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter12351"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur12353"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite12355"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite12357"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="440.17027"
+     inkscape:cy="487.22573"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="463"
+     inkscape:window-height="423"
+     inkscape:window-x="130"
+     inkscape:window-y="130"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata13528">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       transform="translate(24.420794,-440.42453)"
+       id="g12367">
+      <g
+         style="filter:url(#filter12359)"
+         transform="matrix(0.57826008,0,0,0.56515538,60.076623,568.89949)"
+         id="g8184">
+        <path
+           sodipodi:type="star"
+           style="fill:#006680;display:inline"
+           id="path6313"
+           sodipodi:sides="27"
+           sodipodi:cx="113.84419"
+           sodipodi:cy="386.29846"
+           sodipodi:r1="104.45333"
+           sodipodi:r2="105.48882"
+           sodipodi:arg1="-0.34530081"
+           sodipodi:arg2="1.6156445"
+           inkscape:flatsided="false"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="M 212.13203,350.94312 109.1148,491.68121 217.63617,374.56287 84.939343,487.74994 217.54486,398.81528 62.322158,478.34938 211.86301,422.3929 42.482538,463.98634 200.89695,444.02467 26.490043,445.43512 185.23786,462.5444 15.206834,423.69583 165.72991,476.95369 9.2411897,399.94044 143.42478,486.47574 8.9147205,375.44961 119.52497,490.5972 14.245026,351.54364 95.318895,489.09589 24.944749,329.51131 72.111528,482.05275 40.437064,310.54039 51.15398,469.84746 59.886776,295.65361 33.576077,453.13803 82.245346,285.65352 20.325449,432.82526 106.30742,281.07922 12.116441,410.00422 130.7758,282.17732 9.3916019,385.90519 154.33139,288.88862 12.297829,361.82737 175.70431,300.8513 20.678447,339.06879 193.74234,317.42047 34.081655,318.85637 207.47303,337.70286 51.784882,302.27977 216.15617,360.60506 72.833742,290.23264 219.32364,384.89239 96.093486,283.36445 216.80469,409.25553 120.31018,282.04546 208.73512,432.38104 144.17828,286.34677 195.54994,453.02224 166.41107,296.0365 l 11.54892,174.02983 7.84997,-159.47405 -28.89642,172.0022 44.41562,-153.36508 -67.78395,160.70188 z"
+           transform="matrix(0.77099701,0,0,0.76545114,529.26466,456.80917)" />
+        <path
+           sodipodi:type="arc"
+           style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4395)"
+           id="path8118"
+           sodipodi:cx="166.42264"
+           sodipodi:cy="433.0723"
+           sodipodi:rx="69.44799"
+           sodipodi:ry="69.44799"
+           d="m 235.87063,433.0723 c 0,38.35506 -31.09293,69.44799 -69.44799,69.44799 -38.35507,0 -69.447992,-31.09293 -69.447992,-69.44799 0,-38.35507 31.092922,-69.44799 69.447992,-69.44799 38.35506,0 69.44799,31.09292 69.44799,69.44799 z"
+           transform="matrix(0.64363638,0,0,0.64363638,510.33693,474.00235)" />
+        <g
+           style="filter:url(#filter4395)"
+           id="g8120"
+           transform="translate(562.14673,-243.8078)">
+          <path
+             transform="translate(-128.28937,456.90785)"
+             d="m 224.28571,539.46429 c 0,22.58451 -18.30836,40.89286 -40.89286,40.89286 -22.5845,0 -40.89285,-18.30835 -40.89285,-40.89286 0,-22.5845 18.30835,-40.89285 40.89285,-40.89285 22.5845,0 40.89286,18.30835 40.89286,40.89285 z"
+             sodipodi:ry="40.892857"
+             sodipodi:rx="40.892857"
+             sodipodi:cy="539.46429"
+             sodipodi:cx="183.39285"
+             id="path8122"
+             style="fill:#03cdf4;fill-opacity:1;stroke:none"
+             sodipodi:type="arc" />
+        </g>
+      </g>
+      <path
+         inkscape:transform-center-y="-13.564762"
+         inkscape:transform-center-x="12.244687"
+         transform="matrix(-0.54667531,-0.42855894,0.43897503,-0.52235672,236.20236,988.76042)"
+         d="m -184.04919,165.56591 -34.89663,5.20475 12.94087,-32.82374 z"
+         inkscape:randomized="0"
+         inkscape:rounded="0"
+         inkscape:flatsided="true"
+         sodipodi:arg2="1.4227402"
+         sodipodi:arg1="0.37554261"
+         sodipodi:r2="10.307764"
+         sodipodi:r1="20.37044"
+         sodipodi:cy="158.0945"
+         sodipodi:cx="-202.99998"
+         sodipodi:sides="3"
+         id="path3175-2"
+         style="fill:#03fc23;fill-opacity:1;stroke:#000000;stroke-width:1.24422753;stroke-opacity:1;display:inline;filter:url(#filter12351)"
+         sodipodi:type="star" />
+    </g>
+  </g>
+</svg>
