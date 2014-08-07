@@ -1,5 +1,5 @@
 // Variable declarations
-var WIDTH = 800; // The WIDTH of the game screen
+var WIDTH = 1000; // The WIDTH of the game screen
 var HEIGHT = 600; // The HEIGHT of the game screen
 var GRID_SPACE = 20;
 	
