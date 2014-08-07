@@ -79,17 +79,22 @@ function make_Grid(WIDTH, HEIGHT) {
     var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
 
     for (indexAux = 0; indexAux < 10; indexAux = indexAux + 1){
+    // for (indexAux = 10; indexAux > 0; indexAux = indexAux - 1){
 	
 	y = (indexAux * GRID_SPACE) + 50;
-	line = lines.create( 0, y, 'ground');
-	line.scale.setTo(2,0.0625);
-	game.add.text(WIDTH-20,y-10,String((10-indexAux)),style);
+	// y = (indexAux * GRID_SPACE);
+	line = lines.create(0, y, 'ground');
+	// line.scale.setTo(2,0.0625);
+	line.scale.setTo(2, 0.025);
+	game.add.text(WIDTH - 20, y - 10, String((10 - indexAux)), style);
+	// game.add.text(WIDTH - 20, y - 10, String((indexAux)), style);
 	lastLine = line;
     }	
 }
 
 function line_Collision(player, line){
-    lastLine.scale.setTo(2,0.0625);
-    line.scale.setTo(2,0.4);
+    // lastLine.scale.setTo(2,0.0625);
+    lastLine.scale.setTo(2, 0.025);
+    line.scale.setTo(2,1);
     lastLine = line;
 }
