@@ -19,6 +19,8 @@ BasicGame.Boot.prototype = {
 	this.load.image('enemyDistance', '../assets/enemy1.png');
 	this.load.image('playAgainButton', '../assets/star.png');
 	this.load.image('startButton', '../assets/star.png');
+	this.load.image('playButton', '../assets/Mockup/PNGs/playButton.png');
+	this.load.image('blackHoleButton', '../assets/Mockup/PNGs/black_hole_bomb.png');
     },
 
     create: function () {
