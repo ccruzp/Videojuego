@@ -34,6 +34,8 @@ BasicGame.MainMenu.prototype = {
 	// this.music.stop();
 	
 	//	And start the actual game
-	this.state.start('Game');	
+	this.playButton.destroy();
+	this.text.destroy();
+	this.state.start('Distance');
     }
 };

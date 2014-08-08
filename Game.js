@@ -1,4 +1,4 @@
-BasicGame.Game = function (game) {
+BasicGame.Distance = function (game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -54,17 +54,17 @@ BasicGame.Game = function (game) {
     // Booleans
     this.lost = false; // Boolean that says if player lost the game
     // this.started = false; // Boolean that says if the game has begun
-    this.bomb = false;
-    this.missile = false;
-    this.shield = false;
     this.background; // Background of the game
 };
 
-BasicGame.Game.prototype = {
+BasicGame.Distance.prototype = {
     
     create: function () {
 
 	started = false; // Boolean that says if the game has begun
+	usingBlackHole = false;
+	usingMissile = false;
+	usingShield = false;
 	
 	//	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
     
@@ -112,8 +112,6 @@ BasicGame.Game.prototype = {
     					  '', { font: "60px Arial", fill: "#ffffff", 
     						align: "center" });
 	this.gameOverText.anchor.setTo(0.5, 0.5);
-	this.input.onDown.add(this.put_Bomb, this);
-
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 		
 	this.lives = 3; // Lives left
@@ -121,6 +119,7 @@ BasicGame.Game.prototype = {
 	this.timeCounter = this.TOTAL_TIME; // Time counter
 	
 	this.enemy = this.enemys.create(this.world.centerX, 20, 'enemyDistance');
+	this.enemy.anchor.setTo(0.5, 0.5);
 	this.enemy.body.collideWorldBounds = true;
 	
 	this.timeText.text = 'Tiempo: ' + this.TOTAL_TIME;
@@ -129,13 +128,17 @@ BasicGame.Game.prototype = {
 	this.livesText.text = 'Vidas: ' + this.lives;
 	this.gameOverText.visible = false;
 
-	// this.blackHoleButton = this.add.button(100, this.world.height - 75, 'blackHoleButton', this.select_Bomb);
-	// this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	// this.blackHoleButton.scale.setTo(0.055, 0.055);
+	this.blackHoleButton = this.add.button(100, this.world.height - 75, 'blackHoleButton', this.select_Bomb);
+	this.blackHoleButton.anchor.setTo(0.5, 0.5);
+	this.blackHoleButton.scale.setTo(0.055, 0.055);
 
 	this.playButton = this.add.button(this.world.centerX, this.world.height - 75, 'playButton', this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
 	this.playButton.scale.setTo(0.075, 0.075);
+
+	this.input.onDown.add(this.putWeapon, this);
+
+
     },
     
     update: function () {
@@ -146,32 +149,34 @@ BasicGame.Game.prototype = {
 	//     this.bombOnMouse.body.y = this.input.y - 5;
 	// }
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
-	console.log(started);
 	if (started) {
 	    this.enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	}
 
     },
     
-    quitGame: function (pointer) {
+    quitGame: function (won) {
 	
 	//	Here you should destroy anything you no longer need.
 	//	Stop music, delete sprites, purge caches, free resources, all that good stuff.
-	
+	this.playButton.destroy();
+	this.blackHoleButton.destroy();
+	this.background.destroy();
+	this.bombs.removeAll(true);
+	if (won) {
+	    this.state.start('WinnerMenu');
+	} else {
 	//	Then let's go back to the main menu.
 	this.state.start('GameOverMenu');	
+	}
     },
     
     try_To_Destroy: function(enemy, bomb) {
 	if (this.timeCounter == 0) {
 	    enemy.kill();
-	// you_Won();
+	    this.quitGame(true);
 	} else {
-	// bomb.kill();
-	// game_Over();
-	    this.quitGame();
-	// this.state.start('GameOverMenu');
-
+	    this.quitGame(false);
 	}
     },
 
@@ -197,26 +202,23 @@ BasicGame.Game.prototype = {
 	}
     },
     
-    // select_Bomb: function () {
-    // 	this.bombOnMouse = this.add.sprite(this.world.centerX, 500, 'bombSelect');
-    // 	// this.bombOnMouse.anchor.setTo(0.5, 0.5);
+    select_Bomb: function () {
+	usingBlackHole = true;
+    	// this.bombOnMouse = this.add.sprite(this.world.centerX, 500, 'bombSelect');
+    	// this.bombOnMouse.anchor.setTo(0.5, 0.5);
 	
-    // 	// this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+    	// this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
-    // 	// this.bombOnMouse.body.collideWorldBounds = true;
-    // 	// this.bombOnMouse.visible = false;
+    	// this.bombOnMouse.body.collideWorldBounds = true;
+    	// this.bombOnMouse.visible = false;
 
-    // 	// console.log(this.bombOnMouse.body.x);
-    // 	// console.log("HOLA");
+    	// console.log(this.bombOnMouse.body.x);
+    	// console.log("HOLA");
 	
-    // },
+    },
 
     start: function (pointer) {
-	console.log("PUTA MIERDA DE JAVASCRIPT");
-	console.log("ANTES " + started);
 	started = true;
-	console.log("DESPUES " + started);
-
     },
 
     put_Bomb: function () {
@@ -226,14 +228,20 @@ BasicGame.Game.prototype = {
 	}
     },
     
+    putWeapon: function () {
+	if (!started) {
+	    if (usingBlackHole) {
+		this.put_Bomb();
+	    }
+	}
+    },
+
     countdown: function () {
 	if (started) {
 	    if (!this.lost) {
 		this.timeCounter -= 1;
 	    }
 	    if (this.timeCounter < 0) {
-		// this.bomb.kill();
-		// this.game_Over();
 		this.quitGame();
 	    }
 	}

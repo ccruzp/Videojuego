@@ -1,9 +1,9 @@
-BasicGame.GameOverMenu = function (game) {
-    this.gameOverText = null;
+BasicGame.WinnerMenu = function (game) {
+    this.WinnerText = null;
     this.playAgainButton = null;
 };
 
-BasicGame.GameOverMenu.prototype = {
+BasicGame.WinnerMenu.prototype = {
 
     preload: function () {
 	
@@ -11,10 +11,10 @@ BasicGame.GameOverMenu.prototype = {
     
     create: function () {
 	
-	this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
+	this.WinnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
-	this.gameOverText.anchor.setTo(0.5, 0.5);
+	this.WinnerText.anchor.setTo(0.5, 0.5);
 
 	this.playAgainButton = this.add.button(100, 100, 'startButton',
 					  this.fun, this);
@@ -42,7 +42,7 @@ BasicGame.GameOverMenu.prototype = {
     },
 
     fun: function () {
-	this.gameOverText.destroy();
+	this.WinnerText.destroy();
 	this.playAgainButton.destroy();
 	this.state.start('Distance');
     }
