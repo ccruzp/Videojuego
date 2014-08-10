@@ -20,7 +20,11 @@ BasicGame.Boot.prototype = {
 	this.load.image('playAgainButton', '../assets/star.png');
 	this.load.image('startButton', '../assets/star.png');
 	this.load.image('playButton', '../assets/Mockup/PNGs/playButton.png');
-	this.load.image('blackHoleButton', '../assets/Mockup/PNGs/black_hole_bomb.png');
+	this.load.image('lockedButton', '../assets/Mockup/PNGs/lockedButton.png');
+	this.load.image('minusButton', '../assets/Mockup/PNGs/minusButton.png');
+	this.load.image('plusButton', '../assets/Mockup/PNGs/plusButton.png');
+	this.load.image('blackHoleButton', '../assets/Mockup/PNGs/blackHoleButton.png');
+	this.load.image('missileButton', '../assets/Mockup/PNGs/missileButton.png');
     },
 
     create: function () {
