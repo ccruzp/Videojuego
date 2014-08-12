@@ -2,26 +2,32 @@ BasicGame.Distance = function (game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
-    // this.game;		//	a reference to the currently running game
-    // this.add;		//	used to add sprites, text, groups, etc
-    // this.camera;	//	a reference to the game camera
-    // this.cache;		//	the game cache
-    // this.input;		//	the global input manager (you can access this.input.keyboard, this.input.mouse, as well from it)
-    // this.load;		//	for preloading assets
-    // this.math;		//	lots of useful common math operations
-    // this.sound;		//	the sound manager - add a sound, play one, set-up markers, etc
-    // this.stage;		//	the game stage
-    // this.time;		//	the clock
-    // this.tweens;    //  the tween manager
-    // this.state;	    //	the state manager
-    // this.world;		//	the game world
-    // this.particles;	//	the particle manager
-    // this.physics;	//	the physics manager
-    // this.rnd;		//	the repeatable random number generator
+    // this.game;		//a reference to the currently running game
+    // this.add;		//used to add sprites, text, groups, etc
+    // this.camera;	        //a reference to the game camera
+    // this.cache;		//the game cache
+    // this.input;		//the global input manager (you can access this.input.keyboard, this.input.mouse, as well from it)
+    // this.load;		//for preloading assets
+    // this.math;		//lots of useful common math operations
+    // this.sound;		//the sound manager - add a sound, play one, set-up markers, etc
+    // this.stage;		//the game stage
+    // this.time;		//the clock
+    // this.tweens;             //the tween manager
+    // this.state;	        //the state manager
+    // this.world;		//the game world
+    // this.particles;	        //the particle manager
+    // this.physics;	        //the physics manager
+    // this.rnd;		//the repeatable random number generator
     
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-    this.GRID_SPACE = 20;
+
+    //Grid Stuff
+    this.GRID_SPACE = 50;
+    this.line;
+    this.lines;
+    this.lastLine;
+    this.indexAux = 0;
     
     this.TOTAL_TIME = 3; // Time for explosion
     this.ENEMY_VELOCITY = 5; // Velocity of the enemy
@@ -63,7 +69,8 @@ BasicGame.Distance.prototype = {
 	// Boolean that says if the player has selected the black hole bomb
 	usingBlackHole = false; 
 	
-	//	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
+	//Honestly, just about anything could go here. 
+	//It's YOUR game after all. Eat your heart out!
     
 	this.background = this.add.sprite(0, 0, 'background');
 	this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -158,7 +165,10 @@ BasicGame.Distance.prototype = {
     update: function () {
 	this.physics.arcade.overlap(this.enemies, this.bombs, 
 				    this.try_To_Destroy, null, this);
+	this.physics.arcade.overlap(this.enemies,this.lines,
+				    this.line_Collision,null,this);
 	
+
 	if (usingBlackHole){
 	    this.bombOnMouse.reset(this.input.x, this.input.y);
 	}
@@ -198,26 +208,55 @@ BasicGame.Distance.prototype = {
     },
 
     make_Grid: function (WIDTH, HEIGHT) {
-	var graphics = this.add.graphics(0, 0);
 	
-	//GRID_SPACE between lines
-	this.GRID_SPACE = 20;
-	
-	//adding lines
-	graphics.lineStyle(1, 0x33FF00,0.5);
-	for (y = this.GRID_SPACE; y < this.game.height; y = y + this.GRID_SPACE) {
-	    graphics.moveTo(0, y); 
-	    graphics.lineTo(this.game.width - this.GRID_SPACE, y);
-	}
-	
-	//adding line numbers.
+	//We will make a unique grid, with static tiles and dynamic tiles
+
+	this.lines = this.add.group();
+	this.lines.enableBody = true;
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
-	var end = this.game.height / this.GRID_SPACE;
-	for (y = this.GRID_SPACE; y < this.game.height; y = y + this.GRID_SPACE) {
-	    end--;
-	    this.add.text(this.game.width - this.GRID_SPACE, y - 10, String(end),
-			  style);
+    
+	var graphics = this.add.graphics(0, 0);
+	graphics.lineStyle(2, 0x00CCFF,1);
+    
+	for(this.indexAux = 0; this.indexAux < 12; this.indexAux = this.indexAux + 1){
+	    y = ((this.indexAux) * this.GRID_SPACE) + 50;
+	
+	    //Dynamic lines
+	    this.line = this.lines.create( 50, y+50, 'ground');
+	    this.line.scale.setTo(2,0.0078125);
+	    //this.line.scale.setTo(2,1);
+
+	    this.lastLine = this.line;
+	
+	    //Static horizontal lines
+	    graphics.moveTo(50, y); 
+	    graphics.lineTo(this.game.width-50,y);
+	    this.add.text(this.game.width-20,y-10+25,String((10-this.indexAux)),style);
+	
+    }
+    
+	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
+	    y = (this.indexAux * this.GRID_SPACE) + 50;
+	    //Static vertical lines
+	    graphics.moveTo(y,50);
+	    graphics.lineTo(y,HEIGHT-50);
 	}
+    },
+    
+    line_Collision: function(enemy, line){
+
+	//Restore the previous moved line
+	//this.lastLine.scale.setTo(2,0.03125);
+	//this.lastLine.scale.setTo(2,40);
+	//31.4 = HalfStep + HalfAmplitudScale*Height = 25 + 0.2*32 = 31.4
+	//this.lastLine.body.y = (this.lastLine.body.y) + 31.4;
+
+	//Change the line that the player touches
+	//this.line.scale.setTo(8,1);
+	//this.line.body.y = this.line.body.y - 31.4;
+    
+	//Now, that line is the new line
+	//this.lastLine = this.line;    
     },
     
     select_Bomb: function () {
