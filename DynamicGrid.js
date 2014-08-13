@@ -141,5 +141,4 @@ function line_Collision(player, line){
     
     //Now, that line is the new line
     lastLine = line;
-    
 }
