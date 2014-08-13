@@ -231,9 +231,9 @@ BasicGame.Distance.prototype = {
 	    //Static horizontal lines
 	    graphics.moveTo(50, y); 
 	    graphics.lineTo(this.game.width-50,y);
-	    this.add.text(this.game.width-20,y-10+25,String((10-this.indexAux)),style);
-	
-    }
+	    this.add.text(this.game.width-20,y-10+25,
+			  String((10-this.indexAux)),style);
+	}
     
 	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
 	    y = (this.indexAux * this.GRID_SPACE) + 50;
@@ -246,17 +246,17 @@ BasicGame.Distance.prototype = {
     line_Collision: function(enemy, line){
 
 	//Restore the previous moved line
-	//this.lastLine.scale.setTo(2,0.03125);
+	this.lastLine.scale.setTo(2,0.03125);
 	//this.lastLine.scale.setTo(2,40);
 	//31.4 = HalfStep + HalfAmplitudScale*Height = 25 + 0.2*32 = 31.4
-	//this.lastLine.body.y = (this.lastLine.body.y) + 31.4;
+	this.lastLine.body.y = (this.lastLine.body.y) + 31.4;
 
 	//Change the line that the player touches
-	//this.line.scale.setTo(8,1);
-	//this.line.body.y = this.line.body.y - 31.4;
+	line.scale.setTo(8,1);
+	line.body.y = line.body.y - 31.4;
     
 	//Now, that line is the new line
-	//this.lastLine = this.line;    
+	this.lastLine = line;    
     },
     
     select_Bomb: function () {
