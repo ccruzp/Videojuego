@@ -129,7 +129,6 @@ function make_Grid(WIDTH, HEIGHT) {
 }
 
 function line_Collision(player, line){
-<<<<<<< HEAD
 
     //Restore the previous moved line
     lastLine.scale.setTo(1,0.03125);
@@ -141,11 +140,6 @@ function line_Collision(player, line){
     line.body.y = line.body.y - 31.4;
     
     //Now, that line is the new line
-=======
-    // lastLine.scale.setTo(2,0.0625);
-    lastLine.scale.setTo(2, 0.025);
-    line.scale.setTo(2,1);
->>>>>>> b88868a3984a38c84b2e80c536efff22af0e47cd
     lastLine = line;
     
 }
