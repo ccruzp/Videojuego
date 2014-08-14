@@ -84,7 +84,8 @@ BasicGame.Distance.prototype = {
 	
 	this.bombOnMouse = this.add.sprite(1000, 1000, 'bombSelect');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
-	
+	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+
 	// Group for the enemies
 	this.enemies = this.add.group();
 	this.enemies.enableBody = true;
@@ -165,8 +166,8 @@ BasicGame.Distance.prototype = {
     update: function () {
 	this.physics.arcade.overlap(this.enemies, this.bombs, 
 				    this.try_To_Destroy, null, this);
-	this.physics.arcade.overlap(this.enemies,this.lines,
-				    this.line_Collision,null,this);
+	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
+				    this.line_Collision, null, this);
 	
 	if (usingBlackHole){
 	    this.bombOnMouse.reset(this.input.x, this.input.y);
