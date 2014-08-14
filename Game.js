@@ -30,7 +30,7 @@ BasicGame.Distance = function (game) {
     this.indexAux = 0;
     
     this.TOTAL_TIME = 3; // Time for explosion
-    this.ENEMY_VELOCITY = 5; // Velocity of the enemy
+    this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
     this.bombs; // Group of bombs
     this.bomb;
