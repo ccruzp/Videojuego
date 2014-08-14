@@ -25,6 +25,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('plusButton', '../assets/Mockup/PNGs/plusButton.png');
 	this.load.image('blackHoleButton', '../assets/Mockup/PNGs/blackHoleButton.png');
 	this.load.image('missileButton', '../assets/Mockup/PNGs/missileButton.png');
+	this.load.image('ground', '../assets/platform2.png');
     },
 
     create: function () {

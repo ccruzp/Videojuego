@@ -168,9 +168,9 @@ BasicGame.Distance.prototype = {
 	this.physics.arcade.overlap(this.enemies,this.lines,
 				    this.line_Collision,null,this);
 	
-
 	if (usingBlackHole){
 	    this.bombOnMouse.reset(this.input.x, this.input.y);
+	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
 	if (started) {
@@ -224,8 +224,7 @@ BasicGame.Distance.prototype = {
 	    //Dynamic lines
 	    this.line = this.lines.create( 50, y+50, 'ground');
 	    this.line.scale.setTo(2,0.0078125);
-	    //this.line.scale.setTo(2,1);
-
+	    
 	    this.lastLine = this.line;
 	
 	    //Static horizontal lines
