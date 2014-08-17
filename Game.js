@@ -199,12 +199,10 @@ BasicGame.Distance.prototype = {
     
     try_To_Destroy: function(enemy, bomb) {
 	if (this.timeCounter == 0) {
-	    if ((enemy.x - bomb.x) < 20 && (enemy.y == bomb.y) < 20) {
-		enemy.kill();
-		this.quit_Game(true);
-	    }
-	} else {
-	    this.quit_Game(false);
+	    // if ((enemy.x - bomb.x) < 20 && (enemy.y == bomb.y) < 20) {
+	    	enemy.kill();
+	    	this.quit_Game(true);
+	    // }
 	}
     },
 
