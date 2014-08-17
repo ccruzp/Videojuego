@@ -1,0 +1,14 @@
+Cosas que hacer:
+- Acomodar bien la interfaz: planeta puesto, el grid fuera del planeta y con tamaño y distancias apropiadas.
+- Averiguar github page and shit para que hosteé el juego.
+- Acciones de los botones: cuando se seleccionen que se le ponga que si en rojo para que haga contraste y se note.
+- El tiempo va a ser el de la simuación (sprite tipo relojito y ya). 
+- Para premiar a los jugadores que completan el juego mas rápido, se puede hacer un sistema de estrellas obtenidas de acuerdo al tiempo. 
+- Candados con menos contraste.
+- Cambiar game over: bomba no mata si se calcula mal el tiempo, sino que explota y la nave llega al planeta and rapes everyone.
+- Colores de las naves para que hagan contraste.
+- Las líneas dinámicas del grid deberían ser mas delgadas y quizás de un color diferente para causar menos ruido visual.
+- Arreglar problemas con respecto a si la bomba le pega al enemigo en un lugar exacto. Quizás limitando la bomba para que sea colocada en el centro de los cuadros.
+- Los sprites de las bombas que tengan distintos colores de acuerdo al tiempo que tarda la bomba en explotar.
+- Animaciones para explociones y cosas de esas (OPCIONAL SOLO CUANDO EL RESTO ESTÉ LISTO).
+- Averiguar asunto de soniditos and shit. (OPCIONAL SOLO CUANDO EL RESTO ESTÉ LISTO).

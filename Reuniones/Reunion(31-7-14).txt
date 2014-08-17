@@ -1,0 +1,23 @@
+Feedback - Reunion 31-07
+
+Implementación
+- Considerar invertir el grid.
+- Acomodar el grid por el asunto de las distancias (la exáctitud del grid). Por ejemplo que la distancia entre cada fila del grid sea del mismo tamaño que la de
+los sprites (principalmente las naves) para facilitar la comparación (física como se estudia con puntos y eso).
+- Buscar alguna manera de facilitar saber en qué línea del grid está el mouse.
+- No hay "varios intentos" (vidas). Por ahora si te pegan te destruyen y si destruyes ganas el nivel.
+- Por ahora concentrarnos únicamente en distance.js para terminarlo y utilizarlo como primer prototipo del juego.
+- Poner el tiempo de velocity.js y que el tiempo empiece a contar cuando comience el nivel.
+- En el de velocity.js que el jugador no pueda escoger el X, solo la velocidad del disparo.
+
+Interfaz
+- Las cosas que tienen distintos tiempos deberían tener distintos sprites (colores).
+- Cosas que puede modificar el jugador van abajo y la información va a arriba.
+- Quitar el contador de acciones. (Reemplazarlo por tiempo)
+- Quitar el contador de vidas.
+- Cuando el tiempo está congelo debería notarse (fondo gris or something like that, y el botón de play obviamente).
+- Mantener la interfaz con el desarrollo. (Inicialmente, solo manejar distancia.)
+- Disminuir el tamaño de los elementos de la interfaz. Incrementar el grid. (Por ahora solo horizontal.)
+- Tratar que los enemigos ocupen un cuadro en el grid.
+- Mostrar los enemigos con su valor (e.g Velocidad, Tiempo, etc)
+- Reemplazar naves por aliens (Evitar la violencia humana.)
