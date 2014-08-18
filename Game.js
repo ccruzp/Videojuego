@@ -28,7 +28,10 @@ BasicGame.Distance = function (game) {
     this.lines;
     this.lastLine;
     this.indexAux = 0;
-    
+    //Grid adjustment in boxes
+    this.gridX = 0;
+    this.gridY = 0;
+
     this.TOTAL_TIME = 3; // Time for explosion
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
@@ -170,7 +173,10 @@ BasicGame.Distance.prototype = {
 				    this.line_Collision, null, this);
 	
 	if (usingBlackHole){
-	    this.bombOnMouse.reset(this.input.x, this.input.y);
+
+	    this.findGridPlace();
+	    this.bombOnMouse.reset(((this.gridX*50)+25),((this.gridY*50)+25));
+	    //this.bombOnMouse.reset(this.input.x, this.input.y);
 	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
@@ -232,7 +238,7 @@ BasicGame.Distance.prototype = {
 	    graphics.moveTo(50, y); 
 	    graphics.lineTo(this.game.width-50,y);
 	    this.add.text(this.game.width-20,y-10+25,
-			  String((10-this.indexAux)),style);
+			  String((this.indexAux+1)),style);
 	}
     
 	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
@@ -252,7 +258,7 @@ BasicGame.Distance.prototype = {
 	this.lastLine.body.y = (this.lastLine.body.y) + 31.4;
 
 	//Change the line that the player touches
-	line.scale.setTo(8,1);
+	line.scale.setTo(8,0.4);
 	line.body.y = line.body.y - 31.4;
     
 	//Now, that line is the new line
@@ -270,8 +276,7 @@ BasicGame.Distance.prototype = {
     put_Bomb: function () {
 	if (!started && usingBlackHole) {
 	    // Intance of a bomb
-	    this.bomb = this.bombs.create(this.input.x - 5, this.input.y - 5, 
-					  'bomb');
+	    this.bomb = this.bombs.create(((this.gridX*50) + 20), ((this.gridY*50)+15), 'bomb');
 	}
     },
     
@@ -284,5 +289,16 @@ BasicGame.Distance.prototype = {
 		this.quit_Game();
 	    }
 	}
+    },
+
+    findGridPlace: function(){
+	this.gridX = parseInt(this.input.x/this.GRID_SPACE);
+	this.gridY = parseInt(this.input.y/this.GRID_SPACE);
+    
+	if(this.gridX < 1) this.gridX = 1;
+	if(this.gridX > 18) this.gridX = 18;
+    
+	if(this.gridY < 1) this.gridY = 1;
+	if(this.gridY > 10) this.gridY = 10;
     }
 };
