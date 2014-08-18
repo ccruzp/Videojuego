@@ -282,7 +282,8 @@ BasicGame.Distance.prototype = {
 		  ((this.gridY*50)+15), 'bomb');*/
 	}
     //}
-    usingBlackHole = false;
+	usingBlackHole = false;
+	this.line.reset(1000,1000);
     },
     
     countdown: function () {
