@@ -9,7 +9,7 @@ BasicGame.prueba.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-	this.load.image('background', '../assets/img/background4.png');
+	this.load.image('background', '../assets/img/background_Full.png');
     },
 
     create: function () {
