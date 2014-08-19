@@ -9,7 +9,8 @@ BasicGame.Boot.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-        this.load.image('background', 'assets/img/background4.png');
+	this.load.image('background', 'assets/img/background4.png');
+        // this.load.image('background', 'assets/Mockup/PNGs/background.png');
         // this.load.image('preloaderBar', 'images/preloadr_bar.png');
 	// The bomb that follows the mouse (Perhaps this will be removed)
 	this.load.image('bombSelect', 'assets/bullet.png');
@@ -23,7 +24,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
-	this.load.image('blackHoleButton', 'assets/Mockup/PNGs/blackHoleButton.png');
+	this.load.image('blackHoleButton', 'assets/Mockup/PNGs/blackHoleButtonUnpressed.png');
 	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
     },

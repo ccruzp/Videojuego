@@ -78,13 +78,14 @@ BasicGame.Distance.prototype = {
 	//It's YOUR game after all. Eat your heart out!
     
 	this.background = this.add.sprite(0, 0, 'background');
+	// this.background.scale.setTo(1.2,0.9);
+	// this.background.anchor.set(0.5,0.5);
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	//  We check bounds collisions against all walls other than the bottom one
 	this.physics.arcade.checkCollision.down = false;
 	
-	this.background = this.add.tileSprite(0, 0, 800, 600, 'background');
-	
+	// this.background = this.add.tileSprite(0, 0, 1000, 600, 'background');	
 	this.make_Grid(this.game.width, this.game.height);
 	
 	this.bombOnMouse = this.add.sprite(1000, 1000, 'bombSelect');
@@ -120,21 +121,21 @@ BasicGame.Distance.prototype = {
 	this.velocityText = this.add.text(25, 75, '', { font: "20px Arial",
 							fill: "#ffffff", 
 							align: "left" });
-	this.scoreText = this.add.text(25, 125, '', { font: "20px Arial", 
-						      fill: "#ffffff", 
-						      align: "left" });
-	// this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
-	// 			       { font: "20px Arial", fill: "#ffffff", 
-    	// 				 align: "left" });
+	// this.scoreText = this.add.text(25, 125, '', { font: "20px Arial", 
+	// 					      fill: "#ffffff", 
+	// 					      align: "left" });
+	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
+	// // 			       { font: "20px Arial", fill: "#ffffff", 
+    	// // 				 align: "left" });
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 		
-	this.lives = 3; // Lives left
-	this.score = 0; // Score
+	// this.lives = 3; // Lives left
+	// this.score = 0; // Score
 	this.timeCounter = this.TOTAL_TIME; // Time counter
 		
 	this.timeText.text = 'Tiempo: ' + this.TOTAL_TIME;
 	this.velocityText.text = 'Velocidad: ' + this.ENEMY_VELOCITY;
-	this.scoreText.text = 'Puntos: ' + this.score;
+	// this.scoreText.text = 'Puntos: ' + this.score;
 	// this.livesText.text = 'Vidas: ' + this.lives;
 
 	// Create the button for the black hole bomb
@@ -142,16 +143,16 @@ BasicGame.Distance.prototype = {
 					       'blackHoleButton', 
 					       this.select_Bomb);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.055, 0.055);
+	this.blackHoleButton.scale.setTo(0.25, 0.25);
 
-	// Create the play button
+	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 75, 'playButton',
 					  this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
 	this.playButton.scale.setTo(0.070, 0.070);
 
-	// Create the locked buttons	
+	// // Create the locked buttons	
 	this.buttons = this.add.group();
 	beforeButton = this.blackHoleButton;
 	for(i = 0; i < 2; i++) {
@@ -320,5 +321,9 @@ BasicGame.Distance.prototype = {
 	//Now, that line is the new line
 	this.lastLine = line;    
     },
-*/  
+*/
+
+// moving screen 	this.background.autoScroll(1000,0);
+// 	// this.background.stopScroll();
+  
 };
