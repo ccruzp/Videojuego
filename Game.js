@@ -26,8 +26,6 @@ BasicGame.Distance = function (game) {
     this.GRID_SPACE = 50;
     this.line;
     this.indexAux = 0;
-    /*  this.lines;
-	this.lastLine;*/
    
     //Grid adjustment in boxes
     this.gridX = 0;
@@ -36,7 +34,6 @@ BasicGame.Distance = function (game) {
     this.TOTAL_TIME = 3; // Time for explosion
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
-//    this.BOMBS_NUMBER = 2; //Number of bombs = number of enemies
     this.bombs; // Group of bombs
     this.bomb;
     this.enemies; // Group of enemies
@@ -47,6 +44,7 @@ BasicGame.Distance = function (game) {
     this.lives;// Lives left
     this.score; // Score
     this.timeCounter; // Time counter
+    this.numberOfBombs = 2; //Bombs = number of enemies, should be generated
     
     // Texts
     this.velocityText; // Text display of velocity
@@ -54,7 +52,7 @@ BasicGame.Distance = function (game) {
     this.livesText; // Text display of lives
     this.introText; // Text display for intro
     this.scoreText; // Text display of score
-
+    this.bombsText; //Text display number of remaining bombs
     // Buttons
     this.buttons; // Group for locked buttons
     this.blackHoleButton; // Black hole bomb button
@@ -74,12 +72,7 @@ BasicGame.Distance.prototype = {
 	// Boolean that says if the player has selected the black hole bomb
 	usingBlackHole = false; 
 	
-	//Honestly, just about anything could go here. 
-	//It's YOUR game after all. Eat your heart out!
-    
 	this.background = this.add.sprite(0, 0, 'background');
-	// this.background.scale.setTo(1.2,0.9);
-	// this.background.anchor.set(0.5,0.5);
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	//  We check bounds collisions against all walls other than the bottom one
@@ -93,7 +86,7 @@ BasicGame.Distance.prototype = {
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
 	this.line = this.add.sprite(1000,1000,'ground');
-	this.line.scale.setTo(8,0.4);
+	this.line.scale.setTo(2.25,0.4);
 	
 	// Group for the enemies
 	this.enemies = this.add.group();
@@ -109,11 +102,8 @@ BasicGame.Distance.prototype = {
 	this.bombs = this.add.group();
 	this.bombs.enableBody = true;
 	this.bombs.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombs.createMultiple(this.BOMBS_NUMBER,'bomb');
 	this.bombs.setAll('anchor.x', 0.5);
 	this.bombs.setAll('anchor.y', 0.5);
-	//this.bombs.setAll('outOfBoundsKill',true);
-	//this.bombs.setAll('checkWorldBounds',true);
 	
 	this.timeText = this.add.text(25, 25, '', { font: "20px Arial", 
 						    fill: "#ffffff", 
@@ -121,9 +111,9 @@ BasicGame.Distance.prototype = {
 	this.velocityText = this.add.text(25, 75, '', { font: "20px Arial",
 							fill: "#ffffff", 
 							align: "left" });
-	// this.scoreText = this.add.text(25, 125, '', { font: "20px Arial", 
-	// 					      fill: "#ffffff", 
-	// 					      align: "left" });
+	this.bombsText = this.add.text(25,125,'', { font: "20px Arial",
+						   fill : "#ffffff",
+						   align: "left"});
 	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
 	// // 			       { font: "20px Arial", fill: "#ffffff", 
     	// // 				 align: "left" });
@@ -135,6 +125,7 @@ BasicGame.Distance.prototype = {
 		
 	this.timeText.text = 'Tiempo: ' + this.TOTAL_TIME;
 	this.velocityText.text = 'Velocidad: ' + this.ENEMY_VELOCITY;
+	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	// this.scoreText.text = 'Puntos: ' + this.score;
 	// this.livesText.text = 'Vidas: ' + this.lives;
 
@@ -180,7 +171,7 @@ BasicGame.Distance.prototype = {
 				    this.try_To_Destroy, null, this);
 	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
 				    this.line_Collision, null, this);
-	
+	this.bombOnMouse.reset(1000,1000);
 	if (usingBlackHole){
 
 	    this.findGridPlace();
@@ -190,6 +181,8 @@ BasicGame.Distance.prototype = {
 	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
+	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
+	
 	if (started) {
 	    this.enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	}
@@ -198,8 +191,8 @@ BasicGame.Distance.prototype = {
     
     quit_Game: function (won) {
 	
-	//	Here you should destroy anything you no longer need.
-	//	Stop music, delete sprites, purge caches, free resources, all that good stuff.
+	//Here you should destroy anything you no longer need.
+	//Stop music, delete sprites, purge caches, free resources, all that good stuff.
 	this.playButton.destroy();
 	this.blackHoleButton.destroy();
 	this.buttons.removeAll(true);
@@ -225,9 +218,6 @@ BasicGame.Distance.prototype = {
     make_Grid: function (WIDTH, HEIGHT) {
 	
 	//We will make a unique grid, with static tiles
-
-	/*	this.lines = this.add.group();
-		this.lines.enableBody = true;*/
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
     
 	var graphics = this.add.graphics(0, 0);
@@ -239,16 +229,10 @@ BasicGame.Distance.prototype = {
 	    //Static horizontal lines
 	    graphics.moveTo(50, y); 
 	    graphics.lineTo(this.game.width-50,y);
-	    this.add.text(this.game.width-20,y-10+25,
-			  String((this.indexAux+1)),style);
-
-	    /*	
-	    //Dynamic lines
-	    this.line = this.lines.create( 50, y+50, 'ground');
-	    this.line.scale.setTo(2,0.0078125);
-	    //this.line.scale.setTo(2,0.5);
-	    this.lastLine = this.line;
-	    */	
+	    if (this.indexAux <10){
+		this.add.text(this.game.width-20,y-10+25,
+			      String((this.indexAux+1)),style);
+	    }
 	}
     
 	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
@@ -260,10 +244,14 @@ BasicGame.Distance.prototype = {
     },
 
     select_Bomb: function () {
-	//AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-	//this.bomb = this.bombs.getFirstDead();
-	//if(this.bomb) 
-	usingBlackHole = true;
+	//Odio esta maldita mierda de los grupos q no funcionan u.u
+	/*if(this.numberOfBombs<=0){
+	    this.bombs.removeAll(true);
+	    this.bombs.removeAll(false);
+	}*/
+	//this.bombs.removeAll(true);
+	//this.enemies.removeAll(true);
+	usingBlackHole = true;	
     },
 
     start: function (pointer) {
@@ -272,16 +260,14 @@ BasicGame.Distance.prototype = {
 
     put_Bomb: function () {
 	
-	//this.bomb = this.bombs.getFirstDead();
-	//if(this.bomb){
-	if (!started && usingBlackHole) {
+	if (!started && usingBlackHole && (this.numberOfBombs>0)) {
 	    // Intance of a bomb
-	    this.bomb = this.bombs.create(((this.gridX*50) + 20), ((this.gridY*50)+15), 'bomb');
-		/*this.bomb.reset(((this.gridX*50) + 20),
-		  ((this.gridY*50)+15), 'bomb');*/
+	    this.bomb = this.bombs.create(((this.gridX*50) + 20),
+					  ((this.gridY*50)+15), 'bomb');
+	    this.numberOfBombs -=1;
 	}
-    //}
-	usingBlackHole = false;
+	this.bombOnMouse.reset(1000,1000);
+    	usingBlackHole = false;
 	this.line.reset(1000,1000);
     },
     
@@ -305,25 +291,5 @@ BasicGame.Distance.prototype = {
     
 	if(this.gridY < 1) this.gridY = 1;
 	if(this.gridY > 10) this.gridY = 10;
-    }
-/*    
-    line_Collision: function(enemy, line){
-	//Restore the previous moved line
-	this.lastLine.scale.setTo(2,0.03125);
-	//this.lastLine.scale.setTo(2,40);
-	//31.4 = HalfStep + HalfAmplitudScale*Height = 25 + 0.2*32 = 31.4
-	this.lastLine.body.y = (this.lastLine.body.y) + 31.4;
-
-	//Change the line that the player touches
-	line.scale.setTo(8,0.4);
-	line.body.y = line.body.y - 31.4;
-    
-	//Now, that line is the new line
-	this.lastLine = line;    
-    },
-*/
-
-// moving screen 	this.background.autoScroll(1000,0);
-// 	// this.background.stopScroll();
-  
+    }  
 };
