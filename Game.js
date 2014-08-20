@@ -132,10 +132,13 @@ BasicGame.Distance.prototype = {
 	// Create the button for the black hole bomb
 	this.blackHoleButton = this.add.button(100, this.world.height - 75, 
 					       'blackHoleButton', 
-					       this.select_Bomb);
+					       this.select_Bomb, this, null,
+					       null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.25, 0.25);
+	this.blackHoleButton.scale.setTo(0.45, 0.45);
 
+	// this.blackHoleButton.animations.add('unpressed', [0], 1, false);
+	// this.blackHoleButton.animations.add('pressed', [1], 1, false);
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 75, 'playButton',
@@ -251,7 +254,9 @@ BasicGame.Distance.prototype = {
 	}*/
 	//this.bombs.removeAll(true);
 	//this.enemies.removeAll(true);
-	usingBlackHole = true;	
+	usingBlackHole = true;
+	// player.animations.play('pressed');
+	this.blackHoleButton.frame = 1;
     },
 
     start: function (pointer) {
