@@ -44,7 +44,7 @@ BasicGame.Distance = function (game) {
     this.lives;// Lives left
     this.score; // Score
     this.timeCounter; // Time counter
-    this.numberOfBombs = 2; //Bombs = number of enemies, should be generated
+    this.numberOfBombs; //Bombs = number of enemies, should be generated
     
     // Texts
     this.velocityText; // Text display of velocity
@@ -72,6 +72,8 @@ BasicGame.Distance.prototype = {
 	// Boolean that says if the player has selected the black hole bomb
 	usingBlackHole = false; 
 	
+	this.numberOfBombs = 2; // Number of bombs available in this level
+
 	this.background = this.add.sprite(0, 0, 'background');
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
