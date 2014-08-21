@@ -105,7 +105,7 @@ BasicGame.Distance.prototype = {
 
 	// this.enemy.body.collideWorldBounds = true;
 
-	var enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
+	enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
 	enemy.anchor.setTo(0.5, 0.5);
 	enemy.scale.setTo(0.1, 0.1);
 	this.enemies.add(enemy);
@@ -182,7 +182,7 @@ BasicGame.Distance.prototype = {
     },
     
     update: function () {
-	this.physics.arcade.overlap(this.enemies, this.bombs, 
+	this.physics.arcade.overlap(this.enemy, this.bombs, 
 				    this.try_To_Destroy, null, this);
 	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
 				    this.line_Collision, null, this);
@@ -202,7 +202,7 @@ BasicGame.Distance.prototype = {
 	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	
 	if (started) {
-	    this.enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	}
 
     },
