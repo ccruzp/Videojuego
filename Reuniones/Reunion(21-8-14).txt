@@ -1,0 +1,22 @@
+
+
+Interfaz
+- Disminuir el sprite de la nave. Sprite centrado en un punto. Puede aumentar su tamano si se hace mousover (Se mostraria su velocidad).
+- La numeracion del grid debe ir desde 0 hasta 11. Empieza en 0 a partir del planeta.
+- En los botones del menu. Cambiar el color de las lineas al hacer mouseover sobre el boton.
+
+Implementacion
+- Colocar las cosas encima de una linea. Centrar los sprites en el punto donde intersecten las lineas.
+- Resaltar la linea, y no lo que esta entre la linea.
+- Opciones de animacion, considerar FPS moderado sin muchos sprites. La duracion debe ser corta. 
+Dar la sensacion de que si efectivamente no se hace bien el calculo no se trague la nave, 
+de manera que se vea la funcionalidad del agujero negro.
+- Animacion del agujero negro puede estar combinado con la animacion del objeto orbitando sobre el y cada vez haciendose mas pequeno. 
+- Para los niveles considerar randomizar las velocidades de los enemigos y el tiempo de cada bomba.
+
+Mecanica
+- Tener 6 slots de armas. Se van llenando de izquierda a derecha, la cantidad y funcionalidad de cada arma puede variar en cada turno. 
+- Se puede tener mas de una bomba con distintos tiempos. 
+- No penalizar si el jugador usa mas armas de las que debe utilizar. (Se reflejaria en el tiempo total)
+- Considerar tiempo total que se tarda al terminar el juego. Se puede mostrar
+al final de cada nivel.
