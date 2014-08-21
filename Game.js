@@ -58,8 +58,6 @@ BasicGame.Distance = function (game) {
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
 
-    this.debugText3;
-
     // Booleans
     // this.lost = false; // Boolean that says if player lost the game
     this.background; // Background of the game
@@ -128,10 +126,6 @@ BasicGame.Distance.prototype = {
 	this.bombsText = this.add.text(25,275,'', { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
-	this.debugText3 = this.add.text(
-            400, this.game.height-32, '', { font: '24px Arial', fill: '#ffffff' }
-	);
-
 	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
 	// // 			       { font: "20px Arial", fill: "#ffffff", 
     	// // 				 align: "left" });
@@ -209,9 +203,7 @@ BasicGame.Distance.prototype = {
 	
 	if (started) {
 	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-	}
-	this.debugText3.text = 'mouseX:' + this.input.x + ', mouseY:' + this.input.y;
-	
+	}	
 
     },
     
