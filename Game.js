@@ -258,7 +258,7 @@ BasicGame.Distance.prototype = {
 	//this.enemies.removeAll(true);
 	usingBlackHole = true;
 	// player.animations.play('pressed');
-	this.blackHoleButton.frame = 1;
+	// this.blackHoleButton.frame = 1;
     },
 
     start: function (pointer) {
