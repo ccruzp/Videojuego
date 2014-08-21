@@ -58,6 +58,8 @@ BasicGame.Distance = function (game) {
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
 
+    this.debugText3;
+
     // Booleans
     // this.lost = false; // Boolean that says if player lost the game
     this.background; // Background of the game
@@ -66,7 +68,7 @@ BasicGame.Distance = function (game) {
 BasicGame.Distance.prototype = {
     
     create: function () {
-
+	
 	started = false; // Boolean that says if the game has begun
 	lost = false; // Boolean that says if the player lost the game
 	// Boolean that says if the player has selected the black hole bomb
@@ -95,14 +97,17 @@ BasicGame.Distance.prototype = {
 	this.enemies = this.add.group();
 	this.enemies.enableBody = true;
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
-	
+
 	// Create an instance of an enemy
+	// var enemy = this.enemies.create(this.world.centerX, 100, 'enemyDistance');
+	// enemy.anchor.setTo(0.5, 0.5);
+	// enemy.scale.setTo(0.1, 0.1);
 	// this.enemy = this.enemies.create(0, 0, 'enemyDistance');
 	// // this.enemy.body.reset(150, 150);
 
 	// this.enemy.body.collideWorldBounds = true;
 
-	var enemy = this.add.sprite(this.world.centerX, 100, 'enemyDistance');
+	enemy = this.add.sprite(this.world.centerX, 100, 'enemyDistance');
 	enemy.anchor.setTo(0.5, 0.5);
 	enemy.scale.setTo(0.1, 0.1);
 	this.enemies.add(enemy);
@@ -123,6 +128,10 @@ BasicGame.Distance.prototype = {
 	this.bombsText = this.add.text(25,275,'', { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
+	this.debugText3 = this.add.text(
+            400, this.game.height-32, '', { font: '24px Arial', fill: '#ffffff' }
+	);
+
 	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
 	// // 			       { font: "20px Arial", fill: "#ffffff", 
     	// // 				 align: "left" });
@@ -199,8 +208,10 @@ BasicGame.Distance.prototype = {
 	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	
 	if (started) {
-	    this.enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	}
+	this.debugText3.text = 'mouseX:' + this.input.x + ', mouseY:' + this.input.y;
+	
 
     },
     
