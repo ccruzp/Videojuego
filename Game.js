@@ -97,9 +97,15 @@ BasicGame.Distance.prototype = {
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
 	
 	// Create an instance of an enemy
-	this.enemy = this.enemies.create(this.world.centerX, 20, 'enemyDistance');
-	this.enemy.anchor.setTo(0.5, 0.5);
-	this.enemy.body.collideWorldBounds = true;
+	// this.enemy = this.enemies.create(0, 0, 'enemyDistance');
+	// // this.enemy.body.reset(150, 150);
+
+	// this.enemy.body.collideWorldBounds = true;
+
+	var enemy = this.add.sprite(this.world.centerX, 100, 'enemyDistance');
+	enemy.anchor.setTo(0.5, 0.5);
+	enemy.scale.setTo(0.1, 0.1);
+	this.enemies.add(enemy);
 
 	// Create the bombs
 	this.bombs = this.add.group();
@@ -133,36 +139,36 @@ BasicGame.Distance.prototype = {
 	// this.livesText.text = 'Vidas: ' + this.lives;
 
 	// Create the button for the black hole bomb
-	this.blackHoleButton = this.add.button(100, this.world.height - 75, 
+	this.blackHoleButton = this.add.button(200, this.world.height - 60, 
 					       'blackHoleButton', 
 					       this.select_Bomb, this, null,
 					       null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.45, 0.45);
+	this.blackHoleButton.scale.setTo(0.4, 0.4);
 
 	// this.blackHoleButton.animations.add('unpressed', [0], 1, false);
 	// this.blackHoleButton.animations.add('pressed', [1], 1, false);
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
-					  this.world.height - 75, 'playButton',
+					  this.world.height - 60, 'playButton',
 					  this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.070, 0.070);
+	this.playButton.scale.setTo(0.050, 0.050);
 
 	// // Create the locked buttons	
 	this.buttons = this.add.group();
 	beforeButton = this.blackHoleButton;
 	for(i = 0; i < 2; i++) {
-	    x = this.buttons.create(beforeButton.x + 125, beforeButton.y, 
+	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
 				    'lockedButton');
-	    x.scale.setTo(0.055, 0.055);
+	    x.scale.setTo(0.175, 0.175);
 	    beforeButton = x;
 	};
 	beforeButton = this.playButton;
 	for(i = 0; i < 3; i++) {
-	    x = this.buttons.create(beforeButton.x + 125, beforeButton.y, 
+	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
 				    'lockedButton');
-	    x.scale.setTo(0.055, 0.055);
+	    x.scale.setTo(0.175, 0.175);
 	    beforeButton = x;
 	};
 	this.buttons.setAll('anchor.x', 0.5);
