@@ -61,6 +61,9 @@ BasicGame.Distance = function (game) {
     // Booleans
     // this.lost = false; // Boolean that says if player lost the game
     this.background; // Background of the game
+    
+    //Aligned enemy in the grid
+    this.enemyPlace = 6;
 };
 
 BasicGame.Distance.prototype = {
@@ -102,7 +105,7 @@ BasicGame.Distance.prototype = {
 
 	// this.enemy.body.collideWorldBounds = true;
 
-	var enemy = this.add.sprite(this.world.centerX, 100, 'enemyDistance');
+	var enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
 	enemy.anchor.setTo(0.5, 0.5);
 	enemy.scale.setTo(0.1, 0.1);
 	this.enemies.add(enemy);
