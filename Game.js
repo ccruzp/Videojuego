@@ -23,7 +23,7 @@ BasicGame.Distance = function (game) {
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     //Grid Stuff
-    this.GRID_SPACE = 35;
+    this.GRID_SPACE = 38;
     this.line;
     this.indexAux = 0;
    
@@ -89,7 +89,7 @@ BasicGame.Distance.prototype = {
 	
 	this.line = this.add.sprite(1000,1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
-	this.line.scale.setTo(1.575,0.4);
+	this.line.scale.setTo(1.52,0.4);
 
 	// Group for the enemies
 	this.enemies = this.add.group();
@@ -181,9 +181,12 @@ BasicGame.Distance.prototype = {
 	if (usingBlackHole){
 
 	    this.findGridPlace();
-	    this.bombOnMouse.reset(((this.gridX*(this.GRID_SPACE)+185)+25),((this.gridY*(this.GRID_SPACE)+60)+25));
-	    this.line.reset(185,((this.gridY*(this.GRID_SPACE))+0/*18.6*/));
-	    //this.bombOnMouse.reset(this.input.x, this.input.y);
+	    
+	    this.bombOnMouse.reset(((this.gridX-1)*this.GRID_SPACE)+214,((this.gridY-1)*this.GRID_SPACE)+83);
+	    
+	    //Constant= OffsetY - ((gridspace-SizeofGrid)/2 + SizeofGrid)
+	    //Size of grid: 32*0.4. OffsetY = 60
+	    this.line.reset(196,(((this.gridY)*(this.GRID_SPACE))+34.6));
 	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
@@ -233,16 +236,16 @@ BasicGame.Distance.prototype = {
 	    y = ((this.indexAux) * this.GRID_SPACE) + 60;
 	    
 	    //Static horizontal lines
-	    graphics.moveTo(185, y); 
-	    graphics.lineTo(this.game.width-185,y);
+	    graphics.moveTo(196, y); 
+	    graphics.lineTo(this.game.width-196,y);
 	    if (this.indexAux <10){
 		this.add.text(this.game.width-180,y-10+((this.GRID_SPACE)/2),
 			      String((this.indexAux+1)),style);
 	    }
 	}
     
-	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
-	    y = (this.indexAux * this.GRID_SPACE) + 185;
+	for (this.indexAux = 0; this.indexAux < 17; this.indexAux = this.indexAux + 1){
+	    y = (this.indexAux * this.GRID_SPACE) + 196;
 	    //Static vertical lines
 	    graphics.moveTo(y,60);
 	    graphics.lineTo(y,(((this.GRID_SPACE)*10)+60));
@@ -270,8 +273,8 @@ BasicGame.Distance.prototype = {
 	
 	if (!started && usingBlackHole && (this.numberOfBombs>0)) {
 	    // Intance of a bomb
-	    this.bomb = this.bombs.create(((this.gridX*50) + 20),
-					  ((this.gridY*50)+15), 'bomb');
+	    this.bomb = this.bombs.create( ((this.gridX-1)*this.GRID_SPACE)+196+(this.GRID_SPACE/3),
+					   ((this.gridY-1)*this.GRID_SPACE)+60+(this.GRID_SPACE/3), 'bomb');
 	    this.numberOfBombs -=1;
 	}
 	this.bombOnMouse.reset(1000,1000);
@@ -291,11 +294,11 @@ BasicGame.Distance.prototype = {
     },
 
     findGridPlace: function(){
-	this.gridX = parseInt((this.input.x-185)/this.GRID_SPACE);
-	this.gridY = parseInt((this.input.y-60)/this.GRID_SPACE);
+	this.gridX = parseInt((this.input.x-196+this.GRID_SPACE)/this.GRID_SPACE);
+	this.gridY = parseInt((this.input.y-60+this.GRID_SPACE)/this.GRID_SPACE);
     
 	if(this.gridX < 1) this.gridX = 1;
-	if(this.gridX > 18) this.gridX = 18;
+	if(this.gridX > 16) this.gridX = 16;
     
 	if(this.gridY < 1) this.gridY = 1;
 	if(this.gridY > 10) this.gridY = 10;
