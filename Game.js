@@ -182,7 +182,7 @@ BasicGame.Distance.prototype = {
     },
     
     update: function () {
-	this.physics.arcade.overlap(this.enemy, this.bombs, 
+	this.physics.arcade.overlap(this.enemies, this.bombs, 
 				    this.try_To_Destroy, null, this);
 	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
 				    this.line_Collision, null, this);
