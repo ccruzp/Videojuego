@@ -9,7 +9,7 @@ BasicGame.Boot.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-	this.load.image('background', 'assets/img/background_Plain.png');
+	this.load.image('background', 'assets/img/background_purple_Half.png');
         // this.load.image('background', 'assets/Mockup/PNGs/background.png');
         // this.load.image('preloaderBar', 'images/preloadr_bar.png');
 	// The bomb that follows the mouse (Perhaps this will be removed)
