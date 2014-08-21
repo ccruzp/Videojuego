@@ -23,7 +23,7 @@ BasicGame.Distance = function (game) {
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     //Grid Stuff
-    this.GRID_SPACE = 50;
+    this.GRID_SPACE = 35;
     this.line;
     this.indexAux = 0;
    
@@ -88,8 +88,9 @@ BasicGame.Distance.prototype = {
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
 	this.line = this.add.sprite(1000,1000,'ground');
-	this.line.scale.setTo(2.25,0.4);
-	
+	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
+	this.line.scale.setTo(1.575,0.4);
+
 	// Group for the enemies
 	this.enemies = this.add.group();
 	this.enemies.enableBody = true;
@@ -107,13 +108,13 @@ BasicGame.Distance.prototype = {
 	this.bombs.setAll('anchor.x', 0.5);
 	this.bombs.setAll('anchor.y', 0.5);
 	
-	this.timeText = this.add.text(25, 25, '', { font: "20px Arial", 
+	this.timeText = this.add.text(25, 175, '', { font: "20px Arial", 
 						    fill: "#ffffff", 
 						    align: "left" });
-	this.velocityText = this.add.text(25, 75, '', { font: "20px Arial",
+	this.velocityText = this.add.text(25, 225, '', { font: "20px Arial",
 							fill: "#ffffff", 
 							align: "left" });
-	this.bombsText = this.add.text(25,125,'', { font: "20px Arial",
+	this.bombsText = this.add.text(25,275,'', { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
 	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
@@ -180,8 +181,8 @@ BasicGame.Distance.prototype = {
 	if (usingBlackHole){
 
 	    this.findGridPlace();
-	    this.bombOnMouse.reset(((this.gridX*50)+25),((this.gridY*50)+25));
-	    this.line.reset(50,((this.gridY*50)+18.6));
+	    this.bombOnMouse.reset(((this.gridX*(this.GRID_SPACE)+185)+25),((this.gridY*(this.GRID_SPACE)+60)+25));
+	    this.line.reset(185,((this.gridY*(this.GRID_SPACE))+0/*18.6*/));
 	    //this.bombOnMouse.reset(this.input.x, this.input.y);
 	    
 	}
@@ -228,23 +229,23 @@ BasicGame.Distance.prototype = {
 	var graphics = this.add.graphics(0, 0);
 	graphics.lineStyle(2, 0x00CCFF,1);
     
-	for(this.indexAux = 0; this.indexAux < 12; this.indexAux = this.indexAux + 1){
-	    y = ((this.indexAux) * this.GRID_SPACE) + 50;
+	for(this.indexAux = 0; this.indexAux < 11; this.indexAux = this.indexAux + 1){
+	    y = ((this.indexAux) * this.GRID_SPACE) + 60;
 	    
 	    //Static horizontal lines
-	    graphics.moveTo(50, y); 
-	    graphics.lineTo(this.game.width-50,y);
+	    graphics.moveTo(185, y); 
+	    graphics.lineTo(this.game.width-185,y);
 	    if (this.indexAux <10){
-		this.add.text(this.game.width-20,y-10+25,
+		this.add.text(this.game.width-180,y-10+((this.GRID_SPACE)/2),
 			      String((this.indexAux+1)),style);
 	    }
 	}
     
 	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
-	    y = (this.indexAux * this.GRID_SPACE) + 50;
+	    y = (this.indexAux * this.GRID_SPACE) + 185;
 	    //Static vertical lines
-	    graphics.moveTo(y,50);
-	    graphics.lineTo(y,HEIGHT-50);
+	    graphics.moveTo(y,60);
+	    graphics.lineTo(y,(((this.GRID_SPACE)*10)+60));
 	}
     },
 
@@ -290,8 +291,8 @@ BasicGame.Distance.prototype = {
     },
 
     findGridPlace: function(){
-	this.gridX = parseInt(this.input.x/this.GRID_SPACE);
-	this.gridY = parseInt(this.input.y/this.GRID_SPACE);
+	this.gridX = parseInt((this.input.x-185)/this.GRID_SPACE);
+	this.gridY = parseInt((this.input.y-60)/this.GRID_SPACE);
     
 	if(this.gridX < 1) this.gridX = 1;
 	if(this.gridX > 18) this.gridX = 18;
