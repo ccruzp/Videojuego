@@ -9,7 +9,7 @@ BasicGame.Boot.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-	this.load.image('background', 'assets/img/background_Plain.png');
+	this.load.image('background', 'assets/img/background_purple_Half.png');
         // this.load.image('background', 'assets/Mockup/PNGs/background.png');
         // this.load.image('preloaderBar', 'images/preloadr_bar.png');
 	// The bomb that follows the mouse (Perhaps this will be removed)
@@ -17,11 +17,11 @@ BasicGame.Boot.prototype = {
 	// The bomb
 	this.load.image('bomb', 'assets/bullet.png');
 	// The distance enemy
-	this.load.image('enemyDistance', 'assets/enemy1.png');
+	this.load.image('enemyDistance', 'assets/Mockup/PNGs/distanceShip.png');
 	this.load.image('playAgainButton', 'assets/star.png');
 	this.load.image('startButton', 'assets/star.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
-	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
+	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock.png');
 	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);

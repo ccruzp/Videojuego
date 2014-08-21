@@ -23,7 +23,7 @@ BasicGame.Distance = function (game) {
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     //Grid Stuff
-    this.GRID_SPACE = 35;
+    this.GRID_SPACE = 38;
     this.line;
     this.indexAux = 0;
    
@@ -89,7 +89,7 @@ BasicGame.Distance.prototype = {
 	
 	this.line = this.add.sprite(1000,1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
-	this.line.scale.setTo(1.575,0.4);
+	this.line.scale.setTo(1.52,0.4);
 
 	// Group for the enemies
 	this.enemies = this.add.group();
@@ -97,9 +97,15 @@ BasicGame.Distance.prototype = {
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
 	
 	// Create an instance of an enemy
-	this.enemy = this.enemies.create(this.world.centerX, 20, 'enemyDistance');
-	this.enemy.anchor.setTo(0.5, 0.5);
-	this.enemy.body.collideWorldBounds = true;
+	// this.enemy = this.enemies.create(0, 0, 'enemyDistance');
+	// // this.enemy.body.reset(150, 150);
+
+	// this.enemy.body.collideWorldBounds = true;
+
+	var enemy = this.add.sprite(this.world.centerX, 100, 'enemyDistance');
+	enemy.anchor.setTo(0.5, 0.5);
+	enemy.scale.setTo(0.1, 0.1);
+	this.enemies.add(enemy);
 
 	// Create the bombs
 	this.bombs = this.add.group();
@@ -133,36 +139,36 @@ BasicGame.Distance.prototype = {
 	// this.livesText.text = 'Vidas: ' + this.lives;
 
 	// Create the button for the black hole bomb
-	this.blackHoleButton = this.add.button(100, this.world.height - 75, 
+	this.blackHoleButton = this.add.button(200, this.world.height - 60, 
 					       'blackHoleButton', 
 					       this.select_Bomb, this, null,
 					       null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.45, 0.45);
+	this.blackHoleButton.scale.setTo(0.4, 0.4);
 
 	// this.blackHoleButton.animations.add('unpressed', [0], 1, false);
 	// this.blackHoleButton.animations.add('pressed', [1], 1, false);
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
-					  this.world.height - 75, 'playButton',
+					  this.world.height - 60, 'playButton',
 					  this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.070, 0.070);
+	this.playButton.scale.setTo(0.050, 0.050);
 
 	// // Create the locked buttons	
 	this.buttons = this.add.group();
 	beforeButton = this.blackHoleButton;
 	for(i = 0; i < 2; i++) {
-	    x = this.buttons.create(beforeButton.x + 125, beforeButton.y, 
+	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
 				    'lockedButton');
-	    x.scale.setTo(0.055, 0.055);
+	    x.scale.setTo(0.175, 0.175);
 	    beforeButton = x;
 	};
 	beforeButton = this.playButton;
 	for(i = 0; i < 3; i++) {
-	    x = this.buttons.create(beforeButton.x + 125, beforeButton.y, 
+	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
 				    'lockedButton');
-	    x.scale.setTo(0.055, 0.055);
+	    x.scale.setTo(0.175, 0.175);
 	    beforeButton = x;
 	};
 	this.buttons.setAll('anchor.x', 0.5);
@@ -181,9 +187,12 @@ BasicGame.Distance.prototype = {
 	if (usingBlackHole){
 
 	    this.findGridPlace();
-	    this.bombOnMouse.reset(((this.gridX*(this.GRID_SPACE)+185)+25),((this.gridY*(this.GRID_SPACE)+60)+25));
-	    this.line.reset(185,((this.gridY*(this.GRID_SPACE))+0/*18.6*/));
-	    //this.bombOnMouse.reset(this.input.x, this.input.y);
+	    
+	    this.bombOnMouse.reset(((this.gridX-1)*this.GRID_SPACE)+214,((this.gridY-1)*this.GRID_SPACE)+83);
+	    
+	    //Constant= OffsetY - ((gridspace-SizeofGrid)/2 + SizeofGrid)
+	    //Size of grid: 32*0.4. OffsetY = 60
+	    this.line.reset(196,(((this.gridY)*(this.GRID_SPACE))+34.6));
 	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
@@ -233,16 +242,16 @@ BasicGame.Distance.prototype = {
 	    y = ((this.indexAux) * this.GRID_SPACE) + 60;
 	    
 	    //Static horizontal lines
-	    graphics.moveTo(185, y); 
-	    graphics.lineTo(this.game.width-185,y);
+	    graphics.moveTo(196, y); 
+	    graphics.lineTo(this.game.width-196,y);
 	    if (this.indexAux <10){
 		this.add.text(this.game.width-180,y-10+((this.GRID_SPACE)/2),
 			      String((this.indexAux+1)),style);
 	    }
 	}
     
-	for (this.indexAux = 0; this.indexAux < 19; this.indexAux = this.indexAux + 1){
-	    y = (this.indexAux * this.GRID_SPACE) + 185;
+	for (this.indexAux = 0; this.indexAux < 17; this.indexAux = this.indexAux + 1){
+	    y = (this.indexAux * this.GRID_SPACE) + 196;
 	    //Static vertical lines
 	    graphics.moveTo(y,60);
 	    graphics.lineTo(y,(((this.GRID_SPACE)*10)+60));
@@ -270,8 +279,8 @@ BasicGame.Distance.prototype = {
 	
 	if (!started && usingBlackHole && (this.numberOfBombs>0)) {
 	    // Intance of a bomb
-	    this.bomb = this.bombs.create(((this.gridX*50) + 20),
-					  ((this.gridY*50)+15), 'bomb');
+	    this.bomb = this.bombs.create( ((this.gridX-1)*this.GRID_SPACE)+196+(this.GRID_SPACE/3),
+					   ((this.gridY-1)*this.GRID_SPACE)+60+(this.GRID_SPACE/3), 'bomb');
 	    this.numberOfBombs -=1;
 	}
 	this.bombOnMouse.reset(1000,1000);
@@ -291,11 +300,11 @@ BasicGame.Distance.prototype = {
     },
 
     findGridPlace: function(){
-	this.gridX = parseInt((this.input.x-185)/this.GRID_SPACE);
-	this.gridY = parseInt((this.input.y-60)/this.GRID_SPACE);
+	this.gridX = parseInt((this.input.x-196+this.GRID_SPACE)/this.GRID_SPACE);
+	this.gridY = parseInt((this.input.y-60+this.GRID_SPACE)/this.GRID_SPACE);
     
 	if(this.gridX < 1) this.gridX = 1;
-	if(this.gridX > 18) this.gridX = 18;
+	if(this.gridX > 16) this.gridX = 16;
     
 	if(this.gridY < 1) this.gridY = 1;
 	if(this.gridY > 10) this.gridY = 10;
