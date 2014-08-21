@@ -230,7 +230,9 @@ BasicGame.Distance.prototype = {
 	    	enemy.kill();
 	    	this.quit_Game(true);
 	    // }
-	}
+	 } // else {
+	    // lost = true;
+	// }
     },
 
     make_Grid: function (WIDTH, HEIGHT) {
