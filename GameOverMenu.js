@@ -1,4 +1,5 @@
 BasicGame.GameOverMenu = function (game) {
+    this.background = null;
     this.gameOverText = null;
     this.playAgainButton = null;
 };
@@ -11,14 +12,17 @@ BasicGame.GameOverMenu.prototype = {
     
     create: function () {
 	
+	this.background = this.add.sprite(0, 0, 'menuBackground');
+
 	this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
 	this.gameOverText.anchor.setTo(0.5, 0.5);
 
-	this.playAgainButton = this.add.button(100, 100, 'startButton',
-					  this.fun, this);
+	this.playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
+					  this.playAgain, this);
 	this.playAgainButton.anchor.setTo(0.5, 0.5);
+	this.playAgainButton.scale.setTo(0.5, 0.5);
 	
     },
     
@@ -41,9 +45,10 @@ BasicGame.GameOverMenu.prototype = {
     
     },
 
-    fun: function () {
+    playAgain: function () {
 	this.gameOverText.destroy();
 	this.playAgainButton.destroy();
+	this.background.destroy();
 	this.state.start('Distance');
     }
     

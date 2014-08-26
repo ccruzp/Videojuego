@@ -1,4 +1,4 @@
-BasicGame.Distance = function (game) {
+BasicGame.Disftance = function (game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -14,8 +14,7 @@ BasicGame.Distance = function (game) {
     this.gridX = 0;
     this.gridY = 0;
 
-    this.TOTAL_TIME = 100; // Time for explosion
-    this.BOMB_TOTAL_TIME = 3;
+    this.TOTAL_TIME = 3; // Time for explosion
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
     this.bombs; // Group of bombs
@@ -28,13 +27,11 @@ BasicGame.Distance = function (game) {
     this.lives;// Lives left
     this.score; // Score
     this.timeCounter; // Time counter
-    this.explosionTimeCounter;
     this.numberOfBombs; //Bombs = number of enemies, should be generated
     
     // Texts
     this.velocityText; // Text display of velocity
     this.timeText; // Text display of time
-    this.explosionTimeText;
     this.livesText; // Text display of lives
     this.introText; // Text display for intro
     this.scoreText; // Text display of score
@@ -50,9 +47,11 @@ BasicGame.Distance = function (game) {
     
     //Aligned enemy in the grid
     this.enemyPlace = 6;
+
+    this.timer;
 };
 
-BasicGame.Distance.prototype = {
+BasicGame.Distfance.prototype = {
     
     create: function () {
 	
@@ -106,17 +105,13 @@ BasicGame.Distance.prototype = {
 	this.bombs.setAll('anchor.x', 0.5);
 	this.bombs.setAll('anchor.y', 0.5);
 	
-	this.timeText = this.add.text(25, 175, 'Tiempo: ' + this.TOTAL_TIME, { font: "20px Arial", 
+	this.timeText = this.add.text(25, 175, '', { font: "20px Arial", 
 						    fill: "#ffffff", 
 						    align: "left" });
-	this.explosionTimeText = this.add.text(25, 300, this.BOMB_TOTAL_TIME, { font: "20px Arial", 
-						    fill: "#ffffff", 
-						    align: "left" });
-	this.explosionTimeText.visible = false;
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.ENEMY_VELOCITY, { font: "20px Arial",
+	this.velocityText = this.add.text(25, 225, '', { font: "20px Arial",
 							fill: "#ffffff", 
 							align: "left" });
-	this.bombsText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombs, { font: "20px Arial",
+	this.bombsText = this.add.text(25,275,'', { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
 	// // this.livesText = this.add.text(this.game.width - 120, this.game.height - 50, '',
@@ -126,9 +121,11 @@ BasicGame.Distance.prototype = {
 		
 	// this.lives = 3; // Lives left
 	// this.score = 0; // Score
-	this.timeCounter = this.TOTAL_TIME;
-	this.explosionTimeCounter = this.BOMB_TOTAL_TIME; // Time counter
+	this.timeCounter = this.TOTAL_TIME; // Time counter
 		
+	this.timeText.text = 'Tiempo: ' + this.TOTAL_TIME;
+	this.velocityText.text = 'Velocidad: ' + this.ENEMY_VELOCITY;
+	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	// this.scoreText.text = 'Puntos: ' + this.score;
 	// this.livesText.text = 'Vidas: ' + this.lives;
 
@@ -140,6 +137,8 @@ BasicGame.Distance.prototype = {
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
 	this.blackHoleButton.scale.setTo(0.4, 0.4);
 
+	// this.blackHoleButton.animations.add('unpressed', [0], 1, false);
+	// this.blackHoleButton.animations.add('pressed', [1], 1, false);
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 60, 'playButton',
@@ -189,15 +188,12 @@ BasicGame.Distance.prototype = {
 	    
 	}
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
-	this.explosionTimeText.text = this.explosionTimeCounter;
 	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	
 	if (started) {
 	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-	}
-	if (this.explosionTimeCounter == 0) {
-	    bomb.animations.play('explode');
-	}
+	}	
+
     },
     
     quit_Game: function (won) {
@@ -218,14 +214,35 @@ BasicGame.Distance.prototype = {
     },
     
     try_To_Destroy: function(enemy, bomb) {
-	if (this.explosionTimeCounter == 0) {
+	bomb.animations.play('explode');
+	if (this.timeCounter == 0) {
+	    // if ((enemy.x - bomb.x) < 20 && (enemy.y == bomb.y) < 20) {
 	    enemy.kill();
-	    // if (this.timeCounter == 0) {
-	    // 	this.quit_Game();
+	    this.quit_Game();
+	    // before = this.time.now;
+	    // this.intentar(before);
+	    // while (before < this.time.now + 10000) {
+	    // 	console.log("Vuelta!");
 	    // }
-	}
+	    // if (before > this.time.now + 10000) {
+	    // 	this.quit_Game(true);
+	    // } else {
+	    // 	this.try_To_Destroy(enemy, bomb);
+	    // }
+    // }
+	 } // else {
+	    // lost = true;
+	// }
     },
     
+    // intentar: function(before) {
+    // 	if (before > this.time.now + 10000) {
+    // 	    this.quit_Game(true);
+    // 	} else {
+    // 	    this.intentar(before);
+    // 	}
+    // },
+
     make_Grid: function (WIDTH, HEIGHT) {
 	
 	//We will make a unique grid, with static tiles
@@ -284,9 +301,6 @@ BasicGame.Distance.prototype = {
 	    bomb.anchor.setTo(0.5, 0.5);
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22], 6, false);
 	    this.bombs.add(bomb);
-	    this.explosionTimeText.visible = true;
-	    this.explosionTimeText.x = bomb.body.x
-	    this.explosionTimeText.y = bomb.body.y;
 	    this.numberOfBombs -=1;
 	}
 	this.bombOnMouse.reset(1000,1000);
@@ -298,10 +312,6 @@ BasicGame.Distance.prototype = {
 	if (started) {
 	    if (!lost) {
 		this.timeCounter -= 1;
-		this.explosionTimeCounter -= 1;
-	    }
-	    if (this.explosionTimeCounter == 0) {
-		this.explosionTimeText.visible = false;
 	    }
 	    if (this.timeCounter < 0) {
 		this.quit_Game();
