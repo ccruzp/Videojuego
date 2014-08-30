@@ -1,7 +1,7 @@
 BasicGame.WinnerMenu = function (game) {
-    this.background = null;
-    this.winnerText = null;
-    this.playAgainButton = null;
+    // this.background = null;
+    // this.winnerText = null;
+    // this.playAgainButton = null;
 };
 
 BasicGame.WinnerMenu.prototype = {
@@ -12,17 +12,28 @@ BasicGame.WinnerMenu.prototype = {
     
     create: function () {
 	
-	this.background = this.add.sprite(0, 0, 'menuBackground');
+	// this.background = this.add.sprite(0, 0, 'menuBackground');
 
-	this.winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
+	// this.winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
+	// 				  { font: "50px Arial", fill: "#ffffff",
+	// 				    align: "left" });
+	// this.winnerText.anchor.setTo(0.5, 0.5);
+
+	// this.playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
+	// 				       this.playAgain, this, 1, 0, 1, 0);
+	// this.playAgainButton.anchor.setTo(0.5, 0.5);
+	// this.playAgainButton.scale.setTo(0.5, 0.5);
+	background = this.add.sprite(0, 0, 'menuBackground');
+
+	winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
-	this.winnerText.anchor.setTo(0.5, 0.5);
+	winnerText.anchor.setTo(0.5, 0.5);
 
-	this.playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
-					  this.playAgain, this);
-	this.playAgainButton.anchor.setTo(0.5, 0.5);
-	this.playAgainButton.scale.setTo(0.5, 0.5);
+	playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
+					       this.playAgain, this, 1, 0, 1, 0);
+	playAgainButton.anchor.setTo(0.5, 0.5);
+	playAgainButton.scale.setTo(0.5, 0.5);
 	
     },
     
@@ -46,9 +57,9 @@ BasicGame.WinnerMenu.prototype = {
     },
 
     playAgain: function () {
-	this.winnerText.destroy();
-	this.playAgainButton.destroy();
-	this.background.destroy();
+	winnerText.destroy();
+	// this.playAgainButton.destroy();
+	background.destroy();
 	this.state.start('Distance');
     }
     

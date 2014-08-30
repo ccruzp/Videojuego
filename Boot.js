@@ -17,7 +17,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('bombSelect', 'assets/bullet.png');
 	// The distance enemy
 	this.load.image('enemyDistance', 'assets/enemy1.png');
-	this.load.image('newGameButton', 'assets/Mockup/PNGs/NewGameButton.png');
+	// this.load.image('newGameButton', 'assets/Mockup/PNGs/NewGameButton.png');
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock.png');
@@ -25,8 +25,11 @@ BasicGame.Boot.prototype = {
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
+	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
+	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
+
 	// The bomb
-	this.load.spritesheet('bomb', 'assets/Spritesheets/bomb_animation_spritesheet.png', 234, 288, 23);
+	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 
     },

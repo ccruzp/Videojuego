@@ -1,7 +1,7 @@
 BasicGame.GameOverMenu = function (game) {
-    this.background = null;
-    this.gameOverText = null;
-    this.playAgainButton = null;
+    // this.background = null;
+    // this.gameOverText = null;
+    // this.playAgainButton = null;
 };
 
 BasicGame.GameOverMenu.prototype = {
@@ -12,17 +12,29 @@ BasicGame.GameOverMenu.prototype = {
     
     create: function () {
 	
-	this.background = this.add.sprite(0, 0, 'menuBackground');
+	// this.background = this.add.sprite(0, 0, 'menuBackground');
 
-	this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
+	// this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
+	// 				  { font: "50px Arial", fill: "#ffffff",
+	// 				    align: "left" });
+	// this.gameOverText.anchor.setTo(0.5, 0.5);
+
+	// this.playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
+	// 				       this.playAgain, this, 1, 0, 1, 0);
+	// this.playAgainButton.anchor.setTo(0.5, 0.5);
+	// this.playAgainButton.scale.setTo(0.5, 0.5);
+
+	background = this.add.sprite(0, 0, 'menuBackground');
+
+	gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
-	this.gameOverText.anchor.setTo(0.5, 0.5);
+	gameOverText.anchor.setTo(0.5, 0.5);
 
-	this.playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
-					  this.playAgain, this);
-	this.playAgainButton.anchor.setTo(0.5, 0.5);
-	this.playAgainButton.scale.setTo(0.5, 0.5);
+	playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
+					       this.playAgain, this, 1, 0, 1, 0);
+	playAgainButton.anchor.setTo(0.5, 0.5);
+	playAgainButton.scale.setTo(0.5, 0.5);
 	
     },
     
@@ -46,9 +58,9 @@ BasicGame.GameOverMenu.prototype = {
     },
 
     playAgain: function () {
-	this.gameOverText.destroy();
-	this.playAgainButton.destroy();
-	this.background.destroy();
+	gameOverText.destroy();
+	// this.playAgainButton.destroy();
+	background.destroy();
 	this.state.start('Distance');
     }
     

@@ -14,7 +14,7 @@ BasicGame.Distance = function (game) {
     this.gridX = 0;
     this.gridY = 0;
 
-    this.TOTAL_TIME = 100; // Time for explosion
+    this.TOTAL_TIME = 5; // Time for explosion
     this.BOMB_TOTAL_TIME = 3;
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
@@ -96,7 +96,7 @@ BasicGame.Distance.prototype = {
 
 	enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
 	enemy.anchor.setTo(0.5, 0.5);
-	enemy.scale.setTo(0.5, 0.5);
+	enemy.scale.setTo(0.3, 0.3);
 	this.enemies.add(enemy);
 
 	// Create the bombs
@@ -280,9 +280,9 @@ BasicGame.Distance.prototype = {
 	    // this.bomb.scale.setTo(0.25, 0.25);
 	    // this.bomb.anchor.setTo(0.5, 0.5);
 	    bomb = this.add.sprite(((this.gridX-1)*this.GRID_SPACE)+196+(this.GRID_SPACE/3), ((this.gridY-1)*this.GRID_SPACE)+60+(this.GRID_SPACE/3), 'bomb');
-	    bomb.scale.setTo(0.25, 0.25);
-	    bomb.anchor.setTo(0.5, 0.5);
-	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22], 6, false);
+	    bomb.scale.setTo(0.1, 0.10);
+	    bomb.anchor.setTo(0.37, 0.37);
+	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	    this.bombs.add(bomb);
 	    this.explosionTimeText.visible = true;
 	    this.explosionTimeText.x = bomb.body.x
