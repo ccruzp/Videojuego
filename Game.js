@@ -176,34 +176,40 @@ BasicGame.Distance.prototype = {
 				    this.try_To_Destroy, null, this);
 	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
 				    this.line_Collision, null, this);
-	// this.bombs.events(this.quit(true), this);
 	this.bombOnMouse.reset(1000,1000);
 	if (usingBlackHole){
-
 	    this.findGridPlace();
-	    
 	    this.bombOnMouse.reset(((this.gridX-1)*this.GRID_SPACE)+214,((this.gridY-1)*this.GRID_SPACE)+83);
 	    
 	    //Constant= OffsetY - ((gridspace-SizeofGrid)/2 + SizeofGrid)
 	    //Size of grid: 32*0.4. OffsetY = 60
 	    this.line.reset(196,(((this.gridY)*(this.GRID_SPACE))+34.6));
-	    
 	}
+
+	// Update displays.
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
 	this.explosionTimeText.text = this.explosionTimeCounter;
 	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
 	
+	// If the game started move enemies.
 	if (started) {
 	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	}
+	
+	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
 	    bomb.animations.play('explode');
 	}
 	
+	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemies.forEach(this.outOfGrid,this,false);
 	if (this.enemyOutOfGrid){
 	    (this.quit_Game(false));
 	}
+	// if (!usingBlackHole) {
+	//     this.blackHoleButton.frame = 0;
+	// }
+
     },
     
     quit_Game: function (won) {
@@ -218,7 +224,7 @@ BasicGame.Distance.prototype = {
 	if (won) {
 	    this.state.start('WinnerMenu');
 	} else {
-	    //	Then let's go back to the main menu.
+	    //	Then let's go back to the game over menu.
 	    this.state.start('GameOverMenu');	
 	}
     },
@@ -268,9 +274,7 @@ BasicGame.Distance.prototype = {
 	}*/
 	//this.bombs.removeAll(true);
 	//this.enemies.removeAll(true);
-	usingBlackHole = true;
-	// player.animations.play('pressed');
-	// this.blackHoleButton.frame = 1;
+	usingBlackHole = (this.numberOfBombs > 0);
     },
 
     start: function (pointer) {
@@ -314,7 +318,7 @@ BasicGame.Distance.prototype = {
 		this.explosionTimeText.visible = false;
 	    }
 	    if (this.timeCounter < 0) {
-		this.quit_Game();
+		this.quit_Game(true);
 	    }
 	}
     },
