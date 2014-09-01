@@ -60,7 +60,7 @@ BasicGame.Distance.prototype = {
 	lost = false; // Boolean that says if the player lost the game
 	// Boolean that says if the player has selected the black hole bomb
 	usingBlackHole = false; 
-	
+	placedBomb = false; // Says if a bomb has been placed on the grid
 	this.numberOfBombs = 2; // Number of bombs available in this level
 
 	this.background = this.add.sprite(0, 0, 'background');
@@ -288,7 +288,9 @@ BasicGame.Distance.prototype = {
 	    this.explosionTimeText.x = bomb.body.x
 	    this.explosionTimeText.y = bomb.body.y;
 	    this.numberOfBombs -=1;
+	    placedBomb = true;
 	}
+	this.blackHoleButton.frame = 0;
 	this.bombOnMouse.reset(1000,1000);
     	usingBlackHole = false;
 	this.line.reset(1000,1000);
@@ -298,7 +300,9 @@ BasicGame.Distance.prototype = {
 	if (started) {
 	    if (!lost) {
 		this.timeCounter -= 1;
-		this.explosionTimeCounter -= 1;
+		if (placedBomb) {
+		    this.explosionTimeCounter -= 1;
+		}
 	    }
 	    if (this.explosionTimeCounter == 0) {
 		this.explosionTimeText.visible = false;
