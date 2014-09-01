@@ -19,7 +19,7 @@ BasicGame.Distance = function (game) {
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
     this.bombs; // Group of bombs
-    this.bomb;
+    this.bomb; // Instance of the group of bombs
     this.enemies; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
@@ -28,24 +28,24 @@ BasicGame.Distance = function (game) {
     this.lives;// Lives left
     this.score; // Score
     this.timeCounter; // Time counter
-    this.explosionTimeCounter;
+    // Tells the time remaining before de bomb explodes
+    this.explosionTimeCounter; 
     this.numberOfBombs; //Bombs = number of enemies, should be generated
     
     // Texts
     this.velocityText; // Text display of velocity
     this.timeText; // Text display of time
-    this.explosionTimeText;
+    this.explosionTimeText; // Text display for the explosionTimeCounter
     this.livesText; // Text display of lives
     this.introText; // Text display for intro
     this.scoreText; // Text display of score
     this.bombsText; //Text display number of remaining bombs
+
     // Buttons
     this.buttons; // Group for locked buttons
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
 
-    // Booleans
-    // this.lost = false; // Boolean that says if player lost the game
     this.background; // Background of the game
     
     //Aligned enemy in the grid
@@ -59,7 +59,7 @@ BasicGame.Distance.prototype = {
 	started = false; // Boolean that says if the game has begun
 	lost = false; // Boolean that says if the player lost the game
 	// Boolean that says if the player has selected the black hole bomb
-	usingBlackHole = false; 
+	usingBlackHole = false; // Says if the player selected the bomb
 	placedBomb = false; // Says if a bomb has been placed on the grid
 	this.numberOfBombs = 2; // Number of bombs available in this level
 
