@@ -9,7 +9,8 @@ BasicGame.Distance = function (game) {
     this.GRID_SPACE = 38;
     this.line;
     this.indexAux = 0;
-   
+    this.enemyOutOfGrid = false; //Booleans, set if an enemy is out of the grid
+
     //Grid adjustment in boxes
     this.gridX = 0;
     this.gridY = 0;
@@ -198,6 +199,11 @@ BasicGame.Distance.prototype = {
 	if (this.explosionTimeCounter == 0) {
 	    bomb.animations.play('explode');
 	}
+	
+	this.enemies.forEach(this.outOfGrid,this,false);
+	if (this.enemyOutOfGrid){
+	    (this.quit_Game(false));
+	}
     },
     
     quit_Game: function (won) {
@@ -318,5 +324,10 @@ BasicGame.Distance.prototype = {
     
 	if(this.gridY < 1) this.gridY = 1;
 	if(this.gridY > 10) this.gridY = 10;
-    }  
+    },
+
+    outOfGrid: function(enemy){
+	//if (enemy.body.y > (200)) console.log("Entro aquí VE");//outOfGrid = true;
+	if (enemy.body.y > (this.game.width-220)) outOfGrid = true;
+    }
 };
