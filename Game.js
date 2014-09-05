@@ -199,6 +199,9 @@ BasicGame.Distance.prototype = {
 	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
 	    bomb.animations.play('explode');
+	    bomb.events.onAnimationComplete.add(function(){
+		console.log("complete")
+	    }, this);
 	}
 	
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -267,13 +270,6 @@ BasicGame.Distance.prototype = {
     },
 
     select_Bomb: function () {
-	//Odio esta maldita mierda de los grupos q no funcionan u.u
-	/*if(this.numberOfBombs<=0){
-	    this.bombs.removeAll(true);
-	    this.bombs.removeAll(false);
-	}*/
-	//this.bombs.removeAll(true);
-	//this.enemies.removeAll(true);
 	usingBlackHole = (this.numberOfBombs > 0);
     },
 
