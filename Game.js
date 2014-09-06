@@ -19,8 +19,8 @@ BasicGame.Distance = function (game) {
     this.BOMB_TOTAL_TIME = 3;
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
     
-    this.bombs; // Group of bombs
-    this.bomb; // Instance of the group of bombs
+    this.bombPool; // Group of bombPool
+    this.bomb; // Instance of the group of bombPool
     this.enemies; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
@@ -31,7 +31,7 @@ BasicGame.Distance = function (game) {
     this.timeCounter; // Time counter
     // Tells the time remaining before de bomb explodes
     this.explosionTimeCounter; 
-    this.numberOfBombs; //Bombs = number of enemies, should be generated
+    this.numberOfBombPool; //BombPool = number of enemies, should be generated
     
     // Texts
     this.velocityText; // Text display of velocity
@@ -40,7 +40,7 @@ BasicGame.Distance = function (game) {
     this.livesText; // Text display of lives
     this.introText; // Text display for intro
     this.scoreText; // Text display of score
-    this.bombsText; //Text display number of remaining bombs
+    this.bombPoolText; //Text display number of remaining bombPool
 
     // Buttons
     this.buttons; // Group for locked buttons
@@ -51,10 +51,6 @@ BasicGame.Distance = function (game) {
     
     //Aligned enemy in the grid
     this.enemyPlace = 6;
-
-    this.bombs;
-    this.bombs;
-    this.nextShotAt;
 };
 
 BasicGame.Distance.prototype = {
@@ -67,7 +63,7 @@ BasicGame.Distance.prototype = {
 	// Boolean that says if the player has selected the black hole bomb.
 	usingBlackHole = false; // Says if the player selected the bomb.
 	placedBomb = false; // Says if a bomb has been placed on the grid.
-	this.numberOfBombs = 2; // Number of bombs available in this level.
+	this.numberOfBombPool = 2; // Number of bombPool available in this level.
 
 	// Creating background.
 	this.background = this.add.sprite(0, 0, 'background');
@@ -84,8 +80,9 @@ BasicGame.Distance.prototype = {
 	 * Image that appears on the mouse when the black hole bomb button is 
 	 * pressed.
 	 */
-	this.bombOnMouse = this.add.sprite(1000, 1000, 'bombSelect');
+	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
+	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
 	this.line = this.add.sprite(1000,1000,'ground');
@@ -103,16 +100,16 @@ BasicGame.Distance.prototype = {
 	enemy.scale.setTo(0.3, 0.3);
 	this.enemies.add(enemy);
 
-	// Create the bombs
-	this.bombs = this.add.group();
-	this.bombs.enableBody = true;
-	this.bombs.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombs.createMultiple(2, 'bomb');
-	this.bombs.setAll('anchor.x', 0.37);
-	this.bombs.setAll('anchor.y', 0.37);
-	this.bombs.setAll('scale.x', 0.1);
-	this.bombs.setAll('scale.y', 0.1);
-	this.bombs.forEach(function (bomb) {
+	// Create the bombPool
+	this.bombPool = this.add.group();
+	this.bombPool.enableBody = true;
+	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bombPool.createMultiple(2, 'bomb');
+	this.bombPool.setAll('anchor.x', 0.37);
+	this.bombPool.setAll('anchor.y', 0.37);
+	this.bombPool.setAll('scale.x', 0.1);
+	this.bombPool.setAll('scale.y', 0.1);
+	this.bombPool.forEach(function (bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
 
@@ -135,8 +132,8 @@ BasicGame.Distance.prototype = {
 							fill: "#ffffff", 
 							align: "left" });
 
-	// Display for the amount of bombs left.
-	this.bombsText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombs, { font: "20px Arial",
+	// Display for the amount of bombPool left.
+	this.bombPoolText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombPool, { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
 
@@ -192,9 +189,9 @@ BasicGame.Distance.prototype = {
     // here.
     update: function () {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
-	this.physics.arcade.overlap(this.enemies, this.bombs, 
+	this.physics.arcade.overlap(this.enemies, this.bombPool, 
 				    this.try_To_Destroy, null, this);
-	// this.physics.arcade.overlap(this.enemies, this.bombs, 
+	// this.physics.arcade.overlap(this.enemies, this.bombPool, 
 	// 			    this.try_To_Destroy, null, this);
 	// If the bomb on the mouse overlaps with a line this.line_Collision is 
 	// activated.
@@ -214,17 +211,17 @@ BasicGame.Distance.prototype = {
 	// Update displays.
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
 	this.explosionTimeText.text = this.explosionTimeCounter;
-	this.bombsText.text = 'Bombas restantes:' + this.numberOfBombs;
+	this.bombPoolText.text = 'Bombas restantes:' + this.numberOfBombPool;
 	
 	// If the game started move enemies.
 	if (started) {
 	    enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-	    // this.bombs.callAllExists('play', true, 'explode');
+	    // this.bombPool.callAllExists('play', true, 'explode');
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
-	    // this.bombs.callAllExists('play', true, 'explode', 10, false, true);
+	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
 	    bomb.animations.play('explode');
 	}
 	
@@ -242,7 +239,7 @@ BasicGame.Distance.prototype = {
 	this.blackHoleButton.destroy();
 	this.buttons.removeAll(true);
 	this.background.destroy();
-	this.bombs.removeAll(true);
+	this.bombPool.removeAll(true);
 	if (won) {
 	    this.state.start('WinnerMenu');
 	} else {
@@ -291,13 +288,13 @@ BasicGame.Distance.prototype = {
 
     select_Bomb: function () {
 	//Odio esta maldita mierda de los grupos q no funcionan u.u
-	/*if(this.numberOfBombs<=0){
-	    this.bombs.removeAll(true);
-	    this.bombs.removeAll(false);
+	/*if(this.numberOfBombPool<=0){
+	    this.bombPool.removeAll(true);
+	    this.bombPool.removeAll(false);
 	}*/
-	//this.bombs.removeAll(true);
+	//this.bombPool.removeAll(true);
 	//this.enemies.removeAll(true);
-	usingBlackHole = (this.numberOfBombs > 0);
+	usingBlackHole = (this.numberOfBombPool > 0);
     },
 
     start: function (pointer) {
@@ -307,19 +304,19 @@ BasicGame.Distance.prototype = {
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Bomb: function () {
 	
-	if (!started && usingBlackHole && (this.numberOfBombs > 0)) {
+	if (!started && usingBlackHole && (this.numberOfBombPool > 0)) {
 	    // Intance of a bomb
 	    x = ((this.gridX-1)*this.GRID_SPACE)+196+(this.GRID_SPACE/3);
 	    y = ((this.gridY-1)*this.GRID_SPACE)+60+(this.GRID_SPACE/3);
 
-	    bomb = this.bombs.getFirstExists(false);
+	    bomb = this.bombPool.getFirstExists(false);
 	    bomb.body.setSize(35, 35, 2, 2);
 	    bomb.reset(x, y);
 
 	    this.explosionTimeText.visible = true;
 	    this.explosionTimeText.x = x
 	    this.explosionTimeText.y = y;
-	    this.numberOfBombs -=1;
+	    this.numberOfBombPool -=1;
 
 	    placedBomb = true;
 	}
@@ -328,7 +325,7 @@ BasicGame.Distance.prototype = {
     	usingBlackHole = false;
 	this.line.reset(1000,1000);
 
-	// if (this.bombs.countDead() === 0) {
+	// if (this.bombPool.countDead() === 0) {
 	//     return;
 	// }
     },
@@ -375,8 +372,8 @@ BasicGame.Distance.prototype = {
     // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
-    // 	if (this.bombs.countLiving() > 0) {
-    // 	    this.bombs.forEachAlive(function(bomb) {
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
     // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
