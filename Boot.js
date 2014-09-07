@@ -17,6 +17,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('bombSelect', 'assets/bullet.png');
 	// The distance enemy
 	this.load.image('enemyDistance', 'assets/enemy1.png');
+	this.load.image('distanceShip', 'assets/Mockup/PNGs/distanceShip.png');
 	// this.load.image('newGameButton', 'assets/Mockup/PNGs/NewGameButton.png');
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
