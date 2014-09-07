@@ -24,18 +24,18 @@ BasicGame.Distance = function (game) {
     
     this.TOTAL_TIME = 10; // Time for explosion
     this.BOMB_TOTAL_TIME = 3;
-    this.ENEMY_VELOCITY = 2; // Velocity of the enemy
+    this.ENEMY_VELOCITY = 3; // Velocity of the enemy
     
     this.bombPool; // Group of bombPool
     this.bomb; // Instance of the group of bombPool
-    this.enemies; // Group of enemies
+    this.enemyPool; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
     
     // Counters
     this.timeCounter; // Time counter.
     this.explosionTimeCounter; // Tells the time remaining before de bomb explodes.
-    this.numberOfBombPool; //BombPool = number of enemies, should be generated.
+    this.numberOfBombs; //BombPool = number of enemies, should be generated.
     
     // Texts
     this.velocityText; // Text display of velocity
@@ -56,9 +56,6 @@ BasicGame.Distance = function (game) {
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
 
-    // Probando and shit.
-    this.enemyPool;
-    this.lastTime;
 };
 
 BasicGame.Distance.prototype = {
@@ -71,7 +68,8 @@ BasicGame.Distance.prototype = {
 	// Boolean that says if the player has selected the black hole bomb.
 	usingBlackHole = false; // Says if the player selected the bomb.
 	placedBomb = false; // Says if a bomb has been placed on the grid.
-	this.numberOfBombPool = 2; // Number of bombPool available in this level.
+	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
+	this.numberOfBombs = 2; // Number of bombPool available in this level.
 
 	// Creating background.
 	this.background = this.add.sprite(0, 0, 'background');
@@ -98,11 +96,6 @@ BasicGame.Distance.prototype = {
 	this.line.scale.setTo(1.52,0.4);
 
 	// Group for the enemies
-	// this.enemies = this.add.group();
-	// this.enemies.enableBody = true;
-	// this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
-
-	// Probando and shit.
 	this.enemyPool = this.add.group();
 	this.enemyPool.enableBody = true;
 	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
@@ -115,16 +108,11 @@ BasicGame.Distance.prototype = {
 	this.enemyPool.setAll('scale.y', 0.05);
 
 	// Create an instance of an enemy
-	// enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
-	// enemy.anchor.setTo(0.5, 0.5);
-	// enemy.scale.setTo(0.3, 0.3);
-	// this.enemies.add(enemy);
-
-	// Probando and shit.
 	this.enemyPool.forEachDead(function(enemy) {
 	    var enemy = this.enemyPool.getFirstExists(false);
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
-	    enemy.reset((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2) + 150, 40 - enemy.height/2);
+	    initialY = 40 - (enemy.height/2);
+	    enemy.reset((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2) + 150, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 
 	}, this);
@@ -134,10 +122,10 @@ BasicGame.Distance.prototype = {
 	this.bombPool.enableBody = true;
 	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
 	this.bombPool.createMultiple(2, 'bomb');
-	this.bombPool.setAll('anchor.x', 0.37);
-	this.bombPool.setAll('anchor.y', 0.37);
-	this.bombPool.setAll('scale.x', 0.1);
-	this.bombPool.setAll('scale.y', 0.1);
+	this.bombPool.setAll('anchor.x', 0.4);
+	this.bombPool.setAll('anchor.y', 0.4);
+	this.bombPool.setAll('scale.x', 0.15);
+	this.bombPool.setAll('scale.y', 0.15);
 	this.bombPool.forEach(function (bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
@@ -162,7 +150,7 @@ BasicGame.Distance.prototype = {
 							align: "left" });
 
 	// Display for the amount of bombPool left.
-	this.bombText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombPool, { font: "20px Arial",
+	this.bombText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombs, { font: "20px Arial",
 						   fill : "#ffffff",
 						   align: "left"});
 
@@ -188,7 +176,7 @@ BasicGame.Distance.prototype = {
 					  this.world.height - 60, 'playButton',
 					  this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.050, 0.050);
+	this.playButton.scale.setTo(0.05, 0.05);
 
 	// // Create the locked buttons	
 	this.buttons = this.add.group();
@@ -209,7 +197,6 @@ BasicGame.Distance.prototype = {
 	this.buttons.setAll('anchor.x', 0.5);
 	this.buttons.setAll('anchor.y', 0.5);
 
-	this.lastTime = this.time.now //+ 2500;
 	// Mouse input
 	this.input.onDown.add(this.put_Bomb, this);
 
@@ -219,8 +206,6 @@ BasicGame.Distance.prototype = {
     // here.
     update: function () {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
-	// this.physics.arcade.overlap(this.enemies, this.bombPool, 
-	// 			    this.try_To_Destroy, null, this);
 	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
 	// If the bomb on the mouse overlaps with a line this.line_Collision is 
@@ -238,9 +223,8 @@ BasicGame.Distance.prototype = {
 	    this.line.reset(196,(((this.gridY)*(this.GRID_SPACE))+34.6));
 	}
 
-	// console.log("Started: " + started + "\nPlacedBomb: " + placedBomb + "\nlastTime: " + this.lastTime)
-	if (started && placedBomb && this.time.now > this.lastTime + 1000) {
-	    this.lastTime = this.time.now;
+	if (started && placedBomb && this.time.now > lastTime + 1000) {
+	    lastTime = this.time.now;
 	    // this.enemyPool.forEachAlive(function(enemy) {
 	    // 	// enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	    // 	y = enemy.body.y + this.ENEMY_VELOCITY * this.GRID_SPACE;
@@ -250,12 +234,15 @@ BasicGame.Distance.prototype = {
 	    // }, this);
 
 	    this.explosionTimeCounter -= 1;
+	    if (this.explosionTimeCounter == 0) {
+		this.explosionTimeText.visible = false;
+	    }
 	}
 	
 	// Update displays.
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
 	this.explosionTimeText.text = this.explosionTimeCounter;
-	this.bombText.text = 'Bombas restantes:' + this.numberOfBombPool;
+	this.bombText.text = 'Bombas restantes:' + this.numberOfBombs;
 	
 	// If the game started move enemies.
 	if (started) {
@@ -270,7 +257,7 @@ BasicGame.Distance.prototype = {
 	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
 	    bomb.animations.play('explode');
 	    bomb.events.onAnimationComplete.add(function(){
-		console.log("complete")
+	    	console.log("complete")
 	    }, this);
 	}
 	
@@ -299,10 +286,10 @@ BasicGame.Distance.prototype = {
     
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
-	console.log(bomb.animations.currentFrame);
-	if (this.explosionTimeCounter == 0) {
+	var explosionY = (initialY + (this.GRID_SPACE * this.ENEMY_VELOCITY * this.BOMB_TOTAL_TIME));
+	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 20) {
+	    // bomb.animations.play('explode');
 	    enemy.kill();
-	    console.log("MATO");
 	    // if (this.timeCounter == 0) {
 	    // 	this.quit_Game();
 	    // }
@@ -346,13 +333,13 @@ BasicGame.Distance.prototype = {
 
     select_Bomb: function () {
 	//Odio esta maldita mierda de los grupos q no funcionan u.u
-	/*if(this.numberOfBombPool<=0){
+	/*if(this.numberOfBombs<=0){
 	    this.bombPool.removeAll(true);
 	    this.bombPool.removeAll(false);
 	}*/
 	//this.bombPool.removeAll(true);
 	//this.enemies.removeAll(true);
-	usingBlackHole = (this.numberOfBombPool > 0);
+	usingBlackHole = (this.numberOfBombs > 0);
     },
 
     start: function (pointer) {
@@ -362,19 +349,19 @@ BasicGame.Distance.prototype = {
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Bomb: function () {
 	
-	if (!started && usingBlackHole && (this.numberOfBombPool > 0)) {
+	if (!started && usingBlackHole && (this.numberOfBombs > 0)) {
 	    // Intance of a bomb
 	    x = ((this.gridX-1)*this.GRID_SPACE)+196+(this.GRID_SPACE/3);
 	    y = ((this.gridY-1)*this.GRID_SPACE)+60+(this.GRID_SPACE/3);
 
 	    bomb = this.bombPool.getFirstExists(false);
-	    bomb.body.setSize(10, 10, 2, 2);
+	    bomb.body.setSize(10, 10, 4, 4);
 	    bomb.reset(x, y);
 
 	    this.explosionTimeText.visible = true;
 	    this.explosionTimeText.x = x
 	    this.explosionTimeText.y = y;
-	    this.numberOfBombPool -=1;
+	    this.numberOfBombs -=1;
 
 	    placedBomb = true;
 	}
@@ -391,16 +378,7 @@ BasicGame.Distance.prototype = {
     // Decreases the game's counter and the bomb's counter.
     countdown: function () {
 	if (started) {
-	    // if (!lost) {
-	    	this.timeCounter -= 1;
-	    	// if (placedBomb) {
-	    	//     this.explosionTimeCounter -= 1;
-	    	// }
-	    // }
-	    // console.log("TimeCounter: " + this.timeCounter + "\nExplosion: " + this.explosionTimeCounter);
-	    // if (this.explosionTimeCounter == 0) {
-	    // 	this.explosionTimeText.visible = false;
-	    // }
+	    this.timeCounter -= 1;
 	    if (this.timeCounter < 0) {
 		this.quit_Game(true);
 	    }
@@ -425,21 +403,16 @@ BasicGame.Distance.prototype = {
 
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
-    render: function() {
-    	// if (this.enemies.countLiving() > 0) {
-    	//     this.enemies.forEachAlive(function (enemy) {
-    	// 	this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	//     }, this);
-    	// }
-    	if (this.enemyPool.countLiving() > 0) {
-    	    this.enemyPool.forEachAlive(function (enemy) {
-    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.bombPool.countLiving() > 0) {
-    	    this.bombPool.forEachAlive(function(bomb) {
-    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    }
+    // render: function() {
+    // 	if (this.enemyPool.countLiving() > 0) {
+    // 	    this.enemyPool.forEachAlive(function (enemy) {
+    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // }
 };
