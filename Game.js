@@ -8,10 +8,10 @@ BasicGame.Distance = function (game) {
     //Grid Stuff
     //---------------------------------------------------------------------------
     this.GRID_SPACE = 38;         //Length of the squares of the grid
-    this.leftMargin = 196;        //Left Margin for the grid
-    this.upMargin = 60;          //Horizontal Margin for the grid
-    this.numberOfHorizontal = 10; // Number of horizontal spaces in the grid
-    this.numberOfVertical = 16;   // Number of vertical spaces in the grid
+    this.LEFT_MARGIN = 196;        //Left Margin for the grid
+    this.UP_MARGIN = 60;          //Horizontal Margin for the grid
+    this.HORIZONTAL_NUMBER = 10; // Number of horizontal spaces in the grid
+    this.VERTICAL_NUMBER = 16;   // Number of vertical spaces in the grid
 
     this.line;         //The line that helps you to use the numbers of the grid
   
@@ -102,7 +102,8 @@ BasicGame.Distance.prototype = {
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
 
 	// Create an instance of an enemy
-	enemy = this.add.sprite((this.enemyPlace*this.GRID_SPACE)+196-(this.GRID_SPACE/2), 50, 'enemyDistance');
+	aux1 = (this.enemyPlace*this.GRID_SPACE)+this.LEFT_MARGIN-(this.GRID_SPACE/2);
+	enemy = this.add.sprite(aux1, this.upMargin/2, 'enemyDistance');
 	enemy.anchor.setTo(0.5, 0.5);
 	enemy.scale.setTo(0.3, 0.3);
 	this.enemies.add(enemy);
@@ -208,6 +209,7 @@ BasicGame.Distance.prototype = {
 	
 	if (usingBlackHole) {
 	    this.findGridPlace();
+
 	    this.bombOnMouse.reset(((this.gridX-1)*this.GRID_SPACE)+214,((this.gridY-1)*this.GRID_SPACE)+83);
 	    
 	    //Constant= OffsetY - ((gridspace-SizeofGrid)/2 + SizeofGrid)
@@ -277,28 +279,28 @@ BasicGame.Distance.prototype = {
 	graphics.lineStyle(2, 0x00CCFF,1);
 	
 	//Static horizontal lines------------------------------------------------   
-	forConstant1 = (this.numberOfVertical*this.GRID_SPACE) + this.leftMargin;
-	for( i = 0; i < (this.numberOfHorizontal+1); i = i+1) {
-	    y = (i * this.GRID_SPACE) + this.upMargin;
+	forConstant1 = (this.VERTICAL_NUMBER*this.GRID_SPACE) + this.LEFT_MARGIN;
+	for( i = 0; i < (this.HORIZONTAL_NUMBER+1); i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
 	    
-	    graphics.moveTo(this.leftMargin, y); 
+	    graphics.moveTo(this.LEFT_MARGIN, y); 
 	    graphics.lineTo(forConstant1,y);
 	}
 
 	//Static grid numbers----------------------------------------------------	
-   	forConstant1 = this.game.width - 180;
+   	forConstant1=this.LEFT_MARGIN + this.GRID_SPACE*(this.VERTICAL_NUMBER+0.5);
 	forConstant2 = ((this.GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
-	for( i= 0; i < this.numberOfHorizontal; i = i+1) {
-	    y = (i * this.GRID_SPACE) + this.upMargin;
+	for( i= 0; i < this.HORIZONTAL_NUMBER; i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
 	    
 	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
 	}
 	//Static vertical lines--------------------------------------------------
-	forConstant1 =(this.GRID_SPACE*this.numberOfHorizontal)+this.upMargin;
-	for (i = 0; i < (this.numberOfVertical+1); i = i + 1) {
-	    y = (i * this.GRID_SPACE) + this.leftMargin;
+	forConstant1 =(this.GRID_SPACE*this.HORIZONTAL_NUMBER)+this.UP_MARGIN;
+	for (i = 0; i < (this.VERTICAL_NUMBER+1); i = i + 1) {
+	    y = (i * this.GRID_SPACE) + this.LEFT_MARGIN;
 	    
-	    graphics.moveTo(y,this.upMargin);
+	    graphics.moveTo(y,this.UP_MARGIN);
 	    graphics.lineTo(y,forConstant1);
 	}
     },
@@ -366,8 +368,8 @@ BasicGame.Distance.prototype = {
     },
 
     findGridPlace: function() {
-	this.gridX = parseInt((this.input.x-196+this.GRID_SPACE)/this.GRID_SPACE);
-	this.gridY = parseInt((this.input.y-60+this.GRID_SPACE)/this.GRID_SPACE);
+	this.gridX = parseInt((this.input.x-this.LEFT_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
+	this.gridY = parseInt((this.input.y-this.UP_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
     
 	if(this.gridX < 1) this.gridX = 1;
 	if(this.gridX > 16) this.gridX = 16;
