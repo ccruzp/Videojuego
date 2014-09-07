@@ -6,15 +6,22 @@ BasicGame.Distance = function (game) {
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     //Grid Stuff
-    this.GRID_SPACE = 38;
-    this.line;
-    this.indexAux = 0;
+    //---------------------------------------------------------------------------
+    this.GRID_SPACE = 38;         //Length of the squares of the grid
+    this.leftMargin = 196;        //Left Margin for the grid
+    this.upMargin = 60;          //Horizontal Margin for the grid
+    this.numberOfHorizontal = 10; // Number of horizontal spaces in the grid
+    this.numberOfVertical = 16;   // Number of vertical spaces in the grid
+
+    this.line;         //The line that helps you to use the numbers of the grid
+  
     this.enemyOutOfGrid = false; //Booleans, set if an enemy is out of the grid
 
     //Grid adjustment in boxes
     this.gridX = 0;
     this.gridY = 0;
-
+    //---------------------------------------------------------------------------
+    
     this.TOTAL_TIME = 10; // Time for explosion
     this.BOMB_TOTAL_TIME = 3;
     this.ENEMY_VELOCITY = 2; // Velocity of the enemy
@@ -262,6 +269,9 @@ BasicGame.Distance.prototype = {
 	if (this.explosionTimeCounter == 0) {
 	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
 	    bomb.animations.play('explode');
+	    bomb.events.onAnimationComplete.add(function(){
+		console.log("complete")
+	    }, this);
 	}
 	
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -303,27 +313,34 @@ BasicGame.Distance.prototype = {
 	
 	//We will make a unique grid, with static tiles
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
-    
+
 	var graphics = this.add.graphics(0, 0);
 	graphics.lineStyle(2, 0x00CCFF,1);
-    
-	for(this.indexAux = 0; this.indexAux < 11; this.indexAux = this.indexAux + 1) {
-	    y = ((this.indexAux) * this.GRID_SPACE) + 60;
+	
+	//Static horizontal lines------------------------------------------------   
+	forConstant1 = (this.numberOfVertical*this.GRID_SPACE) + this.leftMargin;
+	for( i = 0; i < (this.numberOfHorizontal+1); i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.upMargin;
 	    
-	    //Static horizontal lines
-	    graphics.moveTo(196, y); 
-	    graphics.lineTo(this.game.width-196,y);
-	    if (this.indexAux < 10) {
-		this.add.text(this.game.width - 180, y - 10 + ((this.GRID_SPACE) / 2),
-			      String((this.indexAux+1)),style);
-	    }
+	    graphics.moveTo(this.leftMargin, y); 
+	    graphics.lineTo(forConstant1,y);
 	}
-    
-	for (this.indexAux = 0; this.indexAux < 17; this.indexAux = this.indexAux + 1) {
-	    y = (this.indexAux * this.GRID_SPACE) + 196;
-	    //Static vertical lines
-	    graphics.moveTo(y,60);
-	    graphics.lineTo(y,(((this.GRID_SPACE)*10)+60));
+
+	//Static grid numbers----------------------------------------------------	
+   	forConstant1 = this.game.width - 180;
+	forConstant2 = ((this.GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
+	for( i= 0; i < this.numberOfHorizontal; i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.upMargin;
+	    
+	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	}
+	//Static vertical lines--------------------------------------------------
+	forConstant1 =(this.GRID_SPACE*this.numberOfHorizontal)+this.upMargin;
+	for (i = 0; i < (this.numberOfVertical+1); i = i + 1) {
+	    y = (i * this.GRID_SPACE) + this.leftMargin;
+	    
+	    graphics.moveTo(y,this.upMargin);
+	    graphics.lineTo(y,forConstant1);
 	}
     },
 
