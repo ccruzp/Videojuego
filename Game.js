@@ -270,7 +270,7 @@ BasicGame.Distance.prototype = {
 	// this.enemies.forEach(this.outOfGrid, this, false);
 	this.enemyPool.forEachAlive(function(enemy) {
 	    //if (enemy.body.y > (200)) console.log("Entro aquí VE");
-	    verticalLength = this.allignY(this.ROWS_NUMBER+2) ; 
+	    verticalLength = this.allignY(this.ROWS_NUMBER+0.7) ; 
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
