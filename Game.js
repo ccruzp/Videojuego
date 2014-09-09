@@ -50,6 +50,10 @@ BasicGame.Distance = function (game) {
     this.buttons; // Group for locked buttons
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
+    
+    //Score system variables
+    this.score;
+    this.timeOfGame;
 
     this.background; // Background of the game
     
@@ -82,7 +86,9 @@ BasicGame.Distance.prototype = {
 	// Creating the grid for the game.
 	this.make_Grid(/*this.game.width, this.game.height*/);
 	
+	//Start the game inside the grid
 	this.enemyOutOfGrid = false;
+
 	/*
 	 * Image that appears on the mouse when the black hole bomb button is 
 	 * pressed.
@@ -166,7 +172,10 @@ BasicGame.Distance.prototype = {
 	this.timeCounter = this.TOTAL_TIME;
 	// Bomb's time counter.
 	this.explosionTimeCounter = this.BOMB_TOTAL_TIME; // Time counter
-		
+	
+	// Score counter
+	this.timeOfGame = this.time.now;
+
 	// Create the button for the black hole bomb
 	this.blackHoleButton = this.add.button(200, this.world.height - 60, 
 					       'blackHoleButton', 
@@ -287,8 +296,9 @@ BasicGame.Distance.prototype = {
 	this.buttons.removeAll(true);
 	this.background.destroy();
 	this.bombPool.removeAll(true);
+	//this.timeOfGame = this.timeOfGame - this.time.now;
 	if (won) {
-	    this.state.start('WinnerMenu');
+	    this.state.start('WinnerMenu',true,false,this.timeOfGame);
 	} else {
 	    //	Then let's go back to the game over menu.
 	    this.state.start('GameOverMenu');	
