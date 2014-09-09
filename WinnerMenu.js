@@ -2,10 +2,16 @@ BasicGame.WinnerMenu = function (game) {
     // this.background = null;
     // this.winnerText = null;
     // this.playAgainButton = null;
+    this.timeOfGame;
 };
 
 BasicGame.WinnerMenu.prototype = {
-
+    
+    init: function(customParam1) {
+	this.timeOfGame = customParam1;
+	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
+    },
+    
     preload: function () {
 	
     },
@@ -25,7 +31,7 @@ BasicGame.WinnerMenu.prototype = {
 	// this.playAgainButton.scale.setTo(0.5, 0.5);
 	background = this.add.sprite(0, 0, 'menuBackground');
 
-	winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
+	winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!  Tiempo total: '+ this.timeOfGame.toPrecision(5) + 'segundos',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
 	winnerText.anchor.setTo(0.5, 0.5);
