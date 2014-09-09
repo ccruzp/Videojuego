@@ -237,21 +237,21 @@ BasicGame.Distance.prototype = {
 	    this.line.reset(this.LEFT_MARGIN,lineY);
 	}
 
-	if (started && placedBomb && this.time.now > lastTime + 1000) {
-	    lastTime = this.time.now;
-	    // this.enemyPool.forEachAlive(function(enemy) {
-	    // 	// enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-	    // 	y = enemy.body.y + this.ENEMY_VELOCITY * this.GRID_SPACE;
-	    // 	console.log("Y: " + y);
-	    // 	enemy.body.y = y;
-
-	    // }, this);
-
-	    this.explosionTimeCounter -= 1;
-	    if (this.explosionTimeCounter == 0) {
-		this.explosionTimeText.visible = false;
-	    }
-	}
+	// if (started && placedBomb && this.time.now > lastTime + 1000) {
+	//     lastTime = this.time.now;
+	//     this.enemyPool.forEachAlive(function(enemy) {
+	//     	// enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+	//     	y = enemy.body.y + this.ENEMY_VELOCITY * this.GRID_SPACE;
+	//     	console.log("Y: " + y);
+	//     	enemy.body.y = y;
+	// 	console.log("Contador:" + this.explosionTimeCounter);
+	//     }, this);
+	    
+	//     this.explosionTimeCounter -= 1;
+	//     if (this.explosionTimeCounter == 0) {
+	// 	this.explosionTimeText.visible = false;
+	//     }
+	// }
 	
 	// Update displays.
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
@@ -263,6 +263,7 @@ BasicGame.Distance.prototype = {
 	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	    this.enemyPool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+
 	    }, this);
 	}
 	
@@ -308,7 +309,11 @@ BasicGame.Distance.prototype = {
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
 	var explosionY = (initialY + (this.GRID_SPACE * this.ENEMY_VELOCITY * this.BOMB_TOTAL_TIME));
-	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 20) {
+	console.log("Explosion Y:" + explosionY);
+	console.log("ENEMY Y: " +  enemy.body.y);
+	console.log("Explosion: " + this.explosionTimeCounter);
+	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
+	    // bomb.animations.play('explode');
 	    // bomb.animations.play('explode');
 	    enemy.kill();
 	    // if (this.timeCounter == 0) {
@@ -356,7 +361,7 @@ BasicGame.Distance.prototype = {
 	usingBlackHole = (this.numberOfBombs > 0);
     },
 
-    start: function (pointer) {
+    start: function () {
 	started = true;
     },
 
@@ -396,6 +401,14 @@ BasicGame.Distance.prototype = {
 	    if (this.timeCounter < 0) {
 		this.quit_Game(true);
 	    }
+	    if (placedBomb) {
+		this.explosionTimeCounter -= 1;
+		if (this.explosionTimeCounter == 0) {
+		    this.explosionTimeText.visible = false;
+		    // bomb.animations.play();
+		}
+	    }
+
 	}
     },
 
