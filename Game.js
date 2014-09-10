@@ -38,6 +38,7 @@ BasicGame.Distance = function (game) {
     this.numberOfBombs; //BombPool = number of enemies, should be generated.
     
     // Texts
+    this.displayPool;
     this.velocityText; // Text display of velocity
     this.timeText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
@@ -98,16 +99,16 @@ BasicGame.Distance.prototype = {
 	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
-	this.line = this.add.sprite(1000,1000,'ground');
+	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
-	this.line.scale.setTo(1.52,0.4);
-	this.line.anchor.setTo(0,0.5);
+	this.line.scale.setTo(1.52, 0.4);
+	this.line.anchor.setTo(0, 0.5);
 
 	// Group for the enemies
 	this.enemyPool = this.add.group();
 	this.enemyPool.enableBody = true;
 	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(1, 'distanceShip');
+	this.enemyPool.createMultiple(2, 'distanceShip');
 	this.enemyPool.setAll('anchor.x', 0.5);
 	this.enemyPool.setAll('anchor.y', 0.5);
 	this.enemyPool.setAll('outOfBoundsKill', true);
@@ -120,13 +121,13 @@ BasicGame.Distance.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    
-	    aux1 = this.allignX(this.enemyPlace) -(this.GRID_SPACE/2);
+	    aux1 = this.allignX(this.enemyPlace) - (this.GRID_SPACE/2);
 	    
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 
 	}, this);
-	
+
 	// Create the bombPool
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
@@ -140,30 +141,29 @@ BasicGame.Distance.prototype = {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
 
+	// Group for the text displays
+	this.displayPool = this.add.group();
+	// Time until explosion display.
+	this.enemyPool.forEach(function() {
+	    var texto = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.displayPool);
+	    texto.visible = false;
+	}, this);
+	// this.displayPool.forEach(function(l) {
+	//     console.log("LETREROS: " + this.displayPool.getIndex(l));
+	// }, this);
+
 	// this.nextShotAt = 0;
 
 	// Creating the text displays.
 	// Game time display.
-	this.timeText = this.add.text(25, 175, 'Tiempo: ' + this.TOTAL_TIME, { font: "20px Arial", 
-						    fill: "#ffffff", 
-						    align: "left" });
-
-	// Time until explosion display.
-	this.explosionTimeText = this.add.text(25, 300, this.BOMB_TOTAL_TIME, { font: "20px Arial", 
-						    fill: "#ffffff", 
-						    align: "left" });
-	this.explosionTimeText.visible = false;
-
+	this.timeText = this.add.text(25, 175, 'Tiempo: ' + this.TOTAL_TIME, { font: "20px Arial", fill: "#ffffff", align: "left" });
+		
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.ENEMY_VELOCITY, { font: "20px Arial",
-							fill: "#ffffff", 
-							align: "left" });
+	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" });
 
 	// Display for the amount of bombPool left.
-	this.bombText = this.add.text(25,275,'Bombas restantes:' + this.numberOfBombs, { font: "20px Arial",
-						   fill : "#ffffff",
-						   align: "left"});
-
+	this.bombText = this.add.text(235, this.world.height - 40, '' + this.numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"});
+	
 	// Every second activates this.countdown.
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 		
@@ -183,7 +183,7 @@ BasicGame.Distance.prototype = {
 					       null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
 	this.blackHoleButton.scale.setTo(0.4, 0.4);
-
+	
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 60, 'playButton',
@@ -255,9 +255,14 @@ BasicGame.Distance.prototype = {
 	
 	// Update displays.
 	this.timeText.text = 'Tiempo: ' + this.timeCounter;
-	this.explosionTimeText.text = this.explosionTimeCounter;
-	this.bombText.text = 'Bombas restantes:' + this.numberOfBombs;
-	
+	// this.explosionTimeText.text = this.explosionTimeCounter;
+	this.bombText.text = 'x' + this.numberOfBombs;
+	// Updating existing bomb's text display.
+	this.bombPool.forEachAlive(function(bomb) {
+	    var text = this.displayPool.getAt(this.bombPool.getIndex(bomb));
+	    text.text = this.explosionTimeCounter;
+	}, this);
+
 	// If the game started move enemies.
 	if (started) {
 	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
@@ -271,9 +276,15 @@ BasicGame.Distance.prototype = {
 	if (this.explosionTimeCounter == 0) {
 	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
 	    bomb.animations.play('explode');
-	    bomb.events.onAnimationComplete.add(function(){
-	    	console.log("complete")
+	    bomb.events.onAnimationComplete.add(function() {
+		if (this.enemyPool.countLiving() == 0) {
+		    this.quit_Game(true);
+		}
 	    }, this);
+	    // if (!this.bombPool.firstAlive()) {
+	    // 	this.quit_Game(true);
+	    // }
+
 	}
 	
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -299,7 +310,7 @@ BasicGame.Distance.prototype = {
 	this.bombPool.removeAll(true);
 	//this.timeOfGame = this.timeOfGame - this.time.now;
 	if (won) {
-	    this.state.start('WinnerMenu',true,false,this.timeOfGame);
+	    this.state.start('WinnerMenu', true, false, this.timeOfGame);
 	} else {
 	    //	Then let's go back to the game over menu.
 	    this.state.start('GameOverMenu');	
@@ -309,9 +320,9 @@ BasicGame.Distance.prototype = {
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
 	var explosionY = (initialY + (this.GRID_SPACE * this.ENEMY_VELOCITY * this.BOMB_TOTAL_TIME));
-	console.log("Explosion Y:" + explosionY);
-	console.log("ENEMY Y: " +  enemy.body.y);
-	console.log("Explosion: " + this.explosionTimeCounter);
+	// console.log("Explosion Y:" + explosionY);
+	// console.log("ENEMY Y: " +  enemy.body.y);
+	// console.log("Explosion: " + this.explosionTimeCounter);
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    // bomb.animations.play('explode');
 	    // bomb.animations.play('explode');
@@ -377,9 +388,18 @@ BasicGame.Distance.prototype = {
 	    bomb.body.setSize(10, 10, 4, 4);
 	    bomb.reset(x, y);
 
-	    this.explosionTimeText.visible = true;
-	    this.explosionTimeText.x = x
-	    this.explosionTimeText.y = y;
+	    // var text = this.add.text(x, y, '10', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.displayPool);
+	    // text.visible = true;
+
+	    var text = this.displayPool.getAt(this.bombPool.getIndex(bomb));
+	    text.visible = true;
+	    text.x = x;
+	    text.y = y;
+	    // text.brintToTop();
+	    // text.text = "10";
+	    // this.explosionTimeText.visible = true;
+	    // this.explosionTimeText.x = x
+	    // this.explosionTimeText.y = y;
 	    this.numberOfBombs -=1;
 
 	    placedBomb = true;
@@ -404,7 +424,7 @@ BasicGame.Distance.prototype = {
 	    if (placedBomb) {
 		this.explosionTimeCounter -= 1;
 		if (this.explosionTimeCounter == 0) {
-		    this.explosionTimeText.visible = false;
+		    // this.explosionTimeText.visible = false;
 		    // bomb.animations.play();
 		}
 	    }
