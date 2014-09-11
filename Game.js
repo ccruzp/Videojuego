@@ -261,6 +261,7 @@ BasicGame.Distance.prototype = {
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.displayPool.getAt(this.bombPool.getIndex(bomb));
 	    text.text = this.explosionTimeCounter;
+	    text.visible = (this.explosionTimeCounter > 0);
 	}, this);
 
 	// If the game started move enemies.
@@ -275,18 +276,23 @@ BasicGame.Distance.prototype = {
 	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
 	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
-	    bomb.animations.play('explode');
-	    bomb.events.onAnimationComplete.add(function() {
-		if (this.enemyPool.countLiving() == 0) {
-		    this.quit_Game(true);
-		}
+	    this.bombPool.forEachAlive(function(bomb) {
+		bomb.animations.play('explode');
+		bomb.events.onAnimationComplete.add(function() {
+		    if (this.enemyPool.countLiving() == 0) {
+			bomb.kill();
+			// this.quit_Game(true);
+		    }
+		}, this);
 	    }, this);
-	    // if (!this.bombPool.firstAlive()) {
+	    // if (!this.bombPool.getFirstAlive()) {
 	    // 	this.quit_Game(true);
 	    // }
-
 	}
-	
+
+	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < this.TOTAL_TIME)) {
+	    this.quit_Game(true);
+	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	// this.enemies.forEach(this.outOfGrid, this, false);
 	this.enemyPool.forEachAlive(function(enemy) {
@@ -324,12 +330,7 @@ BasicGame.Distance.prototype = {
 	// console.log("ENEMY Y: " +  enemy.body.y);
 	// console.log("Explosion: " + this.explosionTimeCounter);
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
-	    // bomb.animations.play('explode');
-	    // bomb.animations.play('explode');
 	    enemy.kill();
-	    // if (this.timeCounter == 0) {
-	    // 	this.quit_Game();
-	    // }
 	}
     },
     
@@ -396,23 +397,14 @@ BasicGame.Distance.prototype = {
 	    text.visible = true;
 	    text.x = x;
 	    text.y = y;
-	    // text.brintToTop();
-	    // text.text = "10";
-	    // this.explosionTimeText.visible = true;
-	    // this.explosionTimeText.x = x
-	    // this.explosionTimeText.y = y;
-	    this.numberOfBombs -=1;
+	    this.numberOfBombs -= 1;
 
 	    placedBomb = true;
 	}
 	this.blackHoleButton.frame = 0;
-	this.bombOnMouse.reset(1000,1000);
+	this.bombOnMouse.reset(1000, 1000);
     	usingBlackHole = false;
-	this.line.reset(1000,1000);
-
-	// if (this.bombPool.countDead() === 0) {
-	//     return;
-	// }
+	this.line.reset(1000, 1000);
     },
     
     // Decreases the game's counter and the bomb's counter.
@@ -424,12 +416,7 @@ BasicGame.Distance.prototype = {
 	    }
 	    if (placedBomb) {
 		this.explosionTimeCounter -= 1;
-		if (this.explosionTimeCounter == 0) {
-		    // this.explosionTimeText.visible = false;
-		    // bomb.animations.play();
-		}
 	    }
-
 	}
     },
     
