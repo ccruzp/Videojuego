@@ -25,7 +25,7 @@ BasicGame.Distance = function (game) {
     this.TOTAL_TIME = 10; // Time for explosion
     this.BOMB_TOTAL_TIME = 3;
     this.ENEMY_VELOCITY = 3; // Velocity of the enemy
-    
+    this.TOTAL_ENEMIES = 1;    
     this.bombPool; // Group of bombPool
     this.bomb; // Instance of the group of bombPool
     this.enemyPool; // Group of enemies
@@ -61,6 +61,8 @@ BasicGame.Distance = function (game) {
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
 
+    
+
 };
 
 BasicGame.Distance.prototype = {
@@ -74,7 +76,7 @@ BasicGame.Distance.prototype = {
 	usingBlackHole = false; // Says if the player selected the bomb.
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
-	this.numberOfBombs = 2; // Number of bombPool available in this level.
+	this.numberOfBombs = this.TOTAL_ENEMIES; // Number of bombPool available in this level.
 	
 	// Creating background.
 	this.background = this.add.sprite(0, 0, 'background');
@@ -108,7 +110,7 @@ BasicGame.Distance.prototype = {
 	this.enemyPool = this.add.group();
 	this.enemyPool.enableBody = true;
 	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(2, 'distanceShip');
+	this.enemyPool.createMultiple(this.TOTAL_ENEMIES, 'distanceShip');
 	this.enemyPool.setAll('anchor.x', 0.5);
 	this.enemyPool.setAll('anchor.y', 0.5);
 	this.enemyPool.setAll('outOfBoundsKill', true);
@@ -132,7 +134,7 @@ BasicGame.Distance.prototype = {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
 	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(2, 'bomb');
+	this.bombPool.createMultiple(this.TOTAL_ENEMIES, 'bomb');
 	this.bombPool.setAll('anchor.x', 0.4);
 	this.bombPool.setAll('anchor.y', 0.4);
 	this.bombPool.setAll('scale.x', 0.15);
@@ -148,10 +150,8 @@ BasicGame.Distance.prototype = {
 	    var texto = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.displayPool);
 	    texto.visible = false;
 	}, this);
-	// this.displayPool.forEach(function(l) {
-	//     console.log("LETREROS: " + this.displayPool.getIndex(l));
-	// }, this);
 
+	
 	// this.nextShotAt = 0;
 
 	// Creating the text displays.
@@ -290,7 +290,7 @@ BasicGame.Distance.prototype = {
 	    // }
 	}
 
-	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < this.TOTAL_TIME)) {
+	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < this.TOTAL_TIME) && (this.numberOfBombs < this.TOTAL_ENEMIES)) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
