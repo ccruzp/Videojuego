@@ -121,7 +121,7 @@ BasicGame.Distance.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    
-	    aux1 = this.allignX(this.enemyPlace) - (this.GRID_SPACE/2);
+	    aux1 = this.allign_X(this.enemyPlace) -(this.GRID_SPACE/2);
 	    
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
@@ -228,12 +228,12 @@ BasicGame.Distance.prototype = {
 	this.bombOnMouse.reset(1000,1000);
 	
 	if (usingBlackHole) {
-	    this.findGridPlace();
-	    x = this.allignX(this.gridX-0.5);
-	    y = this.allignY(this.gridY-0.5);
+	    this.find_Grid_Place();
+	    x = this.allign_X(this.gridX-0.5);
+	    y = this.allign_Y(this.gridY-0.5);
 	    this.bombOnMouse.reset(x,y);
 	    
-	    lineY = this.allignY(this.gridY-0.5); 
+	    lineY = this.allign_Y(this.gridY-0.5); 
 	    this.line.reset(this.LEFT_MARGIN,lineY);
 	}
 
@@ -291,7 +291,7 @@ BasicGame.Distance.prototype = {
 	// this.enemies.forEach(this.outOfGrid, this, false);
 	this.enemyPool.forEachAlive(function(enemy) {
 	    //if (enemy.body.y > (200)) console.log("Entro aquí VE");
-	    verticalLength = this.allignY(this.ROWS_NUMBER+0.7) ; 
+	    verticalLength = this.allign_Y(this.ROWS_NUMBER+0.7) ; 
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
@@ -333,6 +333,7 @@ BasicGame.Distance.prototype = {
 	}
     },
     
+    //Draws the grid
     make_Grid: function (/*WIDTH, HEIGHT*/) {
 	
 	//We will make a unique grid, with static tiles
@@ -381,8 +382,8 @@ BasicGame.Distance.prototype = {
 	
 	if (!started && usingBlackHole && (this.numberOfBombs > 0)) {
 	    // Intance of a bomb
-	    x = (this.allignX(this.gridX-1)) + (this.GRID_SPACE/3);
-	    y = (this.allignY(this.gridY-1)) + (this.GRID_SPACE/3);
+	    x = (this.allign_X(this.gridX-1)) + (this.GRID_SPACE/3);
+	    y = (this.allign_Y(this.gridY-1)) + (this.GRID_SPACE/3);
 
 	    bomb = this.bombPool.getFirstExists(false);
 	    bomb.body.setSize(10, 10, 4, 4);
@@ -431,8 +432,10 @@ BasicGame.Distance.prototype = {
 
 	}
     },
-
-    findGridPlace: function() {
+    
+    //This function detects the place in the grid of an object.
+    //Use it for objects that belong to the grid space.
+    find_Grid_Place: function() {
 	this.gridX = parseInt((this.input.x-this.LEFT_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
 	this.gridY = parseInt((this.input.y-this.UP_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
     
@@ -443,11 +446,13 @@ BasicGame.Distance.prototype = {
 	if(this.gridY > 10) this.gridY = 10;
     },
     
-    allignX: function(x){
+    //Alligns a number to the X axis of the grid
+    allign_X: function(x){
 	return x*this.GRID_SPACE + this.LEFT_MARGIN;
     },
-
-    allignY: function(y){
+    
+    //Alligns a number to the Y axis of the grid
+    allign_Y: function(y){
 	return y*this.GRID_SPACE + this.UP_MARGIN;
     },
 /*
