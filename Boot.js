@@ -29,11 +29,11 @@ BasicGame.Boot.prototype = {
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
 	
-	this.load.audio('coinSound1', 'sounds/collectcoin', true);
 	// The bomb
 	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
-
+	
+	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
     },
 
     create: function () {
