@@ -26,6 +26,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
+	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet.png', 399, 500, 10);
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
 	

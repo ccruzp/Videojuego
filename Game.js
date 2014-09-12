@@ -105,13 +105,13 @@ BasicGame.Distance.prototype = {
 	this.enemyPool = this.add.group();
 	this.enemyPool.enableBody = true;
 	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(this.TOTAL_ENEMIES, 'distanceShip');
+	this.enemyPool.createMultiple(this.TOTAL_ENEMIES, 'distanceEnemy');
 	this.enemyPool.setAll('anchor.x', 0.5);
 	this.enemyPool.setAll('anchor.y', 0.5);
 	this.enemyPool.setAll('outOfBoundsKill', true);
 	this.enemyPool.setAll('checkWorldBounds', true);
-	this.enemyPool.setAll('scale.x', 0.05);
-	this.enemyPool.setAll('scale.y', 0.05);
+	this.enemyPool.setAll('scale.x', 0.1);
+	this.enemyPool.setAll('scale.y', 0.1);
 
 	this.enemyPool.forEachDead(function(enemy) {
 	    var enemy = this.enemyPool.getFirstExists(false);
@@ -120,6 +120,7 @@ BasicGame.Distance.prototype = {
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(this.GRID_SPACE/2);
 	    
+	    enemy.frame = 2;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 
