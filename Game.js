@@ -113,17 +113,23 @@ BasicGame.Distance.prototype = {
 	this.enemyPool.setAll('scale.x', 0.1);
 	this.enemyPool.setAll('scale.y', 0.1);
 
-	this.enemyPool.forEachDead(function(enemy) {
+	this.enemyPool.forEach(function(enemy) {
 	    var enemy = this.enemyPool.getFirstExists(false);
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(this.GRID_SPACE/2);
 	    
-	    enemy.frame = 2;
+	    enemy.frame = 0;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
-
+	    enemy.inputEnabled = true;
+	    enemy.events.onInputOver.add(function(enemy) {
+		enemy.frame = this.ENEMY_VELOCITY;
+	    }, this);
+	    enemy.events.onInputOut.add(function(enemy) {
+		enemy.frame = 0;
+	    }, this);
 	}, this);
 
 	// Create the bombPool
