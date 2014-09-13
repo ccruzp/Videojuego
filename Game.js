@@ -41,7 +41,7 @@ BasicGame.Distance = function (game) {
     this.bombTextPool;
     this.otherTextPool;
     this.velocityText; // Text display of velocity
-    this.timeText; // Text display of time
+    this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.livesText; // Text display of lives
 
@@ -152,7 +152,7 @@ BasicGame.Distance.prototype = {
 	// Creating the text displays.
 	this.otherTextPool = this.add.group();	
 	// Game time display.
-	this.timeText = this.add.text(25, 175, 'Tiempo: ' + this.TOTAL_TIME, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
 	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
@@ -250,7 +250,7 @@ BasicGame.Distance.prototype = {
 	// }
 	
 	// Update displays.
-	this.timeText.text = 'Tiempo: ' + this.timeCounter;
+	// this.levelText.text = 'Tiempo: ' + this.timeCounter;
 	// this.explosionTimeText.text = this.explosionTimeCounter;
 	this.bombText.text = 'x' + this.numberOfBombs;
 	// Updating existing bomb's text display.
