@@ -2,7 +2,12 @@ BasicGame.WinnerMenu = function (game) {
     // this.background = null;
     // this.winnerText = null;
     // this.playAgainButton = null;
+
     this.timeOfGame;
+    this.score;
+    this.scoreTime;
+    this.maxTime;
+    
 };
 
 BasicGame.WinnerMenu.prototype = {
@@ -29,8 +34,14 @@ BasicGame.WinnerMenu.prototype = {
 	// 				       this.playAgain, this, 1, 0, 1, 0);
 	// this.playAgainButton.anchor.setTo(0.5, 0.5);
 	// this.playAgainButton.scale.setTo(0.5, 0.5);
-	music = this.add.audio('coin');
+	aux = 0;
+	this.score = 0;
+	this.maxTime = 60; 
+	this.timeOfGame = Math.floor(this.timeOfGame);
+	this.scoreTime = this.maxTime - this.timeOfGame;
 	
+	music = this.add.audio('coin');
+
 	background = this.add.sprite(0, 0, 'menuBackground');
 
 	winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
@@ -38,19 +49,27 @@ BasicGame.WinnerMenu.prototype = {
 					    align: "left" });
 	winnerText.anchor.setTo(0.5, 0.5);
 	
-	timeText = this.add.text(50, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(5) + 'segundos',
+	timeText = this.add.text(50, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(3) + 'segundos',
 					  { font: "50px Arial", fill: "#ffffff",
 					    align: "left" });
-	winnerText.anchor.setTo(0.5, 0.5);
 	
-	this.time.events.loop(Phaser.Timer.SECOND/2, this.coin_Sound_Player, this);
+	scoreText = this.add.text(400, this.world.height-60, 'Score: '+ this.score,
+					  { font: "50px Arial", fill: "#ffffff",
+					    align: "left" });
+	
+	scoreTimeText = this.add.text(50, this.world.height-60, 'TiempoAux: '+ this.scoreTime,
+					  { font: "50px Arial", fill: "#ffffff",
+					    align: "left" });
 	
 	
+	this.time.events.loop(Phaser.Timer.SECOND/10, this.update_Score, this);
+		
 	playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
 					       this.playAgain, this, 1, 0, 1, 0);
 	playAgainButton.anchor.setTo(0.5, 0.5);
 	playAgainButton.scale.setTo(0.5, 0.5);
 	
+
     },
     
     update: function () {
@@ -79,9 +98,21 @@ BasicGame.WinnerMenu.prototype = {
 	this.state.start('Distance');
     },
 
-    coin_Sound_Player: function(){
-    
-	music.play('',0,1,false);
+    update_Score: function(){
+	
+	if (this.scoreTime > 0){
+	    
+	    aux = aux +1 ;
+	    this.timeOfGame = this.timeOfGame + 1;
+	    this.scoreTime = this.scoreTime - 1;
+	    this.score = aux * 50;
+	    
+	    scoreText.text =  'Score: '+ this.score;
+	    scoreTimeText.text = 'TiempoAux: '+ this.scoreTime;
+	    music.play('',0,1,false);
+	    
+	    
+	} else {/*Shows the total Rank earned, enables going to the next level*/}
     },
     
 };
