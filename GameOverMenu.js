@@ -23,7 +23,8 @@ BasicGame.GameOverMenu.prototype = {
 	// 				       this.playAgain, this, 1, 0, 1, 0);
 	// this.playAgainButton.anchor.setTo(0.5, 0.5);
 	// this.playAgainButton.scale.setTo(0.5, 0.5);
-
+	
+	loseSound = this.add.audio('diedS');
 	background = this.add.sprite(0, 0, 'menuBackground');
 
 	gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
@@ -35,6 +36,8 @@ BasicGame.GameOverMenu.prototype = {
 					       this.playAgain, this, 1, 0, 1, 0);
 	playAgainButton.anchor.setTo(0.5, 0.5);
 	playAgainButton.scale.setTo(0.5, 0.5);
+	
+	loseSound.play('',0,1,false);
 	
     },
     

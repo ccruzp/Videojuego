@@ -35,6 +35,10 @@ BasicGame.Boot.prototype = {
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
+	
+	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
+	
+	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
     },
 
     create: function () {

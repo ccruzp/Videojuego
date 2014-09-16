@@ -7,7 +7,7 @@ BasicGame.WinnerMenu = function (game) {
     this.score;
     this.scoreTime;
     this.maxTime;
-    
+    this.rankBoolean;
 };
 
 BasicGame.WinnerMenu.prototype = {
@@ -35,12 +35,14 @@ BasicGame.WinnerMenu.prototype = {
 	// this.playAgainButton.anchor.setTo(0.5, 0.5);
 	// this.playAgainButton.scale.setTo(0.5, 0.5);
 	aux = 0;
+	this.rankBoolean = true; 
 	this.score = 0;
-	this.maxTime = 60; 
+	this.maxTime = 70; 
 	this.timeOfGame = Math.floor(this.timeOfGame);
 	this.scoreTime = this.maxTime - this.timeOfGame;
 	
 	music = this.add.audio('coin');
+	rankSound = this.add.audio('rankS');
 
 	background = this.add.sprite(0, 0, 'menuBackground');
 
@@ -49,18 +51,25 @@ BasicGame.WinnerMenu.prototype = {
 					    align: "left" });
 	winnerText.anchor.setTo(0.5, 0.5);
 	
-	timeText = this.add.text(50, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(3) + 'segundos',
-					  { font: "50px Arial", fill: "#ffffff",
+	timeText = this.add.text(30, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(3) + ' segundos',
+					  { font: "40px Arial", fill: "#ffffff",
 					    align: "left" });
 	
-	scoreText = this.add.text(400, this.world.height-60, 'Score: '+ this.score,
-					  { font: "50px Arial", fill: "#ffffff",
+	scoreText = this.add.text(350, this.world.height-60, 'Score: '+ this.score,
+					  { font: "40px Arial", fill: "#ffffff",
 					    align: "left" });
 	
-	scoreTimeText = this.add.text(50, this.world.height-60, 'TiempoAux: '+ this.scoreTime,
-					  { font: "50px Arial", fill: "#ffffff",
+	/*scoreTimeText = this.add.text(30, this.world.height-60, 'TiempoAux: '+ this.scoreTime,
+					  { font: "40px Arial", fill: "#ffffff",
+					    align: "left" });
+	*/
+	rankText = this.add.text(this.world.width - 300, this.world.height-100, 'Rank:',
+					  { font: "70px Arial", fill: "#ffffff",
 					    align: "left" });
 	
+	rankLetterText = this.add.text(this.world.width - 100, this.world.height-100, '',
+					  { font: "70px Arial", fill: "#f7d913",
+					    align: "left" });
 	
 	this.time.events.loop(Phaser.Timer.SECOND/10, this.update_Score, this);
 		
@@ -69,7 +78,6 @@ BasicGame.WinnerMenu.prototype = {
 	playAgainButton.anchor.setTo(0.5, 0.5);
 	playAgainButton.scale.setTo(0.5, 0.5);
 	
-
     },
     
     update: function () {
@@ -100,19 +108,52 @@ BasicGame.WinnerMenu.prototype = {
 
     update_Score: function(){
 	
-	if (this.scoreTime > 0){
+	if (this.rankBoolean){
+	    if (this.scoreTime > 0){
 	    
-	    aux = aux +1 ;
-	    this.timeOfGame = this.timeOfGame + 1;
-	    this.scoreTime = this.scoreTime - 1;
-	    this.score = aux * 50;
+		aux = aux +1 ;
+		//this.timeOfGame = this.timeOfGame + 1;
+		this.scoreTime = this.scoreTime - 1;
+		this.score = aux * 50;
 	    
-	    scoreText.text =  'Score: '+ this.score;
-	    scoreTimeText.text = 'TiempoAux: '+ this.scoreTime;
-	    music.play('',0,1,false);
+		scoreText.text =  'Score: '+ this.score;
+		/*scoreTimeText.text = 'TiempoAux: '+ this.scoreTime;*/
+		music.play('',0,1,false);
 	    
 	    
-	} else {/*Shows the total Rank earned, enables going to the next level*/}
+	    } else {
+
+		this.scoreTime = this.maxTime - this.timeOfGame;
+		/*Shows the total Rank earned, enables going to the next level*/
+		console.log(this.scoreTime);
+		//Shows in the screen: YOUR RANK IS:
+	    
+		if(this.scoreTime > (0.9 * this.maxTime)){
+		    rankLetterText.text = 'S';
+		    /* S Rank*/ 
+		} else if (this.scoreTime > (0.8 * this.maxTime)){
+		    rankLetterText.text = 'A';
+		    /* A Rank */
+		} else if (this.scoreTime > (0.7 * this.maxTime)){
+		    rankLetterText.text = 'B';
+		    /* B Rank */
+		} else if (this.scoreTime > (0.5 * this.maxTime)){
+		    rankLetterText.text = 'C';
+		    /* C Rank*/
+		} else if (this.scoreTime > (0.25 * this.maxTime)){
+		    rankLetterText.text = 'D';
+		    /* D Rank*/
+		} else {
+		    rankLetterText.text = 'E';
+		    /* E Rank */
+		}
+	    
+		this.rankBoolean = false;
+		rankSound.play('',0,1,false);
+	    
+	    }
+	    
+	}
     },
     
 };
