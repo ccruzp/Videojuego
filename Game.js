@@ -239,25 +239,7 @@ BasicGame.Distance.prototype = {
 	    this.line.reset(this.LEFT_MARGIN,lineY);
 	}
 
-	// if (started && placedBomb && this.time.now > lastTime + 1000) {
-	//     lastTime = this.time.now;
-	//     this.enemyPool.forEachAlive(function(enemy) {
-	//     	// enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-	//     	y = enemy.body.y + this.ENEMY_VELOCITY * this.GRID_SPACE;
-	//     	console.log("Y: " + y);
-	//     	enemy.body.y = y;
-	// 	console.log("Contador:" + this.explosionTimeCounter);
-	//     }, this);
-	    
-	//     this.explosionTimeCounter -= 1;
-	//     if (this.explosionTimeCounter == 0) {
-	// 	this.explosionTimeText.visible = false;
-	//     }
-	// }
-	
 	// Update displays.
-	// this.levelText.text = 'Tiempo: ' + this.timeCounter;
-	// this.explosionTimeText.text = this.explosionTimeCounter;
 	this.bombText.text = 'x' + this.numberOfBombs;
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
@@ -271,34 +253,26 @@ BasicGame.Distance.prototype = {
 	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	    this.enemyPool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
-
 	    }, this);
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
-	    // this.bombPool.callAllExists('play', true, 'explode', 10, false, true);
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.animations.play('explode');
 		bomb.events.onAnimationComplete.add(function() {
 		    if (this.enemyPool.countLiving() == 0) {
 			bomb.kill();
-			// this.quit_Game(true);
 		    }
 		}, this);
 	    }, this);
-	    // if (!this.bombPool.getFirstAlive()) {
-	    // 	this.quit_Game(true);
-	    // }
 	}
 
 	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < this.TOTAL_TIME) && (this.numberOfBombs < this.TOTAL_ENEMIES)) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
-	// this.enemies.forEach(this.outOfGrid, this, false);
 	this.enemyPool.forEachAlive(function(enemy) {
-	    //if (enemy.body.y > (200)) console.log("Entro aquí VE");
 	    verticalLength = this.allign_Y(this.ROWS_NUMBER+0.7) ; 
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
@@ -318,7 +292,6 @@ BasicGame.Distance.prototype = {
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
 	this.background.kill();
-	//this.timeOfGame = this.timeOfGame - this.time.now;
 	if (won) {
 	    this.state.start('WinnerMenu', true, false, this.timeOfGame);
 	} else {
@@ -330,9 +303,6 @@ BasicGame.Distance.prototype = {
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
 	var explosionY = (initialY + (this.GRID_SPACE * this.ENEMY_VELOCITY * this.BOMB_TOTAL_TIME));
-	// console.log("Explosion Y:" + explosionY);
-	// console.log("ENEMY Y: " +  enemy.body.y);
-	// console.log("Explosion: " + this.explosionTimeCounter);
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    enemy.kill();
 	}
@@ -384,7 +354,6 @@ BasicGame.Distance.prototype = {
 	    this.bombTextPool.forEach(function(l) {
 		l.visible = false;
 	    }, this);
-	    // this.bombTextPool.removeAll();
 	    this.numberOfBombs = this.TOTAL_ENEMIES;
 	}
 		
@@ -405,12 +374,9 @@ BasicGame.Distance.prototype = {
 	    this.bombPool.forEachDead(function(bomb) {
 		console.log(this.bombPool.getIndex(bomb));
 	    }, this);
-	    bomb = this.bombPool.getFirstExists(false);
+	    var bomb = this.bombPool.getFirstExists(false);
 	    bomb.body.setSize(10, 10, 4, 4);
 	    bomb.reset(x, y);
-
-	    // var text = this.add.text(x, y, '10', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
-	    // text.visible = true;
 
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 	    text.visible = true;
