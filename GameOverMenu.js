@@ -64,7 +64,7 @@ BasicGame.GameOverMenu.prototype = {
 	gameOverText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start('Distance');
+	this.state.start('Nivel1');
     }
     
 };

@@ -9,7 +9,7 @@ window.onload = function() {
     game.state.add('Boot', BasicGame.Boot);
     game.state.add('Preloader', BasicGame.Preloader);
     game.state.add('MainMenu', BasicGame.MainMenu);
-    game.state.add('Distance', BasicGame.Distance);
+    game.state.add('Nivel1', BasicGame.Nivel1);
     game.state.add('WinnerMenu', BasicGame.WinnerMenu);
     game.state.add('GameOverMenu', BasicGame.GameOverMenu);
     //	Now start the Boot state.

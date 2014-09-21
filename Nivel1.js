@@ -1,4 +1,4 @@
-BasicGame.Distance = function (game) {
+BasicGame.Nivel1 = function (game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -60,7 +60,7 @@ BasicGame.Distance = function (game) {
     this.enemyPlace = 6;
 };
 
-BasicGame.Distance.prototype = {
+BasicGame.Nivel1.prototype = {
     
     create: function () {
 	

@@ -53,7 +53,7 @@ BasicGame.MainMenu.prototype = {
 	// newGameButton.destroy();
 	text.destroy();
 	background.destroy();
-	this.state.start('Distance');
+	this.state.start('Nivel1');
 
     }
 };

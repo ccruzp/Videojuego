@@ -103,7 +103,7 @@ BasicGame.WinnerMenu.prototype = {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start('Distance');
+	this.state.start('Nivel1');
     },
 
     update_Score: function(){
