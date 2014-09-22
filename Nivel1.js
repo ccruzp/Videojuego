@@ -293,7 +293,7 @@ BasicGame.Nivel1.prototype = {
 	this.bombPool.destroy(true);
 	this.background.kill();
 	if (won) {
-	    this.state.start('WinnerMenu', true, false, this.timeOfGame);
+	    this.state.start('WinnerMenu', true, false, this.timeOfGame, 2, this.make_Grid);
 	} else {
 	    //	Then let's go back to the game over menu.
 	    this.state.start('GameOverMenu');	

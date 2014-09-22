@@ -8,13 +8,17 @@ BasicGame.WinnerMenu = function (game) {
     this.scoreTime;
     this.maxTime;
     this.rankBoolean;
+    this.sigNivel;
+    this.make_Grid;
 };
 
 BasicGame.WinnerMenu.prototype = {
     
-    init: function(customParam1) {
+    init: function(customParam1, siguienteNivel, make_Grid) {
 	this.timeOfGame = customParam1;
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
+	this.sigNivel = "Nivel" + siguienteNivel;
+	this.make_Grid = make_Grid;
     },
     
     preload: function () {
@@ -78,6 +82,7 @@ BasicGame.WinnerMenu.prototype = {
 	playAgainButton.anchor.setTo(0.5, 0.5);
 	playAgainButton.scale.setTo(0.5, 0.5);
 	
+	// this.make_Grid();
     },
     
     update: function () {
@@ -103,7 +108,7 @@ BasicGame.WinnerMenu.prototype = {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start('Nivel1');
+	this.state.start(this.sigNivel, true, false, this.make_Grid);
     },
 
     update_Score: function(){
