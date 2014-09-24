@@ -1,7 +1,12 @@
 BasicGame.GameOverMenu = function (game) {
+<<<<<<< HEAD
     // this.background = null;
     // this.gameOverText = null;
     // this.playAgainButton = null;
+=======
+    this.gameOverText = null;
+    this.playAgainButton = null;
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 };
 
 BasicGame.GameOverMenu.prototype = {
@@ -12,6 +17,7 @@ BasicGame.GameOverMenu.prototype = {
     
     create: function () {
 	
+<<<<<<< HEAD
 	// this.background = this.add.sprite(0, 0, 'menuBackground');
 
 	// this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
@@ -38,6 +44,16 @@ BasicGame.GameOverMenu.prototype = {
 	playAgainButton.scale.setTo(0.5, 0.5);
 	
 	loseSound.play('',0,1,false);
+=======
+	this.gameOverText = this.add.text(this.world.centerX, 50, '¡Perdiste!',
+					  { font: "50px Arial", fill: "#ffffff",
+					    align: "left" });
+	this.gameOverText.anchor.setTo(0.5, 0.5);
+
+	this.playAgainButton = this.add.button(100, 100, 'startButton',
+					  this.fun, this);
+	this.playAgainButton.anchor.setTo(0.5, 0.5);
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 	
     },
     
@@ -60,10 +76,16 @@ BasicGame.GameOverMenu.prototype = {
     
     },
 
+<<<<<<< HEAD
     playAgain: function () {
 	gameOverText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
+=======
+    fun: function () {
+	this.gameOverText.destroy();
+	this.playAgainButton.destroy();
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 	this.state.start('Distance');
     }
     

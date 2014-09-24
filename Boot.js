@@ -9,21 +9,34 @@ BasicGame.Boot.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
+<<<<<<< HEAD
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
+=======
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 	this.load.image('background', 'assets/img/background_purple_Half.png');
         // this.load.image('background', 'assets/Mockup/PNGs/background.png');
         // this.load.image('preloaderBar', 'images/preloadr_bar.png');
 	// The bomb that follows the mouse (Perhaps this will be removed)
 	this.load.image('bombSelect', 'assets/bullet.png');
+<<<<<<< HEAD
 	// The distance enemy
 	this.load.image('enemyDistance', 'assets/enemy1.png');
 	this.load.image('distanceShip', 'assets/Mockup/PNGs/distanceShip.png');
 	// this.load.image('newGameButton', 'assets/Mockup/PNGs/NewGameButton.png');
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
+=======
+	// The bomb
+	this.load.image('bomb', 'assets/bullet.png');
+	// The distance enemy
+	this.load.image('enemyDistance', 'assets/Mockup/PNGs/distanceShip.png');
+	this.load.image('playAgainButton', 'assets/star.png');
+	this.load.image('startButton', 'assets/star.png');
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock.png');
 	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
+<<<<<<< HEAD
 	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet.png', 399, 500, 10);
@@ -39,6 +52,11 @@ BasicGame.Boot.prototype = {
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
 	
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
+=======
+	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
+	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
+	this.load.image('ground', 'assets/platform2.png');
+>>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     },
 
     create: function () {
