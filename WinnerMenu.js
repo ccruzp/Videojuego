@@ -1,5 +1,4 @@
 BasicGame.WinnerMenu = function (game) {
-<<<<<<< HEAD
     // this.background = null;
     // this.winnerText = null;
     // this.playAgainButton = null;
@@ -18,21 +17,12 @@ BasicGame.WinnerMenu.prototype = {
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
     },
     
-=======
-    this.WinnerText = null;
-    this.playAgainButton = null;
-};
-
-BasicGame.WinnerMenu.prototype = {
-
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     preload: function () {
 	
     },
     
     create: function () {
 	
-<<<<<<< HEAD
 	// this.background = this.add.sprite(0, 0, 'menuBackground');
 
 	// this.winnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
@@ -87,16 +77,6 @@ BasicGame.WinnerMenu.prototype = {
 					       this.playAgain, this, 1, 0, 1, 0);
 	playAgainButton.anchor.setTo(0.5, 0.5);
 	playAgainButton.scale.setTo(0.5, 0.5);
-=======
-	this.WinnerText = this.add.text(this.world.centerX, 50, '¡Ganaste!',
-					  { font: "50px Arial", fill: "#ffffff",
-					    align: "left" });
-	this.WinnerText.anchor.setTo(0.5, 0.5);
-
-	this.playAgainButton = this.add.button(100, 100, 'startButton',
-					  this.fun, this);
-	this.playAgainButton.anchor.setTo(0.5, 0.5);
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 	
     },
     
@@ -110,11 +90,7 @@ BasicGame.WinnerMenu.prototype = {
     
     // 		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
     // 		//	the update function completely.
-<<<<<<< HEAD
 	//music.play('' ,0,1,true);
-=======
-    
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     // 	// 	if (this.cache.isSoundDecoded('titleMusic') && this.ready == false)
     // 	// 	{
     // 			// this.ready = true;
@@ -123,7 +99,6 @@ BasicGame.WinnerMenu.prototype = {
     
     },
 
-<<<<<<< HEAD
     playAgain: function () {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
@@ -180,12 +155,5 @@ BasicGame.WinnerMenu.prototype = {
 	    
 	}
     },
-=======
-    fun: function () {
-	this.WinnerText.destroy();
-	this.playAgainButton.destroy();
-	this.state.start('Distance');
-    }
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     
 };

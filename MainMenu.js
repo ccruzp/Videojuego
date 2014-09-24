@@ -1,14 +1,8 @@
 BasicGame.MainMenu = function (game) {
-<<<<<<< HEAD
     // this.background = null;
     // this.music = null;
     // this.newGameButton = null;
     // this.text = null;
-=======
-    this.music = null;
-    this.playButton = null;
-    this.text = null;
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
 };
 
 BasicGame.MainMenu.prototype = {
@@ -24,7 +18,6 @@ BasicGame.MainMenu.prototype = {
 	// this.add.sprite(0, 0, 'titlepage');
 	
 	// this.playButton = this.add.button(400, 600, 'playButton', this.startGame, this, 'buttonOver', 'buttonOut', 'buttonOver');
-<<<<<<< HEAD
 
 	// this.background = this.add.sprite(0, 0, 'menuBackground');
 
@@ -40,12 +33,6 @@ BasicGame.MainMenu.prototype = {
 	newGameButton.scale.setTo(0.5, 0.5);
 	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	text.anchor.setTo(0.5, 0.5);    
-=======
-	this.playButton = this.add.button(100, 100,
-    					  'startButton', this.startGame, this);
-	this.text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
-	this.text.anchor.setTo(0.5, 0.5);
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     },
 
     update: function () {
@@ -59,7 +46,6 @@ BasicGame.MainMenu.prototype = {
 	// this.music.stop();
 	
 	//	And start the actual game
-<<<<<<< HEAD
 	// this.newGameButton.destroy();
 	// this.text.destroy();
 	// this.background.destroy();
@@ -69,10 +55,5 @@ BasicGame.MainMenu.prototype = {
 	background.destroy();
 	this.state.start('Distance');
 
-=======
-	this.playButton.destroy();
-	this.text.destroy();
-	this.state.start('Distance');
->>>>>>> 8359f36e6f2f0705a4828ed86d297a60cbef83ed
     }
 };
