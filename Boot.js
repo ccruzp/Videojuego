@@ -11,14 +11,10 @@ BasicGame.Boot.prototype = {
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
 	this.load.image('background', 'assets/img/background_purple_Half.png');
-        // this.load.image('background', 'assets/Mockup/PNGs/background.png');
-        // this.load.image('preloaderBar', 'images/preloadr_bar.png');
 	// The bomb that follows the mouse (Perhaps this will be removed)
 	this.load.image('bombSelect', 'assets/bullet.png');
-	// The distance enemy
-	this.load.image('enemyDistance', 'assets/enemy1.png');
-	this.load.image('distanceShip', 'assets/Mockup/PNGs/distanceShip.png');
-	// this.load.image('newGameButton', 'assets/Mockup/PNGs/NewGameButton.png');
+	// The shielded enemy
+	this.load.image('shieldEnemy', 'assets/Art/Enemies/shielded.png');
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock.png');
@@ -26,6 +22,8 @@ BasicGame.Boot.prototype = {
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
+
+	// Loading spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet.png', 399, 500, 10);
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
@@ -34,6 +32,7 @@ BasicGame.Boot.prototype = {
 	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	
+	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
 	
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);

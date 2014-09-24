@@ -1,4 +1,18 @@
 BasicGame.Nivel2 = function (game) {
+    this.GRID_SPACE = 38;         //Length of the squares of the grid
+    this.LEFT_MARGIN = 196;        //Left Margin for the grid
+    this.UP_MARGIN = 60;          //Horizontal Margin for the grid
+    this.ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
+    this.COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
+
+    this.line;         //The line that helps you to use the numbers of the grid
+    
+    this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
+
+    //Grid adjustment in boxes
+    this.gridX = 0;
+    this.gridY = 0;
+
     TOTAL_ENEMIES = 1;
     NUMBER_OF_BULLETS = 1;
     MIN_BULLET_SPEED = 1;
@@ -16,22 +30,134 @@ BasicGame.Nivel2 = function (game) {
     //Grid adjustment in boxes
     this.gridX = 0;
     this.gridY = 0;
-    this.make_Grid;
+    // this.make_Grid;
+    this.enemyPlace = 6;
 
 }
 
 BasicGame.Nivel2.prototype = {
 
-    init: function(make_Grid) {
-	this.make_Grid = make_Grid;
-    },
+    // init: function(make_Grid) {
+    // 	this.make_Grid = make_Grid;
+    // },
 
     create: function() {
 	background = this.add.sprite(0, 0, 'background');
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	this.make_Grid();
-	console.log("HOLA");
+
+	this.line = this.add.sprite(1000, 1000,'ground');
+	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
+	this.line.scale.setTo(1.52, 0.4);
+	this.line.anchor.setTo(0, 0.5);
+
+	// Group for the enemies
+	enemyPool = this.add.group();
+	enemyPool.enableBody = true;
+	enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
+	enemyPool.createMultiple(TOTAL_ENEMIES, 'shieldEnemy');
+	enemyPool.setAll('anchor.x', 0.5);
+	enemyPool.setAll('anchor.y', 0.5);
+	enemyPool.setAll('outOfBoundsKill', true);
+	enemyPool.setAll('checkWorldBounds', true);
+	enemyPool.setAll('scale.x', 0.02);
+	enemyPool.setAll('scale.y', 0.02);
+
+	enemyPool.forEach(function(enemy) {
+	    initialY = 40 - (enemy.height/2);
+	    aux1 = this.allign_X(this.enemyPlace) - (this.GRID_SPACE/2);
+	    // enemy.frame = 0;
+	    enemy.reset(aux1, initialY);
+	    console.log(aux1 + " " + initialY);
+	    enemy.body.setSize(500, 500, 0, enemy.height/2);
+	    // enemy.inputEnabled = true;
+	    // enemy.events.onInputOver.add(function(enemy) {
+	    // 	enemy.frame = this.ENEMY_VELOCITY;
+	    // }, this);
+	    // enemy.events.onInputOut.add(function(enemy) {
+	    // 	enemy.frame = 0;
+	    // }, this);
+	}, this);
+	    
+	// Create the bombPool
+	this.bombPool = this.add.group();
+	this.bombPool.enableBody = true;
+	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bombPool.createMultiple(this.TOTAL_ENEMIES, 'bomb');
+	this.bombPool.setAll('anchor.x', 0.4);
+	this.bombPool.setAll('anchor.y', 0.4);
+	this.bombPool.setAll('scale.x', 0.15);
+	this.bombPool.setAll('scale.y', 0.15);
+	this.bombPool.forEach(function (bomb) {
+	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+	}, this);
+	// 	// The player and its settings--------------------------------------
+	// 	player = game.add.sprite(250, 500, 'base');
+	// 	game.physics.arcade.enable(player);
+	
+	// 	// Player physics properties. Give the little guy a slight bounce
+	    // 	// player.body.bounce.y = 0;
+	// 	player.body.gravity.y = 00;
+	// 	player.body.collideWorldBounds = true;
+	
+    },
+    //Draws the grid
+    make_Grid: function () {
+	
+	//We will make a unique grid, with static tiles
+	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
+	
+	var graphics = this.add.graphics(0, 0);
+	graphics.lineStyle(2, 0x00CCFF,1);
+			      
+	//Static horizontal lines------------------------------------------------   
+	forConstant1 = (this.COLUMNS_NUMBER*this.GRID_SPACE) + this.LEFT_MARGIN;
+	for( i = 0; i < (this.ROWS_NUMBER+1); i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
+				  
+	    graphics.moveTo(this.LEFT_MARGIN, y); 
+	    graphics.lineTo(forConstant1,y);
+	}
+	
+	//Static grid numbers----------------------------------------------------	
+   	forConstant1=this.LEFT_MARGIN + this.GRID_SPACE*(this.COLUMNS_NUMBER+0.5);
+	forConstant2 = ((this.GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
+	for( i= 0; i < this.ROWS_NUMBER; i = i+1) {
+	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
+	    
+	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	}
+	//Static vertical lines--------------------------------------------------
+	forConstant1 =(this.GRID_SPACE*this.ROWS_NUMBER)+this.UP_MARGIN;
+	for (i = 0; i < (this.COLUMNS_NUMBER+1); i = i + 1) {
+	    y = (i * this.GRID_SPACE) + this.LEFT_MARGIN;
+	    
+	    graphics.moveTo(y,this.UP_MARGIN);
+	    graphics.lineTo(y,forConstant1);
+	}
+    },
+    //Alligns a number to the X axis of the grid
+    allign_X: function(x){
+	return x*this.GRID_SPACE + this.LEFT_MARGIN;
+    },
+    
+    //Alligns a number to the Y axis of the grid
+    allign_Y: function(y){
+	return y*this.GRID_SPACE + this.UP_MARGIN;
+    },
+    render: function() {
+    	if (enemyPool.countLiving() > 0) {
+    	    enemyPool.forEachAlive(function (enemy) {
+    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
     }
+
 }
 //     var WIDTH = 800;
 //     var HEIGHT = 600;

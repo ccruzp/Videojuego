@@ -53,6 +53,6 @@ BasicGame.MainMenu.prototype = {
 	// newGameButton.destroy();
 	text.destroy();
 	background.destroy();
-	this.state.start('Nivel1');
+	this.state.start('Nivel2');
     }
 };
