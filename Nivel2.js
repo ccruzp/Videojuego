@@ -80,15 +80,15 @@ BasicGame.Nivel2.prototype = {
 	}, this);
 	    
 	// Create the bombPool
-	this.bombPool = this.add.group();
-	this.bombPool.enableBody = true;
-	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(this.TOTAL_ENEMIES, 'bomb');
-	this.bombPool.setAll('anchor.x', 0.4);
-	this.bombPool.setAll('anchor.y', 0.4);
-	this.bombPool.setAll('scale.x', 0.15);
-	this.bombPool.setAll('scale.y', 0.15);
-	this.bombPool.forEach(function (bomb) {
+	bombPool = this.add.group();
+	bombPool.enableBody = true;
+	bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	bombPool.createMultiple(this.TOTAL_ENEMIES, 'bomb');
+	bombPool.setAll('anchor.x', 0.4);
+	bombPool.setAll('anchor.y', 0.4);
+	bombPool.setAll('scale.x', 0.15);
+	bombPool.setAll('scale.y', 0.15);
+	bombPool.forEach(function (bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
 	// 	// The player and its settings--------------------------------------
@@ -99,6 +99,51 @@ BasicGame.Nivel2.prototype = {
 	    // 	// player.body.bounce.y = 0;
 	// 	player.body.gravity.y = 00;
 	// 	player.body.collideWorldBounds = true;
+
+	buttons = this.add.group();
+	// Create the button for the black hole bomb
+	blackHoleButton = this.add.button(200, this.world.height - 60, 
+					       'blackHoleButton', 
+					       this.select_Bomb, this, null,
+					       null, 1, 1);
+	blackHoleButton.anchor.setTo(0.5, 0.5);
+	blackHoleButton.scale.setTo(0.4, 0.4);
+	buttons.add(blackHoleButton);
+
+	shootButton = this.add.button(300, this.world.height - 60, 'shootButton', this.select_Bomb, this, null, null, 1, 1);
+	shootButton.anchor.setTo(0.5, 0.5);
+	shootButton.scale.setTo(0.4, 0.4);
+	buttons.add(shootButton);
+
+	// // Create the locked buttons	
+	lockedButtons = this.add.group();
+	lockedButtons.createMultiple(4, 'lockedButton');
+
+	beforeButton = shootButton;
+	// for(i = 0; i < 1; i++) {
+	//     x = lockedButtons.create(beforeButton.x + 100, beforeButton.y, 
+	// 			    'lockedButton');
+	//     x.scale.setTo(0.175, 0.175);
+	//     beforeButton = x;
+	// };
+	// // Create the play button
+	playButton = this.add.button(this.world.centerX, 
+					  this.world.height - 60, 'playButton',
+					  this.start, 2, 1, 0);
+	playButton.anchor.setTo(0.5, 0.5);
+	playButton.scale.setTo(0.05, 0.05);
+	buttons.add(playButton);
+
+	beforeButton = playButton;
+	for(i = 0; i < 3; i++) {
+	    x = lockedButtons.create(beforeButton.x + 100, beforeButton.y, 
+				    'lockedButton');
+	    x.scale.setTo(0.175, 0.175);
+	    beforeButton = x;
+	};
+	lockedButtons.setAll('anchor.x', 0.5);
+	lockedButtons.setAll('anchor.y', 0.5);
+
 	
     },
     //Draws the grid
@@ -136,11 +181,16 @@ BasicGame.Nivel2.prototype = {
 	    graphics.lineTo(y,forConstant1);
 	}
     },
+
+    select_Bomb: function() {
+	console.log("HOLA");
+    },
+
     //Alligns a number to the X axis of the grid
     allign_X: function(x){
 	return x*this.GRID_SPACE + this.LEFT_MARGIN;
     },
-    
+
     //Alligns a number to the Y axis of the grid
     allign_Y: function(y){
 	return y*this.GRID_SPACE + this.UP_MARGIN;
@@ -151,8 +201,8 @@ BasicGame.Nivel2.prototype = {
     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    // 	if (this.bombPool.countLiving() > 0) {
-    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 	if (bombPool.countLiving() > 0) {
+    // 	    bombPool.forEachAlive(function(bomb) {
     // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}

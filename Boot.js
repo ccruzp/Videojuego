@@ -17,10 +17,9 @@ BasicGame.Boot.prototype = {
 	this.load.image('shieldEnemy', 'assets/Art/Enemies/shielded.png');
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
-	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock.png');
+	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
-	this.load.image('missileButton', 'assets/Mockup/PNGs/missileButton.png');
 	this.load.image('ground', 'assets/platform2.png');
 
 	// Loading spritesheets
@@ -30,7 +29,10 @@ BasicGame.Boot.prototype = {
 	
 	// The bomb
 	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
+
+	// The buttons
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
+	this.load.spritesheet('shootButton', 'assets/Spritesheets/shootButton', 250, 242, 2);
 	
 	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
