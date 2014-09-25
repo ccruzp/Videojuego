@@ -118,14 +118,13 @@ BasicGame.Nivel2.prototype = {
 	// // Create the locked buttons	
 	lockedButtons = this.add.group();
 	lockedButtons.createMultiple(4, 'lockedButton');
-
-	beforeButton = shootButton;
-	// for(i = 0; i < 1; i++) {
-	//     x = lockedButtons.create(beforeButton.x + 100, beforeButton.y, 
-	// 			    'lockedButton');
-	//     x.scale.setTo(0.175, 0.175);
-	//     beforeButton = x;
-	// };
+	// lockedButtons.enableBody = true;
+	// lockedButtons.physicsBodyType = Phaser.Physics.ARCADE;
+	lockedButtons.setAll('anchor.x', 0.5);
+	lockedButtons.setAll('anchor.y', 0.5);
+	lockedButtons.setAll('scale.x', 0.175);
+	lockedButtons.setAll('scale.y', 0.175);
+	
 	// // Create the play button
 	playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 60, 'playButton',
@@ -134,17 +133,27 @@ BasicGame.Nivel2.prototype = {
 	playButton.scale.setTo(0.05, 0.05);
 	buttons.add(playButton);
 
-	beforeButton = playButton;
-	for(i = 0; i < 3; i++) {
-	    x = lockedButtons.create(beforeButton.x + 100, beforeButton.y, 
-				    'lockedButton');
-	    x.scale.setTo(0.175, 0.175);
-	    beforeButton = x;
-	};
-	lockedButtons.setAll('anchor.x', 0.5);
-	lockedButtons.setAll('anchor.y', 0.5);
-
+	// Reseting the locked buttons
+	beforeButton = shootButton;
 	
+	lockedButtons.getAt(0).reset(beforeButton.x + 100, beforeButton.y);
+	beforeButton = playButton;
+	lockedButtons.forEachDead(function(button) {
+	    button.reset(beforeButton.x + 100, beforeButton.y);
+	    beforeButton = button;
+	}, this);
+
+	// plus and minus buttons
+	plusButton = this.add.button(shootButton.x + 40, shootButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
+	plusButton.anchor.setTo(0.5, 0.5);
+	plusButton.scale.setTo(0.02, 0.02);
+	buttons.add(plusButton);
+
+	minusButton = this.add.button(shootButton.x + 40, shootButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
+	minusButton.anchor.setTo(0.5, 0.5);
+	minusButton.scale.setTo(0.02, 0.02);
+	buttons.add(minusButton);
+
     },
     //Draws the grid
     make_Grid: function () {
@@ -182,8 +191,20 @@ BasicGame.Nivel2.prototype = {
 	}
     },
 
+    start: function() {
+	console.log("Play");
+    },
+
     select_Bomb: function() {
-	console.log("HOLA");
+	console.log("Select bomb");
+    },
+
+    increase_Fire: function() {
+	console.log("Increase fire");
+    },
+
+    decrease_Fire: function() {
+	console.log("Decrease fire");
     },
 
     //Alligns a number to the X axis of the grid
@@ -195,18 +216,23 @@ BasicGame.Nivel2.prototype = {
     allign_Y: function(y){
 	return y*this.GRID_SPACE + this.UP_MARGIN;
     },
-    render: function() {
-    	if (enemyPool.countLiving() > 0) {
-    	    enemyPool.forEachAlive(function (enemy) {
-    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
+    // render: function() {
+    // 	if (enemyPool.countLiving() > 0) {
+    // 	    enemyPool.forEachAlive(function (enemy) {
+    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+	// if (lockedButtons.countLiving() > 0) {
+	//     lockedButtons.forEachAlive(function(button) {
+	// 	this.game.debug.body(button, false, 'rgb(255, 0, 0)');
+	//     }, this);
+	// }
     // 	if (bombPool.countLiving() > 0) {
     // 	    bombPool.forEachAlive(function(bomb) {
     // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
-    }
+    // }
 
 }
 //     var WIDTH = 800;
