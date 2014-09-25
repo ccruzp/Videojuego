@@ -178,6 +178,9 @@ BasicGame.Distance.prototype = {
 	// Score counter
 	this.timeOfGame = this.time.now;
 
+	// Group for the buttons
+	this.buttons = this.add.group();
+
 	// Create the button for the black hole bomb
 	this.blackHoleButton = this.add.button(200, this.world.height - 60, 
 					       'blackHoleButton', 
@@ -185,32 +188,36 @@ BasicGame.Distance.prototype = {
 					       null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
 	this.blackHoleButton.scale.setTo(0.4, 0.4);
-	
+	this.buttons.add(this.blackHoleButton);
+
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
 					  this.world.height - 60, 'playButton',
 					  this.start, 2, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
 	this.playButton.scale.setTo(0.05, 0.05);
+	this.buttons.add(this.playButton);
 
 	// // Create the locked buttons	
-	this.buttons = this.add.group();
+	lockedButtons = this.add.group();
+	lockedButtons.createMultiple(5, 'lockedButton');
+	lockedButtons.setAll('anchor.x', 0.5);
+	lockedButtons.setAll('anchor.y', 0.5);
+	lockedButtons.setAll('outOfBoundsKill', true);
+	lockedButtons.setAll('checkWorldBounds', true);
+	lockedButtons.setAll('scale.x', 0.175);
+	lockedButtons.setAll('scale.y', 0.175);
+
 	beforeButton = this.blackHoleButton;
 	for(i = 0; i < 2; i++) {
-	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
-				    'lockedButton');
-	    x.scale.setTo(0.175, 0.175);
+	    x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
 	    beforeButton = x;
 	};
 	beforeButton = this.playButton;
-	for(i = 0; i < 3; i++) {
-	    x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
-				    'lockedButton');
-	    x.scale.setTo(0.175, 0.175);
-	    beforeButton = x;
-	};
-	this.buttons.setAll('anchor.x', 0.5);
-	this.buttons.setAll('anchor.y', 0.5);
+	lockedButtons.forEachDead(function(button) {
+	    button.reset(beforeButton.x + 100, beforeButton.y);
+	    beforeButton = button;
+	}, this);
 
 	// Mouse input
 	this.input.onDown.add(this.put_Bomb, this);
