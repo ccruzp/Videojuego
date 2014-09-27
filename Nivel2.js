@@ -1,4 +1,4 @@
-BasicGame.Nivel2 = function (game) {
+BasicGame.Nivel2 = function(game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -7,11 +7,11 @@ BasicGame.Nivel2 = function (game) {
 
     //Grid Stuff
     //---------------------------------------------------------------------------
-    this.GRID_SPACE = 38;         //Length of the squares of the grid
-    this.LEFT_MARGIN = 196;        //Left Margin for the grid
-    this.UP_MARGIN = 60;          //Horizontal Margin for the grid
-    this.ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
-    this.COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
+    GRID_SPACE = 38;         //Length of the squares of the grid
+    LEFT_MARGIN = 196;        //Left Margin for the grid
+    UP_MARGIN = 60;          //Horizontal Margin for the grid
+    ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
+    COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
 
     this.line;         //The line that helps you to use the numbers of the grid
     
@@ -22,10 +22,10 @@ BasicGame.Nivel2 = function (game) {
     this.gridY = 0;
     //---------------------------------------------------------------------------
     
-    this.TOTAL_TIME = 10; // Time for explosion
-    this.BOMB_TOTAL_TIME = 3;
-    this.ENEMY_VELOCITY = 3; // Velocity of the enemy
-    this.TOTAL_ENEMIES = 1;    
+    TOTAL_TIME = 10; // Time for explosion
+    BOMB_TOTAL_TIME = 3;
+    ENEMY_VELOCITY = 3; // Velocity of the enemy
+    TOTAL_ENEMIES = 1;    
     this.bombPool; // Group of bombPool
     this.bomb; // Instance of the group of bombPool
     this.enemyPool; // Group of enemies
@@ -54,27 +54,25 @@ BasicGame.Nivel2 = function (game) {
     this.score;
     this.timeOfGame;
 
-    this.background; // Background of the game
-    
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
 };
 
 BasicGame.Nivel2.prototype = {
     
-    create: function () {
+    create: function() {
 	
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
-	// lost = false; // Boolean that says if the player lost the game.
+
 	// Boolean that says if the player has selected the black hole bomb.
 	usingBlackHole = false; // Says if the player selected the bomb.
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
-	this.numberOfBombs = this.TOTAL_ENEMIES; // Number of bombPool available in this level.
+	this.numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
 	
 	// Creating background.
-	this.background = this.add.sprite(0, 0, 'background');
+	background = this.add.sprite(0, 0, 'background');
 	// Game physics system.
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
@@ -105,7 +103,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyPool = this.add.group();
 	this.enemyPool.enableBody = true;
 	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(this.TOTAL_ENEMIES, 'distanceEnemy');
+	this.enemyPool.createMultiple(TOTAL_ENEMIES, 'distanceEnemy');
 	this.enemyPool.setAll('anchor.x', 0.5);
 	this.enemyPool.setAll('anchor.y', 0.5);
 	this.enemyPool.setAll('outOfBoundsKill', true);
@@ -118,14 +116,14 @@ BasicGame.Nivel2.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    
-	    aux1 = this.allign_X(this.enemyPlace) -(this.GRID_SPACE/2);
+	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    
 	    enemy.frame = 0;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    enemy.events.onInputOver.add(function(enemy) {
-		enemy.frame = this.ENEMY_VELOCITY;
+		enemy.frame = ENEMY_VELOCITY;
 	    }, this);
 	    enemy.events.onInputOut.add(function(enemy) {
 		enemy.frame = 0;
@@ -136,12 +134,12 @@ BasicGame.Nivel2.prototype = {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
 	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(this.TOTAL_ENEMIES, 'bomb');
+	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
 	this.bombPool.setAll('anchor.x', 0.4);
 	this.bombPool.setAll('anchor.y', 0.4);
 	this.bombPool.setAll('scale.x', 0.15);
 	this.bombPool.setAll('scale.y', 0.15);
-	this.bombPool.forEach(function (bomb) {
+	this.bombPool.forEach(function(bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
 
@@ -161,7 +159,7 @@ BasicGame.Nivel2.prototype = {
 	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
 	// Display for the amount of bombPool left.
 	this.bombText = this.add.text(235, this.world.height - 40, '' + this.numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
@@ -171,9 +169,9 @@ BasicGame.Nivel2.prototype = {
 		
 	// Counters.
 	// Game's time counter.
-	this.timeCounter = this.TOTAL_TIME;
+	this.timeCounter = TOTAL_TIME;
 	// Bomb's time counter.
-	this.explosionTimeCounter = this.BOMB_TOTAL_TIME; // Time counter
+	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Time counter
 	
 	// Score counter
 	this.timeOfGame = this.time.now;
@@ -231,23 +229,6 @@ BasicGame.Nivel2.prototype = {
 	minusButton.scale.setTo(0.02, 0.02);
 	buttons.add(minusButton);
 
-	// beforeButton = this.blackHoleButton;
-	// for(i = 0; i < 2; i++) {
-	//     x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
-	// 			    'lockedButton');
-	//     x.scale.setTo(0.175, 0.175);
-	//     beforeButton = x;
-	// };
-	// beforeButton = this.playButton;
-	// for(i = 0; i < 3; i++) {
-	//     x = this.buttons.create(beforeButton.x + 100, beforeButton.y, 
-	// 			    'lockedButton');
-	//     x.scale.setTo(0.175, 0.175);
-	//     beforeButton = x;
-	// };
-	// this.buttons.setAll('anchor.x', 0.5);
-	// this.buttons.setAll('anchor.y', 0.5);
-
 	// Mouse input
 	this.input.onDown.add(this.put_Bomb, this);
 
@@ -255,7 +236,7 @@ BasicGame.Nivel2.prototype = {
     
     // Everything that needs to be done or modified constantly in the game goes
     // here.
-    update: function () {
+    update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
@@ -272,7 +253,7 @@ BasicGame.Nivel2.prototype = {
 	    this.bombOnMouse.reset(x,y);
 	    
 	    lineY = this.allign_Y(this.gridY-0.5); 
-	    this.line.reset(this.LEFT_MARGIN,lineY);
+	    this.line.reset(LEFT_MARGIN,lineY);
 	}
 
 	// Update displays.
@@ -286,9 +267,9 @@ BasicGame.Nivel2.prototype = {
 
 	// If the game started move enemies.
 	if (started) {
-	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+	    // enemy.body.velocity.y = ENEMY_VELOCITY * GRID_SPACE;
 	    this.enemyPool.forEachAlive(function(enemy) {
-		enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
+		enemy.body.velocity.y = ENEMY_VELOCITY * GRID_SPACE;
 	    }, this);
 	}
 	
@@ -304,12 +285,12 @@ BasicGame.Nivel2.prototype = {
 	    }, this);
 	}
 
-	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < this.TOTAL_TIME) && (this.numberOfBombs < this.TOTAL_ENEMIES)) {
+	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (this.numberOfBombs < TOTAL_ENEMIES)) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyPool.forEachAlive(function(enemy) {
-	    verticalLength = this.allign_Y(this.ROWS_NUMBER+0.7) ; 
+	    verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
@@ -320,7 +301,7 @@ BasicGame.Nivel2.prototype = {
     
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
-    quit_Game: function (won) {	
+    quit_Game: function(won) {	
 	this.playButton.destroy();
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
@@ -328,9 +309,9 @@ BasicGame.Nivel2.prototype = {
 	this.bombTextPool.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
-	this.background.kill();
+	background.kill();
 	if (won) {
-	    this.state.start('WinnerMenu', true, false, this.timeOfGame, 2, this.make_Grid);
+	    this.state.start('WinnerMenu', true, false, this.timeOfGame, 2);
 	} else {
 	    //	Then let's go back to the game over menu.
 	    this.state.start('GameOverMenu');	
@@ -339,14 +320,14 @@ BasicGame.Nivel2.prototype = {
     
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
-	var explosionY = (initialY + (this.GRID_SPACE * this.ENEMY_VELOCITY * this.BOMB_TOTAL_TIME));
+	var explosionY = (initialY + (GRID_SPACE * ENEMY_VELOCITY * BOMB_TOTAL_TIME));
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    enemy.kill();
 	}
     },
     
     //Draws the grid
-    make_Grid: function (/*WIDTH, HEIGHT*/) {
+    make_Grid: function() {
 	
 	//We will make a unique grid, with static tiles
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
@@ -355,33 +336,33 @@ BasicGame.Nivel2.prototype = {
 	graphics.lineStyle(2, 0x00CCFF,1);
 	
 	//Static horizontal lines------------------------------------------------   
-	forConstant1 = (this.COLUMNS_NUMBER*this.GRID_SPACE) + this.LEFT_MARGIN;
-	for( i = 0; i < (this.ROWS_NUMBER+1); i = i+1) {
-	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
+	forConstant1 = (COLUMNS_NUMBER*GRID_SPACE) + LEFT_MARGIN;
+	for( i = 0; i < (ROWS_NUMBER+1); i = i+1) {
+	    y = (i * GRID_SPACE) + UP_MARGIN;
 	    
-	    graphics.moveTo(this.LEFT_MARGIN, y); 
+	    graphics.moveTo(LEFT_MARGIN, y); 
 	    graphics.lineTo(forConstant1,y);
 	}
 
 	//Static grid numbers----------------------------------------------------	
-   	forConstant1=this.LEFT_MARGIN + this.GRID_SPACE*(this.COLUMNS_NUMBER+0.5);
-	forConstant2 = ((this.GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
-	for( i= 0; i < this.ROWS_NUMBER; i = i+1) {
-	    y = (i * this.GRID_SPACE) + this.UP_MARGIN;
+   	forConstant1=LEFT_MARGIN + GRID_SPACE*(COLUMNS_NUMBER+0.5);
+	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
+	for( i= 0; i < ROWS_NUMBER; i = i+1) {
+	    y = (i * GRID_SPACE) + UP_MARGIN;
 	    
 	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
 	}
 	//Static vertical lines--------------------------------------------------
-	forConstant1 =(this.GRID_SPACE*this.ROWS_NUMBER)+this.UP_MARGIN;
-	for (i = 0; i < (this.COLUMNS_NUMBER+1); i = i + 1) {
-	    y = (i * this.GRID_SPACE) + this.LEFT_MARGIN;
+	forConstant1 =(GRID_SPACE*ROWS_NUMBER)+UP_MARGIN;
+	for (i = 0; i < (COLUMNS_NUMBER+1); i = i + 1) {
+	    y = (i * GRID_SPACE) + LEFT_MARGIN;
 	    
-	    graphics.moveTo(y,this.UP_MARGIN);
+	    graphics.moveTo(y,UP_MARGIN);
 	    graphics.lineTo(y,forConstant1);
 	}
     },
 
-    select_Bomb: function () {
+    select_Bomb: function() {
 	usingBlackHole = (this.numberOfBombs > 0);
 	if (!usingBlackHole) {
 	    // this.bombPool.removeAll();
@@ -391,22 +372,22 @@ BasicGame.Nivel2.prototype = {
 	    this.bombTextPool.forEach(function(l) {
 		l.visible = false;
 	    }, this);
-	    this.numberOfBombs = this.TOTAL_ENEMIES;
+	    this.numberOfBombs = TOTAL_ENEMIES;
 	}
 		
     },
 
-    start: function () {
+    start: function() {
 	started = true;
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
-    put_Bomb: function () {
+    put_Bomb: function() {
 	
 	if (!started && usingBlackHole && (this.numberOfBombs > 0)) {
 	    // Intance of a bomb
-	    x = (this.allign_X(this.gridX-1)) + (this.GRID_SPACE/3);
-	    y = (this.allign_Y(this.gridY-1)) + (this.GRID_SPACE/3);
+	    x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+	    y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
 
 	    this.bombPool.forEachDead(function(bomb) {
 		console.log(this.bombPool.getIndex(bomb));
@@ -438,7 +419,7 @@ BasicGame.Nivel2.prototype = {
     },
 
     // Decreases the game's counter and the bomb's counter.
-    countdown: function () {
+    countdown: function() {
 	if (started) {
 	    this.timeCounter -= 1;
 	    if (this.timeCounter < 0) {
@@ -453,8 +434,8 @@ BasicGame.Nivel2.prototype = {
     //This function detects the place in the grid of an object.
     //Use it for objects that belong to the grid space.
     find_Grid_Place: function() {
-	this.gridX = parseInt((this.input.x-this.LEFT_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
-	this.gridY = parseInt((this.input.y-this.UP_MARGIN+this.GRID_SPACE)/this.GRID_SPACE);
+	this.gridX = parseInt((this.input.x-LEFT_MARGIN+GRID_SPACE)/GRID_SPACE);
+	this.gridY = parseInt((this.input.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
     
 	if(this.gridX < 1) this.gridX = 1;
 	if(this.gridX > 16) this.gridX = 16;
@@ -465,12 +446,12 @@ BasicGame.Nivel2.prototype = {
     
     //Alligns a number to the X axis of the grid
     allign_X: function(x){
-	return x*this.GRID_SPACE + this.LEFT_MARGIN;
+	return x*GRID_SPACE + LEFT_MARGIN;
     },
     
     //Alligns a number to the Y axis of the grid
     allign_Y: function(y){
-	return y*this.GRID_SPACE + this.UP_MARGIN;
+	return y*GRID_SPACE + UP_MARGIN;
     },
 /*
     outOfGrid: function(enemy) {
@@ -483,7 +464,7 @@ BasicGame.Nivel2.prototype = {
     // debugging sprite's sizes).
     // render: function() {
     // 	if (this.enemyPool.countLiving() > 0) {
-    // 	    this.enemyPool.forEachAlive(function (enemy) {
+    // 	    this.enemyPool.forEachAlive(function(enemy) {
     // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
