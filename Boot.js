@@ -29,16 +29,16 @@ BasicGame.Boot.prototype = {
 	
 	// The bomb
 	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
+	// The cannon
+	this.load.image('cannon', 'assets/Mockup/PNGs/cannon.png');
 
 	// The buttons
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
-	this.load.spritesheet('shootButton', 'assets/Spritesheets/shootButton', 250, 242, 2);
+	this.load.spritesheet('cannonButton', 'assets/Spritesheets/shootButton', 250, 242, 2);
 	
 	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
-	
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
-	
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
     },
 

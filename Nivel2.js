@@ -28,6 +28,7 @@ BasicGame.Nivel2 = function(game) {
     TOTAL_ENEMIES = 1;    
     this.bombPool; // Group of bombPool
     this.bomb; // Instance of the group of bombPool
+    this.cannonPool;
     this.enemyPool; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
@@ -35,8 +36,9 @@ BasicGame.Nivel2 = function(game) {
     // Counters
     this.timeCounter; // Time counter.
     this.explosionTimeCounter; // Tells the time remaining before de bomb explodes.
-    this.numberOfBombs; //BombPool = number of enemies, should be generated.
-    
+    // numberOfBombs; // Amount of bombs the user has
+    // numberOfCannons; // Amount of cannons the user has
+
     // Texts
     this.bombTextPool;
     this.otherTextPool;
@@ -67,10 +69,12 @@ BasicGame.Nivel2.prototype = {
 
 	// Boolean that says if the player has selected the black hole bomb.
 	usingBlackHole = false; // Says if the player selected the bomb.
+	usingCannon = false; // Says if the player selected de cannon.
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
-	this.numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
-	
+	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
+	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
+
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');
 	// Game physics system.
@@ -151,6 +155,16 @@ BasicGame.Nivel2.prototype = {
 	    texto.visible = false;
 	}, this);
 
+	// Create the cannonPool
+	this.cannonPool = this.add.group();
+	this.cannonPool.enableBody = true;
+	this.cannonPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.cannonPool.setAll('anchor.x', 0.5);
+	this.cannonPool.setAll('anchor.y', 0.5);
+	this.cannonPool.setAll('scale.x', 0.1);
+	this.cannonPool.setAll('scale.y', 0.1);
+
 	// this.nextShotAt = 0;
 
 	// Creating the text displays.
@@ -161,8 +175,8 @@ BasicGame.Nivel2.prototype = {
 	// Display for velocity of the enemies.
 	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
-	// Display for the amount of bombPool left.
-	this.bombText = this.add.text(235, this.world.height - 40, '' + this.numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	// Display for the amount of bombs left.
+	this.bombText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
 	
 	// Every second activates this.countdown.
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
@@ -187,11 +201,11 @@ BasicGame.Nivel2.prototype = {
 	this.blackHoleButton.scale.setTo(0.4, 0.4);
 	buttons.add(this.blackHoleButton);
 	
-	// Create the button for shooting
-	shootButton = this.add.button(300, this.world.height - 60, 'shootButton', this.select_Bomb, this, null, null, 1, 1);
-	shootButton.anchor.setTo(0.5, 0.5);
-	shootButton.scale.setTo(0.4, 0.4);
-	buttons.add(shootButton);
+	// Create the button for the cannon
+	cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	cannonButton.anchor.setTo(0.5, 0.5);
+	cannonButton.scale.setTo(0.4, 0.4);
+	buttons.add(cannonButton);
 
 	// // Create the play button
 	this.playButton = this.add.button(this.world.centerX, 
@@ -209,7 +223,7 @@ BasicGame.Nivel2.prototype = {
 	lockedButtons.setAll('scale.x', 0.175);
 	lockedButtons.setAll('scale.y', 0.175);
 
-	beforeButton = shootButton;
+	beforeButton = cannonButton;
 	
 	lockedButtons.getAt(0).reset(beforeButton.x + 100, beforeButton.y);
 	beforeButton = this.playButton;
@@ -219,19 +233,18 @@ BasicGame.Nivel2.prototype = {
 	}, this);
 
 	// plus and minus buttons
-	plusButton = this.add.button(shootButton.x + 40, shootButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
+	plusButton = this.add.button(cannonButton.x + 40, cannonButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
 	plusButton.anchor.setTo(0.5, 0.5);
 	plusButton.scale.setTo(0.02, 0.02);
 	buttons.add(plusButton);
 
-	minusButton = this.add.button(shootButton.x + 40, shootButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
+	minusButton = this.add.button(cannonButton.x + 40, cannonButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
 	minusButton.anchor.setTo(0.5, 0.5);
 	minusButton.scale.setTo(0.02, 0.02);
 	buttons.add(minusButton);
 
 	// Mouse input
-	this.input.onDown.add(this.put_Bomb, this);
-
+	this.input.onDown.add(this.put_Weapon, this);
     },
     
     // Everything that needs to be done or modified constantly in the game goes
@@ -250,14 +263,17 @@ BasicGame.Nivel2.prototype = {
 	    this.find_Grid_Place();
 	    x = this.allign_X(this.gridX-0.5);
 	    y = this.allign_Y(this.gridY-0.5);
-	    this.bombOnMouse.reset(x,y);
+	    this.bombOnMouse.reset(x, y);
 	    
 	    lineY = this.allign_Y(this.gridY-0.5); 
 	    this.line.reset(LEFT_MARGIN,lineY);
+	// } else if (usingCannon) {
+	//     this.find_Grid_Place();
+	//     x = this.allign_X(this.gridX - 0.5);
+	//     y = 500;
+	//     this.cannonOnMouse.reset(x, y);
 	}
 
-	// Update displays.
-	this.bombText.text = 'x' + this.numberOfBombs;
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -285,7 +301,7 @@ BasicGame.Nivel2.prototype = {
 	    }, this);
 	}
 
-	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (this.numberOfBombs < TOTAL_ENEMIES)) {
+	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -363,18 +379,22 @@ BasicGame.Nivel2.prototype = {
     },
 
     select_Bomb: function() {
-	usingBlackHole = (this.numberOfBombs > 0);
+	usingBlackHole = (numberOfBombs > 0);
+	// If the all the bombs has been placed, the bombs are removed and the counter is reseted.
 	if (!usingBlackHole) {
 	    // this.bombPool.removeAll();
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.kill();
 	    }, this);
-	    this.bombTextPool.forEach(function(l) {
-		l.visible = false;
+	    this.bombTextPool.forEach(function(display) {
+		display.visible = false;
 	    }, this);
-	    this.numberOfBombs = TOTAL_ENEMIES;
+	    numberOfBombs = TOTAL_ENEMIES;
 	}
-		
+    },
+
+    select_Cannon: function() {
+	usingCannon = (numberOfBombs > 0);
     },
 
     start: function() {
@@ -382,32 +402,42 @@ BasicGame.Nivel2.prototype = {
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
-    put_Bomb: function() {
-	
-	if (!started && usingBlackHole && (this.numberOfBombs > 0)) {
-	    // Intance of a bomb
-	    x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
-	    y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
+    put_Weapon: function() {
+	if (!started) {
+	    if (usingBlackHole && (numberOfBombs > 0)) {
+		// Puts an instance of a bomb
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
 
-	    this.bombPool.forEachDead(function(bomb) {
-		console.log(this.bombPool.getIndex(bomb));
-	    }, this);
-	    var bomb = this.bombPool.getFirstExists(false);
-	    bomb.body.setSize(10, 10, 4, 4);
-	    bomb.reset(x, y);
+		var bomb = this.bombPool.getFirstExists(false);
+		bomb.body.setSize(10, 10, 4, 4);
+		bomb.reset(x, y);
+		
+		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		text.visible = true;
+		text.x = x;
+		text.y = y;
+		numberOfBombs -= 1;
+		
+		placedBomb = true;
+		//}
+		this.blackHoleButton.frame = 0;
+		this.bombOnMouse.reset(1000, 1000);
+    		usingBlackHole = false;
+		this.line.reset(1000, 1000);
+		
+		// Update displays.
+		this.bombText.text = 'x' + numberOfBombs;
 
-	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
-	    text.visible = true;
-	    text.x = x;
-	    text.y = y;
-	    this.numberOfBombs -= 1;
-
-	    placedBomb = true;
-	}
-	this.blackHoleButton.frame = 0;
-	this.bombOnMouse.reset(1000, 1000);
-    	usingBlackHole = false;
-	this.line.reset(1000, 1000);
+	    } else if (usingCannon && numberOfCannons > 0) {
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = 100;
+		var cannon = this.cannonPool.getFirstExists(false);
+		cannon.body.setSize(10, 10, 4, 4);
+		cannon.reset(x, y);
+		numberOfCannons -= 1;
+	    }
+ 	}
     },
     
     increase_Fire: function() {
@@ -462,16 +492,22 @@ BasicGame.Nivel2.prototype = {
 
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
-    // render: function() {
-    // 	if (this.enemyPool.countLiving() > 0) {
-    // 	    this.enemyPool.forEachAlive(function(enemy) {
-    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.bombPool.countLiving() > 0) {
-    // 	    this.bombPool.forEachAlive(function(bomb) {
-    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // }
+    render: function() {
+    	if (this.enemyPool.countLiving() > 0) {
+    	    this.enemyPool.forEachAlive(function(enemy) {
+    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.bombPool.countLiving() > 0) {
+    	    this.bombPool.forEachAlive(function(bomb) {
+    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.cannonPool.countLiving() > 0) {
+    	    this.cannonPool.forEachAlive(function(cannon) {
+    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+
+    }
 };
