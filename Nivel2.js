@@ -31,7 +31,9 @@ BasicGame.Nivel2 = function(game) {
     this.cannonPool;
     this.enemyPool; // Group of enemies
     this.enemy; // Instance of an enemy
-    this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
+    this.bombOnMouse; // The sprite that appears on the mouse
+    
+    this.cannonOnMouse; // The sprite that appears on the mouse
     
     // Counters
     this.timeCounter; // Time counter.
@@ -67,9 +69,14 @@ BasicGame.Nivel2.prototype = {
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 
-	// Boolean that says if the player has selected the black hole bomb.
+	// Booleans that says if the player is using a weapon.
+	
+	//-A player should not be able of using more than a weapon at a time
+	//-------------------------------------------------------------
 	usingBlackHole = false; // Says if the player selected the bomb.
-	usingCannon = false; // Says if the player selected de cannon.
+	usingCannon = false; // Says if the player selected the cannon.
+	//-------------------------------------------------------------
+
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
@@ -97,6 +104,15 @@ BasicGame.Nivel2.prototype = {
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
 	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+	
+	/*
+	 * Image that appears on the mouse when cannon button is pressed
+	 */
+	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
+	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
+	this.cannonOnMouse.scale.setTo(0.1, 0.1);
+	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
+	
 	
 	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
@@ -253,11 +269,11 @@ BasicGame.Nivel2.prototype = {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
-	// If the bomb on the mouse overlaps with a line this.line_Collision is 
-	// activated.
-	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
-				    this.line_Collision, null, this);
+
+	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000,1000);
+	this.cannonOnMouse.reset(1000,1000);
+
 	
 	if (usingBlackHole) {
 	    this.find_Grid_Place();
@@ -267,11 +283,12 @@ BasicGame.Nivel2.prototype = {
 	    
 	    lineY = this.allign_Y(this.gridY-0.5); 
 	    this.line.reset(LEFT_MARGIN,lineY);
-	// } else if (usingCannon) {
-	//     this.find_Grid_Place();
-	//     x = this.allign_X(this.gridX - 0.5);
-	//     y = 500;
-	//     this.cannonOnMouse.reset(x, y);
+	}
+	if (usingCannon) {
+	     this.find_Grid_Place();
+	     x = this.allign_X(this.gridX - 0.5);
+	     y = 500;
+	     this.cannonOnMouse.reset(x, y);
 	}
 
 	// Updating existing bomb's text display.
@@ -394,7 +411,17 @@ BasicGame.Nivel2.prototype = {
     },
 
     select_Cannon: function() {
-	usingCannon = (numberOfBombs > 0);
+	usingCannon = (numberOfCannons > 0);
+	if (!usingCannon) {
+	    // this.bombPool.removeAll();
+	    this.cannonPool.forEachAlive(function(cannon) {
+		cannon.kill();
+	    }, this);
+	    /*this.bombTextPool.forEach(function(display) {
+		display.visible = false;
+	    }, this);*/
+	    numberOfCannons = TOTAL_ENEMIES;
+	}
     },
 
     start: function() {
@@ -431,11 +458,14 @@ BasicGame.Nivel2.prototype = {
 
 	    } else if (usingCannon && numberOfCannons > 0) {
 		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
-		y = 100;
+		y = 500;
 		var cannon = this.cannonPool.getFirstExists(false);
 		cannon.body.setSize(10, 10, 4, 4);
 		cannon.reset(x, y);
 		numberOfCannons -= 1;
+		
+		cannonButton.frame = 0;
+		usingCannon = false;
 	    }
  	}
     },
@@ -492,6 +522,7 @@ BasicGame.Nivel2.prototype = {
 
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
+    
     render: function() {
     	if (this.enemyPool.countLiving() > 0) {
     	    this.enemyPool.forEachAlive(function(enemy) {
