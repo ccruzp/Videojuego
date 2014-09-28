@@ -230,10 +230,7 @@ BasicGame.Nivel1.prototype = {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
-	// If the bomb on the mouse overlaps with a line this.line_Collision is 
-	// activated.
-	this.physics.arcade.overlap(this.bombOnMouse, this.lines,
-				    this.line_Collision, null, this);
+	
 	this.bombOnMouse.reset(1000,1000);
 	
 	if (usingBlackHole) {
