@@ -149,8 +149,9 @@ BasicGame.Nivel1.prototype = {
 	this.bombTextPool = this.add.group();
 	// Time until explosion display.
 	this.enemyPool.forEach(function() {
-	    var texto = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
-	    texto.visible = false;
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
 	}, this);
 
 	// this.nextShotAt = 0;
@@ -231,6 +232,7 @@ BasicGame.Nivel1.prototype = {
 	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
 	
+	// Hide the weapon cursors
 	this.bombOnMouse.reset(1000,1000);
 	
 	if (usingBlackHole) {
@@ -238,7 +240,14 @@ BasicGame.Nivel1.prototype = {
 	    x = this.allign_X(this.gridX-0.5);
 	    y = this.allign_Y(this.gridY-0.5);
 	    this.bombOnMouse.reset(x,y);
-	    
+	
+	    // Display of the time left before the bomb explodes.
+	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES -1);
+	    text.visible = true;
+	    text.text = BOMB_TOTAL_TIME;
+	    text.x = x;
+	    text.y = y;
+
 	    lineY = this.allign_Y(this.gridY-0.5); 
 	    this.line.reset(this.LEFT_MARGIN,lineY);
 	}

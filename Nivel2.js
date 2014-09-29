@@ -110,7 +110,7 @@ BasicGame.Nivel2.prototype = {
 	 */
 	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
 	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
-	this.cannonOnMouse.scale.setTo(0.1, 0.1);
+	this.cannonOnMouse.scale.setTo(0.06, 0.06);
 	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
 	
 	
@@ -167,8 +167,9 @@ BasicGame.Nivel2.prototype = {
 	this.bombTextPool = this.add.group();
 	// Time until explosion display.
 	this.enemyPool.forEach(function() {
-	    var texto = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
-	    texto.visible = false;
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
 	}, this);
 
 	// Create the cannonPool
@@ -178,8 +179,8 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
 	this.cannonPool.setAll('anchor.x', 0.5);
 	this.cannonPool.setAll('anchor.y', 0.5);
-	this.cannonPool.setAll('scale.x', 0.1);
-	this.cannonPool.setAll('scale.y', 0.1);
+	this.cannonPool.setAll('scale.x', 0.06);
+	this.cannonPool.setAll('scale.y', 0.06);
 
 	// this.nextShotAt = 0;
 
@@ -280,14 +281,22 @@ BasicGame.Nivel2.prototype = {
 	    x = this.allign_X(this.gridX-0.5);
 	    y = this.allign_Y(this.gridY-0.5);
 	    this.bombOnMouse.reset(x, y);
-	    
+
+	    // Display of the time left before the bomb explodes.
+	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES-1);
+	    // text.anchor.setTo(0.5, 0.5);
+	    text.visible = true;
+	    text.text = BOMB_TOTAL_TIME;
+	    text.x = x;
+	    text.y = y;
+
 	    lineY = this.allign_Y(this.gridY-0.5); 
 	    this.line.reset(LEFT_MARGIN,lineY);
-	}
-	if (usingCannon) {
+
+	} else if (usingCannon) {
 	     this.find_Grid_Place();
 	     x = this.allign_X(this.gridX - 0.5);
-	     y = 500;
+	     y = 460;
 	     this.cannonOnMouse.reset(x, y);
 	}
 
@@ -441,9 +450,9 @@ BasicGame.Nivel2.prototype = {
 		bomb.reset(x, y);
 		
 		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
-		text.visible = true;
-		text.x = x;
-		text.y = y;
+		// text.visible = true;
+		text.x = x + 6;
+		text.y = y + 6;
 		numberOfBombs -= 1;
 		
 		placedBomb = true;
@@ -457,10 +466,10 @@ BasicGame.Nivel2.prototype = {
 		this.bombText.text = 'x' + numberOfBombs;
 
 	    } else if (usingCannon && numberOfCannons > 0) {
-		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
-		y = 500;
+		x = this.allign_X(this.gridX - 0.5);
+		y = 460;
 		var cannon = this.cannonPool.getFirstExists(false);
-		cannon.body.setSize(10, 10, 4, 4);
+		cannon.body.setSize(10, 10);
 		cannon.reset(x, y);
 		numberOfCannons -= 1;
 		
@@ -520,25 +529,26 @@ BasicGame.Nivel2.prototype = {
 	if (enemy.body.y > verticalLength) this.enemyOutOfGrid = true;
     },*/
 
+    // NO TOCAR SIN MI PERMISO :)
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
     
-    render: function() {
-    	if (this.enemyPool.countLiving() > 0) {
-    	    this.enemyPool.forEachAlive(function(enemy) {
-    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.bombPool.countLiving() > 0) {
-    	    this.bombPool.forEachAlive(function(bomb) {
-    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.cannonPool.countLiving() > 0) {
-    	    this.cannonPool.forEachAlive(function(cannon) {
-    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
+    // render: function() {
+    // 	if (this.enemyPool.countLiving() > 0) {
+    // 	    this.enemyPool.forEachAlive(function(enemy) {
+    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.cannonPool.countLiving() > 0) {
+    // 	    this.cannonPool.forEachAlive(function(cannon) {
+    // 		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
 
-    }
+    // }
 };
