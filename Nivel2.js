@@ -26,9 +26,9 @@ BasicGame.Nivel2 = function(game) {
     BOMB_TOTAL_TIME = 3;
     ENEMY_VELOCITY = 3; // Velocity of the enemy
     TOTAL_ENEMIES = 1;    
-    this.bombPool; // Group of bombPool
-    this.bomb; // Instance of the group of bombPool
-    this.cannonPool;
+    this.bombPool; // Group of bombs
+    this.cannonPool; // Group of cannons
+    this.bulletPool; // Group of bullets
     this.enemyPool; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
@@ -96,18 +96,13 @@ BasicGame.Nivel2.prototype = {
 	//Start the game inside the grid
 	this.enemyOutOfGrid = false;
 
-	/*
-	 * Image that appears on the mouse when the black hole bomb button is 
-	 * pressed.
-	 */
+	// Image that appears on the mouse when the black hole bomb button is pressed.
 	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
 	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	
-	/*
-	 * Image that appears on the mouse when cannon button is pressed
-	 */
+	// Image that appears on the mouse when the cannon button is pressed.
 	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
 	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
 	this.cannonOnMouse.scale.setTo(0.06, 0.06);
@@ -119,36 +114,8 @@ BasicGame.Nivel2.prototype = {
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
 
-	// Group for the enemies
-	this.enemyPool = this.add.group();
-	this.enemyPool.enableBody = true;
-	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(TOTAL_ENEMIES, 'distanceEnemy');
-	this.enemyPool.setAll('anchor.x', 0.5);
-	this.enemyPool.setAll('anchor.y', 0.5);
-	this.enemyPool.setAll('outOfBoundsKill', true);
-	this.enemyPool.setAll('checkWorldBounds', true);
-	this.enemyPool.setAll('scale.x', 0.1);
-	this.enemyPool.setAll('scale.y', 0.1);
-
-	this.enemyPool.forEach(function(enemy) {
-	    var enemy = this.enemyPool.getFirstExists(false);
-	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
-	    initialY = 40 - (enemy.height/2);
-	    
-	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
-	    
-	    enemy.frame = 0;
-	    enemy.reset(aux1, initialY);
-	    enemy.body.setSize(100, 100, 0, enemy.height/2);
-	    enemy.inputEnabled = true;
-	    enemy.events.onInputOver.add(function(enemy) {
-		enemy.frame = ENEMY_VELOCITY;
-	    }, this);
-	    enemy.events.onInputOut.add(function(enemy) {
-		enemy.frame = 0;
-	    }, this);
-	}, this);
+	// Setup the enemies
+	this.enemyPool_Setup();
 
 	// Create the bombPool
 	this.bombPool = this.add.group();
@@ -182,8 +149,7 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool.setAll('scale.x', 0.06);
 	this.cannonPool.setAll('scale.y', 0.06);
 
-	// this.nextShotAt = 0;
-
+	this.bulletPool_Setup();
 	// Creating the text displays.
 	this.otherTextPool = this.add.group();	
 	// Game time display.
@@ -313,6 +279,9 @@ BasicGame.Nivel2.prototype = {
 	    this.enemyPool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = ENEMY_VELOCITY * GRID_SPACE;
 	    }, this);
+	    if (this.bulletPool.countLiving() < TOTAL_ENEMIES) {
+		this.fire();
+	    }
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -433,7 +402,7 @@ BasicGame.Nivel2.prototype = {
 	}
     },
 
-    start: function() {
+    start: function(game) {
 	started = true;
     },
 
@@ -478,7 +447,14 @@ BasicGame.Nivel2.prototype = {
 	    }
  	}
     },
-    
+
+    fire: function() {
+	var bullet = this.bulletPool.getFirstDead();
+	var cannon = this.cannonPool.getAt(this.bulletPool.getIndex(bullet));
+	bullet.reset(cannon.x, cannon.y - 100);
+	bullet.body.velocity.y = -100;
+    },
+
     increase_Fire: function() {
 	console.log("Increase fire");
     },
@@ -499,7 +475,50 @@ BasicGame.Nivel2.prototype = {
 	    }
 	}
     },
-    
+  
+    enemyPool_Setup: function() {
+	this.enemyPool = this.add.group();
+	this.enemyPool.enableBody = true;
+	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
+	this.enemyPool.setAll('anchor.x', 0.5);
+	this.enemyPool.setAll('anchor.y', 0.5);
+	this.enemyPool.setAll('outOfBoundsKill', true);
+	this.enemyPool.setAll('checkWorldBounds', true);
+	this.enemyPool.setAll('scale.x', 0.05);
+	this.enemyPool.setAll('scale.y', 0.05);
+
+	this.enemyPool.forEach(function(enemy) {
+	    var enemy = this.enemyPool.getFirstExists(false);
+	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
+	    initialY = 40 - (enemy.height/2);
+	    
+	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    
+	    enemy.frame = 1;
+	    enemy.reset(aux1, initialY);
+	    enemy.body.setSize(100, 100, 0, enemy.height/2);
+	    enemy.inputEnabled = true;
+	    enemy.events.onInputOver.add(function(enemy) {
+		enemy.frame = ENEMY_VELOCITY;
+	    }, this);
+	    enemy.events.onInputOut.add(function(enemy) {
+		enemy.frame = 0;
+	    }, this);
+	}, this);
+    },
+
+    bulletPool_Setup: function() {
+	this.bulletPool = this.add.group();
+	this.bulletPool.enableBody = true;
+	this.bulletPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bulletPool.createMultiple(TOTAL_ENEMIES, 'bullet');
+	this.bulletPool.setAll('anchor.x', 0.5);
+	this.bulletPool.setAll('anchor.y', 0.5);
+	this.bulletPool.setAll('outOfBoundsKill', true);
+	this.bulletPool.setAll('checkWorldBounds', true);
+    },
+
     //This function detects the place in the grid of an object.
     //Use it for objects that belong to the grid space.
     find_Grid_Place: function() {
@@ -533,22 +552,27 @@ BasicGame.Nivel2.prototype = {
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
     
-    // render: function() {
-    // 	if (this.enemyPool.countLiving() > 0) {
-    // 	    this.enemyPool.forEachAlive(function(enemy) {
-    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.bombPool.countLiving() > 0) {
-    // 	    this.bombPool.forEachAlive(function(bomb) {
-    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.cannonPool.countLiving() > 0) {
-    // 	    this.cannonPool.forEachAlive(function(cannon) {
-    // 		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
+    render: function() {
+    	if (this.enemyPool.countLiving() > 0) {
+    	    this.enemyPool.forEachAlive(function(enemy) {
+    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.bombPool.countLiving() > 0) {
+    	    this.bombPool.forEachAlive(function(bomb) {
+    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.cannonPool.countLiving() > 0) {
+    	    this.cannonPool.forEachAlive(function(cannon) {
+    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.bulletPool.countLiving() > 0) {
+    	    this.bulletPool.forEachAlive(function(bullet) {
+    		this.game.debug.body(bullet, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
 
-    // }
+    }
 };
