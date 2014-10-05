@@ -25,11 +25,15 @@ BasicGame.Nivel2 = function(game) {
     TOTAL_TIME = 10; // Time for explosion
     BOMB_TOTAL_TIME = 3;
     ENEMY_VELOCITY = 3; // Velocity of the enemy
-    TOTAL_ENEMIES = 1;    
+    ENEMY_SHIELD_SPEED = 2.5;
+    DISTANCE_ENEMIES = 0; // Amount of distance enemies
+    VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
+
     this.bombPool; // Group of bombs
     this.cannonPool; // Group of cannons
     this.bulletPool; // Group of bullets
-    this.enemyPool; // Group of enemies
+    this.enemyVelocityPool; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
     
@@ -68,196 +72,96 @@ BasicGame.Nivel2.prototype = {
 	
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
+	shot = false; // Boolean that says if the cannons have shot.
+	shield = true; // Boolean that says if the shields are activated.
+
+	bulletSpeed = 0; // The speed of the bullets.
 
 	// Booleans that says if the player is using a weapon.
-	
-	//-A player should not be able of using more than a weapon at a time
+	// A player should not be able of using more than a weapon at a time
 	//-------------------------------------------------------------
 	usingBlackHole = false; // Says if the player selected the bomb.
 	usingCannon = false; // Says if the player selected the cannon.
 	//-------------------------------------------------------------
 
 	placedBomb = false; // Says if a bomb has been placed on the grid.
-	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
 	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
 
-	// Creating background.
-	background = this.add.sprite(0, 0, 'background');
-	// Game physics system.
-	this.physics.startSystem(Phaser.Physics.ARCADE);
-	
-	//  We check bounds collisions against all walls other than the bottom one
-	// this.physics.arcade.checkCollision.down = false;
-	
-	// Creating the grid for the game.
-	this.make_Grid(/*this.game.width, this.game.height*/);
-	
-	//Start the game inside the grid
-	this.enemyOutOfGrid = false;
+	background = this.add.sprite(0, 0, 'background'); // Creating background.
+	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
-	// Image that appears on the mouse when the black hole bomb button is pressed.
-	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
-	this.bombOnMouse.anchor.setTo(0.5, 0.5);
-	this.bombOnMouse.scale.setTo(0.1, 0.1);
-	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+	this.make_Grid(); // Creating the grid for the game.
 	
-	// Image that appears on the mouse when the cannon button is pressed.
-	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
-	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
-	this.cannonOnMouse.scale.setTo(0.06, 0.06);
-	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
-	
+	this.enemyOutOfGrid = false; // Start the game inside the grid.
+
+	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
+
+	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
+
 	
 	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
 
-	// Setup the enemies
-	this.enemyPool_Setup();
+	this.enemyVelocityPool_Setup(); // Setup the enemies.
+	this.bombPool_Setup(); // Create the bombs.
+	this.cannonPool_Setup(); // Create the cannonPool.
+	this.bulletPool_Setup(); // Creating the bullets for the cannons.
 
-	// Create the bombPool
-	this.bombPool = this.add.group();
-	this.bombPool.enableBody = true;
-	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
-	this.bombPool.setAll('anchor.x', 0.4);
-	this.bombPool.setAll('anchor.y', 0.4);
-	this.bombPool.setAll('scale.x', 0.15);
-	this.bombPool.setAll('scale.y', 0.15);
-	this.bombPool.forEach(function(bomb) {
-	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
-	}, this);
-
-	// Group for the text displays
-	this.bombTextPool = this.add.group();
-	// Time until explosion display.
-	this.enemyPool.forEach(function() {
-	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
-	    text.visible = false;
-	    text.anchor.setTo(0.5, 0.5);
-	}, this);
-
-	// Create the cannonPool
-	this.cannonPool = this.add.group();
-	this.cannonPool.enableBody = true;
-	this.cannonPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
-	this.cannonPool.setAll('anchor.x', 0.5);
-	this.cannonPool.setAll('anchor.y', 0.5);
-	this.cannonPool.setAll('scale.x', 0.06);
-	this.cannonPool.setAll('scale.y', 0.06);
-
-	this.bulletPool_Setup();
 	// Creating the text displays.
 	this.otherTextPool = this.add.group();	
-	// Game time display.
-	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
-		
-	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
-
-	// Display for the amount of bombs left.
-	this.bombText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
-	
-	// Every second activates this.countdown.
-	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 		
 	// Counters.
-	// Game's time counter.
-	this.timeCounter = TOTAL_TIME;
-	// Bomb's time counter.
-	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Time counter
-	
-	// Score counter
-	this.timeOfGame = this.time.now;
+	this.timeCounter = TOTAL_TIME; // Game's time counter.
+	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
 
-	// Group for buttons
-	buttons = this.add.group();
-	// Create the button for the black hole bomb
-	this.blackHoleButton = this.add.button(200, this.world.height - 60, 
-					       'blackHoleButton', 
-					       this.select_Bomb, this, null,
-					       null, 1, 1);
-	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.4, 0.4);
-	buttons.add(this.blackHoleButton);
-	
-	// Create the button for the cannon
-	cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
-	cannonButton.anchor.setTo(0.5, 0.5);
-	cannonButton.scale.setTo(0.4, 0.4);
-	buttons.add(cannonButton);
+	buttons = this.add.group(); // Group for buttons.
 
-	// // Create the play button
-	this.playButton = this.add.button(this.world.centerX, 
-					  this.world.height - 60, 'playButton',
-					  this.start, 2, 1, 0);
-	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.05, 0.05);
-	buttons.add(this.playButton);
+	this.blackHoleButton_Setup(); // Creates the black hole button.
+	this.cannonButton_Setup(); // Creates the cannon button.
+	this.playButton_Setup(); // Creates the play button.
+	this.lockedButtons_Setup(); // Creates the locked buttons.
+	this.plusButton_Setup(); // Creates the plus button for the cannon button.
+	this.minusButton_Setup(); // Creates the minus button for the cannon button.
 
-	// // Create the locked buttons	
-	lockedButtons = this.add.group();
-	lockedButtons.createMultiple(4, 'lockedButton');
-	lockedButtons.setAll('anchor.x', 0.5);
-	lockedButtons.setAll('anchor.y', 0.5);
-	lockedButtons.setAll('scale.x', 0.175);
-	lockedButtons.setAll('scale.y', 0.175);
+	this.timeOfGame = this.time.now; // Score counter.
 
-	beforeButton = cannonButton;
-	
-	lockedButtons.getAt(0).reset(beforeButton.x + 100, beforeButton.y);
-	beforeButton = this.playButton;
-	lockedButtons.forEachDead(function(button) {
-	    button.reset(beforeButton.x + 100, beforeButton.y);
-	    beforeButton = button;
-	}, this);
+	this.input.onDown.add(this.put_Weapon, this); // Mouse input.
 
-	// plus and minus buttons
-	plusButton = this.add.button(cannonButton.x + 40, cannonButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
-	plusButton.anchor.setTo(0.5, 0.5);
-	plusButton.scale.setTo(0.02, 0.02);
-	buttons.add(plusButton);
+	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this); // Every second activates this.countdown.
 
-	minusButton = this.add.button(cannonButton.x + 40, cannonButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
-	minusButton.anchor.setTo(0.5, 0.5);
-	minusButton.scale.setTo(0.02, 0.02);
-	buttons.add(minusButton);
-
-	// Mouse input
-	this.input.onDown.add(this.put_Weapon, this);
     },
     
     // Everything that needs to be done or modified constantly in the game goes
     // here.
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
-	this.physics.arcade.overlap(this.enemyPool, this.bombPool, 
-				    this.try_To_Destroy, null, this);
+	this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, 
+				    this.try_To_Destroy_Velocity, null, this);
 
 	//Hide the weapons cursors
-	this.bombOnMouse.reset(1000,1000);
-	this.cannonOnMouse.reset(1000,1000);
+	this.bombOnMouse.reset(1000, 1000);
+	this.cannonOnMouse.reset(1000, 1000);
 
 	
 	if (usingBlackHole) {
 	    this.find_Grid_Place();
-	    x = this.allign_X(this.gridX-0.5);
-	    y = this.allign_Y(this.gridY-0.5);
+	    x = this.allign_X(this.gridX - 0.5);
+	    y = this.allign_Y(this.gridY - 0.5);
 	    this.bombOnMouse.reset(x, y);
 
 	    // Display of the time left before the bomb explodes.
-	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES-1);
+	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
 	    // text.anchor.setTo(0.5, 0.5);
 	    text.visible = true;
 	    text.text = BOMB_TOTAL_TIME;
 	    text.x = x;
 	    text.y = y;
 
-	    lineY = this.allign_Y(this.gridY-0.5); 
-	    this.line.reset(LEFT_MARGIN,lineY);
+	    lineY = this.allign_Y(this.gridY - 0.5); 
+	    this.line.reset(LEFT_MARGIN, lineY);
 
 	} else if (usingCannon) {
 	     this.find_Grid_Place();
@@ -275,13 +179,11 @@ BasicGame.Nivel2.prototype = {
 
 	// If the game started move enemies.
 	if (started) {
-	    // enemy.body.velocity.y = ENEMY_VELOCITY * GRID_SPACE;
-	    this.enemyPool.forEachAlive(function(enemy) {
-		enemy.body.velocity.y = ENEMY_VELOCITY * GRID_SPACE;
+	    this.cannonPool.forEachAlive(function(cannon) {
+		if(this.bulletPool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		    this.fire(cannon);
+		}
 	    }, this);
-	    if (this.bulletPool.countLiving() < TOTAL_ENEMIES) {
-		this.fire();
-	    }
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -289,18 +191,19 @@ BasicGame.Nivel2.prototype = {
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.animations.play('explode');
 		bomb.events.onAnimationComplete.add(function() {
-		    if (this.enemyPool.countLiving() == 0) {
+		    if (this.enemyVelocityPool.countLiving() == 0) {
 			bomb.kill();
 		    }
 		}, this);
 	    }, this);
 	}
 
-	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
+	/*((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES))*/
+	if (!this.enemyVelocityPool.getFirstAlive()) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
-	this.enemyPool.forEachAlive(function(enemy) {
+	this.enemyVelocityPool.forEachAlive(function(enemy) {
 	    verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
@@ -336,43 +239,19 @@ BasicGame.Nivel2.prototype = {
 	    enemy.kill();
 	}
     },
-    
-    //Draws the grid
-    make_Grid: function() {
-	
-	//We will make a unique grid, with static tiles
-	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
 
-	var graphics = this.add.graphics(0, 0);
-	graphics.lineStyle(2, 0x00CCFF,1);
-	
-	//Static horizontal lines------------------------------------------------   
-	forConstant1 = (COLUMNS_NUMBER*GRID_SPACE) + LEFT_MARGIN;
-	for( i = 0; i < (ROWS_NUMBER+1); i = i+1) {
-	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    graphics.moveTo(LEFT_MARGIN, y); 
-	    graphics.lineTo(forConstant1,y);
+    // If the enemy's shild is deactivated the enemy is killed.
+    try_To_Destroy_Velocity: function(enemy, bullet) {
+	// console.log(enemy.frame);
+	// if(enemy.frame == 0) {
+	if (!shield) {
+	    enemy.kill();
 	}
-
-	//Static grid numbers----------------------------------------------------	
-   	forConstant1=LEFT_MARGIN + GRID_SPACE*(COLUMNS_NUMBER+0.5);
-	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
-	for( i= 0; i < ROWS_NUMBER; i = i+1) {
-	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
-	}
-	//Static vertical lines--------------------------------------------------
-	forConstant1 =(GRID_SPACE*ROWS_NUMBER)+UP_MARGIN;
-	for (i = 0; i < (COLUMNS_NUMBER+1); i = i + 1) {
-	    y = (i * GRID_SPACE) + LEFT_MARGIN;
-	    
-	    graphics.moveTo(y,UP_MARGIN);
-	    graphics.lineTo(y,forConstant1);
-	}
+	bullet.kill();
     },
+    
 
+    // Lets the player use the bombs.
     select_Bomb: function() {
 	usingBlackHole = (numberOfBombs > 0);
 	// If the all the bombs has been placed, the bombs are removed and the counter is reseted.
@@ -388,6 +267,7 @@ BasicGame.Nivel2.prototype = {
 	}
     },
 
+    // Lets the player use the cannons.
     select_Cannon: function() {
 	usingCannon = (numberOfCannons > 0);
 	if (!usingCannon) {
@@ -402,7 +282,8 @@ BasicGame.Nivel2.prototype = {
 	}
     },
 
-    start: function(game) {
+    // Starts the simulation.
+    start: function() {
 	started = true;
     },
 
@@ -448,19 +329,40 @@ BasicGame.Nivel2.prototype = {
  	}
     },
 
-    fire: function() {
-	var bullet = this.bulletPool.getFirstDead();
-	var cannon = this.cannonPool.getAt(this.bulletPool.getIndex(bullet));
-	bullet.reset(cannon.x, cannon.y - 100);
-	bullet.body.velocity.y = -100;
+    // Makes the cannon shoot.
+    fire: function(cannon) {
+	var bullet = this.bulletPool.getAt(this.cannonPool.getIndex(cannon));
+	bullet.reset(cannon.x, cannon.y);
+	bullet.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
+	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Shield, this);
+	shot = true;
     },
 
+    // Increases the velocity of the bullets.
     increase_Fire: function() {
-	console.log("Increase fire");
+	bulletSpeed += 1;
     },
 
+    // Decreases the velocity of the bullets.
     decrease_Fire: function() {
-	console.log("Decrease fire");
+	if (bulletSpeed > 0) {
+	    bulletSpeed -= 1;
+	}
+    },
+
+    deactivate_Shield: function() {
+	this.enemyVelocityPool.forEachAlive(function(enemy) {
+	    enemy.animations.play('unshield');
+	}, this);
+	shield = false;
+    },
+
+    activate_Shield: function() {
+	this.enemyVelocityPool.forEachAlive(function(enemy) {
+	    enemy.animations.play('shield');
+	}, this);
+	shield = true;
     },
 
     // Decreases the game's counter and the bomb's counter.
@@ -468,46 +370,91 @@ BasicGame.Nivel2.prototype = {
 	if (started) {
 	    this.timeCounter -= 1;
 	    if (this.timeCounter < 0) {
-		this.quit_Game(true);
+		this.quit_Game(false);
 	    }
 	    if (placedBomb) {
 		this.explosionTimeCounter -= 1;
 	    }
 	}
     },
-  
-    enemyPool_Setup: function() {
-	this.enemyPool = this.add.group();
-	this.enemyPool.enableBody = true;
-	this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
-	this.enemyPool.setAll('anchor.x', 0.5);
-	this.enemyPool.setAll('anchor.y', 0.5);
-	this.enemyPool.setAll('outOfBoundsKill', true);
-	this.enemyPool.setAll('checkWorldBounds', true);
-	this.enemyPool.setAll('scale.x', 0.05);
-	this.enemyPool.setAll('scale.y', 0.05);
 
-	this.enemyPool.forEach(function(enemy) {
-	    var enemy = this.enemyPool.getFirstExists(false);
-	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
-	    initialY = 40 - (enemy.height/2);
-	    
+    // Image that appears on the mouse when the black hole bomb button is pressed.
+    bombOnMouse_Setup: function() {
+	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
+	this.bombOnMouse.anchor.setTo(0.5, 0.5);
+	this.bombOnMouse.scale.setTo(0.1, 0.1);
+	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+    },
+
+    cannonOnMouse_Setup: function() {
+	// Image that appears on the mouse when the cannon button is pressed.
+	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
+	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
+	this.cannonOnMouse.scale.setTo(0.06, 0.06);
+	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
+    },
+
+    // Creates the velocity enemies of the level.
+    enemyVelocityPool_Setup: function() {
+	this.enemyVelocityPool = this.add.group();
+	this.enemyVelocityPool.enableBody = true;
+	this.enemyVelocityPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
+	this.enemyVelocityPool.setAll('anchor.x', 0.5);
+	this.enemyVelocityPool.setAll('anchor.y', 0.5);
+	this.enemyVelocityPool.setAll('outOfBoundsKill', true);
+	this.enemyVelocityPool.setAll('checkWorldBounds', true);
+	this.enemyVelocityPool.setAll('scale.x', 0.05);
+	this.enemyVelocityPool.setAll('scale.y', 0.05);
+
+	this.enemyVelocityPool.forEach(function(enemy) {
+	    initialY = 50 - (enemy.height/2);
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
-	    
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
-	    enemy.inputEnabled = true;
-	    enemy.events.onInputOver.add(function(enemy) {
-		enemy.frame = ENEMY_VELOCITY;
-	    }, this);
-	    enemy.events.onInputOut.add(function(enemy) {
-		enemy.frame = 0;
-	    }, this);
+	    enemy.animations.add('shield', [1, 0], 10, false);
+	    enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
     },
 
+    // Create the bombPool
+    bombPool_Setup: function() {
+	this.bombPool = this.add.group();
+	this.bombPool.enableBody = true;
+	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
+	this.bombPool.setAll('anchor.x', 0.4);
+	this.bombPool.setAll('anchor.y', 0.4);
+	this.bombPool.setAll('scale.x', 0.15);
+	this.bombPool.setAll('scale.y', 0.15);
+	this.bombPool.forEach(function(bomb) {
+	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+	}, this);
+	// Group for the text displays
+	this.bombTextPool = this.add.group();
+	// Time until explosion display.
+	this.enemyVelocityPool.forEach(function() {
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
+    },
+
+    // Creates the cannons.
+    cannonPool_Setup: function() {
+	this.cannonPool = this.add.group();
+	this.cannonPool.enableBody = true;
+	this.cannonPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.cannonPool.setAll('anchor.x', 0.5);
+	this.cannonPool.setAll('anchor.y', 0.5);
+	this.cannonPool.setAll('scale.x', 0.06);
+	this.cannonPool.setAll('scale.y', 0.06);
+    },
+    
+    // Creates the bullets.
     bulletPool_Setup: function() {
 	this.bulletPool = this.add.group();
 	this.bulletPool.enableBody = true;
@@ -517,6 +464,113 @@ BasicGame.Nivel2.prototype = {
 	this.bulletPool.setAll('anchor.y', 0.5);
 	this.bulletPool.setAll('outOfBoundsKill', true);
 	this.bulletPool.setAll('checkWorldBounds', true);
+    },
+
+    // Creates the black hole bomb button.
+    blackHoleButton_Setup: function() {
+	this.blackHoleButton = this.add.button(200, this.world.height - 60, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
+	this.blackHoleButton.anchor.setTo(0.5, 0.5);
+	this.blackHoleButton.scale.setTo(0.4, 0.4);
+	buttons.add(this.blackHoleButton);
+    },
+    
+    // Creates the button for the cannon.
+    cannonButton_Setup: function() {
+	cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	cannonButton.anchor.setTo(0.5, 0.5);
+	cannonButton.scale.setTo(0.4, 0.4);
+	buttons.add(cannonButton);
+    },
+
+    // Creates the play button
+    playButton_Setup: function() {
+	this.playButton = this.add.button(this.world.centerX, this.world.height - 60, 'playButton', this.start, 2, 1, 0);
+	this.playButton.anchor.setTo(0.5, 0.5);
+	this.playButton.scale.setTo(0.05, 0.05);
+	buttons.add(this.playButton);
+    },
+
+    // Creates the locked buttons
+    lockedButtons_Setup: function() {
+	lockedButtons = this.add.group();
+	lockedButtons.createMultiple(4, 'lockedButton');
+	lockedButtons.setAll('anchor.x', 0.5);
+	lockedButtons.setAll('anchor.y', 0.5);
+	lockedButtons.setAll('scale.x', 0.175);
+	lockedButtons.setAll('scale.y', 0.175);
+
+	beforeButton = cannonButton;
+	
+	lockedButtons.getAt(0).reset(beforeButton.x + 100, beforeButton.y);
+	beforeButton = this.playButton;
+	lockedButtons.forEachDead(function(button) {
+	    button.reset(beforeButton.x + 100, beforeButton.y);
+	    beforeButton = button;
+	}, this);
+    },
+    
+    // Creates the plus button for the cannons.
+    plusButton_Setup: function() {
+	plusButton = this.add.button(cannonButton.x + 40, cannonButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
+	plusButton.anchor.setTo(0.5, 0.5);
+	plusButton.scale.setTo(0.02, 0.02);
+	buttons.add(plusButton);
+    },
+
+    // Creates the minus button for the cannons.
+    minusButton_Setup: function() {
+	minusButton = this.add.button(cannonButton.x + 40, cannonButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
+	minusButton.anchor.setTo(0.5, 0.5);
+	minusButton.scale.setTo(0.02, 0.02);
+	buttons.add(minusButton);
+    },
+    
+    // Creates several text displays.
+    displays_Setup: function() {
+	// Game time display.
+	this.levelText = this.add.text(931, 85, '2', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
+	
+	// Display for velocity of the enemies.
+	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+
+	// Display for the amount of bombs left.
+	this.bombText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+    },
+
+    // Draws the grid.
+    make_Grid: function() {
+	
+	//We will make a unique grid, with static tiles
+	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
+
+	var graphics = this.add.graphics(0, 0);
+	graphics.lineStyle(2, 0x00CCFF,1);
+	
+	//Static horizontal lines------------------------------------------------   
+	forConstant1 = (COLUMNS_NUMBER*GRID_SPACE) + LEFT_MARGIN;
+	for( i = 0; i < (ROWS_NUMBER+1); i = i+1) {
+	    y = (i * GRID_SPACE) + UP_MARGIN;
+	    
+	    graphics.moveTo(LEFT_MARGIN, y); 
+	    graphics.lineTo(forConstant1,y);
+	}
+
+	//Static grid numbers----------------------------------------------------	
+   	forConstant1=LEFT_MARGIN + GRID_SPACE*(COLUMNS_NUMBER+0.5);
+	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
+	for( i= 0; i < ROWS_NUMBER; i = i+1) {
+	    y = (i * GRID_SPACE) + UP_MARGIN;
+	    
+	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	}
+	//Static vertical lines--------------------------------------------------
+	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;
+	for (i = 0; i < (COLUMNS_NUMBER + 1); i = i + 1) {
+	    y = (i * GRID_SPACE) + LEFT_MARGIN;
+	    
+	    graphics.moveTo(y,UP_MARGIN);
+	    graphics.lineTo(y,forConstant1);
+	}
     },
 
     //This function detects the place in the grid of an object.
@@ -553,8 +607,8 @@ BasicGame.Nivel2.prototype = {
     // debugging sprite's sizes).
     
     render: function() {
-    	if (this.enemyPool.countLiving() > 0) {
-    	    this.enemyPool.forEachAlive(function(enemy) {
+    	if (this.enemyVelocityPool.countLiving() > 0) {
+    	    this.enemyVelocityPool.forEachAlive(function(enemy) {
     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
