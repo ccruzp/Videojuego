@@ -20,7 +20,7 @@ BasicGame.Nivel2 = function(game) {
     //Grid adjustment in boxes
     this.gridX = 0;
     this.gridY = 0;
-    //---------------------------------------------------------------------------
+    //----------------------------------------------------------------------
     
     TOTAL_TIME = 10; // Time for explosion
     BOMB_TOTAL_TIME = 3;
@@ -54,7 +54,7 @@ BasicGame.Nivel2 = function(game) {
     this.livesText; // Text display of lives
 
     // Buttons
-    this.buttons; // Group for locked buttons
+    /*this.buttons; // Group for locked buttons*/
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
     
@@ -98,20 +98,22 @@ BasicGame.Nivel2.prototype = {
 	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
-
 	
+	this.gridLine_Setup();
+	/*
 	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
-
+	*/
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.cannonPool_Setup(); // Create the cannonPool.
 	this.bulletPool_Setup(); // Creating the bullets for the cannons.
 
 	// Creating the text displays.
-	this.otherTextPool = this.add.group();	
+	this.displays_Setup();
+	/*this.otherTextPool = this.add.group();*/	
 		
 	// Counters.
 	this.timeCounter = TOTAL_TIME; // Game's time counter.
@@ -378,14 +380,24 @@ BasicGame.Nivel2.prototype = {
 	}
     },
 
-    // Image that appears on the mouse when the black hole bomb button is pressed.
+    // Image that appears on mouse when the black hole bomb button is pressed.
+    //This is used on level 1
     bombOnMouse_Setup: function() {
 	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
 	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
     },
-
+    
+    
+    gridLine_Setup: function(){
+	
+	this.line = this.add.sprite(1000, 1000,'ground');
+	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
+	this.line.scale.setTo(1.52, 0.4);
+	this.line.anchor.setTo(0, 0.5);
+    },
+    
     cannonOnMouse_Setup: function() {
 	// Image that appears on the mouse when the cannon button is pressed.
 	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
@@ -419,6 +431,7 @@ BasicGame.Nivel2.prototype = {
     },
 
     // Create the bombPool
+    //Is this used on level 1 (?) requires removing the enemyVelocityPool 
     bombPool_Setup: function() {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
@@ -527,6 +540,9 @@ BasicGame.Nivel2.prototype = {
     
     // Creates several text displays.
     displays_Setup: function() {
+
+	this.otherTextPool = this.add.group();
+	
 	// Game time display.
 	this.levelText = this.add.text(931, 85, '2', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 	
