@@ -60,7 +60,7 @@ BasicGame.Nivel1 = function (game) {
 };
 
 BasicGame.Nivel1.prototype = {
-    
+
     create: function () {
 	
 	// Initializing boolean variables.
@@ -191,6 +191,8 @@ BasicGame.Nivel1.prototype = {
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyDistancePool.forEachAlive(function(enemy) {
 	    verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
+	    console.log(enemy.body.y);
+	    console.log(verticalLength);
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
@@ -204,11 +206,11 @@ BasicGame.Nivel1.prototype = {
     quit_Game: function (won) {	
 	this.playButton.destroy();
 	this.blackHoleButton.destroy();
-	this.buttons.destroy(true);
+	buttons.destroy(true);
 	this.bombTextPool.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
-	this.background.kill();
+	background.kill();
 	if (won) {
 	    this.state.start('WinnerMenu', true, false, this.timeOfGame, 2, this.make_Grid);
 	} else {
@@ -275,6 +277,7 @@ BasicGame.Nivel1.prototype = {
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
     },
+
     // Creates the distance enemies of the level.
     enemyDistancePool_Setup: function() {
 	this.enemyDistancePool = this.add.group();
@@ -285,15 +288,17 @@ BasicGame.Nivel1.prototype = {
 	this.enemyDistancePool.setAll('anchor.y', 0.5);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
 	this.enemyDistancePool.setAll('checkWorldBounds', true);
-	this.enemyDistancePool.setAll('scale.x', 0.05);
-	this.enemyDistancePool.setAll('scale.y', 0.05);
+	this.enemyDistancePool.setAll('scale.x', 0.1);
+	this.enemyDistancePool.setAll('scale.y', 0.1);
 
 	this.enemyDistancePool.forEach(function(enemy) {
+	    var enemy = this.enemyDistancePool.getFirstExists(false);
+	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
-	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 	    enemy.frame = 0;
 	    enemy.reset(aux1, initialY);
-
+	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    enemy.events.onInputOver.add(function(enemy) {
 		enemy.frame = ENEMY_VELOCITY;
@@ -301,9 +306,9 @@ BasicGame.Nivel1.prototype = {
 	    enemy.events.onInputOut.add(function(enemy) {
 		enemy.frame = 0;
 	    }, this);
-	},this);
+	}, this);
     },
-
+	  
     //Creates the bombPool
     bombPool_Setup: function() {
 	this.bombPool = this.add.group();
@@ -325,7 +330,7 @@ BasicGame.Nivel1.prototype = {
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
-
+	
     },
     
     // Creates the black hole bomb button.

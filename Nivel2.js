@@ -67,6 +67,11 @@ BasicGame.Nivel2 = function(game) {
 };
 
 BasicGame.Nivel2.prototype = {
+
+    
+    init: function(make_Grid) {
+	this.make_Grid = make_Grid;
+    },
     
     create: function() {
 	
@@ -553,41 +558,35 @@ BasicGame.Nivel2.prototype = {
 	this.bombText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
     },
 
-    // Draws the grid.
+    /*
     make_Grid: function() {
-	
 	//We will make a unique grid, with static tiles
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
-
 	var graphics = this.add.graphics(0, 0);
 	graphics.lineStyle(2, 0x00CCFF,1);
-	
-	//Static horizontal lines------------------------------------------------   
+	//Static horizontal lines------------------------------------------
 	forConstant1 = (COLUMNS_NUMBER*GRID_SPACE) + LEFT_MARGIN;
 	for( i = 0; i < (ROWS_NUMBER+1); i = i+1) {
 	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
 	    graphics.moveTo(LEFT_MARGIN, y); 
 	    graphics.lineTo(forConstant1,y);
 	}
-
-	//Static grid numbers----------------------------------------------------	
+	//Static grid numbers--------------------------------------------
    	forConstant1=LEFT_MARGIN + GRID_SPACE*(COLUMNS_NUMBER+0.5);
 	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
 	for( i= 0; i < ROWS_NUMBER; i = i+1) {
 	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	    this.add.text( forConstant1, y + forConstant2,String(i+1), style );
 	}
-	//Static vertical lines--------------------------------------------------
+	//Static vertical lines-------------------------------------
 	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;
 	for (i = 0; i < (COLUMNS_NUMBER + 1); i = i + 1) {
-	    y = (i * GRID_SPACE) + LEFT_MARGIN;
-	    
+	    y = (i * GRID_SPACE) + LEFT_MARGIN;	    
 	    graphics.moveTo(y,UP_MARGIN);
 	    graphics.lineTo(y,forConstant1);
 	}
     },
+    */
 
     //This function detects the place in the grid of an object.
     //Use it for objects that belong to the grid space.
