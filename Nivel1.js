@@ -39,13 +39,12 @@ BasicGame.Nivel1 = function (game) {
 //    this.numberOfBombs; //BombPool = number of enemies, should be generated.
     
     // Texts
-    this.bombTextPool;
+    this.bombsRemainingTextPool;
     this.otherTextPool;
     this.velocityText; // Text display of velocity
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
-    this.livesText; // Text display of lives
-
+    this.blackHoleButtonText; // Text display the time before the bombs explode
     // Buttons
     /*this.buttons; // Group for locked buttons*/
     this.blackHoleButton; // Black hole bomb button
@@ -95,12 +94,6 @@ BasicGame.Nivel1.prototype = {
 	// Create the bombPool
 	this.bombPool_Setup();
 	// this.nextShotAt = 0;
-
-	// Creating the text displays.
-	this.displays_Setup();
-	
-	// Every second activates this.countdown.
-	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 		
 	// Counters.
 	// Game's time counter.
@@ -122,6 +115,12 @@ BasicGame.Nivel1.prototype = {
 	
 	// // Create the locked buttons
 	this.lockedButtons_Setup();
+
+	// Creating the text displays.
+	this.displays_Setup();
+	
+	// Every second activates this.countdown.
+	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 	
 	// Mouse input
 	this.input.onDown.add(this.put_Bomb, this);
@@ -157,7 +156,7 @@ BasicGame.Nivel1.prototype = {
 
 	// Update displays.
 	
-	this.bombText.text = 'x' + numberOfBombs;
+	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -178,9 +177,10 @@ BasicGame.Nivel1.prototype = {
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.animations.play('explode');
 		bomb.events.onAnimationComplete.add(function() {
-		    if (this.enemyDistancePool.countLiving() == 0) {
-			bomb.kill();
-		    }
+		    bomb.kill();
+		    // if (this.enemyDistancePool.countLiving() == 0) {
+		    // 	bomb.kill();
+		    // }
 		}, this);
 	    }, this);
 	}
@@ -190,7 +190,7 @@ BasicGame.Nivel1.prototype = {
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyDistancePool.forEachAlive(function(enemy) {
-	    verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
+	    verticalLength = this.allign_Y(ROWS_NUMBER + 0.7) ; 
 	    console.log(enemy.body.y);
 	    console.log(verticalLength);
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
@@ -246,20 +246,20 @@ BasicGame.Nivel1.prototype = {
 	}
 
 	//Static grid numbers----------------------------------------------------	
-   	forConstant1=LEFT_MARGIN + GRID_SPACE*(COLUMNS_NUMBER+0.5);
+   	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5);
 	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
-	for( i= 0; i < ROWS_NUMBER; i = i+1) {
+	for( i= 0; i < ROWS_NUMBER; i = i + 1) {
 	    y = (i * GRID_SPACE) + UP_MARGIN;
 	    
 	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
 	}
 	//Static vertical lines--------------------------------------------------
-	forConstant1 =(GRID_SPACE*ROWS_NUMBER)+UP_MARGIN;
-	for (i = 0; i < (COLUMNS_NUMBER+1); i = i + 1) {
+	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;
+	for (i = 0; i < (COLUMNS_NUMBER + 1); i = i + 1) {
 	    y = (i * GRID_SPACE) + LEFT_MARGIN;
 	    
-	    graphics.moveTo(y,UP_MARGIN);
-	    graphics.lineTo(y,forConstant1);
+	    graphics.moveTo(y, UP_MARGIN);
+	    graphics.lineTo(y, forConstant1);
 	}
     },
 
@@ -326,7 +326,7 @@ BasicGame.Nivel1.prototype = {
 	this.bombTextPool = this.add.group();
 	// Time until explosion display.
 	this.enemyDistancePool.forEach(function() {
-	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#ffffff", align: "left" }, this.bombTextPool);
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
@@ -384,7 +384,12 @@ BasicGame.Nivel1.prototype = {
 	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
 	// Display for the amount of bombPool left.
-	this.bombText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+
+	// Display for the time of the bomb.
+	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
+
     },
 
     select_Bomb: function () {
