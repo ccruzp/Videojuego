@@ -1,10 +1,5 @@
 BasicGame.Nivel1 = function (game) {
 
-    //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-
-    //	You can use any of these from any function within this State.
-    //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-
     //Grid Stuff
     //-----------------------------------------------------------------------
     GRID_SPACE = 38;         //Length of the squares of the grid
@@ -59,7 +54,37 @@ BasicGame.Nivel1 = function (game) {
 };
 
 BasicGame.Nivel1.prototype = {
-
+    init: function(lastTime,nextLevel,
+		   allign_X,
+		   allign_Y,
+		   blackHoleButton_Setup,
+		   bombOnMouse_Setup,
+		   //bombPool_Setup,
+		   countdown,
+		   find_Grid_Place,
+		   gridLine_Setup,
+		   make_Grid,
+		   //lockedButtons_Setup,
+		   playButton_Setup,
+		   select_Bomb,
+		   start,
+		   try_To_Destroy) {
+    	this.allign_X = allign_X;
+	this.allign_Y = allign_Y;
+	this.blackHoleButton_Setup = blackHoleButton_Setup;
+	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	//this.bombPool_Setup = bombPool_Setup;
+	this.countdown = countdown;
+	this.find_Grid_Place = find_Grid_Place;
+	this.gridLine_Setup = gridLine_Setup;
+	this.make_Grid = make_Grid;
+	//this.lockedButtons_Setup = lockedButtons_Setup;
+	this.playButton_Setup = playButton_Setup;
+	this.select_Bomb = select_Bomb;
+	this.start = start;
+	this.try_To_Destroy = try_To_Destroy;
+    },
+    
     create: function () {
 	
 	// Initializing boolean variables.
@@ -155,8 +180,8 @@ BasicGame.Nivel1.prototype = {
 	}
 
 	// Update displays.
-	
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
+
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -201,81 +226,46 @@ BasicGame.Nivel1.prototype = {
 	}
     },
     
-    // Destroys everything created and moves to the winner's menu or the game 
-    // over menu.
-    quit_Game: function (won) {	
-	this.playButton.destroy();
-	this.blackHoleButton.destroy();
-	buttons.destroy(true);
-	this.bombTextPool.destroy(true);
-	this.otherTextPool.destroy(true);
-	this.bombPool.destroy(true);
-	background.kill();
-	if (won) {
-	    this.state.start('WinnerMenu', true, false, this.timeOfGame, 2, this.make_Grid);
-	} else {
-	    //	Then let's go back to the game over menu.
-	    this.state.start('GameOverMenu');	
-	}
+    //Creates the bombPool
+    bombPool_Setup: function() {
+	this.bombPool = this.add.group();
+	this.bombPool.enableBody = true;
+	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
+	this.bombPool.setAll('anchor.x', 0.4);
+	this.bombPool.setAll('anchor.y', 0.4);
+	this.bombPool.setAll('scale.x', 0.15);
+	this.bombPool.setAll('scale.y', 0.15);
+	this.bombPool.forEach(function(bomb) {
+	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+	}, this);
+	// Group for the text displays
+	this.bombTextPool = this.add.group();
+	// Time until explosion display.
+	this.enemyDistancePool.forEach(function() {
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);	
     },
-    
-    // If the bomb's counter is equal to zero then the enemy is killed.
-    try_To_Destroy: function(enemy, bomb) {
-	var explosionY = (initialY + (GRID_SPACE * ENEMY_VELOCITY * BOMB_TOTAL_TIME));
-	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
-	    enemy.kill();
-	}
-    },
-    
-    //Draws the grid
-    make_Grid: function (/*WIDTH, HEIGHT*/) {
-	
-	//We will make a unique grid, with static tiles
-	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
+    	  
+    // Creates the texts that the games uses
+    displays_Setup: function(){
 
-	var graphics = this.add.graphics(0, 0);
-	graphics.lineStyle(2, 0x00CCFF,1);
-	
-	//Static horizontal lines------------------------------------------------   
-	forConstant1 = (COLUMNS_NUMBER*GRID_SPACE) + LEFT_MARGIN;
-	for( i = 0; i < (ROWS_NUMBER+1); i = i+1) {
-	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    graphics.moveTo(LEFT_MARGIN, y); 
-	    graphics.lineTo(forConstant1,y);
-	}
+	this.otherTextPool = this.add.group();	
+	// Game time display.
+	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
+		
+	// Display for velocity of the enemies.
+	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
-	//Static grid numbers----------------------------------------------------	
-   	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5);
-	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
-	for( i= 0; i < ROWS_NUMBER; i = i + 1) {
-	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
-	}
-	//Static vertical lines--------------------------------------------------
-	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;
-	for (i = 0; i < (COLUMNS_NUMBER + 1); i = i + 1) {
-	    y = (i * GRID_SPACE) + LEFT_MARGIN;
-	    
-	    graphics.moveTo(y, UP_MARGIN);
-	    graphics.lineTo(y, forConstant1);
-	}
-    },
+	// Display for the amount of bombPool left.
+	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
 
-    bombOnMouse_Setup: function() {
-	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
-	this.bombOnMouse.anchor.setTo(0.5, 0.5);
-	this.bombOnMouse.scale.setTo(0.1, 0.1);
-	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
-    },
-    
-    gridLine_Setup: function(){
-	
-	this.line = this.add.sprite(1000, 1000,'ground');
-	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
-	this.line.scale.setTo(1.52, 0.4);
-	this.line.anchor.setTo(0, 0.5);
+	// Display for the time of the bomb.
+	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
+
     },
 
     // Creates the distance enemies of the level.
@@ -308,46 +298,6 @@ BasicGame.Nivel1.prototype = {
 	    }, this);
 	}, this);
     },
-	  
-    //Creates the bombPool
-    bombPool_Setup: function() {
-	this.bombPool = this.add.group();
-	this.bombPool.enableBody = true;
-	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
-	this.bombPool.setAll('anchor.x', 0.4);
-	this.bombPool.setAll('anchor.y', 0.4);
-	this.bombPool.setAll('scale.x', 0.15);
-	this.bombPool.setAll('scale.y', 0.15);
-	this.bombPool.forEach(function(bomb) {
-	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
-	}, this);
-	// Group for the text displays
-	this.bombTextPool = this.add.group();
-	// Time until explosion display.
-	this.enemyDistancePool.forEach(function() {
-	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
-	    text.visible = false;
-	    text.anchor.setTo(0.5, 0.5);
-	}, this);
-	
-    },
-    
-    // Creates the black hole bomb button.
-    blackHoleButton_Setup: function() {
-	this.blackHoleButton = this.add.button(200, this.world.height - 60, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
-	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.4, 0.4);
-	buttons.add(this.blackHoleButton);
-    },
-    
-    // Creates the play button
-    playButton_Setup: function() {
-	this.playButton = this.add.button(this.world.centerX, this.world.height - 60, 'playButton', this.start, 2, 1, 0);
-	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.05, 0.05);
-	buttons.add(this.playButton);
-    },
 
     // Creates the locked buttons
     lockedButtons_Setup: function() {
@@ -371,43 +321,6 @@ BasicGame.Nivel1.prototype = {
 	    button.reset(beforeButton.x + 100, beforeButton.y);
 	    beforeButton = button;
 	}, this);
-    },
-    
-    // Creates the texts that the games uses
-    displays_Setup: function(){
-
-	this.otherTextPool = this.add.group();	
-	// Game time display.
-	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
-		
-	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
-
-	// Display for the amount of bombPool left.
-	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
-
-	// Display for the time of the bomb.
-	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
-
-    },
-
-    select_Bomb: function () {
-	usingBlackHole = (numberOfBombs > 0);
-	if (!usingBlackHole) {
-	    // this.bombPool.removeAll();
-	    this.bombPool.forEachAlive(function(bomb) {
-		bomb.kill();
-	    }, this);
-	    this.bombTextPool.forEach(function(l) {
-		l.visible = false;
-	    }, this);
-	    numberOfBombs = TOTAL_ENEMIES;
-	}		
-    },
-
-    start: function () {
-	started = true;
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
@@ -439,49 +352,43 @@ BasicGame.Nivel1.prototype = {
     	usingBlackHole = false;
 	this.line.reset(1000, 1000);
     },
-    
-    // Decreases the game's counter and the bomb's counter.
-    countdown: function () {
-	if (started) {
-	    this.timeCounter -= 1;
-	    if (this.timeCounter < 0) {
-		this.quit_Game(true);
-	    }
-	    if (placedBomb) {
-		this.explosionTimeCounter -= 1;
-	    }
-	}
-    },
-    
-    //This function detects the place in the grid of an object.
-    //Use it for objects that belong to the grid space.
-    find_Grid_Place: function() {
-	this.gridX = parseInt((this.input.x-LEFT_MARGIN+GRID_SPACE)/GRID_SPACE);
-	this.gridY = parseInt((this.input.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
-    
-	if(this.gridX < 1) this.gridX = 1;
-	if(this.gridX > 16) this.gridX = 16;
-    
-	if(this.gridY < 1) this.gridY = 1;
-	if(this.gridY > 10) this.gridY = 10;
-    },
-    
-    //Alligns a number to the X axis of the grid
-    allign_X: function(x){
-	return x*GRID_SPACE + LEFT_MARGIN;
-    },
-    
-    //Alligns a number to the Y axis of the grid
-    allign_Y: function(y){
-	return y*GRID_SPACE + UP_MARGIN;
-    },
-/*
-    outOfGrid: function(enemy) {
-	//if (enemy.body.y > (200)) console.log("Entro aquí VE");
-	verticalLength = this.allignY ( this.VERTICAL_NUMBER ) ; 
-	if (enemy.body.y > verticalLength) this.enemyOutOfGrid = true;
-    },*/
 
+    // Destroys everything created and moves to the winner's menu or the game 
+    // over menu.
+    quit_Game: function (won) {	
+	this.playButton.destroy();
+	this.blackHoleButton.destroy();
+	buttons.destroy(true);
+	this.bombTextPool.destroy(true);
+	this.otherTextPool.destroy(true);
+	this.bombPool.destroy(true);
+	background.kill();
+	if (won) {
+	    time = this.timeOfGame;
+	    level = 2;
+	    nextState = 'WinnerMenu';
+	} else {
+	    //	Then let's go back to the game over menu.
+	    time = 0;
+	    level = 1;
+	    nextState = 'GameOverMenu';
+	}
+	this.state.start(nextState, true, false, time, level,
+			     this.allign_X,
+			     this.allign_Y,
+			     this.blackHoleButton_Setup,
+			     this.bombOnMouse_Setup,
+			     this.countdown,
+			     this.find_Grid_Place,
+			     this.gridLine_Setup,
+			     this.make_Grid,
+			     this.playButton_Setup,
+			     this.select_Bomb,
+			     this.start,
+			     this.try_To_Destroy);
+	
+    },
+    
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
     // render: function() {
@@ -497,3 +404,18 @@ BasicGame.Nivel1.prototype = {
     // 	}
     // }
 };
+
+/*Functions commons to Nivel1 and Nivel2
+  allign_X
+  allign_Y
+  blackHoleButton_Setup
+  bombOnMouse_Setup
+  countdown
+  find_Grid_Place
+  gridLine_Setup  
+  makegrid
+  playButton_Setup
+  select_Bomb
+  start
+  try_To_Destroy
+*/

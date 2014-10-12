@@ -8,17 +8,46 @@ BasicGame.WinnerMenu = function (game) {
     this.scoreTime;
     this.maxTime;
     this.rankBoolean;
-    this.sigNivel;
+    this.nextLevel;
     this.make_Grid;
 };
 
 BasicGame.WinnerMenu.prototype = {
     
-    init: function(customParam1, siguienteNivel, make_Grid) {
-	this.timeOfGame = customParam1;
+    init: function(lastTime, nextLevel, 
+		   allign_X,
+		   allign_Y,
+		   blackHoleButton_Setup,
+		   bombOnMouse_Setup,
+		  // bombPool_Setup,
+		   countdown,
+		   find_Grid_Place,
+		   gridLine_Setup,
+		   make_Grid,
+		 //  lockedButtons_Setup,
+		   playButton_Setup,
+		   select_Bomb,
+		   start,
+		   try_To_Destroy) {
+	this.timeOfGame = lastTime;
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
-	this.sigNivel = "Nivel" + siguienteNivel;
+	if(nextLevel != 0) this.nextLevel = "Nivel" + nextLevel;
+	else this.nextLevel = 'MainMenu';
+	
+	this.allign_X = allign_X;
+	this.allign_Y = allign_Y;
+	this.blackHoleButton_Setup = blackHoleButton_Setup;
+	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	//this.bombPool_Setup = bombPool_Setup;
+	this.countdown = countdown;
+	this.find_Grid_Place = find_Grid_Place;
+	this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
+	//this.lockedButtons_Setup = lockedButtons_Setup;
+	this.playButton_Setup = playButton_Setup;
+	this.select_Bomb = select_Bomb;
+	this.start = start;
+	this.try_To_Destroy = try_To_Destroy;
     },
     
     preload: function () {
@@ -108,7 +137,21 @@ BasicGame.WinnerMenu.prototype = {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start(this.sigNivel, true, false, this.make_Grid);
+	this.state.start(this.nextLevel , true, false, time,level,
+			     this.allign_X,
+			     this.allign_Y,
+			     this.blackHoleButton_Setup,
+			     this.bombOnMouse_Setup,
+			   //  this.bombPool_Setup,
+			     this.countdown,
+			     this.find_Grid_Place,
+			     this.gridLine_Setup,
+			     this.make_Grid,
+			     //this.lockedButtons_Setup,
+			     this.playButton_Setup,
+			     this.select_Bomb,
+			     this.start,
+			     this.try_To_Destroy);
     },
 
     update_Score: function(){
