@@ -118,7 +118,6 @@ BasicGame.Nivel1.prototype = {
 	
 	// Create the bombPool
 	this.bombPool_Setup();
-	// this.nextShotAt = 0;
 		
 	// Counters.
 	// Game's time counter.
@@ -159,7 +158,7 @@ BasicGame.Nivel1.prototype = {
 	this.physics.arcade.overlap(this.enemyDistancePool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
 	
-	// Hide the weapon cursors
+	// Hide the bomb cursors.
 	this.bombOnMouse.reset(1000,1000);
 	
 	if (usingBlackHole) {
@@ -186,7 +185,8 @@ BasicGame.Nivel1.prototype = {
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 	    text.text = this.explosionTimeCounter;
-	    text.visible = (this.explosionTimeCounter > 0);
+	    var hola = (this.explosionTimeCounter > 0);
+	    text.visible = hola;
 	}, this); 
 
 	// If the game started move enemies.
@@ -216,8 +216,8 @@ BasicGame.Nivel1.prototype = {
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyDistancePool.forEachAlive(function(enemy) {
 	    verticalLength = this.allign_Y(ROWS_NUMBER + 0.7) ; 
-	    console.log(enemy.body.y);
-	    console.log(verticalLength);
+	    // console.log(enemy.body.y);
+	    // console.log(verticalLength);
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
@@ -237,8 +237,32 @@ BasicGame.Nivel1.prototype = {
 	this.bombPool.setAll('scale.x', 0.15);
 	this.bombPool.setAll('scale.y', 0.15);
 	this.bombPool.forEach(function(bomb) {
+	    // Adding the bomb animation to each bomb.
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+
+	    // Enabling the input for bombs.
+	    bomb.inputEnabled = true;
+	    // Adding hand cursor for hovering over the bombs before game has started.
+	    bomb.events.onInputOver.add(function(bomb) {
+		if (!started) {
+		    bomb.input.useHandCursor = true;
+		} else {
+		    bomb.input.useHandCursor = false;
+		}
+	    }, this);
+
+	    // Making invisible the text display and killing bomb clicked before has not started.
+	    bomb.events.onInputDown.add(function(bomb) {
+		if (!started) {
+		    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		    text.visible = false;
+		    bomb.kill();
+		    numberOfBombs += 1;
+		    usingBlackHoleBomb = true;
+		}
+	    }, this);
 	}, this);
+
 	// Group for the text displays
 	this.bombTextPool = this.add.group();
 	// Time until explosion display.
@@ -290,6 +314,7 @@ BasicGame.Nivel1.prototype = {
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
+
 	    enemy.events.onInputOver.add(function(enemy) {
 		enemy.frame = ENEMY_VELOCITY;
 	    }, this);
@@ -368,7 +393,7 @@ BasicGame.Nivel1.prototype = {
 	    level = 2;
 	    nextState = 'WinnerMenu';
 	} else {
-	    //	Then let's go back to the game over menu.
+	    //	You go to the game over menu.
 	    time = 0;
 	    level = 1;
 	    nextState = 'GameOverMenu';
