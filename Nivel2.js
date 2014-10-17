@@ -284,7 +284,6 @@ BasicGame.Nivel2.prototype = {
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
-
     },
 
     // Creates the bullets.
@@ -346,7 +345,7 @@ BasicGame.Nivel2.prototype = {
     displays_Setup: function() {
 
 	this.otherTextPool = this.add.group();
-	
+
 	// Game time display.
 	this.levelText = this.add.text(931, 85, '2', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 	
@@ -361,7 +360,7 @@ BasicGame.Nivel2.prototype = {
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
 	// Display for the velocity of the missile.
-	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 7, '' + bulletSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + bulletSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
     },
     
@@ -515,7 +514,6 @@ BasicGame.Nivel2.prototype = {
 			     this.select_Bomb,
 			     this.start,
 			     this.try_To_Destroy);
-	
     },
      
     // Lets the player use the cannons.

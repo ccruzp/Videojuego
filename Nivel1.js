@@ -302,24 +302,24 @@ BasicGame.Nivel1.prototype = {
 	this.enemyDistancePool.setAll('anchor.y', 0.5);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
 	this.enemyDistancePool.setAll('checkWorldBounds', true);
-	this.enemyDistancePool.setAll('scale.x', 0.1);
-	this.enemyDistancePool.setAll('scale.y', 0.1);
+	this.enemyDistancePool.setAll('scale.x', 0.125);
+	this.enemyDistancePool.setAll('scale.y', 0.125);
 
 	this.enemyDistancePool.forEach(function(enemy) {
 	    var enemy = this.enemyDistancePool.getFirstExists(false);
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
-	    enemy.frame = 0;
+	    enemy.frame = ENEMY_VELOCITY;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 
 	    enemy.events.onInputOver.add(function(enemy) {
-		enemy.frame = ENEMY_VELOCITY;
+		enemy.frame = ENEMY_VELOCITY + 10;
 	    }, this);
 	    enemy.events.onInputOut.add(function(enemy) {
-		enemy.frame = 0;
+		enemy.frame = ENEMY_VELOCITY;
 	    }, this);
 	}, this);
     },
@@ -351,6 +351,7 @@ BasicGame.Nivel1.prototype = {
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Bomb: function () {
 	
+	this.blackHoleButton.frame = 1;
 	if (!started && usingBlackHole && (numberOfBombs > 0)) {
 	    // Intance of a bomb
 	    x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
@@ -416,18 +417,18 @@ BasicGame.Nivel1.prototype = {
     
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
-    // render: function() {
-    // 	if (this.enemyPool.countLiving() > 0) {
-    // 	    this.enemyPool.forEachAlive(function (enemy) {
-    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.bombPool.countLiving() > 0) {
-    // 	    this.bombPool.forEachAlive(function(bomb) {
-    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // }
+    render: function() {
+    	if (this.enemyDistancePool.countLiving() > 0) {
+    	    this.enemyDistancePool.forEachAlive(function (enemy) {
+    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.bombPool.countLiving() > 0) {
+    	    this.bombPool.forEachAlive(function(bomb) {
+    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    }
 };
 
 /*Functions commons to Nivel1 and Nivel2

@@ -184,6 +184,7 @@ BasicGame.MainMenu.prototype = {
 	usingBlackHole = (numberOfBombs > 0);
 	if (!usingBlackHole) {
 	    // this.bombPool.removeAll();
+	    this.blackHoleButton.frame = 0;
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.kill();
 	    }, this);

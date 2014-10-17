@@ -20,7 +20,7 @@ BasicGame.Boot.prototype = {
 	this.load.image('ground', 'assets/platform2.png');
 
 	// Loading spritesheets
-	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet.png', 399, 500, 10);
+	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
 	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip.png', 1000, 1000, 2);
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
@@ -35,7 +35,7 @@ BasicGame.Boot.prototype = {
 
 	// The buttons
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
-	this.load.spritesheet('cannonButton', 'assets/Spritesheets/shootButton', 250, 242, 2);
+	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
 	
 	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
