@@ -45,6 +45,9 @@ BasicGame.Nivel1 = function (game) {
     this.blackHoleButton; // Black hole bomb button
     this.playButton; // Play button
     
+    // Actual level
+    this.level;
+
     //Score system variables
     this.score;
     this.timeOfGame;
@@ -54,7 +57,7 @@ BasicGame.Nivel1 = function (game) {
 };
 
 BasicGame.Nivel1.prototype = {
-    init: function(lastTime,nextLevel,
+    init: function(lastTime,level,
 		   allign_X,
 		   allign_Y,
 		   blackHoleButton_Setup,
@@ -69,6 +72,7 @@ BasicGame.Nivel1.prototype = {
 		   select_Bomb,
 		   start,
 		   try_To_Destroy) {
+	this.level = level;
     	this.allign_X = allign_X;
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
@@ -210,7 +214,8 @@ BasicGame.Nivel1.prototype = {
 	    }, this);
 	}
 
-	if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
+	// if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
+	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == TOTAL_ENEMIES){
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -278,7 +283,7 @@ BasicGame.Nivel1.prototype = {
 
 	this.otherTextPool = this.add.group();	
 	// Game time display.
-	this.levelText = this.add.text(931, 85, '1', { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
+	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
 	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
@@ -391,15 +396,15 @@ BasicGame.Nivel1.prototype = {
 	background.kill();
 	if (won) {
 	    time = this.timeOfGame;
-	    level = 2;
+	    this.level = 2;
 	    nextState = 'WinnerMenu';
 	} else {
 	    //	You go to the game over menu.
 	    time = 0;
-	    level = 1;
+	    // level = 1;
 	    nextState = 'GameOverMenu';
 	}
-	this.state.start(nextState, true, false, time, level,
+	this.state.start(nextState, true, false, time, this.level,
 			     this.allign_X,
 			     this.allign_Y,
 			     this.blackHoleButton_Setup,

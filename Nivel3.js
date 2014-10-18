@@ -1,4 +1,4 @@
-BasicGame.Nivel2 = function(game) {
+BasicGame.Nivel3 = function(game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -64,7 +64,6 @@ BasicGame.Nivel2 = function(game) {
     
     // Actual level
     this.level;
-
     //Score system variables
     this.score;
     this.timeOfGame;
@@ -73,7 +72,7 @@ BasicGame.Nivel2 = function(game) {
     this.enemyPlace = 6;
 };
 
-BasicGame.Nivel2.prototype = {
+BasicGame.Nivel3.prototype = {
 
     init: function(lastTime,level,
 		   allign_X,
@@ -90,7 +89,6 @@ BasicGame.Nivel2.prototype = {
 		   select_Bomb,
 		   start,
 		   try_To_Destroy) {
-	console.log(level);
 	this.level = level;
     	this.allign_X = allign_X;
 	this.allign_Y = allign_Y;
@@ -110,6 +108,8 @@ BasicGame.Nivel2.prototype = {
 
     
     create: function() {
+	
+	console.log(this.level);
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 	shot = false; // Boolean that says if the cannons have shot.
@@ -340,7 +340,7 @@ BasicGame.Nivel2.prototype = {
 
     // Decreases the velocity of the bullets.
     decrease_Fire: function() {
-	if (!started && bulletSpeed > 0) {
+	if (bulletSpeed > 0) {
 	    bulletSpeed -= 1;
 	}
     },
@@ -404,9 +404,7 @@ BasicGame.Nivel2.prototype = {
 
     // Increases the velocity of the bullets.
     increase_Fire: function() {
-	if (!started) {
-	    bulletSpeed += 1;
-	}
+	bulletSpeed += 1;
     },
 
     // Creates the locked buttons
@@ -499,7 +497,7 @@ BasicGame.Nivel2.prototype = {
 	background.kill();
 	if (won) {
 	    time = this.timeOfGame;
-	    this.level = 3;
+	    this.level = 0;
 	    nextState = 'WinnerMenu';
 	} else {
 	    //	Then let's go back to the game over menu.
@@ -524,18 +522,16 @@ BasicGame.Nivel2.prototype = {
      
     // Lets the player use the cannons.
     select_Cannon: function() {
-	if (!started){
-	    usingCannon = (numberOfCannons > 0);
-	    if (!usingCannon) {
-		// this.bombPool.removeAll();
-		this.cannonPool.forEachAlive(function(cannon) {
-		    cannon.kill();
-		}, this);
-		/*this.bombTextPool.forEach(function(display) {
-		  display.visible = false;
-		  }, this);*/
-		numberOfCannons = TOTAL_ENEMIES;
-	    }
+	usingCannon = (numberOfCannons > 0);
+	if (!usingCannon) {
+	    // this.bombPool.removeAll();
+	    this.cannonPool.forEachAlive(function(cannon) {
+		cannon.kill();
+	    }, this);
+	    /*this.bombTextPool.forEach(function(display) {
+		display.visible = false;
+	    }, this);*/
+	    numberOfCannons = TOTAL_ENEMIES;
 	}
     },
 

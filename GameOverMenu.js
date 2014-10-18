@@ -3,6 +3,7 @@ BasicGame.GameOverMenu = function (game) {
     // this.gameOverText = null;
     // this.playAgainButton = null;
     this.timeOfGame;
+    this.nextLevelName;
     this.nextLevel;
 };
 
@@ -23,26 +24,27 @@ BasicGame.GameOverMenu.prototype = {
 		   select_Bomb,
 		   start,
 		   try_To_Destroy) {
-	this.timeOfGame = lastTime;
-	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
-	this.nextLevel = "Nivel" + nextLevel;
+	    this.timeOfGame = lastTime;
+	    this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
+	    this.nextLevel = nextLevel;
+	    this.nextLevelName = "Nivel" + nextLevel;
 	
-    	this.allign_X = allign_X;
-	this.allign_Y = allign_Y;
-	this.blackHoleButton_Setup = blackHoleButton_Setup;
-	this.bombOnMouse_Setup = bombOnMouse_Setup;
-	//this.bombPool_Setup = bombPool_Setup;
-	this.countdown = countdown;
-	this.find_Grid_Place = find_Grid_Place;
-	this.gridLine_Setup = gridLine_Setup;
-	this.make_Grid = make_Grid;
-	//this.lockedButtons_Setup = lockedButtons_Setup;
-	this.playButton_Setup = playButton_Setup;
-	this.select_Bomb = select_Bomb;
-	this.start = start;
-	this.try_To_Destroy = try_To_Destroy;
-    },
-
+    	    this.allign_X = allign_X;
+	    this.allign_Y = allign_Y;
+	    this.blackHoleButton_Setup = blackHoleButton_Setup;
+	    this.bombOnMouse_Setup = bombOnMouse_Setup;
+	    //this.bombPool_Setup = bombPool_Setup;
+	    this.countdown = countdown;
+	    this.find_Grid_Place = find_Grid_Place;
+	    this.gridLine_Setup = gridLine_Setup;
+	    this.make_Grid = make_Grid;
+	    //this.lockedButtons_Setup = lockedButtons_Setup;
+	    this.playButton_Setup = playButton_Setup;
+	    this.select_Bomb = select_Bomb;
+	    this.start = start;
+	    this.try_To_Destroy = try_To_Destroy;
+	},
+    
     
     preload: function () {
 	
@@ -103,8 +105,7 @@ BasicGame.GameOverMenu.prototype = {
 	// this.playAgainButton.destroy();
 	background.destroy();
 	time = 0;
-	level = 0;
-	this.state.start(this.nextLevel , true, false, time,level,
+	this.state.start(this.nextLevelName , true, false, time,this.nextLevel,
 			     this.allign_X,
 			     this.allign_Y,
 			     this.blackHoleButton_Setup,

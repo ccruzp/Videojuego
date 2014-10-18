@@ -54,7 +54,8 @@ BasicGame.MainMenu.prototype = {
 	text.destroy();
 	background.destroy();
 	time = 0;
-	level = 0;
+	level = 1;
+	console.log(level);
 	this.state.start('Nivel1',true,false,time,level,
 			 this.allign_X,
 			 this.allign_Y,

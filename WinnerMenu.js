@@ -8,7 +8,8 @@ BasicGame.WinnerMenu = function (game) {
     this.scoreTime;
     this.maxTime;
     this.rankBoolean;
-    this.nextLevel;
+    this.nextLevelName;
+    this.nextLevel
     this.make_Grid;
 };
 
@@ -29,10 +30,11 @@ BasicGame.WinnerMenu.prototype = {
 		   select_Bomb,
 		   start,
 		   try_To_Destroy) {
+	this.nextLevel = nextLevel;
 	this.timeOfGame = lastTime;
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
-	if(nextLevel != 0) this.nextLevel = "Nivel" + nextLevel;
-	else this.nextLevel = 'MainMenu';
+	if(this.nextLevel != 0) this.nextLevelName = "Nivel" + this.nextLevel;
+	else this.nextLevelName = 'MainMenu';
 	
 	this.allign_X = allign_X;
 	this.allign_Y = allign_Y;
@@ -137,7 +139,7 @@ BasicGame.WinnerMenu.prototype = {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start(this.nextLevel , true, false, time,level,
+	this.state.start(this.nextLevelName , true, false, time,this.nextLevel,
 			     this.allign_X,
 			     this.allign_Y,
 			     this.blackHoleButton_Setup,
