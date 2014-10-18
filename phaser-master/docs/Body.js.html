@@ -59,6 +59,10 @@
 						</li>
 						
 						<li class="class-depth-1">
+							<a href="Phaser.AudioSprite.html">AudioSprite</a>
+						</li>
+						
+						<li class="class-depth-1">
 							<a href="Phaser.BitmapData.html">BitmapData</a>
 						</li>
 						
@@ -152,6 +156,14 @@
 						
 						<li class="class-depth-1">
 							<a href="Phaser.Filter.html">Filter</a>
+						</li>
+						
+						<li class="class-depth-1">
+							<a href="Phaser.FlexGrid.html">FlexGrid</a>
+						</li>
+						
+						<li class="class-depth-1">
+							<a href="Phaser.FlexLayer.html">FlexLayer</a>
 						</li>
 						
 						<li class="class-depth-1">
@@ -250,6 +262,10 @@
 							<a href="Phaser.Particles.html">Particles</a>
 						</li>
 						
+						<li class="class-depth-2">
+							<a href="Phaser.Particles.Arcade.html">Arcade</a>
+						</li>
+						
 						<li class="class-depth-3">
 							<a href="Phaser.Particles.Arcade.Emitter.html">Emitter</a>
 						</li>
@@ -343,6 +359,10 @@
 						</li>
 						
 						<li class="class-depth-3">
+							<a href="Phaser.Physics.P2.RotationalSpring.html">RotationalSpring</a>
+						</li>
+						
+						<li class="class-depth-3">
 							<a href="Phaser.Physics.P2.Spring.html">Spring</a>
 						</li>
 						
@@ -388,6 +408,10 @@
 						
 						<li class="class-depth-1">
 							<a href="Phaser.RetroFont.html">RetroFont</a>
+						</li>
+						
+						<li class="class-depth-1">
+							<a href="Phaser.Rope.html">Rope</a>
 						</li>
 						
 						<li class="class-depth-1">
@@ -531,7 +555,6 @@
 * the Sprite itself. For example you can set the velocity, acceleration, bounce values etc all on the Body.
 *
 * @class Phaser.Physics.Arcade.Body
-* @classdesc Arcade Physics Body Constructor
 * @constructor
 * @param {Phaser.Sprite} sprite - The Sprite object this physics body belongs to.
 */
@@ -551,6 +574,12 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     * @property {number} type - The type of physics system this body belongs to.
     */
     this.type = Phaser.Physics.ARCADE;
+
+    /**
+    * @property {boolean} enable - A disabled body won't be checked for any form of collision or overlap or have its pre/post updates run.
+    * @default
+    */
+    this.enable = true;
 
     /**
     * @property {Phaser.Point} offset - The offset of the Physics Body from the Sprite x/y position.
@@ -814,6 +843,11 @@ Phaser.Physics.Arcade.Body = function (sprite) {
     this.phase = 0;
 
     /**
+    * @property {boolean} skipQuadTree - If true and you collide this Sprite against a Group, it will disable the collision check from using a QuadTree.
+    */
+    this.skipQuadTree = false;
+
+    /**
     * @property {boolean} _reset - Internal cache var.
     * @private
     */
@@ -880,6 +914,11 @@ Phaser.Physics.Arcade.Body.prototype = {
     * @protected
     */
     preUpdate: function () {
+
+        if (!this.enable)
+        {
+            return;
+        }
 
         this.phase = 1;
 
@@ -955,6 +994,11 @@ Phaser.Physics.Arcade.Body.prototype = {
     * @protected
     */
     postUpdate: function () {
+
+        if (!this.enable)
+        {
+            return;
+        }
 
         //  Only allow postUpdate to be called once per frame
         if (this.phase === 2)
@@ -1034,6 +1078,7 @@ Phaser.Physics.Arcade.Body.prototype = {
     */
     destroy: function () {
 
+        this.sprite.body = null;
         this.sprite = null;
 
     },
@@ -1082,13 +1127,13 @@ Phaser.Physics.Arcade.Body.prototype = {
     * @method Phaser.Physics.Arcade.Body#setSize
     * @param {number} width - The width of the Body.
     * @param {number} height - The height of the Body.
-    * @param {number} offsetX - The X offset of the Body from the Sprite position.
-    * @param {number} offsetY - The Y offset of the Body from the Sprite position.
+    * @param {number} [offsetX] - The X offset of the Body from the Sprite position.
+    * @param {number} [offsetY] - The Y offset of the Body from the Sprite position.
     */
     setSize: function (width, height, offsetX, offsetY) {
 
-        offsetX = offsetX || this.offset.x;
-        offsetY = offsetY || this.offset.y;
+        if (typeof offsetX === 'undefined') { offsetX = this.offset.x; }
+        if (typeof offsetY === 'undefined') { offsetY = this.offset.y; }
 
         this.sourceWidth = width;
         this.sourceHeight = height;
@@ -1128,7 +1173,7 @@ Phaser.Physics.Arcade.Body.prototype = {
 
         this._sx = this.sprite.scale.x;
         this._sy = this.sprite.scale.y;
-        
+
         this.center.setTo(this.position.x + this.halfWidth, this.position.y + this.halfHeight);
 
     },
@@ -1283,13 +1328,13 @@ Object.defineProperty(Phaser.Physics.Arcade.Body.prototype, "y", {
 /**
 * Render Sprite Body.
 *
-* @method Phaser.Physics.Arcade.Body#renderDebug
+* @method Phaser.Physics.Arcade.Body#render
 * @param {object} context - The context to render to.
 * @param {Phaser.Physics.Arcade.Body} body - The Body to render the info of.
-* @param {string} [color='rgb(255,255,255)'] - color of the debug info to be rendered. (format is css color string).
+* @param {string} [color='rgba(0,255,0,0.4)'] - color of the debug info to be rendered. (format is css color string).
 * @param {boolean} [filled=true] - Render the objected as a filled (default, true) or a stroked (false)
 */
-Phaser.Physics.Arcade.Body.render = function (context, body, filled, color) {
+Phaser.Physics.Arcade.Body.render = function (context, body, color, filled) {
 
     if (typeof filled === 'undefined') { filled = true; }
 
@@ -1350,7 +1395,7 @@ Phaser.Physics.Arcade.Body.prototype.constructor = Phaser.Physics.Arcade.Body;
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue May 20 2014 10:05:49 GMT+0100 (BST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Thu Oct 09 2014 16:09:45 GMT+0100 (BST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

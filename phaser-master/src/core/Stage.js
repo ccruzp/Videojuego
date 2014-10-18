@@ -5,34 +5,22 @@
 */
 
 /**
-* The Stage controls the canvas on which everything is displayed. It handles display within the browser,
-* focus handling, game resizing, scaling and the pause, boot and orientation screens.
+* The Stage controls root level display objects upon which everything is displayed.
+* It also handles browser visibility handling and the pausing due to loss of focus.
 *
 * @class Phaser.Stage
 * @extends PIXI.Stage
 * @constructor
 * @param {Phaser.Game} game - Game reference to the currently running game.
-* @param {number} width - Width of the canvas element.
-* @param {number} height - Height of the canvas element.
  */
-Phaser.Stage = function (game, width, height) {
+Phaser.Stage = function (game) {
 
     /**
     * @property {Phaser.Game} game - A reference to the currently running Game.
     */
     this.game = game;
 
-    /**
-    * @property {Phaser.Point} offset - Holds the offset coordinates of the Game.canvas from the top-left of the browser window (used by Input and other classes)
-    */
-    this.offset = new Phaser.Point();
-
-    /**
-    * @property {Phaser.Rectangle} bounds - The bounds of the Stage. Typically x/y = Stage.offset.x/y and the width/height match the game width and height.
-    */
-    this.bounds = new Phaser.Rectangle(0, 0, width, height);
-
-    PIXI.Stage.call(this, 0x000000, false);
+    PIXI.Stage.call(this, 0x000000);
 
     /**
     * @property {string} name - The name of this object.
@@ -54,12 +42,6 @@ Phaser.Stage = function (game, width, height) {
     this.disableVisibilityChange = false;
 
     /**
-    * @property {number|false} checkOffsetInterval - The time (in ms) between which the stage should check to see if it has moved.
-    * @default
-    */
-    this.checkOffsetInterval = 2500;
-
-    /**
     * @property {boolean} exists - If exists is true the Stage and all children are updated, otherwise it is skipped.
     * @default
     */
@@ -77,12 +59,6 @@ Phaser.Stage = function (game, width, height) {
     this._hiddenVar = 'hidden';
 
     /**
-    * @property {number} _nextOffsetCheck - The time to run the next offset check.
-    * @private
-    */
-    this._nextOffsetCheck = 0;
-
-    /**
     * @property {number} _backgroundColor - Stage background color.
     * @private
     */
@@ -92,16 +68,54 @@ Phaser.Stage = function (game, width, height) {
     {
         this.parseConfig(game.config);
     }
-    else
-    {
-        this.game.canvas = Phaser.Canvas.create(width, height);
-        this.game.canvas.style['-webkit-full-screen'] = 'width: 100%; height: 100%';
-    }
 
 };
 
 Phaser.Stage.prototype = Object.create(PIXI.Stage.prototype);
 Phaser.Stage.prototype.constructor = Phaser.Stage;
+
+/**
+* Parses a Game configuration object.
+*
+* @method Phaser.Stage#parseConfig
+* @protected
+* @param {object} config -The configuration object to parse.
+*/
+Phaser.Stage.prototype.parseConfig = function (config) {
+
+    if (config['disableVisibilityChange'])
+    {
+        this.disableVisibilityChange = config['disableVisibilityChange'];
+    }
+
+    if (config['backgroundColor'])
+    {
+        this.backgroundColor = config['backgroundColor'];
+    }
+
+};
+
+/**
+* Initialises the stage and adds the event listeners.
+* @method Phaser.Stage#boot
+* @private
+*/
+Phaser.Stage.prototype.boot = function () {
+
+    Phaser.Canvas.getOffset(this.game.canvas, this.offset);
+
+    var _this = this;
+
+    this._onChange = function (event) {
+        return _this.visibilityChange(event);
+    };
+
+    Phaser.Canvas.setUserSelect(this.game.canvas, 'none');
+    Phaser.Canvas.setTouchAction(this.game.canvas, 'none');
+
+    this.checkVisibility();
+
+};
 
 /**
 * This is called automatically after the plugins preUpdate and before the State.update.
@@ -177,94 +191,6 @@ Phaser.Stage.prototype.postUpdate = function () {
         }
     }
 
-    if (this.checkOffsetInterval !== false)
-    {
-        if (this.game.time.now > this._nextOffsetCheck)
-        {
-            Phaser.Canvas.getOffset(this.game.canvas, this.offset);
-            this.bounds.x = this.offset.x;
-            this.bounds.y = this.offset.y;
-            this._nextOffsetCheck = this.game.time.now + this.checkOffsetInterval;
-        }
-    }
-
-};
-
-/**
-* Parses a Game configuration object.
-*
-* @method Phaser.Stage#parseConfig
-* @protected
-*/
-Phaser.Stage.prototype.parseConfig = function (config) {
-
-    if (config['canvasID'])
-    {
-        this.game.canvas = Phaser.Canvas.create(this.game.width, this.game.height, config['canvasID']);
-    }
-    else
-    {
-        this.game.canvas = Phaser.Canvas.create(this.game.width, this.game.height);
-    }
-
-    if (config['canvasStyle'])
-    {
-        this.game.canvas.stlye = config['canvasStyle'];
-    }
-    else
-    {
-        this.game.canvas.style['-webkit-full-screen'] = 'width: 100%; height: 100%';
-    }
-
-    if (config['checkOffsetInterval'])
-    {
-        this.checkOffsetInterval = config['checkOffsetInterval'];
-    }
-
-    if (config['disableVisibilityChange'])
-    {
-        this.disableVisibilityChange = config['disableVisibilityChange'];
-    }
-
-    if (config['fullScreenScaleMode'])
-    {
-        this.fullScreenScaleMode = config['fullScreenScaleMode'];
-    }
-
-    if (config['scaleMode'])
-    {
-        this.scaleMode = config['scaleMode'];
-    }
-
-    if (config['backgroundColor'])
-    {
-        this.backgroundColor = config['backgroundColor'];
-    }
-
-};
-
-/**
-* Initialises the stage and adds the event listeners.
-* @method Phaser.Stage#boot
-* @private
-*/
-Phaser.Stage.prototype.boot = function () {
-
-    Phaser.Canvas.getOffset(this.game.canvas, this.offset);
-
-    this.bounds.setTo(this.offset.x, this.offset.y, this.game.width, this.game.height);
-
-    var _this = this;
-
-    this._onChange = function (event) {
-        return _this.visibilityChange(event);
-    };
-
-    Phaser.Canvas.setUserSelect(this.game.canvas, 'none');
-    Phaser.Canvas.setTouchAction(this.game.canvas, 'none');
-
-    this.checkVisibility();
-
 };
 
 /**
@@ -305,20 +231,29 @@ Phaser.Stage.prototype.checkVisibility = function () {
 
     window.onblur = this._onChange;
     window.onfocus = this._onChange;
+    
+    var _this = this;
+	
+    if (this.game.device.cocoonJSApp)
+    {
+        CocoonJS.App.onSuspended.addEventListener(function () {
+            Phaser.Stage.prototype.visibilityChange.call(_this, {type: "pause"});
+        });
+
+        CocoonJS.App.onActivated.addEventListener(function () {
+            Phaser.Stage.prototype.visibilityChange.call(_this, {type: "resume"});
+        });
+    }
 
 };
 
 /**
 * This method is called when the document visibility is changed.
+* 
 * @method Phaser.Stage#visibilityChange
 * @param {Event} event - Its type will be used to decide whether the game should be paused or not.
 */
 Phaser.Stage.prototype.visibilityChange = function (event) {
-
-    if (this.disableVisibilityChange)
-    {
-        return;
-    }
 
     if (event.type === 'pagehide' || event.type === 'blur' || event.type === 'pageshow' || event.type === 'focus')
     {
@@ -334,7 +269,12 @@ Phaser.Stage.prototype.visibilityChange = function (event) {
         return;
     }
 
-    if (document.hidden || document.mozHidden || document.msHidden || document.webkitHidden)
+    if (this.disableVisibilityChange)
+    {
+        return;
+    }
+
+    if (document.hidden || document.mozHidden || document.msHidden || document.webkitHidden || event.type === "pause")
     {
         this.game.gamePaused(event);
     }
@@ -366,6 +306,26 @@ Phaser.Stage.prototype.setBackgroundColor = function(backgroundColor)
 
     this.backgroundColorSplit = [ rgb.r / 255, rgb.g / 255, rgb.b / 255 ];
     this.backgroundColorString = Phaser.Color.RGBtoString(rgb.r, rgb.g, rgb.b, 255, '#');
+
+};
+
+/**
+* Destroys the Stage and removes event listeners.
+*
+* @name Phaser.Stage#destroy
+*/
+Phaser.Stage.prototype.destroy  = function () {
+
+    if (this._hiddenVar)
+    {
+        document.removeEventListener(this._hiddenVar, this._onChange, false);
+    }
+
+    window.onpagehide = null;
+    window.onpageshow = null;
+
+    window.onblur = null;
+    window.onfocus = null;
 
 };
 

@@ -62,9 +62,7 @@ PIXI.JsonLoader.prototype.constructor = PIXI.JsonLoader;
  */
 PIXI.JsonLoader.prototype.load = function () {
 
-    var scope = this;
-
-    if(window.XDomainRequest)
+    if(window.XDomainRequest && this.crossorigin)
     {
         this.ajaxRequest = new window.XDomainRequest();
 
@@ -73,13 +71,9 @@ PIXI.JsonLoader.prototype.load = function () {
         // More info here: http://stackoverflow.com/questions/15786966/xdomainrequest-aborts-post-on-ie-9
         this.ajaxRequest.timeout = 3000;
 
-        this.ajaxRequest.onerror = function () {
-            scope.onError();
-        };
-           
-        this.ajaxRequest.ontimeout = function () {
-            scope.onError();
-        };
+        this.ajaxRequest.onerror = this.onError.bind(this);
+
+        this.ajaxRequest.ontimeout = this.onError.bind(this);
 
         this.ajaxRequest.onprogress = function() {};
 
@@ -93,12 +87,9 @@ PIXI.JsonLoader.prototype.load = function () {
         this.ajaxRequest = new window.ActiveXObject('Microsoft.XMLHTTP');
     }
 
-    
 
-    this.ajaxRequest.onload = function(){
 
-        scope.onJSONLoaded();
-    };
+    this.ajaxRequest.onload = this.onJSONLoaded.bind(this);
 
     this.ajaxRequest.open('GET',this.url,true);
 
@@ -112,31 +103,31 @@ PIXI.JsonLoader.prototype.load = function () {
  * @private
  */
 PIXI.JsonLoader.prototype.onJSONLoaded = function () {
-    
+
     if(!this.ajaxRequest.responseText )
     {
         this.onError();
         return;
     }
-   
+
     this.json = JSON.parse(this.ajaxRequest.responseText);
 
     if(this.json.frames)
     {
         // sprite sheet
-        var scope = this;
         var textureUrl = this.baseUrl + this.json.meta.image;
         var image = new PIXI.ImageLoader(textureUrl, this.crossorigin);
         var frameData = this.json.frames;
 
         this.texture = image.texture.baseTexture;
-        image.addEventListener('loaded', function() {
-            scope.onLoaded();
-        });
+        image.addEventListener('loaded', this.onLoaded.bind(this));
 
-        for (var i in frameData) {
+        for (var i in frameData)
+        {
             var rect = frameData[i].frame;
-            if (rect) {
+
+            if (rect)
+            {
                 PIXI.TextureCache[i] = new PIXI.Texture(this.texture, {
                     x: rect.x,
                     y: rect.y,
@@ -144,15 +135,14 @@ PIXI.JsonLoader.prototype.onJSONLoaded = function () {
                     height: rect.h
                 });
 
-                // check to see ifthe sprite ha been trimmed..
-                if (frameData[i].trimmed) {
+                PIXI.TextureCache[i].crop = new PIXI.Rectangle(rect.x, rect.y, rect.w, rect.h);
 
-                    var texture =  PIXI.TextureCache[i];
-                    
+                //  Check to see if the sprite is trimmed
+                if (frameData[i].trimmed)
+                {
                     var actualSize = frameData[i].sourceSize;
                     var realSize = frameData[i].spriteSourceSize;
-
-                    texture.trim = new PIXI.Rectangle(realSize.x, realSize.y, actualSize.w, actualSize.h);
+                    PIXI.TextureCache[i].trim = new PIXI.Rectangle(realSize.x, realSize.y, actualSize.w, actualSize.h);
                 }
             }
         }

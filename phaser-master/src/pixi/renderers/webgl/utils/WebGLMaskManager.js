@@ -1,7 +1,6 @@
 /**
  * @author Mat Groves http://matgroves.com/ @Doormat23
  */
- 
 
 /**
 * @class WebGLMaskManager
@@ -11,9 +10,6 @@
 */
 PIXI.WebGLMaskManager = function(gl)
 {
-    this.maskStack = [];
-    this.maskPosition = 0;
-
     this.setContext(gl);
 };
 
@@ -35,26 +31,16 @@ PIXI.WebGLMaskManager.prototype.setContext = function(gl)
 */
 PIXI.WebGLMaskManager.prototype.pushMask = function(maskData, renderSession)
 {
-    var gl = this.gl;
+    var gl = renderSession.gl;
 
-    if(this.maskStack.length === 0)
+    if(maskData.dirty)
     {
-        gl.enable(gl.STENCIL_TEST);
-        gl.stencilFunc(gl.ALWAYS,1,1);
+        PIXI.WebGLGraphics.updateGraphics(maskData, gl);
     }
-    
-  //  maskData.visible = false;
 
-    this.maskStack.push(maskData);
-    
-    gl.colorMask(false, false, false, false);
-    gl.stencilOp(gl.KEEP,gl.KEEP,gl.INCR);
+    if(!maskData._webGL[gl.id].data.length)return;
 
-    PIXI.WebGLGraphics.renderGraphics(maskData, renderSession);
-
-    gl.colorMask(true, true, true, true);
-    gl.stencilFunc(gl.NOTEQUAL,0, this.maskStack.length);
-    gl.stencilOp(gl.KEEP,gl.KEEP,gl.KEEP);
+    renderSession.stencilManager.pushStencil(maskData, maskData._webGL[gl.id].data[0], renderSession);
 };
 
 /**
@@ -63,28 +49,12 @@ PIXI.WebGLMaskManager.prototype.pushMask = function(maskData, renderSession)
 *
 * @param renderSession {RenderSession} an object containing all the useful parameters
 */
-PIXI.WebGLMaskManager.prototype.popMask = function(renderSession)
+PIXI.WebGLMaskManager.prototype.popMask = function(maskData, renderSession)
 {
     var gl = this.gl;
-
-    var maskData = this.maskStack.pop();
-
-    if(maskData)
-    {
-        gl.colorMask(false, false, false, false);
-
-        //gl.stencilFunc(gl.ALWAYS,1,1);
-        gl.stencilOp(gl.KEEP,gl.KEEP,gl.DECR);
-
-        PIXI.WebGLGraphics.renderGraphics(maskData, renderSession);
-
-        gl.colorMask(true, true, true, true);
-        gl.stencilFunc(gl.NOTEQUAL,0,this.maskStack.length);
-        gl.stencilOp(gl.KEEP,gl.KEEP,gl.KEEP);
-    }
-   
-    if(this.maskStack.length === 0)gl.disable(gl.STENCIL_TEST);
+    renderSession.stencilManager.popStencil(maskData, maskData._webGL[gl.id].data[0], renderSession);
 };
+
 
 /**
 * Destroys the mask stack
@@ -92,6 +62,5 @@ PIXI.WebGLMaskManager.prototype.popMask = function(renderSession)
 */
 PIXI.WebGLMaskManager.prototype.destroy = function()
 {
-    this.maskStack = null;
     this.gl = null;
 };

@@ -35,6 +35,7 @@ PIXI.RenderTexture = function(width, height, renderer, scaleMode)
 {
     PIXI.EventTarget.call( this );
 
+
     /**
      * The with of the render texture
      *
@@ -58,6 +59,15 @@ PIXI.RenderTexture = function(width, height, renderer, scaleMode)
      */
     this.frame = new PIXI.Rectangle(0, 0, this.width, this.height);
 
+    /**
+     * This is the area of the BaseTexture image to actually copy to the Canvas / WebGL when rendering,
+     * irrespective of the actual frame size or placement (which can be influenced by trimmed texture atlases)
+     *
+     * @property crop
+     * @type Rectangle
+     */
+    this.crop = new PIXI.Rectangle(0, 0, this.width, this.height);
+    
     /**
      * The base texture object that this texture uses
      *
@@ -93,6 +103,7 @@ PIXI.RenderTexture = function(width, height, renderer, scaleMode)
         this.baseTexture.source = this.textureBuffer.canvas;
     }
 
+    this.valid = true;
     PIXI.Texture.frameUpdates.push(this);
 
 
@@ -116,11 +127,11 @@ PIXI.RenderTexture.prototype.resize = function(width, height, updateBase)
         return;
     }
 
-    this.width = width;
-    this.height = height;
+    this.valid = (width > 0 && height > 0);
 
-    this.frame.width = this.width;
-    this.frame.height = this.height;
+
+    this.width = this.frame.width = this.crop.width = width;
+    this.height =  this.frame.height = this.crop.height = height;
 
     if (updateBase)
     {
@@ -134,7 +145,9 @@ PIXI.RenderTexture.prototype.resize = function(width, height, updateBase)
         this.projection.y = -this.height / 2;
     }
     
+    if(!this.valid)return;
     this.textureBuffer.resize(this.width, this.height);
+   
 };
 
 /**
@@ -144,6 +157,8 @@ PIXI.RenderTexture.prototype.resize = function(width, height, updateBase)
  */
 PIXI.RenderTexture.prototype.clear = function()
 {
+    if(!this.valid)return;
+
     if (this.renderer.type === PIXI.WEBGL_RENDERER)
     {
         this.renderer.gl.bindFramebuffer(this.renderer.gl.FRAMEBUFFER, this.textureBuffer.frameBuffer);
@@ -162,6 +177,7 @@ PIXI.RenderTexture.prototype.clear = function()
  */
 PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, clear)
 {
+    if(!this.valid)return;
     //TOOD replace position with matrix..
     var gl = this.renderer.gl;
 
@@ -172,6 +188,7 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.textureBuffer.frameBuffer );
 
     if(clear)this.textureBuffer.clear();
+
 
     // THIS WILL MESS WITH HIT TESTING!
     var children = displayObject.children;
@@ -197,10 +214,13 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
     // update the textures!
     PIXI.WebGLRenderer.updateTextures();
 
-    // 
+    this.renderer.spriteBatch.dirty = true;
+    
     this.renderer.renderDisplayObject(displayObject, this.projection, this.textureBuffer.frameBuffer);
 
     displayObject.worldTransform = originalWorldTransform;
+
+    this.renderer.spriteBatch.dirty = true;
 };
 
 
@@ -214,16 +234,23 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
  */
 PIXI.RenderTexture.prototype.renderCanvas = function(displayObject, position, clear)
 {
+    if(!this.valid)return;
+
     var children = displayObject.children;
 
     var originalWorldTransform = displayObject.worldTransform;
 
     displayObject.worldTransform = PIXI.RenderTexture.tempMatrix;
-
+    
     if(position)
     {
         displayObject.worldTransform.tx = position.x;
         displayObject.worldTransform.ty = position.y;
+    }
+    else
+    {
+        displayObject.worldTransform.tx = 0;
+        displayObject.worldTransform.ty = 0;
     }
 
     for(var i = 0, j = children.length; i < j; i++)
@@ -240,6 +267,65 @@ PIXI.RenderTexture.prototype.renderCanvas = function(displayObject, position, cl
     context.setTransform(1,0,0,1,0,0);
 
     displayObject.worldTransform = originalWorldTransform;
+};
+
+/**
+ * Will return a HTML Image of the texture
+ *
+ * @method getImage
+ */
+PIXI.RenderTexture.prototype.getImage = function()
+{
+    var image = new Image();
+    image.src = this.getBase64();
+    return image;
+};
+
+/**
+ * Will return a a base64 string of the texture
+ *
+ * @method getImage
+ */
+PIXI.RenderTexture.prototype.getBase64 = function()
+{
+    return this.getCanvas().toDataURL();
+};
+
+PIXI.RenderTexture.prototype.getCanvas = function()
+{
+    if (this.renderer.type === PIXI.WEBGL_RENDERER)
+    {
+        var gl =  this.renderer.gl;
+        var width = this.textureBuffer.width;
+        var height = this.textureBuffer.height;
+
+        var webGLPixels = new Uint8Array(4 * width * height);
+
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.textureBuffer.frameBuffer);
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, webGLPixels);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+        var tempCanvas = new PIXI.CanvasBuffer(width, height);
+        var canvasData = tempCanvas.context.getImageData(0, 0, width, height);
+        var canvasPixels = canvasData.data;
+
+        for (var i = 0; i < webGLPixels.length; i+=4)
+        {
+            var alpha = webGLPixels[i+3];
+            canvasPixels[i] = webGLPixels[i] * alpha;
+            canvasPixels[i+1] = webGLPixels[i+1] * alpha;
+            canvasPixels[i+2] = webGLPixels[i+2] * alpha;
+            canvasPixels[i+3] = alpha;
+        }
+
+        tempCanvas.context.putImageData(canvasData, 0, 0);
+       
+        return tempCanvas.canvas;
+    }
+    else
+    {
+        return this.textureBuffer.canvas;
+    }
 };
 
 PIXI.RenderTexture.tempMatrix = new PIXI.Matrix();

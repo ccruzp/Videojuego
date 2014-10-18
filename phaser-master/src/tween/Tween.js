@@ -98,7 +98,7 @@ Phaser.Tween = function (object, game, manager) {
     * @property {function} _easingFunction - The easing function used for the tween.
     * @private
     */
-    this._easingFunction = Phaser.Easing.Linear.None;
+    this._easingFunction = Phaser.Easing.Default;
 
     /**
     * @property {function} _interpolationFunction - The interpolation function used for the tween.
@@ -159,12 +159,6 @@ Phaser.Tween = function (object, game, manager) {
     */
     this.pendingDelete = false;
 
-    // Set all starting values present on the target object - why? this will copy loads of properties we don't need - commenting out for now
-    // for (var field in object)
-    // {
-    //     this._valuesStart[field] = parseFloat(object[field], 10);
-    // }
-
     /**
     * @property {Phaser.Signal} onStart - The onStart event is fired when the Tween begins.
     */
@@ -191,12 +185,13 @@ Phaser.Tween = function (object, game, manager) {
 Phaser.Tween.prototype = {
 
     /**
-    * Configure the Tween
+    * Sets this tween to be a `to` tween on the properties given. A `to` tween starts at the current value and tweens to the destination value given.
+    * For example a Sprite with an `x` coordinate of 100 could be tweened to `x` 200 by giving a properties object of `{ x: 200 }`.
     *
     * @method Phaser.Tween#to
-    * @param {object} properties - Properties you want to tween.
+    * @param {object} properties - The properties you want to tween, such as `Sprite.x` or `Sound.volume`. Given as a JavaScript object.
     * @param {number} [duration=1000] - Duration of this tween in ms.
-    * @param {function} [ease=null] - Easing function. If not set it will default to Phaser.Easing.Linear.None.
+    * @param {function} [ease=null] - Easing function. If not set it will default to Phaser.Easing.Default, which is Phaser.Easing.Linear.None by default but can be over-ridden at will.
     * @param {boolean} [autoStart=false] - Whether this tween will start automatically or not.
     * @param {number} [delay=0] - Delay before this tween will start, defaults to 0 (no delay). Value given is in ms.
     * @param {number} [repeat=0] - Should the tween automatically restart once complete? If you want it to run forever set as Number.MAX_VALUE. This ignores any chained tweens.
@@ -260,7 +255,8 @@ Phaser.Tween.prototype = {
     },
 
     /**
-    * Configure a Reverse Tween
+    * Sets this tween to be a `from` tween on the properties given. A `from` tween starts at the given value and tweens to the current values.
+    * For example a Sprite with an `x` coordinate of 100 could be tweened from `x: 200` by giving a properties object of `{ x: 200 }`.
     *
     * @method Phaser.Tween#from
     * @param {object} properties - Properties you want to tween from.
@@ -273,14 +269,17 @@ Phaser.Tween.prototype = {
     * @return {Phaser.Tween} This Tween object.
     */
     from: function(properties, duration, ease, autoStart, delay, repeat, yoyo) {
+
         var _cache = {};
-        for(var prop in properties) {
-            if (properties.hasOwnProperty(prop)) {
-                _cache[prop] = this._object[prop];
-                this._object[prop] = properties[prop];
-            }
+
+        for (var prop in properties)
+        {
+            _cache[prop] = this._object[prop];
+            this._object[prop] = properties[prop];
         }
-        this.to(_cache, duration, ease, autoStart, delay, repeat, yoyo);
+
+        return this.to(_cache, duration, ease, autoStart, delay, repeat, yoyo);
+
     },
 
     /**
@@ -404,16 +403,15 @@ Phaser.Tween.prototype = {
                 }
                 else
                 {
-                    // Parses relative end values with start as base (e.g.: +10, -3)
-                    if (typeof(end) === 'string')
+                    if (typeof end === 'string')
                     {
+                        //  Parses relative end values with start as base (e.g.: +10, -3)
                         end = start + parseFloat(end, 10);
                     }
-
-                    // protect against non numeric properties.
-                    if (typeof(end) === 'number')
+                    else if (typeof end === 'number')
                     {
-                        blob[property] = start + ( end - start ) * value;
+                        //  Protect against non numeric properties.
+                        blob[property] = start + (end - start) * value;
                     }
                 }
             }
@@ -422,6 +420,15 @@ Phaser.Tween.prototype = {
 
             time += tick;
         }
+
+        var blob = {};
+
+        for (property in this._valuesEnd)
+        {
+            blob[property] = this._valuesEnd[property];
+        }
+
+        output.push(blob);
 
         if (this._yoyo)
         {
@@ -574,10 +581,11 @@ Phaser.Tween.prototype = {
     },
 
     /**
-    * Sets a callback to be fired each time this tween updates. Note: callback will be called in the context of the global scope.
+    * Sets a callback to be fired each time this tween updates.
     *
     * @method Phaser.Tween#onUpdateCallback
     * @param {function} callback - The callback to invoke each time this tween is updated.
+    * @param {object} callbackContext - The context in which to call the onUpdate callback.
     * @return {Phaser.Tween} Itself.
     */
     onUpdateCallback: function (callback, callbackContext) {
@@ -718,6 +726,11 @@ Phaser.Tween.prototype = {
         if (this._onUpdateCallback !== null)
         {
             this._onUpdateCallback.call(this._onUpdateCallbackContext, this, value);
+
+            if (!this.isRunning)
+            {
+                return false;
+            }
         }
 
         if (elapsed == 1)
