@@ -74,7 +74,7 @@ BasicGame.Nivel3 = function(game) {
 
 BasicGame.Nivel3.prototype = {
 
-    init: function(lastTime,level,
+    init: function(lastTime,level,score,
 		   allign_X,
 		   allign_Y,
 		   blackHoleButton_Setup,
@@ -88,8 +88,10 @@ BasicGame.Nivel3.prototype = {
 		   playButton_Setup,
 		   select_Bomb,
 		   start,
+		   scoreText_Setup,
 		   try_To_Destroy) {
 	this.level = level;
+	this.score = score;
     	this.allign_X = allign_X;
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
@@ -103,6 +105,7 @@ BasicGame.Nivel3.prototype = {
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
 	this.start = start;
+	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
     },
 
@@ -166,7 +169,9 @@ BasicGame.Nivel3.prototype = {
 
 	// Creating the text displays.
 	this.displays_Setup();
-
+	// Score Texts
+	this.scoreText_Setup();
+	
 	this.timeOfGame = this.time.now; // Score counter.
 
 	this.input.onDown.add(this.put_Weapon, this); // Mouse input.
@@ -505,19 +510,21 @@ BasicGame.Nivel3.prototype = {
 	    // level = 2;
 	    nextState = 'GameOverMenu';
 	}
-	this.state.start(nextState, true, false, time, this.level,
-			     this.allign_X,
-			     this.allign_Y,
-			     this.blackHoleButton_Setup,
-			     this.bombOnMouse_Setup,
-			     this.countdown,
-			     this.find_Grid_Place,
-			     this.gridLine_Setup,
-			     this.make_Grid,
-			     this.playButton_Setup,
-			     this.select_Bomb,
-			     this.start,
-			     this.try_To_Destroy);
+	this.state.start(nextState, true, false, 
+			 time, this.level,this.score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,
+			 this.try_To_Destroy);
     },
      
     // Lets the player use the cannons.

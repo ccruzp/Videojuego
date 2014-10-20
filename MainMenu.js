@@ -55,13 +55,14 @@ BasicGame.MainMenu.prototype = {
 	background.destroy();
 	time = 0;
 	level = 1;
+	score = 0;
 	console.log(level);
-	this.state.start('Nivel1',true,false,time,level,
+	this.state.start('Nivel1',true,false,time,level,score,
 			 this.allign_X,
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
-			// this.bombPool_Setup,
+			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
 			 this.gridLine_Setup,
@@ -70,6 +71,7 @@ BasicGame.MainMenu.prototype = {
 			 this.playButton_Setup,
 			 this.select_Bomb,
 			 this.start,
+			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
     },
 
@@ -179,6 +181,14 @@ BasicGame.MainMenu.prototype = {
 	this.playButton.scale.setTo(0.05, 0.05);
 	buttons.add(this.playButton);
     },
+
+    //Setups the score text. Use it after init "this.otherTextPool" group
+    scoreText_Setup: function(){
+
+	// Game score display.
+	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
+	this.scoreText.anchor.set(0.5);
+    },
   
     // Lets the player use the bombs.
     select_Bomb: function () {
@@ -205,7 +215,9 @@ BasicGame.MainMenu.prototype = {
     try_To_Destroy: function(enemy, bomb) {
 	var explosionY = (initialY + (GRID_SPACE * ENEMY_VELOCITY * BOMB_TOTAL_TIME));
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
+	    this.score = this.score + 80;
 	    enemy.kill();
+	    //this.score = this.score + 80;
 	}
     },
 

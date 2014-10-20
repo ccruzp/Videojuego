@@ -9,7 +9,7 @@ BasicGame.GameOverMenu = function (game) {
 
 BasicGame.GameOverMenu.prototype = {
 
-        init: function(lastTime,nextLevel,
+    init: function(lastTime,nextLevel,score,
 		   allign_X,
 		   allign_Y,
 		   blackHoleButton_Setup,
@@ -23,26 +23,28 @@ BasicGame.GameOverMenu.prototype = {
 		   playButton_Setup,
 		   select_Bomb,
 		   start,
+		   scoreText_Setup,
 		   try_To_Destroy) {
-	    this.timeOfGame = lastTime;
-	    this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
-	    this.nextLevel = nextLevel;
-	    this.nextLevelName = "Nivel" + nextLevel;
+	this.timeOfGame = lastTime;
+	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
+	this.nextLevel = nextLevel;
+	this.nextLevelName = "Nivel" + nextLevel;
 	
-    	    this.allign_X = allign_X;
-	    this.allign_Y = allign_Y;
-	    this.blackHoleButton_Setup = blackHoleButton_Setup;
-	    this.bombOnMouse_Setup = bombOnMouse_Setup;
-	    //this.bombPool_Setup = bombPool_Setup;
-	    this.countdown = countdown;
-	    this.find_Grid_Place = find_Grid_Place;
-	    this.gridLine_Setup = gridLine_Setup;
-	    this.make_Grid = make_Grid;
-	    //this.lockedButtons_Setup = lockedButtons_Setup;
-	    this.playButton_Setup = playButton_Setup;
-	    this.select_Bomb = select_Bomb;
-	    this.start = start;
-	    this.try_To_Destroy = try_To_Destroy;
+    	this.allign_X = allign_X;
+	this.allign_Y = allign_Y;
+	this.blackHoleButton_Setup = blackHoleButton_Setup;
+	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	//this.bombPool_Setup = bombPool_Setup;
+	this.countdown = countdown;
+	this.find_Grid_Place = find_Grid_Place;
+	this.gridLine_Setup = gridLine_Setup;
+	this.make_Grid = make_Grid;
+	//this.lockedButtons_Setup = lockedButtons_Setup;
+	this.playButton_Setup = playButton_Setup;
+	this.select_Bomb = select_Bomb;
+	this.start = start;
+	this.scoreText_Setup = scoreText_Setup;
+	this.try_To_Destroy = try_To_Destroy;
 	},
     
     
@@ -105,21 +107,24 @@ BasicGame.GameOverMenu.prototype = {
 	// this.playAgainButton.destroy();
 	background.destroy();
 	time = 0;
-	this.state.start(this.nextLevelName , true, false, time,this.nextLevel,
-			     this.allign_X,
-			     this.allign_Y,
-			     this.blackHoleButton_Setup,
-			     this.bombOnMouse_Setup,
-			     //this.bombPool_Setup,
-			     this.countdown,
-			     this.find_Grid_Place,
-			     this.gridLine_Setup,
-			     this.make_Grid,
-			     //this.lockedButtons_Setup,
-			     this.playButton_Setup,
-			     this.select_Bomb,
-			     this.start,
-			     this.try_To_Destroy);
+	score = 0;
+	this.state.start(this.nextLevelName , true, false, 
+			 time,this.nextLevel,score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 //this.bombPool_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 //this.lockedButtons_Setup,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,
+			 this.try_To_Destroy);
     },
     
 };

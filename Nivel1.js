@@ -57,7 +57,7 @@ BasicGame.Nivel1 = function (game) {
 };
 
 BasicGame.Nivel1.prototype = {
-    init: function(lastTime,level,
+    init: function(lastTime,level,score,
 		   allign_X,
 		   allign_Y,
 		   blackHoleButton_Setup,
@@ -71,8 +71,10 @@ BasicGame.Nivel1.prototype = {
 		   playButton_Setup,
 		   select_Bomb,
 		   start,
+		   scoreText_Setup,
 		   try_To_Destroy) {
 	this.level = level;
+	this.score = score;
     	this.allign_X = allign_X;
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
@@ -86,6 +88,7 @@ BasicGame.Nivel1.prototype = {
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
 	this.start = start;
+	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
     },
     
@@ -147,6 +150,9 @@ BasicGame.Nivel1.prototype = {
 	// Creating the text displays.
 	this.displays_Setup();
 	
+	// Score Texts
+	this.scoreText_Setup();
+	
 	// Every second activates this.countdown.
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this);
 	
@@ -184,6 +190,7 @@ BasicGame.Nivel1.prototype = {
 
 	// Update displays.
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
+	this.scoreText.text = '' + this.score;
 
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
@@ -404,19 +411,20 @@ BasicGame.Nivel1.prototype = {
 	    // level = 1;
 	    nextState = 'GameOverMenu';
 	}
-	this.state.start(nextState, true, false, time, this.level,
-			     this.allign_X,
-			     this.allign_Y,
-			     this.blackHoleButton_Setup,
-			     this.bombOnMouse_Setup,
-			     this.countdown,
-			     this.find_Grid_Place,
-			     this.gridLine_Setup,
-			     this.make_Grid,
-			     this.playButton_Setup,
-			     this.select_Bomb,
-			     this.start,
-			     this.try_To_Destroy);
+	this.state.start(nextState, true, false, time, this.level,this.score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,
+			 this.try_To_Destroy);
 	
     },
     

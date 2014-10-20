@@ -15,7 +15,7 @@ BasicGame.WinnerMenu = function (game) {
 
 BasicGame.WinnerMenu.prototype = {
     
-    init: function(lastTime, nextLevel, 
+    init: function(lastTime, nextLevel,score, 
 		   allign_X,
 		   allign_Y,
 		   blackHoleButton_Setup,
@@ -29,8 +29,10 @@ BasicGame.WinnerMenu.prototype = {
 		   playButton_Setup,
 		   select_Bomb,
 		   start,
+		   scoreText_Setup,
 		   try_To_Destroy) {
 	this.nextLevel = nextLevel;
+	this.lastScore = score;
 	this.timeOfGame = lastTime;
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
 	if(this.nextLevel != 0) this.nextLevelName = "Nivel" + this.nextLevel;
@@ -49,6 +51,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
 	this.start = start;
+	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
     },
     
@@ -139,21 +142,23 @@ BasicGame.WinnerMenu.prototype = {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
-	this.state.start(this.nextLevelName , true, false, time,this.nextLevel,
-			     this.allign_X,
-			     this.allign_Y,
-			     this.blackHoleButton_Setup,
-			     this.bombOnMouse_Setup,
-			   //  this.bombPool_Setup,
-			     this.countdown,
-			     this.find_Grid_Place,
-			     this.gridLine_Setup,
-			     this.make_Grid,
-			     //this.lockedButtons_Setup,
-			     this.playButton_Setup,
-			     this.select_Bomb,
-			     this.start,
-			     this.try_To_Destroy);
+	this.state.start(this.nextLevelName , true, false,
+			 time,this.nextLevel,this.score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 //  this.bombPool_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 //this.lockedButtons_Setup,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,
+			 this.try_To_Destroy);
     },
 
     update_Score: function(){
@@ -172,7 +177,9 @@ BasicGame.WinnerMenu.prototype = {
 	    
 	    
 	    } else {
-
+		this.score = this.score + this.lastScore;
+		scoreText.text =  'Score: '+ this.score;
+		
 		this.scoreTime = this.maxTime - this.timeOfGame;
 		/*Shows the total Rank earned, enables going to the next level*/
 		console.log(this.scoreTime);
