@@ -25,6 +25,8 @@ BasicGame.WinnerMenu.prototype = {
 		   find_Grid_Place,
 		   gridLine_Setup,
 		   make_Grid,
+		   minusButton_Setup,
+		   plusButton_Setup,
 		 //  lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
@@ -47,6 +49,8 @@ BasicGame.WinnerMenu.prototype = {
 	this.find_Grid_Place = find_Grid_Place;
 	this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
+	this.minusButton_Setup = minusButton_Setup;
+	this.plusButton_Setup = plusButton_Setup;
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
@@ -153,6 +157,8 @@ BasicGame.WinnerMenu.prototype = {
 			 this.find_Grid_Place,
 			 this.gridLine_Setup,
 			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.plusButton_Setup,
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
