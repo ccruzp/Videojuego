@@ -85,6 +85,8 @@ BasicGame.Nivel2.prototype = {
 		   find_Grid_Place,
 		   gridLine_Setup,
 		   make_Grid,
+		   minusButton_Setup,
+		   plusButton_Setup,
 		  // lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
@@ -103,6 +105,8 @@ BasicGame.Nivel2.prototype = {
 	this.find_Grid_Place = find_Grid_Place;
 	this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
+	this.minusButton_Setup = minusButton_Setup;
+	this.plusButton_Setup = plusButton_Setup;
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
@@ -433,21 +437,21 @@ BasicGame.Nivel2.prototype = {
 	}, this);
     },
 
-    // Creates the minus button for the cannons.
-    minusButton_Setup: function(button, func) {
-	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
-	minusButton.anchor.setTo(0.5, 0.5);
-	minusButton.scale.setTo(0.02, 0.02);
-	buttons.add(minusButton);
-    },
+    // // Creates the minus button for the cannons.
+    // minusButton_Setup: function(button, func) {
+    // 	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
+    // 	minusButton.anchor.setTo(0.5, 0.5);
+    // 	minusButton.scale.setTo(0.02, 0.02);
+    // 	buttons.add(minusButton);
+    // },
 
-    // Creates the plus button for the cannons.
-    plusButton_Setup: function(button, func) {
-	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
-	plusButton.anchor.setTo(0.5, 0.5);
-	plusButton.scale.setTo(0.02, 0.02);
-	buttons.add(plusButton);
-    },
+    // // Creates the plus button for the cannons.
+    // plusButton_Setup: function(button, func) {
+    // 	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
+    // 	plusButton.anchor.setTo(0.5, 0.5);
+    // 	plusButton.scale.setTo(0.02, 0.02);
+    // 	buttons.add(plusButton);
+    // },
 
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Weapon: function() {
@@ -522,6 +526,8 @@ BasicGame.Nivel2.prototype = {
 			 this.find_Grid_Place,
 			 this.gridLine_Setup,
 			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.plusButton_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
 			 this.start,
