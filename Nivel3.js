@@ -33,7 +33,8 @@ BasicGame.Nivel3 = function(game) {
     this.bombPool; // Group of bombs
     this.cannonPool; // Group of cannons
     this.bulletPool; // Group of bullets
-    this.enemyVelocityPool; // Group of enemies
+    this.enemyVelocityPool; // Group of velocity enemies.
+    this.enemyTimePool; // Group of time enemies.
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
     
@@ -157,7 +158,8 @@ BasicGame.Nivel3.prototype = {
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
 	*/
-	this.enemyVelocityPool_Setup(); // Setup the enemies.
+	// this.enemyVelocityPool_Setup(); // Setup the enemies.
+	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.bulletPool_Setup(); // Creating the bullets for the cannons.
 	this.cannonPool_Setup(); // Create the cannonPool.
@@ -259,15 +261,17 @@ BasicGame.Nivel3.prototype = {
 	}
 
 	/*((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES))*/
-	if (!this.enemyVelocityPool.getFirstAlive()) {
+	// if (!this.enemyVelocityPool.getFirstAlive()) {
+	//     this.quit_Game(true);
+	// }
+	if (!this.enemyTimePool.getFirstAlive()) {
 	    this.quit_Game(true);
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
-	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
-	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
-	}, this);
-	
+	// this.enemyVelocityPool.forEachAlive(function(enemy) {
+	//     verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
+	//     if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
+	// }, this);
 	if (this.enemyOutOfGrid) {
 	    this.quit_Game(false);
 	}
@@ -295,10 +299,12 @@ BasicGame.Nivel3.prototype = {
 	this.bombPool.forEach(function(bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	}, this);
+
 	// Group for the text displays
 	this.bombTextPool = this.add.group();
+
 	// Time until explosion display.
-	this.enemyVelocityPool.forEach(function() {
+	this.bombPool.forEach(function() {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
@@ -418,6 +424,30 @@ BasicGame.Nivel3.prototype = {
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.animations.add('shield', [1, 0], 10, false);
 	    enemy.animations.add('unshield', [0, 1], 10, false);
+	}, this);
+    },
+
+    // Creates the velocity enemies of the level.
+    enemyTimePool_Setup: function() {
+	this.enemyTimePool = this.add.group();
+	this.enemyTimePool.enableBody = true;
+	this.enemyTimePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyTimePool.createMultiple(TOTAL_ENEMIES, 'timeEnemy');
+	this.enemyTimePool.setAll('anchor.x', 0.5);
+	this.enemyTimePool.setAll('anchor.y', 0.5);
+	this.enemyTimePool.setAll('outOfBoundsKill', true);
+	this.enemyTimePool.setAll('checkWorldBounds', true);
+	this.enemyTimePool.setAll('scale.x', 0.075);
+	this.enemyTimePool.setAll('scale.y', 0.075);
+
+	this.enemyTimePool.forEach(function(enemy) {
+	    initialY = 50 - (enemy.height/2);
+	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    enemy.frame = 1;
+	    enemy.reset(aux1, initialY);
+	    enemy.body.setSize(100, 100, 0, enemy.height/2);
+	    // enemy.animations.add('shield', [1, 0], 10, false);
+	    // enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
     },
 
@@ -622,8 +652,8 @@ BasicGame.Nivel3.prototype = {
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
     render: function() {
-    	if (this.enemyVelocityPool.countLiving() > 0) {
-    	    this.enemyVelocityPool.forEachAlive(function(enemy) {
+    	if (this.enemyTimePool.countLiving() > 0) {
+    	    this.enemyTimePool.forEachAlive(function(enemy) {
     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}

@@ -11,13 +11,16 @@ BasicGame.Boot.prototype = {
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
 	this.load.image('background', 'assets/img/background_purple_Half.png');
-	// The shielded enemy
+
 	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
 	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
 	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.image('ground', 'assets/platform2.png');
+
+	// Time enemy
+	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 
 	// Loading spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
