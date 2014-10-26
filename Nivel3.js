@@ -35,7 +35,8 @@ BasicGame.Nivel3 = function(game) {
     this.bulletPool; // Group of bullets
     this.enemyVelocityPool; // Group of velocity enemies.
     this.enemyTimePool; // Group of time enemies.
-    this.enemy; // Instance of an enemy
+    this.enemyMissilePool; // Group for the missiles of the time enemy.
+   this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
     
     this.cannonOnMouse; // The sprite that appears on the mouse
@@ -127,6 +128,7 @@ BasicGame.Nivel3.prototype = {
 
 	bulletSpeed = 0; // The speed of the bullets.
 	shieldTime = 0; // The time in which the shield will activate.
+	enemyMissileSpeed = 3; // Speed of the missiles shot by the timeEnemy.
 
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -162,6 +164,7 @@ BasicGame.Nivel3.prototype = {
 	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.bulletPool_Setup(); // Creating the bullets for the cannons.
+	this.enemyMissilePool_Setup(); // Creating the enemies' missiles.
 	this.cannonPool_Setup(); // Create the cannonPool.
 
 	// Counters.
@@ -175,8 +178,6 @@ BasicGame.Nivel3.prototype = {
 	this.shieldButton_Setup(); // Creates the shield button.
 	this.playButton_Setup(); // Creates the play button.
 	this.lockedButtons_Setup(); // Creates the locked buttons.
-	// this.minusButton_Setup(); // Creates the minus button for the cannon button.
-	// this.plusButton_Setup(); // Creates the plus button for the cannon button.
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -211,7 +212,6 @@ BasicGame.Nivel3.prototype = {
 
 	    // Display of the time left before the bomb explodes.
 	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
-	    // text.anchor.setTo(0.5, 0.5);
 	    text.visible = true;
 	    text.text = BOMB_TOTAL_TIME;
 	    text.x = x;
@@ -245,6 +245,9 @@ BasicGame.Nivel3.prototype = {
 		    this.fire(cannon);
 		}
 	    }, this);
+	    // this.enemyTimePool.forEachAlive(function(enemy) {
+	    // 	this.enemyFire(enemy);
+	    // }, this);
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -253,9 +256,6 @@ BasicGame.Nivel3.prototype = {
 		bomb.animations.play('explode');
 		bomb.events.onAnimationComplete.add(function() {
 		    bomb.kill();
-		    // if (this.enemyVelocityPool.countLiving() == 0) {
-		    // 	bomb.kill();
-		    // }
 		}, this);
 	    }, this);
 	}
@@ -403,6 +403,28 @@ BasicGame.Nivel3.prototype = {
 	this.shieldButtonText.anchor.setTo(0.5, 0.5);
     },
     
+    // The enemy's shot.
+    enemyFire: function(enemy) {
+	var missile = this.enemyMissilePool.getAt(this.enemyTimePool.getIndex(enemy));
+	missile.reset(enemy.x, enemy.y);
+	missile.body.velocity.y = enemyMissileVelocity * GRID_SPACE;
+    },
+
+    // Creates the missiles for the enemies shots
+    enemyMissilePool_Setup: function() {
+	this.enemyMissilePool = this.add.group();
+	this.enemyMissilePool.enableBody = true;
+	this.enemyMissilePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyMissilePool.createMultiple(TOTAL_ENEMIES, 'enemyMissile');
+	this.enemyMissilePool.setAll('anchor.x', 0.5);
+	this.enemyMissilePool.setAll('anchor.y', 0.5);
+	this.enemyMissilePool.setAll('scale.x', 0.25);
+	this.enemyMissilePool.setAll('scale.y', 0.25);
+	this.enemyMissilePool.setAll('angle', 180);
+	this.enemyMissilePool.setAll('outOfBoundsKill', true);
+	this.enemyMissilePool.setAll('checkWorldBounds', true);
+    },
+
     // Creates the velocity enemies of the level.
     enemyVelocityPool_Setup: function() {
 	this.enemyVelocityPool = this.add.group();

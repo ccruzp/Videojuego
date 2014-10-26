@@ -21,6 +21,7 @@ BasicGame.Boot.prototype = {
 
 	// Time enemy
 	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
+	this.load.image('enemyMissile', 'assets/missile.png');
 
 	// Loading spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
