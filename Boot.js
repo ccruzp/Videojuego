@@ -36,6 +36,7 @@ BasicGame.Boot.prototype = {
 	// The buttons
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
+	this.load.spritesheet('shieldButton', 'assets/Spritesheets/Button_shield_spritesheet.png', 250, 242, 2);
 	
 	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);

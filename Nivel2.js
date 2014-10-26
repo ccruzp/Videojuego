@@ -116,7 +116,7 @@ BasicGame.Nivel2.prototype = {
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 	shot = false; // Boolean that says if the cannons have shot.
-	shield = true; // Boolean that says if the shields are activated.
+	enemyShield = true; // Boolean that says if the shields are activated.
 
 	bulletSpeed = 0; // The speed of the bullets.
 
@@ -164,8 +164,6 @@ BasicGame.Nivel2.prototype = {
 	this.cannonButton_Setup(); // Creates the cannon button.
 	this.playButton_Setup(); // Creates the play button.
 	this.lockedButtons_Setup(); // Creates the locked buttons.
-	this.plusButton_Setup(); // Creates the plus button for the cannon button.
-	this.minusButton_Setup(); // Creates the minus button for the cannon button.
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -264,11 +262,11 @@ BasicGame.Nivel2.prototype = {
     },
     
     //Activates the velocity enemies shield
-    activate_Shield: function() {
+    activate_Enemy_Shield: function() {
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
 	    enemy.animations.play('shield');
 	}, this);
-	shield = true;
+	enemyShield = true;
     },
 
     // Create the bombPool
@@ -313,6 +311,8 @@ BasicGame.Nivel2.prototype = {
 	this.cannonButton.anchor.setTo(0.5, 0.5);
 	this.cannonButton.scale.setTo(0.4, 0.4);
 	buttons.add(this.cannonButton);
+	this.minusButton_Setup(this.cannonButton, this.decrease_Fire);
+	this.plusButton_Setup(this.cannonButton, this.increase_Fire);
     },
 
     cannonOnMouse_Setup: function() {
@@ -336,11 +336,11 @@ BasicGame.Nivel2.prototype = {
     },
        
     //Disables the velocity enemies shield
-    deactivate_Shield: function() {
+    deactivate_Enemy_Shield: function() {
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
 	    enemy.animations.play('unshield');
 	}, this);
-	shield = false;
+	enemyShield = false;
     },
 
     // Decreases the velocity of the bullets.
@@ -402,8 +402,8 @@ BasicGame.Nivel2.prototype = {
 	var bullet = this.bulletPool.getAt(this.cannonPool.getIndex(cannon));
 	bullet.reset(cannon.x, cannon.y - cannon.height/2);
 	bullet.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
-	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Shield, this);
-	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Enemy_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
     },
 
@@ -434,16 +434,16 @@ BasicGame.Nivel2.prototype = {
     },
 
     // Creates the minus button for the cannons.
-    minusButton_Setup: function() {
-	minusButton = this.add.button(this.cannonButton.x + 40, this.cannonButton.y + 20, 'minusButton', this.decrease_Fire, 2, 1, 0);
+    minusButton_Setup: function(button, func) {
+	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
 	minusButton.anchor.setTo(0.5, 0.5);
 	minusButton.scale.setTo(0.02, 0.02);
 	buttons.add(minusButton);
     },
 
     // Creates the plus button for the cannons.
-    plusButton_Setup: function() {
-	plusButton = this.add.button(this.cannonButton.x + 40, this.cannonButton.y - 20, 'plusButton', this.increase_Fire, 2, 1, 0);
+    plusButton_Setup: function(button, func) {
+	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
 	plusButton.anchor.setTo(0.5, 0.5);
 	plusButton.scale.setTo(0.02, 0.02);
 	buttons.add(plusButton);
@@ -548,7 +548,7 @@ BasicGame.Nivel2.prototype = {
 
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Velocity: function(enemy, bullet) {
-	if (!shield) {
+	if (!enemyShield) {
 	    enemy.kill();
 	} else {
 	    var vel = bullet.body.velocity.y;
