@@ -177,7 +177,7 @@ BasicGame.MainMenu.prototype = {
     },
 
     minusButton_Setup: function(button, func) {
-	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
+	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, this, 0, 0, 1, 0);
 	minusButton.anchor.setTo(0.5, 0.5);
 	minusButton.scale.setTo(0.02, 0.02);
 	buttons.add(minusButton);
@@ -185,7 +185,7 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the plus button for the cannons.
     plusButton_Setup: function(button, func) {
-	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
+	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, this, 0, 0, 1, 0);
 	plusButton.anchor.setTo(0.5, 0.5);
 	plusButton.scale.setTo(0.02, 0.02);
 	buttons.add(plusButton);
@@ -193,9 +193,9 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the play button
     playButton_Setup: function() {
-	this.playButton = this.add.button(this.world.centerX, this.world.height - 60, 'playButton', this.start, 2, 1, 0);
+	this.playButton = this.add.button(this.world.centerX, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.05, 0.05);
+	this.playButton.scale.setTo(0.1, 0.1);
 	buttons.add(this.playButton);
     },
 

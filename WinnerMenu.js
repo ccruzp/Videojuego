@@ -115,12 +115,10 @@ BasicGame.WinnerMenu.prototype = {
 	
 	this.time.events.loop(Phaser.Timer.SECOND/10, this.update_Score, this);
 		
-	playAgainButton = this.add.button(this.world.centerX, this.world.centerY, 'playAgainButton',
-					       this.playAgain, this, 1, 0, 1, 0);
-	playAgainButton.anchor.setTo(0.5, 0.5);
-	playAgainButton.scale.setTo(0.5, 0.5);
-	
-	// this.make_Grid();
+	nextLevelButton = this.add.button(this.world.centerX, this.world.centerY, 'nextLevelButton',
+					       this.next_Level, this, 1, 0, 1, 0);
+	nextLevelButton.anchor.setTo(0.5, 0.5);
+	nextLevelButton.scale.setTo(0.5, 0.5);
     },
     
     update: function () {
@@ -142,7 +140,7 @@ BasicGame.WinnerMenu.prototype = {
     
     },
 
-    playAgain: function () {
+    next_Level: function () {
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
