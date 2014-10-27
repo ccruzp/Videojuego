@@ -12,23 +12,30 @@ BasicGame.Boot.prototype = {
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
 	this.load.image('background', 'assets/img/background_purple_Half.png');
 
-	this.load.image('playAgainButton', 'assets/Mockup/PNGs/replay_button.png');
-	this.load.image('playButton', 'assets/Mockup/PNGs/playButton.png');
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
-	this.load.image('minusButton', 'assets/Mockup/PNGs/minusButton.png');
-	this.load.image('plusButton', 'assets/Mockup/PNGs/plusButton.png');
 	this.load.image('ground', 'assets/platform2.png');
 
 	// Time enemy
 	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 	this.load.image('enemyMissile', 'assets/missile.png');
 
-	// Loading spritesheets
+	// Loading menu buttons' spritesheets
+	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
+	this.load.spritesheet('nextLevelButton', 'assets/Spritesheets/nextLevelButton.png', 2000, 585, 2);
+	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
+
+	// Loading enemies' spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
 	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip.png', 1000, 1000, 2);
-	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
-	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
 	
+	// Loading buttons' spritesheets
+	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
+	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
+	this.load.spritesheet('shieldButton', 'assets/Spritesheets/Button_shield_spritesheet.png', 250, 242, 2);
+	this.load.spritesheet('minusButton', 'assets/Spritesheets/Button_minus_spritesheet.png', 1958, 2000, 2);
+	this.load.spritesheet('plusButton', 'assets/Spritesheets/Button_plus_spritesheet.png', 1958, 2000, 2);
+	this.load.spritesheet('playButton', 'assets/Spritesheets/playButton_spritesheet.png', 1032, 1000, 2);
+
 	// The bomb
 	this.load.spritesheet('bomb', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
 	// The cannon
@@ -36,11 +43,6 @@ BasicGame.Boot.prototype = {
 
 	// The bullet
 	this.load.image('bullet', 'assets/bullet.png');
-
-	// The buttons
-	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
-	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
-	this.load.spritesheet('shieldButton', 'assets/Spritesheets/Button_shield_spritesheet.png', 250, 242, 2);
 	
 	// Loading audio
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
