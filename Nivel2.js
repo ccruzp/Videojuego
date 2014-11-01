@@ -32,7 +32,7 @@ BasicGame.Nivel2 = function(game) {
 
     this.bombPool; // Group of bombs
     this.cannonPool; // Group of cannons
-    this.bulletPool; // Group of bullets
+    this.missilePool; // Group of missiles
     this.enemyVelocityPool; // Group of enemies
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
@@ -54,7 +54,7 @@ BasicGame.Nivel2 = function(game) {
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.livesText; // Text display of lives
     this.blackHoleButtonText; // Text display for the time in which the bomb will explode
-    this.cannonButtonText; // Text display for the speed of the bullet.
+    this.cannonButtonText; // Text display for the speed of the missile.
 
     // Buttons
     /*this.buttons; // Group for locked buttons*/
@@ -122,7 +122,7 @@ BasicGame.Nivel2.prototype = {
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
 
-	bulletSpeed = 0; // The speed of the bullets.
+	missileSpeed = 0; // The speed of the missiles.
 
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -155,7 +155,7 @@ BasicGame.Nivel2.prototype = {
 	*/
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
-	this.bulletPool_Setup(); // Creating the bullets for the cannons.
+	this.missilePool_Setup(); // Creating the missiles for the cannons.
 	this.cannonPool_Setup(); // Create the cannonPool.
 
 	// Counters.
@@ -186,8 +186,8 @@ BasicGame.Nivel2.prototype = {
     // here.
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
-	this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Velocity, null, this);
-	this.physics.arcade.overlap(this.cannonPool, this.bulletPool, this.you_Got_Shot, null, this);
+	this.physics.arcade.overlap(this.enemyVelocityPool, this.missilePool, this.try_To_Destroy_Velocity, null, this);
+	// this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
 
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
@@ -226,12 +226,12 @@ BasicGame.Nivel2.prototype = {
 	}, this);
 	
 	// Updating buttons displays
-	this.cannonButtonText.text = '' + bulletSpeed;
+	this.cannonButtonText.text = '' + missileSpeed;
 
 	// If the game started move enemies.
 	if (started) {
 	    this.cannonPool.forEachAlive(function(cannon) {
-		if(this.bulletPool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
 		    this.fire(cannon);
 		}
 	    }, this);
@@ -297,16 +297,22 @@ BasicGame.Nivel2.prototype = {
 	}, this);
     },
 
-    // Creates the bullets.
-    bulletPool_Setup: function() {
-	this.bulletPool = this.add.group();
-	this.bulletPool.enableBody = true;
-	this.bulletPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bulletPool.createMultiple(TOTAL_ENEMIES, 'bullet');
-	this.bulletPool.setAll('anchor.x', 0.5);
-	this.bulletPool.setAll('anchor.y', 0.5);
-	this.bulletPool.setAll('outOfBoundsKill', true);
-	this.bulletPool.setAll('checkWorldBounds', true);
+    // Creates the missiles.
+    missilePool_Setup: function() {
+	this.missilePool = this.add.group();
+	this.missilePool.enableBody = true;
+	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
+	this.missilePool.setAll('anchor.x', 0.5);
+	this.missilePool.setAll('anchor.y', 0.5);
+	this.missilePool.setAll('scale.x', 0.25);
+	this.missilePool.setAll('scale.y', 0.25);
+	this.missilePool.setAll('angle', 180);
+	this.missilePool.setAll('outOfBoundsKill', true);
+	this.missilePool.setAll('checkWorldBounds', true);
+	this.missilePool.forEach(function(missile) {
+	    missile.body.setSize(10, 10, 0, -25);
+	}, this);
     },
 
     // Creates the button for the cannon.
@@ -347,10 +353,10 @@ BasicGame.Nivel2.prototype = {
 	enemyShield = false;
     },
 
-    // Decreases the velocity of the bullets.
+    // Decreases the velocity of the missiles.
     decrease_Fire: function() {
-	if (!started && bulletSpeed > 0) {
-	    bulletSpeed -= 1;
+	if (!started && missileSpeed > 0) {
+	    missileSpeed -= 1;
 	}
     },
     
@@ -373,7 +379,7 @@ BasicGame.Nivel2.prototype = {
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
 	// Display for the velocity of the missile.
-	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + bulletSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
     },
     
@@ -403,18 +409,18 @@ BasicGame.Nivel2.prototype = {
 
     // Makes the cannon shoot.
     fire: function(cannon) {
-	var bullet = this.bulletPool.getAt(this.cannonPool.getIndex(cannon));
-	bullet.reset(cannon.x, cannon.y - cannon.height/2);
-	bullet.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
+	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
+	missile.reset(cannon.x, cannon.y - cannon.height/2);
+	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Enemy_Shield, this);
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
     },
 
-    // Increases the velocity of the bullets.
+    // Increases the velocity of the missiles.
     increase_Fire: function() {
 	if (!started) {
-	    bulletSpeed += 1;
+	    missileSpeed += 1;
 	}
     },
 
@@ -553,14 +559,15 @@ BasicGame.Nivel2.prototype = {
     },
 
     // If the enemy's shild is deactivated the enemy is killed.
-    try_To_Destroy_Velocity: function(enemy, bullet) {
+    try_To_Destroy_Velocity: function(enemy, missile) {
 	if (!enemyShield) {
 	    enemy.kill();
-	} else {
-	    var vel = bullet.body.velocity.y;
-	    bullet.body.velocity.y = -vel;
-	    bullet.angle = 180;
+	// } else {
+	//     var vel = missile.body.velocity.y;
+	//     missile.body.velocity.y = -vel;
+	//     missile.angle = 180;
 	}
+	missile.kill();
     },
     
     you_Got_Shot: function() {
@@ -587,9 +594,9 @@ BasicGame.Nivel2.prototype = {
     		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    	if (this.bulletPool.countLiving() > 0) {
-    	    this.bulletPool.forEachAlive(function(bullet) {
-    		this.game.debug.body(bullet, false, 'rgb(255, 0, 0)');
+    	if (this.missilePool.countLiving() > 0) {
+    	    this.missilePool.forEachAlive(function(missile) {
+    		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
 
