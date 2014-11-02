@@ -17,7 +17,7 @@ BasicGame.Boot.prototype = {
 
 	// Time enemy
 	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
-	this.load.image('enemyMissile', 'assets/missile.png');
+	this.load.image('missile', 'assets/missile.png');
 
 	// Loading menu buttons' spritesheets
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
