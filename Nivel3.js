@@ -35,7 +35,7 @@ BasicGame.Nivel3 = function(game) {
     this.bulletPool; // Group of bullets
     this.enemyVelocityPool; // Group of velocity enemies.
     this.enemyTimePool; // Group of time enemies.
-    this.enemyMissilePool; // Group for the missiles of the time enemy.
+    this.enemyBulletPool; // Group for the bullets of the time enemy.
    this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
     
@@ -125,10 +125,11 @@ BasicGame.Nivel3.prototype = {
 	started = false; // Boolean that says if the game has begun.
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
+	enemyShot = false; // Boolean that says if the enemy has shoot.
 
 	bulletSpeed = 0; // The speed of the bullets.
 	shieldTime = 0; // The time in which the shield will activate.
-	enemyMissileSpeed = 3; // Speed of the missiles shot by the timeEnemy.
+	enemyBulletSpeed = 3; // Speed of the bullets shot by the timeEnemy.
 
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -164,7 +165,7 @@ BasicGame.Nivel3.prototype = {
 	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.bulletPool_Setup(); // Creating the bullets for the cannons.
-	this.enemyMissilePool_Setup(); // Creating the enemies' missiles.
+	this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
 	this.cannonPool_Setup(); // Create the cannonPool.
 
 	// Counters.
@@ -196,7 +197,7 @@ BasicGame.Nivel3.prototype = {
     // here.
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
-	this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Velocity, null, this);
+	// this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Velocity, null, this);
 	this.physics.arcade.overlap(this.cannonPool, this.bulletPool, this.you_Got_Shot, null, this);
 
 	//Hide the weapons cursors
@@ -241,14 +242,19 @@ BasicGame.Nivel3.prototype = {
 	// If the game started move enemies.
 	if (started) {
 	    this.cannonPool.forEachAlive(function(cannon) {
-		if(this.bulletPool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
 		    this.fire(cannon);
 		}
 	    }, this);
-	    // this.enemyTimePool.forEachAlive(function(enemy) {
-	    // 	this.enemyFire(enemy);
-	    // }, this);
+	    if (!enemyShot) {
+		this.enemyTimePool.forEachAlive(function(enemy) {
+	    	    this.enemy_Fire(enemy);
+		}, this);
+	    }
 	}
+	// this.enemyBulletPool.forEachAlive(function(bullet) {
+	//     bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
+	// }, this);
 	
 	// If explosionTimeCounter is 0 start explosion animation.
 	if (this.explosionTimeCounter == 0) {
@@ -394,7 +400,7 @@ BasicGame.Nivel3.prototype = {
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
-	// Display for the velocity of the missile.
+	// Display for the velocity of the bullet.
 	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + bulletSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
 
@@ -404,25 +410,24 @@ BasicGame.Nivel3.prototype = {
     },
     
     // The enemy's shot.
-    enemyFire: function(enemy) {
-	var missile = this.enemyMissilePool.getAt(this.enemyTimePool.getIndex(enemy));
-	missile.reset(enemy.x, enemy.y);
-	missile.body.velocity.y = enemyMissileVelocity * GRID_SPACE;
+    enemy_Fire: function(enemy) {
+	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
+	bullet.reset(enemy.x, enemy.y + enemy.height/2);
+	bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
+	enemyShot = true;
     },
 
-    // Creates the missiles for the enemies shots
-    enemyMissilePool_Setup: function() {
-	this.enemyMissilePool = this.add.group();
-	this.enemyMissilePool.enableBody = true;
-	this.enemyMissilePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyMissilePool.createMultiple(TOTAL_ENEMIES, 'enemyMissile');
-	this.enemyMissilePool.setAll('anchor.x', 0.5);
-	this.enemyMissilePool.setAll('anchor.y', 0.5);
-	this.enemyMissilePool.setAll('scale.x', 0.25);
-	this.enemyMissilePool.setAll('scale.y', 0.25);
-	this.enemyMissilePool.setAll('angle', 180);
-	this.enemyMissilePool.setAll('outOfBoundsKill', true);
-	this.enemyMissilePool.setAll('checkWorldBounds', true);
+    // Creates the bullets for the enemies shots
+    enemyBulletPool_Setup: function() {
+	this.enemyBulletPool = this.add.group();
+	this.enemyBulletPool.enableBody = true;
+	this.enemyBulletPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyBulletPool.createMultiple(TOTAL_ENEMIES, 'bullet');
+	this.enemyBulletPool.setAll('anchor.x', 0.5);
+	this.enemyBulletPool.setAll('anchor.y', 0.5);
+	this.enemyBulletPool.setAll('angle', 180);
+	// this.enemyBulletPool.setAll('outOfBoundsKill', true);
+	// this.enemyBulletPool.setAll('checkWorldBounds', true);
     },
 
     // Creates the velocity enemies of the level.
@@ -475,9 +480,9 @@ BasicGame.Nivel3.prototype = {
 
     // Makes the cannon shoot.
     fire: function(cannon) {
-	var bullet = this.bulletPool.getAt(this.cannonPool.getIndex(cannon));
-	bullet.reset(cannon.x, cannon.y - cannon.height/2);
-	bullet.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
+	var missile = this.bulletPool.getAt(this.cannonPool.getIndex(cannon));
+	missile.reset(cannon.x, cannon.y - cannon.height/2);
+	missile.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Enemy_Shield, this);
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
