@@ -522,22 +522,6 @@ BasicGame.Nivel3.prototype = {
 	}, this);
     },
 
-    // Creates the minus button for the cannons.
-    // minusButton_Setup: function(button, func) {
-    // 	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
-    // 	minusButton.anchor.setTo(0.5, 0.5);
-    // 	minusButton.scale.setTo(0.02, 0.02);
-    // 	buttons.add(minusButton);
-    // },
-
-    // // Creates the plus button for the cannons.
-    // plusButton_Setup: function(button, func) {
-    // 	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
-    // 	plusButton.anchor.setTo(0.5, 0.5);
-    // 	plusButton.scale.setTo(0.02, 0.02);
-    // 	buttons.add(plusButton);
-    // },
-
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Weapon: function() {
 	if (!started) {
@@ -607,14 +591,22 @@ BasicGame.Nivel3.prototype = {
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
     quit_Game: function(won) {	
-	this.playButton.destroy();
-	this.blackHoleButton.destroy();
+	this.bombOnMouse.kill();
+	this.bombPool.destroy(true);
+	this.missilePool.destroy(true);
+	this.enemyBulletPool.destroy(true);
+	this.cannonPool.destroy(true);
 	buttons.destroy(true);
 	lockedButtons.destroy(true);
-	this.bombTextPool.destroy(true);
-	this.otherTextPool.destroy(true);
-	this.bombPool.destroy(true);
-	background.kill();
+	this.othersTextPool.destroy(true);
+	// this.playButton.destroy();
+	// this.blackHoleButton.destroy();
+	// buttons.destroy(true);
+	// lockedButtons.destroy(true);
+	// this.bombTextPool.destroy(true);
+	// this.otherTextPool.destroy(true);
+	// this.bombPool.destroy(true);
+	// background.kill();
 	if (won) {
 	    time = this.timeOfGame;
 	    this.level = 3;
