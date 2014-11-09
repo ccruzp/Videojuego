@@ -233,7 +233,7 @@ BasicGame.MainMenu.prototype = {
 
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
-	var explosionY = (initialY + (GRID_SPACE * ENEMY_VELOCITY * BOMB_TOTAL_TIME));
+	var explosionY = (initialY + (GRID_SPACE * this.enemyVelocity * this.bombTime));
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    this.score = this.score + 80;
 	    enemy.kill();
