@@ -445,6 +445,7 @@ BasicGame.Nivel3.prototype = {
 
 	this.enemyVelocityPool.forEach(function(enemy) {
 	    initialY = 50 - (enemy.height/2);
+	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);

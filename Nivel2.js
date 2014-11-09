@@ -22,10 +22,16 @@ BasicGame.Nivel2 = function(game) {
     this.gridY = 0;
     //----------------------------------------------------------------------
     
-    TOTAL_TIME = 10; // Time for explosion
+    //TOTAL_TIME = 10; // Time for explosion. Not used, waited to be erased
+    
+    //If required to use, this.enemyVelocity & this.bombTime need to be added
+    //--------------------------------
     BOMB_TOTAL_TIME = 3;
     ENEMY_VELOCITY = 3; // Velocity of the enemy
-    ENEMY_SHIELD_SPEED = 2.5;
+    //--------------------------------
+
+    //ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
+    
     DISTANCE_ENEMIES = 0; // Amount of distance enemies
     VELOCITY_ENEMIES = 1; // Amount of velocity enemies
     TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
@@ -40,7 +46,7 @@ BasicGame.Nivel2 = function(game) {
     this.cannonOnMouse; // The sprite that appears on the mouse
     
     // Counters
-    this.timeCounter; // Time counter.
+    //this.timeCounter; // Time counter. Not used, waited to be erased
     this.explosionTimeCounter; // Tells the time remaining before de bomb explodes.
     // numberOfBombs; // Amount of bombs the user has
     // numberOfCannons; // Amount of cannons the user has
@@ -71,6 +77,8 @@ BasicGame.Nivel2 = function(game) {
 
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
+    
+    this.enemyShieldSpeed = 2.5;
 };
 
 BasicGame.Nivel2.prototype = {
@@ -138,6 +146,9 @@ BasicGame.Nivel2.prototype = {
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
+	this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
+	this.enemyShieldSpeed.toPrecision(3);
+
 	this.make_Grid(); // Creating the grid for the game.
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
@@ -159,7 +170,7 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool_Setup(); // Create the cannonPool.
 
 	// Counters.
-	this.timeCounter = TOTAL_TIME; // Game's time counter.
+	//this.timeCounter = TOTAL_TIME; // Game's time counter. Not used
 	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
 
 	buttons = this.add.group(); // Group for buttons.
@@ -369,7 +380,9 @@ BasicGame.Nivel2.prototype = {
 	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 	
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	/*this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
+	// Display for time of next unshield.
+	this.velocityText = this.add.text(25, 225, 'Tiempo: ' + this.enemyShieldSpeed , { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
 	// Display for the amount of bombs left.
 	this.bombsRemainingText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
@@ -398,6 +411,8 @@ BasicGame.Nivel2.prototype = {
 
 	this.enemyVelocityPool.forEach(function(enemy) {
 	    initialY = 50 - (enemy.height/2);
+	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
@@ -412,8 +427,8 @@ BasicGame.Nivel2.prototype = {
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
 	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
-	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Enemy_Shield, this);
-	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.8), this.deactivate_Enemy_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
     },
 
