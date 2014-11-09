@@ -78,7 +78,9 @@ BasicGame.Nivel2 = function(game) {
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
     
+    //equations for the kids to enjoy
     this.enemyShieldSpeed = 2.5;
+    this.enemyGridDistance = 1;
 };
 
 BasicGame.Nivel2.prototype = {
@@ -146,8 +148,12 @@ BasicGame.Nivel2.prototype = {
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
-	this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
-	this.enemyShieldSpeed = this.enemyShieldSpeed.toPrecision(3);
+	//this.enemyDistance = this.game.rnd.integerInRange(1, 10);
+	//Sets the value of enemyShieldSpeed and enemyGridDistance
+	this.get_Enemy_Distance_Speed();
+	
+	//this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
+	//this.enemyShieldSpeed = this.enemyShieldSpeed.toPrecision(3);
 
 	this.make_Grid(); // Creating the grid for the game.
 	
@@ -411,6 +417,7 @@ BasicGame.Nivel2.prototype = {
 
 	this.enemyVelocityPool.forEach(function(enemy) {
 	    initialY = 50 - (enemy.height/2);
+	    initialY = initialY + this.allign_Y(10-this.enemyGridDistance) - UP_MARGIN;
 	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
@@ -428,10 +435,10 @@ BasicGame.Nivel2.prototype = {
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
 	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
 	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.8), this.deactivate_Enemy_Shield, this);
-	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed + 0.2), this.activate_Enemy_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.2), this.activate_Enemy_Shield, this);
 	shot = true;
     },
-
+	
     // Increases the velocity of the missiles.
     increase_Fire: function() {
 	if (!started) {
@@ -581,7 +588,9 @@ BasicGame.Nivel2.prototype = {
 	//     var vel = missile.body.velocity.y;
 	//     missile.body.velocity.y = -vel;
 	//     missile.angle = 180;
-	}
+	}// else{
+	  //  
+	//}
 	missile.kill();
     },
     
@@ -615,7 +624,146 @@ BasicGame.Nivel2.prototype = {
     	    }, this);
     	}
 
-    }
+    },
+    
+    get_Enemy_Distance_Speed: function(Distance){
+	
+	aux = this.game.rnd.integerInRange(1, 27);
+	if (aux > 13){
+	    if (aux > 20){
+		if(aux>23){
+		    if(aux == 24) {
+			this.enemyGridDistance = 10;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 25) {
+			this.enemyGridDistance = 10;
+			this.enemyShieldSpeed = 2;
+		    }
+		    if(aux == 26) {
+			this.enemyGridDistance = 10;
+			this.enemyShieldSpeed = 5;
+		    }
+		    if(aux == 27) {
+			this.enemyGridDistance = 10;
+			this.enemyShieldSpeed = 10;
+		    }
+		}else{
+		    if(aux == 21) {
+			this.enemyGridDistance = 9;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 22) {
+			this.enemyGridDistance = 9;
+			this.enemyShieldSpeed = 3;
+		    }
+		    if(aux == 23) {
+			this.enemyGridDistance = 9;
+			this.enemyShieldSpeed = 9;
+		    }
+		}
+	    }else{
+		if(aux>17){
+		    if(aux == 18) {
+			this.enemyGridDistance = 8;
+			this.enemyShieldSpeed = 2;
+		    }
+		    if(aux == 19) {
+			this.enemyGridDistance = 8;
+			this.enemyShieldSpeed = 4;
+		    }
+		    if(aux == 20) {
+			this.enemyGridDistance = 8;
+			this.enemyShieldSpeed = 8;
+		    } 
+		}else{
+		    if(aux == 14) {
+			this.enemyGridDistance = 6;
+			this.enemyShieldSpeed = 6;
+		    }
+		    if(aux == 15) {
+			this.enemyGridDistance = 7;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 16) {
+			this.enemyGridDistance = 7;
+			this.enemyShieldSpeed = 7;
+		    }
+		    if(aux == 17) {
+			this.enemyGridDistance = 8;
+			this.enemyShieldSpeed = 1;
+		    }
+		}
+	    }
+	}else{
+	    
+	    if (aux > 7){
+		if(aux>10){
+		    if(aux == 11) {
+			this.enemyGridDistance = 6;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 12) {
+			this.enemyGridDistance = 6;
+			this.enemyShieldSpeed = 2;
+		    }
+		    if(aux == 13) {
+			this.enemyGridDistance = 6;
+			this.enemyShieldSpeed = 3;
+		    } 
+		}else{
+		    if(aux == 8) {
+			this.enemyGridDistance = 4;
+			this.enemyShieldSpeed = 4;
+		    }
+		    if(aux == 9) {
+			this.enemyGridDistance = 5;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 10) {
+			this.enemyGridDistance = 5;
+			this.enemyShieldSpeed = 5;
+		    }
+		}
+	    }else{
+		if(aux>4){
+		    if(aux == 5) {
+			this.enemyGridDistance = 3;
+			this.enemyShieldSpeed = 3;
+		    }
+		    if(aux == 6) {
+			this.enemyGridDistance = 4;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 7) {
+			this.enemyGridDistance = 4;
+			this.enemyShieldSpeed = 2;
+		    } 
+		}else{
+		    if(aux == 1) {
+			this.enemyGridDistance = 1;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 2) {
+			this.enemyGridDistance = 2;
+			this.enemyShieldSpeed = 1;
+		    }
+		    if(aux == 3) {
+			this.enemyGridDistance = 2;
+			this.enemyShieldSpeed = 2;
+		    }
+		    if(aux == 4) {
+			this.enemyGridDistance = 3;
+			this.enemyShieldSpeed = 1;
+		    }
+		}    
+	    }
+	    
+	}
+	console.log(aux);
+	console.log(this.enemyGridDistance);
+	console.log(this.enemyShieldSpeed);
+    },
 };
 /*Functions commons to Nivel1 and Nivel2 (every level by now)
   allign_X
