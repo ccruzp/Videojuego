@@ -147,7 +147,7 @@ BasicGame.Nivel2.prototype = {
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
 	this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
-	this.enemyShieldSpeed.toPrecision(3);
+	this.enemyShieldSpeed = this.enemyShieldSpeed.toPrecision(3);
 
 	this.make_Grid(); // Creating the grid for the game.
 	
