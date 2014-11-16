@@ -28,10 +28,20 @@ BasicGame.MainMenu.prototype = {
 	// this.text.anchor.setTo(0.5, 0.5);
 	background = this.add.sprite(0, 0, 'menuBackground');
 
-	instructionsButton = this.add.button(this.world.centerX, this.world.centerY - 100, 'instructionsButton', this.startGame, this, 1, 0, 1, 0);
-	instructionsButton.anchor.setTo(0.5, 0.5);
-	instructionsButton.scale.setTo(0.3, 0.3);
-	newGameButton = this.add.button(this.world.centerX, this.world.centerY + 100, 'newGameButton', this.startGame, this, 1, 0, 1, 0);
+	// instructionsButton = this.add.button(this.world.centerX, this.world.centerY - 100, 'instructionsButton', this.startGame, this, 1, 0, 1, 0);
+	// instructionsButton.anchor.setTo(0.5, 0.5);
+	// instructionsButton.scale.setTo(0.3, 0.3);
+	newGameButton = this.add.button(this.world.centerX, this.world.centerY - 150, 'newGameButton', this.startGame, this, 1, 0, 1, 0);
+	newGameButton.anchor.setTo(0.5, 0.5);
+	newGameButton.scale.setTo(0.3, 0.3);
+	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
+	text.anchor.setTo(0.5, 0.5);    
+	newGameButton = this.add.button(this.world.centerX, this.world.centerY, 'newGameButton', this.startGame2, this, 1, 0, 1, 0);
+	newGameButton.anchor.setTo(0.5, 0.5);
+	newGameButton.scale.setTo(0.3, 0.3);
+	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
+	text.anchor.setTo(0.5, 0.5);    
+	newGameButton = this.add.button(this.world.centerX, this.world.centerY + 150, 'newGameButton', this.startGame3, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.3, 0.3);
 	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
@@ -61,6 +71,78 @@ BasicGame.MainMenu.prototype = {
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel1',true,false,time,level,score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 // this.bombPool_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.plusButton_Setup,
+			 //this.lockedButtons_Setup,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,//Should be part of "displays_Setup"
+			 this.try_To_Destroy);
+    },
+
+    startGame2: function (pointer) {
+	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+	// this.music.stop();
+	
+	//	And start the actual game
+	// this.newGameButton.destroy();
+	// this.text.destroy();
+	// this.background.destroy();
+	// this.state.start('Distance');
+	// newGameButton.destroy();
+	text.destroy();
+	background.destroy();
+	time = 0;
+	level = 1;
+	score = 0;
+	console.log(level);
+	this.state.start('Nivel2',true,false,time,level,score,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.blackHoleButton_Setup,
+			 this.bombOnMouse_Setup,
+			 // this.bombPool_Setup,
+			 this.countdown,
+			 this.find_Grid_Place,
+			 this.gridLine_Setup,
+			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.plusButton_Setup,
+			 //this.lockedButtons_Setup,
+			 this.playButton_Setup,
+			 this.select_Bomb,
+			 this.start,
+			 this.scoreText_Setup,//Should be part of "displays_Setup"
+			 this.try_To_Destroy);
+    },
+
+    startGame3: function (pointer) {
+	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+	// this.music.stop();
+	
+	//	And start the actual game
+	// this.newGameButton.destroy();
+	// this.text.destroy();
+	// this.background.destroy();
+	// this.state.start('Distance');
+	// newGameButton.destroy();
+	text.destroy();
+	background.destroy();
+	time = 0;
+	level = 1;
+	score = 0;
+	console.log(level);
+	this.state.start('Nivel3',true,false,time,level,score,
 			 this.allign_X,
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
