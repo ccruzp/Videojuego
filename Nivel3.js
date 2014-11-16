@@ -13,7 +13,7 @@ BasicGame.Nivel3 = function(game) {
     ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
     COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
 
-    this.line;         //The line that helps you to use the numbers of the grid
+   // this.line;   //The line that helps you to use the numbers of the grid
     
     this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
 
@@ -87,7 +87,7 @@ BasicGame.Nivel3.prototype = {
 		  // bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
-		   gridLine_Setup,
+		   //gridLine_Setup,
 		   make_Grid,
 		   minusButton_Setup,
 		   plusButton_Setup,
@@ -107,7 +107,7 @@ BasicGame.Nivel3.prototype = {
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
-	this.gridLine_Setup = gridLine_Setup;
+	//this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
 	this.minusButton_Setup = minusButton_Setup;
 	this.plusButton_Setup = plusButton_Setup;
@@ -154,7 +154,7 @@ BasicGame.Nivel3.prototype = {
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	
-	this.gridLine_Setup();
+	//this.gridLine_Setup();
 	/*
 	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
@@ -219,7 +219,7 @@ BasicGame.Nivel3.prototype = {
 	    text.y = y;
 
 	    lineY = this.allign_Y(this.gridY - 0.5); 
-	    this.line.reset(LEFT_MARGIN, lineY);
+	    //this.line.reset(LEFT_MARGIN, lineY);
 
 	} else if (usingCannon) {
 	     this.find_Grid_Place();
@@ -562,7 +562,7 @@ BasicGame.Nivel3.prototype = {
 		this.blackHoleButton.frame = 0;
 		this.bombOnMouse.reset(1000, 1000);
     		usingBlackHole = false;
-		this.line.reset(1000, 1000);
+		//this.line.reset(1000, 1000);
 		
 		// Update displays.
 		this.bombsRemainingText.text = 'x' + numberOfBombs;
@@ -634,7 +634,7 @@ BasicGame.Nivel3.prototype = {
 			 this.bombOnMouse_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
-			 this.gridLine_Setup,
+			 //this.gridLine_Setup,
 			 this.make_Grid,
 			 this.playButton_Setup,
 			 this.select_Bomb,

@@ -13,7 +13,7 @@ BasicGame.Nivel1 = function (game) {
     //BOMB_TOTAL_TIME = 3; //Refer to bombTime
     //ENEMY_VELOCITY = 3; // Refer to enemyVelocity
     
-    this.line;         //The line that helps you to use the numbers of the grid
+//    this.line;//The line that helps you to use the numbers of the grid
     
     this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
 
@@ -70,7 +70,7 @@ BasicGame.Nivel1.prototype = {
 		   //bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
-		   gridLine_Setup,
+		  // gridLine_Setup,
 		   make_Grid,
 		   minusButton_Setup,
 		   plusButton_Setup,
@@ -89,7 +89,7 @@ BasicGame.Nivel1.prototype = {
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
-	this.gridLine_Setup = gridLine_Setup;
+	//this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
 	this.minusButton_Setup = minusButton_Setup;
 	this.plusButton_Setup = plusButton_Setup;
@@ -131,7 +131,7 @@ BasicGame.Nivel1.prototype = {
 	this.bombOnMouse_Setup();
 	
 	//Line that follows the bombs in the grid
-	this.gridLine_Setup();
+	//this.gridLine_Setup();
 	
 	// Group for the enemies
 	this.enemyDistancePool_Setup();
@@ -195,8 +195,8 @@ BasicGame.Nivel1.prototype = {
 	    text.x = x;
 	    text.y = y;
 
-	    lineY = this.allign_Y(this.gridY-0.5); 
-	    this.line.reset(LEFT_MARGIN,lineY);
+	    //lineY = this.allign_Y(this.gridY-0.5); 
+	    //this.line.reset(LEFT_MARGIN,lineY);
 	}
 
 	// Update displays.
@@ -401,7 +401,7 @@ BasicGame.Nivel1.prototype = {
 	this.blackHoleButton.frame = 0;
 	this.bombOnMouse.reset(1000, 1000);
     	usingBlackHole = false;
-	this.line.reset(1000, 1000);
+	//this.line.reset(1000, 1000);
     },
 
     // Destroys everything created and moves to the winner's menu or the game 
@@ -431,7 +431,7 @@ BasicGame.Nivel1.prototype = {
 			 this.bombOnMouse_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
-			 this.gridLine_Setup,
+			 //this.gridLine_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
 			 this.plusButton_Setup,

@@ -68,7 +68,7 @@ BasicGame.MainMenu.prototype = {
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
-			 this.gridLine_Setup,
+			 //this.gridLine_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
 			 this.plusButton_Setup,
@@ -135,13 +135,13 @@ BasicGame.MainMenu.prototype = {
     },
     
     //Setups the dynamic line of the grid
-    gridLine_Setup: function(){
+/*    gridLine_Setup: function(){
 	
 	this.line = this.add.sprite(1000, 1000,'ground');
 	//this.line.scale.setTo(2.25,0.4); Use this for grid_space = 50
 	this.line.scale.setTo(1.52, 0.4);
 	this.line.anchor.setTo(0, 0.5);
-    },
+    },*/
         
     //Draws the grid
     make_Grid: function (/*WIDTH, HEIGHT*/) {
