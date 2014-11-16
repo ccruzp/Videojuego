@@ -121,7 +121,7 @@ BasicGame.Nivel1.prototype = {
 	this.make_Grid();
 	
 	// Bomb's time counter.
-	this.bombTime = this.game.rnd.integerInRange(1, Math.floor((10/this.enemyVelocity)));
+	this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 	this.explosionTimeCounter = this.bombTime; // Time counter
 	
 	//Start the game inside the grid
@@ -442,7 +442,7 @@ BasicGame.Nivel1.prototype = {
 			 this.try_To_Destroy);
 	
     },
-    
+/*    
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
     render: function() {
@@ -456,7 +456,7 @@ BasicGame.Nivel1.prototype = {
     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    }
+    }*/
 };
 
 /*Functions commons to Nivel1 and Nivel2
