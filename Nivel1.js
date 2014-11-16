@@ -217,6 +217,9 @@ BasicGame.Nivel1.prototype = {
 	    this.enemyDistancePool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = this.enemyVelocity * GRID_SPACE;
 	    }, this);
+
+	    //If the game started, hide the Velocity text
+	    this.velocityText.visible = false;
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -304,7 +307,7 @@ BasicGame.Nivel1.prototype = {
 	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	this.velocityText = this.add.text((this.allign_X(this.enemyPlace)/*+(GRID_SPACE/2)*/), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
 	// Display for the amount of bombPool left.
 	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
