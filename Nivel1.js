@@ -325,8 +325,12 @@ BasicGame.Nivel1.prototype = {
 	this.enemyDistancePool.setAll('anchor.y', 0.5);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
 	this.enemyDistancePool.setAll('checkWorldBounds', true);
-	this.enemyDistancePool.setAll('scale.x', 0.125);
-	this.enemyDistancePool.setAll('scale.y', 0.125);
+	
+	this.enemyDistancePool.setAll('scale.x', 0.067);
+	this.enemyDistancePool.setAll('scale.y', 0.067);
+
+	//this.enemyDistancePool.setAll('scale.x', 0.125);
+	//this.enemyDistancePool.setAll('scale.y', 0.125);
 
 	this.enemyDistancePool.forEach(function(enemy) {
 	    var enemy = this.enemyDistancePool.getFirstExists(false);
@@ -442,7 +446,7 @@ BasicGame.Nivel1.prototype = {
 			 this.try_To_Destroy);
 	
     },
-/*    
+    
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
     render: function() {
@@ -456,7 +460,7 @@ BasicGame.Nivel1.prototype = {
     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    }*/
+    }
 };
 
 /*Functions commons to Nivel1 and Nivel2
