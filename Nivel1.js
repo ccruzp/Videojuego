@@ -111,6 +111,8 @@ BasicGame.Nivel1.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
+	//Beep sound of the bomb
+	bombBeep = this.add.audio('bombBeep');
 	
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');
@@ -452,7 +454,7 @@ BasicGame.Nivel1.prototype = {
     
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
-    render: function() {
+/*    render: function() {
     	if (this.enemyDistancePool.countLiving() > 0) {
     	    this.enemyDistancePool.forEachAlive(function (enemy) {
     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
@@ -463,7 +465,7 @@ BasicGame.Nivel1.prototype = {
     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    }
+    }*/
 };
 
 /*Functions commons to Nivel1 and Nivel2

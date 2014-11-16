@@ -49,6 +49,7 @@ BasicGame.Boot.prototype = {
 	this.load.audio('coin', 'assets/audio/collectcoin.mp3', true);
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
+	this.load.audio('bombBeep', 'assets/audio/beep.mp3', true);
     },
 
     create: function () {

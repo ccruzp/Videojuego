@@ -115,8 +115,10 @@ BasicGame.MainMenu.prototype = {
 	    if (this.timeCounter < 0) {
 		this.quit_Game(true);
 	    }
+	    //placedBomb should be a number, not a boolean
 	    if (placedBomb) {
 		this.explosionTimeCounter -= 1;
+		bombBeep.play('',0,1,false);
 	    }
 	}
     },
