@@ -40,6 +40,7 @@ BasicGame.Nivel1 = function (game) {
     
     // Texts
     this.bombsRemainingTextPool;
+    this.enemyDistanceTextPool;
     this.otherTextPool;
     this.velocityText; // Text display of velocity
     this.levelText; // Text display of time
@@ -218,10 +219,13 @@ BasicGame.Nivel1.prototype = {
 	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
 	    this.enemyDistancePool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = this.enemyVelocity * GRID_SPACE;
+		
+		var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+	    text.visible = false;
 	    }, this);
 
 	    //If the game started, hide the Velocity text
-	    this.velocityText.visible = false;
+	    // this.velocityText.visible = false;
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -309,7 +313,7 @@ BasicGame.Nivel1.prototype = {
 	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text((this.allign_X(this.enemyPlace)/*+(GRID_SPACE/2)*/), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	/*this.velocityText = this.add.text((this.allign_X(this.enemyPlace)), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
 
 	// Display for the amount of bombPool left.
 	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
@@ -351,10 +355,23 @@ BasicGame.Nivel1.prototype = {
 
 	    enemy.events.onInputOver.add(function(enemy) {
 		enemy.frame = this.enemyVelocity + 10;
+		enemy.scale.setTo(0.15, 0.15);
+		enemy.body.reset(enemy.x, enemy.y);
 	    }, this);
 	    enemy.events.onInputOut.add(function(enemy) {
 		enemy.frame = this.enemyVelocity;
+		enemy.scale.setTo(0.067, 0.067);
+		enemy.body.reset(enemy.x, enemy.y);
 	    }, this);
+	}, this);
+	
+	// Group for the text displays
+	this.enemyDistanceTextPool = this.add.group();
+	// Velocity of each enemy.
+	this.enemyDistancePool.forEach(function() {
+	    var text = this.add.text((this.allign_X(this.enemyPlace))+38, 20, 'Velocidad: ' + this.enemyVelocity, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyDistanceTextPool);
+	    text.visible = true;
+	    text.anchor.setTo(0.5, 0.5);
 	}, this);
     },
 
@@ -420,6 +437,7 @@ BasicGame.Nivel1.prototype = {
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
 	this.bombTextPool.destroy(true);
+	this.enemyDistanceTextPool.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
 	background.kill();
