@@ -13,7 +13,7 @@ BasicGame.Nivel1 = function (game) {
     //BOMB_TOTAL_TIME = 3; //Refer to bombTime
     //ENEMY_VELOCITY = 3; // Refer to enemyVelocity
     
-    this.line;         //The line that helps you to use the numbers of the grid
+//    this.line;//The line that helps you to use the numbers of the grid
     
     this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
 
@@ -70,7 +70,7 @@ BasicGame.Nivel1.prototype = {
 		   //bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
-		   gridLine_Setup,
+		  // gridLine_Setup,
 		   make_Grid,
 		   minusButton_Setup,
 		   plusButton_Setup,
@@ -89,7 +89,7 @@ BasicGame.Nivel1.prototype = {
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
-	this.gridLine_Setup = gridLine_Setup;
+	//this.gridLine_Setup = gridLine_Setup;
 	this.make_Grid = make_Grid;
 	this.minusButton_Setup = minusButton_Setup;
 	this.plusButton_Setup = plusButton_Setup;
@@ -111,6 +111,8 @@ BasicGame.Nivel1.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
+	//Beep sound of the bomb
+	bombBeep = this.add.audio('bombBeep');
 	
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');
@@ -121,7 +123,7 @@ BasicGame.Nivel1.prototype = {
 	this.make_Grid();
 	
 	// Bomb's time counter.
-	this.bombTime = this.game.rnd.integerInRange(1, Math.floor((10/this.enemyVelocity)));
+	this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 	this.explosionTimeCounter = this.bombTime; // Time counter
 	
 	//Start the game inside the grid
@@ -131,7 +133,7 @@ BasicGame.Nivel1.prototype = {
 	this.bombOnMouse_Setup();
 	
 	//Line that follows the bombs in the grid
-	this.gridLine_Setup();
+	//this.gridLine_Setup();
 	
 	// Group for the enemies
 	this.enemyDistancePool_Setup();
@@ -195,8 +197,8 @@ BasicGame.Nivel1.prototype = {
 	    text.x = x;
 	    text.y = y;
 
-	    lineY = this.allign_Y(this.gridY-0.5); 
-	    this.line.reset(LEFT_MARGIN,lineY);
+	    //lineY = this.allign_Y(this.gridY-0.5); 
+	    //this.line.reset(LEFT_MARGIN,lineY);
 	}
 
 	// Update displays.
@@ -217,6 +219,9 @@ BasicGame.Nivel1.prototype = {
 	    this.enemyDistancePool.forEachAlive(function(enemy) {
 		enemy.body.velocity.y = this.enemyVelocity * GRID_SPACE;
 	    }, this);
+
+	    //If the game started, hide the Velocity text
+	    this.velocityText.visible = false;
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
@@ -304,7 +309,7 @@ BasicGame.Nivel1.prototype = {
 	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 		
 	// Display for velocity of the enemies.
-	this.velocityText = this.add.text(25, 225, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
+	this.velocityText = this.add.text((this.allign_X(this.enemyPlace)/*+(GRID_SPACE/2)*/), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
 
 	// Display for the amount of bombPool left.
 	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
@@ -325,8 +330,11 @@ BasicGame.Nivel1.prototype = {
 	this.enemyDistancePool.setAll('anchor.y', 0.025);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
 	this.enemyDistancePool.setAll('checkWorldBounds', true);
-	this.enemyDistancePool.setAll('scale.x', 0.1);
-	this.enemyDistancePool.setAll('scale.y', 0.1);
+	this.enemyDistancePool.setAll('scale.x', 0.067);
+	this.enemyDistancePool.setAll('scale.y', 0.067);
+
+	//this.enemyDistancePool.setAll('scale.x', 0.125);
+	//this.enemyDistancePool.setAll('scale.y', 0.125);
 
 	this.enemyDistancePool.forEach(function(enemy) {
 	    var enemy = this.enemyDistancePool.getFirstExists(false);
@@ -402,7 +410,7 @@ BasicGame.Nivel1.prototype = {
 	this.blackHoleButton.frame = 0;
 	this.bombOnMouse.reset(1000, 1000);
     	usingBlackHole = false;
-	this.line.reset(1000, 1000);
+	//this.line.reset(1000, 1000);
     },
 
     // Destroys everything created and moves to the winner's menu or the game 
@@ -432,7 +440,7 @@ BasicGame.Nivel1.prototype = {
 			 this.bombOnMouse_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
-			 this.gridLine_Setup,
+			 //this.gridLine_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
 			 this.plusButton_Setup,
@@ -446,7 +454,7 @@ BasicGame.Nivel1.prototype = {
     
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).
-    render: function() {
+/*    render: function() {
     	if (this.enemyDistancePool.countLiving() > 0) {
     	    this.enemyDistancePool.forEachAlive(function (enemy) {
     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
@@ -457,7 +465,7 @@ BasicGame.Nivel1.prototype = {
     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
-    }
+    }*/
 };
 
 /*Functions commons to Nivel1 and Nivel2
