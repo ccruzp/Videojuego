@@ -331,10 +331,9 @@ BasicGame.Nivel1.prototype = {
 	this.enemyDistancePool.physicsBodyType = Phaser.Physics.ARCADE;
 	this.enemyDistancePool.createMultiple(TOTAL_ENEMIES, 'distanceEnemy');
 	this.enemyDistancePool.setAll('anchor.x', 0.5);
-	this.enemyDistancePool.setAll('anchor.y', 0.5);
+	this.enemyDistancePool.setAll('anchor.y', 0.025);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
 	this.enemyDistancePool.setAll('checkWorldBounds', true);
-	
 	this.enemyDistancePool.setAll('scale.x', 0.067);
 	this.enemyDistancePool.setAll('scale.y', 0.067);
 
@@ -352,7 +351,7 @@ BasicGame.Nivel1.prototype = {
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
-
+	    
 	    enemy.events.onInputOver.add(function(enemy) {
 		enemy.frame = this.enemyVelocity + 10;
 		enemy.scale.setTo(0.15, 0.15);

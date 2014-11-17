@@ -324,7 +324,7 @@ BasicGame.Nivel2.prototype = {
 	this.missilePool.setAll('anchor.y', 0.5);
 	this.missilePool.setAll('scale.x', 0.25);
 	this.missilePool.setAll('scale.y', 0.25);
-	this.missilePool.setAll('angle', 180);
+	// this.missilePool.setAll('angle', 180);
 	this.missilePool.setAll('outOfBoundsKill', true);
 	this.missilePool.setAll('checkWorldBounds', true);
 	this.missilePool.forEach(function(missile) {
@@ -423,7 +423,7 @@ BasicGame.Nivel2.prototype = {
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
-	    enemy.body.setSize(100, 100, 0, enemy.height/2);
+	    enemy.body.setSize(100, 100, 0, 0);
 	    enemy.animations.add('shield', [1, 0], 10, false);
 	    enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
