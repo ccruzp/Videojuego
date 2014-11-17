@@ -598,34 +598,6 @@ BasicGame.Nivel2.prototype = {
 	this.quit_Game(false);
     },
         
-    // NO TOCAR SIN MI PERMISO :)
-    // Solo la comenté una vez u.u
-    // This function is for debug (and other stuff xD, but we're using it for
-    // debugging sprite's sizes).    
-    render: function() {
-    	if (this.enemyVelocityPool.countLiving() > 0) {
-    	    this.enemyVelocityPool.forEachAlive(function(enemy) {
-    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.bombPool.countLiving() > 0) {
-    	    this.bombPool.forEachAlive(function(bomb) {
-    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.cannonPool.countLiving() > 0) {
-    	    this.cannonPool.forEachAlive(function(cannon) {
-    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.missilePool.countLiving() > 0) {
-    	    this.missilePool.forEachAlive(function(missile) {
-    		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-
-    },
-    
     get_Enemy_Distance_Speed: function(Distance){
 	
 	aux = this.game.rnd.integerInRange(1, 27);
@@ -764,6 +736,35 @@ BasicGame.Nivel2.prototype = {
 	console.log(this.enemyGridDistance);
 	console.log(this.enemyShieldSpeed);
     },
+
+    // NO TOCAR SIN MI PERMISO :)
+    // Solo la comenté una vez u.u
+    // This function is for debug (and other stuff xD, but we're using it for
+    // debugging sprite's sizes).    
+    // render: function() {
+    // 	if (this.enemyVelocityPool.countLiving() > 0) {
+    // 	    this.enemyVelocityPool.forEachAlive(function(enemy) {
+    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.cannonPool.countLiving() > 0) {
+    // 	    this.cannonPool.forEachAlive(function(cannon) {
+    // 		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.missilePool.countLiving() > 0) {
+    // 	    this.missilePool.forEachAlive(function(missile) {
+    // 		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+
+    // }
+    
 };
 /*Functions commons to Nivel1 and Nivel2 (every level by now)
   allign_X

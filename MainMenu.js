@@ -114,7 +114,7 @@ BasicGame.MainMenu.prototype = {
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
-			 this.gridLine_Setup,
+			 // this.gridLine_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
 			 this.plusButton_Setup,
