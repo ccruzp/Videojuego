@@ -27,8 +27,9 @@ BasicGame.Nivel3 = function(game) {
     ENEMY_VELOCITY = 3; // Velocity of the enemy
     ENEMY_SHIELD_SPEED = 2.5;
     DISTANCE_ENEMIES = 0; // Amount of distance enemies
-    VELOCITY_ENEMIES = 1; // Amount of velocity enemies
-    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
+    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+    TIME_ENEMIES = 1;
+    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
 
     this.bombPool; // Group of bombs
     this.cannonPool; // Group of cannons
@@ -50,6 +51,8 @@ BasicGame.Nivel3 = function(game) {
     // Texts
     this.bombsRemainingText;
     this.bombTextPool;
+    this.cannonPool;
+    this.shieldPool;
     this.otherTextPool;
     this.velocityText; // Text display of velocity
     this.levelText; // Text display of time
@@ -97,7 +100,6 @@ BasicGame.Nivel3.prototype = {
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
-	console.log(level);
 	this.score = score;
 	this.level = level;
     	this.allign_X = allign_X;
@@ -167,7 +169,8 @@ BasicGame.Nivel3.prototype = {
 	this.missilePool_Setup(); // Creating the bullets for the cannons.
 	this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
 	this.cannonPool_Setup(); // Create the cannonPool.
-
+	this.shieldPool_Setup(); // Create the shieldPool.
+	
 	// Counters.
 	this.timeCounter = TOTAL_TIME; // Game's time counter.
 	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
@@ -379,7 +382,6 @@ BasicGame.Nivel3.prototype = {
 	if (!started && shieldTime > 0) {
 	    shieldTime -= 1;
 	}
-	console.log("SHIELDTIME: " + shieldTime);
     },
     
     // Creates several text displays.
@@ -501,7 +503,6 @@ BasicGame.Nivel3.prototype = {
 	if (!started) {
 	    shieldTime += 1;
 	}
-	console.log("SHIELDTIME +: " + shieldTime);
     },
 
     // Creates the locked buttons
@@ -561,11 +562,23 @@ BasicGame.Nivel3.prototype = {
 		
 		this.cannonButton.frame = 0;
 		usingCannon = false;
+
+	    } else if (usingShield && numberOfShields > 0) {
+		x = this.allign_X(this.gridX - 0.5);
+		y = 460;
+		var shield = this.shieldPool.getFirstExists(false);
+		console.log(this.shieldPool.getIndex(shield));
+		shield.body.setSize(10, 10);
+		shield.reset(x, y);
+		numberOfShields -= 1;
+		
+		this.shieldButton.frame = 0;
+		usingShield = false;
 	    }
  	}
     },
 
-    // Lets the player use the cannons.
+    // Lets the player use the shields.
     select_Shield: function() {
 	if (!started){
 	    usingShield = (numberOfShields > 0);
@@ -573,9 +586,8 @@ BasicGame.Nivel3.prototype = {
 		this.shieldPool.forEachAlive(function(shield) {
 		    shield.kill();
 		}, this);
-		numberOfCannons = TOTAL_ENEMIES;
+		numberOfShields = TOTAL_ENEMIES;
 	    }
-	    console.log(usingShield);
 	}
     },
 
@@ -588,6 +600,18 @@ BasicGame.Nivel3.prototype = {
 	this.minusButton_Setup(this.shieldButton, this.decrease_Time_Shield);
 	this.plusButton_Setup(this.shieldButton, this.increase_Time_Shield);
      },
+
+    // Creates the cannons.
+    shieldPool_Setup: function() {
+	this.shieldPool = this.add.group();
+	this.shieldPool.enableBody = true;
+	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.shieldPool.setAll('anchor.x', 0.5);
+	this.shieldPool.setAll('anchor.y', 0.5);
+	this.shieldPool.setAll('scale.x', 0.06);
+	this.shieldPool.setAll('scale.y', 0.06);
+    },
 
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
