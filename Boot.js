@@ -32,7 +32,7 @@ BasicGame.Boot.prototype = {
 	// Loading buttons' spritesheets
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
-	this.load.spritesheet('shieldButton', 'assets/Spritesheets/Button_shield_spritesheet.png', 250, 242, 2);
+	this.load.spritesheet('shieldButton', 'assets/Spritesheets/genShield_button_spritesheet.png', 250, 242, 2);
 	this.load.spritesheet('minusButton', 'assets/Spritesheets/Button_minus_spritesheet.png', 1958, 2000, 2);
 	this.load.spritesheet('plusButton', 'assets/Spritesheets/Button_plus_spritesheet.png', 1958, 2000, 2);
 	this.load.spritesheet('playButton', 'assets/Spritesheets/playButton_spritesheet.png', 1032, 1000, 2);
