@@ -229,8 +229,16 @@ BasicGame.Nivel3.prototype = {
 	     x = this.allign_X(this.gridX - 0.5);
 	     y = 460;
 	     this.cannonOnMouse.reset(x, y);
+	    
+	} else if(usingShield){
+	    this.find_Grid_Place();
+	    //This should be added later
+	    //x = this.allign_X(this.gridX - 0.5);
+	    //y = 460;
+	    //this.shieldOnMouse.reset(x, y);
+	    
 	}
-
+	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -558,6 +566,7 @@ BasicGame.Nivel3.prototype = {
 		var cannon = this.cannonPool.getFirstExists(false);
 		cannon.body.setSize(10, 10);
 		cannon.reset(x, y);
+		
 		numberOfCannons -= 1;
 		
 		this.cannonButton.frame = 0;
@@ -567,7 +576,6 @@ BasicGame.Nivel3.prototype = {
 		x = this.allign_X(this.gridX - 0.5);
 		y = 460;
 		var shield = this.shieldPool.getFirstExists(false);
-		console.log(this.shieldPool.getIndex(shield));
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		numberOfShields -= 1;

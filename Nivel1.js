@@ -13,7 +13,9 @@ BasicGame.Nivel1 = function (game) {
     //BOMB_TOTAL_TIME = 3; //Refer to bombTime
     //ENEMY_VELOCITY = 3; // Refer to enemyVelocity
     
-//    this.line;//The line that helps you to use the numbers of the grid
+    TIMES_TO_PASS = 5; //Number of times that the level is needed to be passed
+    
+    //this.line;//The line that helps you to use the numbers of the grid
     
     this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
 
@@ -36,7 +38,7 @@ BasicGame.Nivel1 = function (game) {
     // Counters
     //this.timeCounter; // Time counter. Variable to be removed
     this.explosionTimeCounter; // Tells the time remaining before de bomb explodes.
-//    this.numberOfBombs; //BombPool = number of enemies, should be generated.
+    //this.numberOfBombs; //BombPool = number of enemies, should be generated.
     
     // Texts
     this.bombsRemainingTextPool;
@@ -58,6 +60,9 @@ BasicGame.Nivel1 = function (game) {
     this.score;
     this.timeOfGame;
 
+    // Variable to play the level multiple times
+    this.timesPassed = TIMES_TO_PASS;
+   
     //Aligned enemy in the grid.
     this.enemyPlace = 0; //Is alligned later before used
 };
@@ -242,8 +247,39 @@ BasicGame.Nivel1.prototype = {
 	}
 
 	// if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
-	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == TOTAL_ENEMIES){
-	    this.quit_Game(true);
+	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == TOTAL_ENEMIES ){
+	    this.timesPassed -=1;
+	    
+	    if(this.timesPassed ==0){
+		this.quit_Game(true);
+	    }else{
+		//Resets the enemies and bombs, maybe should be a function
+		//------------------------------------------------------------
+		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
+		this.explosionTimeCounter = this.bombTime;
+		this.blackHoleButtonText.text =  '' + this.explosionTimeCounter;
+		this.enemyDistancePool.forEach(function(enemy) {
+		    var enemy = this.enemyDistancePool.getFirstExists(false);
+		    initialY = 40 - (enemy.height/2);
+		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);	    
+		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
+		    enemy.frame = this.enemyVelocity;
+		    enemy.reset(aux1, initialY);
+
+		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+		    text.visible = true;
+		    text.x = (this.allign_X(this.enemyPlace))+38;
+		    text.text = 'Velocidad: ' + this.enemyVelocity;
+		},this);
+		
+		this.explosionTimeCounter = this.bombTime;
+		numberOfBombs = TOTAL_ENEMIES;
+		placedBomb = false;
+		//usingBlackHole = true;
+		started = false;
+	    //------------------------------------------------------------
+	    }
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyDistancePool.forEachAlive(function(enemy) {
@@ -256,6 +292,7 @@ BasicGame.Nivel1.prototype = {
 	if (this.enemyOutOfGrid) {
 	    this.quit_Game(false);
 	}
+
     },
     
     //Creates the bombPool
@@ -413,6 +450,7 @@ BasicGame.Nivel1.prototype = {
 	    */
 	    var bomb = this.bombPool.getFirstExists(false);
 	    bomb.body.setSize(10, 10, 4, 4);
+	    bomb.frame = 1;
 	    bomb.reset(x, y);
 	    
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
