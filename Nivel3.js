@@ -124,7 +124,17 @@ BasicGame.Nivel3.prototype = {
     
     create: function() {
 	// Initializing boolean variables.
+	TOTAL_TIME = 10; // Time for explosion
+	BOMB_TOTAL_TIME = 3;
+	ENEMY_VELOCITY = 3; // Velocity of the enemy
+	ENEMY_SHIELD_SPEED = 2.5;
+	DISTANCE_ENEMIES = 0; // Amount of distance enemies
+	VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+	TIME_ENEMIES = 1;
+	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
+	
 	started = false; // Boolean that says if the game has begun.
+	lost = false; // Boolean that says if the game has been lost.
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
 	enemyShot = false; // Boolean that says if the enemy has shoot.
@@ -202,6 +212,7 @@ BasicGame.Nivel3.prototype = {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	// this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Velocity, null, this);
 	this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
+	this.physics.arcade.overlap(this.shieldPool, this.enemyBulletPool, this.shield_Hit, null, this);
 
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
@@ -578,6 +589,8 @@ BasicGame.Nivel3.prototype = {
 		var shield = this.shieldPool.getFirstExists(false);
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
+		shield.time = shieldTime;
+		console.log("Shieldtime: " + shield.time);
 		numberOfShields -= 1;
 		
 		this.shieldButton.frame = 0;
@@ -614,11 +627,12 @@ BasicGame.Nivel3.prototype = {
 	this.shieldPool = this.add.group();
 	this.shieldPool.enableBody = true;
 	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
 	this.shieldPool.setAll('anchor.x', 0.5);
 	this.shieldPool.setAll('anchor.y', 0.5);
 	this.shieldPool.setAll('scale.x', 0.06);
 	this.shieldPool.setAll('scale.y', 0.06);
+	this.shieldPool.setAll('shieldActive', false);
     },
 
     // Destroys everything created and moves to the winner's menu or the game 
@@ -631,7 +645,7 @@ BasicGame.Nivel3.prototype = {
 	this.cannonPool.destroy(true);
 	buttons.destroy(true);
 	lockedButtons.destroy(true);
-	this.othersTextPool.destroy(true);
+	this.otherTextPool.destroy(true);
 	// this.playButton.destroy();
 	// this.blackHoleButton.destroy();
 	// buttons.destroy(true);
@@ -681,6 +695,15 @@ BasicGame.Nivel3.prototype = {
 		  }, this);*/
 		numberOfCannons = TOTAL_ENEMIES;
 	    }
+	}
+    },
+
+    shield_Hit: function(shieldGen, bullet) {
+	if (shieldGen.shieldActive) {
+	    bullet.angle = 180;
+	    bullet.velocity.y = -(bullet.velocity.y);
+	} else {
+	    this.lost = true;
 	}
     },
 
