@@ -296,8 +296,10 @@ BasicGame.MainMenu.prototype = {
   
     // Lets the player use the bombs.
     select_Bomb: function () {
+	console.log('Im here');
 	usingBlackHole = (numberOfBombs > 0);
 	if (!usingBlackHole) {
+	    console.log('Im there');
 	    // this.bombPool.removeAll();
 	    this.blackHoleButton.frame = 0;
 	    this.bombPool.forEachAlive(function(bomb) {
@@ -321,7 +323,9 @@ BasicGame.MainMenu.prototype = {
 	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    this.score = this.score + 80;
 	    enemy.kill();
-	    //this.score = this.score + 80;
+	    //Functionality for the 'x' times to continue
+	    //this.timesPassed -= 1;
+	    //started = false;
 	}
     },
 
