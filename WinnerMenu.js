@@ -20,6 +20,7 @@ BasicGame.WinnerMenu.prototype = {
 		   allign_Y,
 		   blackHoleButton_Setup,
 		   bombOnMouse_Setup,
+		   buttonContainer_Setup,
 		  // bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
@@ -30,6 +31,7 @@ BasicGame.WinnerMenu.prototype = {
 		 //  lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
+		   selector_Create,
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
@@ -44,6 +46,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
 	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	this.buttonContainer_Setup = buttonContainer_Setup;
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
@@ -54,6 +57,7 @@ BasicGame.WinnerMenu.prototype = {
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
+	this.selector_Create = selector_Create;
 	this.start = start;
 	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;

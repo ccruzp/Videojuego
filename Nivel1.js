@@ -73,6 +73,7 @@ BasicGame.Nivel1.prototype = {
 		   allign_Y,
 		   blackHoleButton_Setup,
 		   bombOnMouse_Setup,
+		   buttonContainer_Setup,
 		   //bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
@@ -83,6 +84,7 @@ BasicGame.Nivel1.prototype = {
 		   //lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
+		   selector_Create,
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
@@ -92,6 +94,7 @@ BasicGame.Nivel1.prototype = {
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
 	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	this.buttonContainer_Setup = buttonContainer_Setup;
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
@@ -102,6 +105,7 @@ BasicGame.Nivel1.prototype = {
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
+	this.selector_Create = selector_Create;
 	this.start = start;
 	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
@@ -154,17 +158,23 @@ BasicGame.Nivel1.prototype = {
 	// Score counter
 	this.timeOfGame = this.time.now;
 
+	this.buttonContainer = this.buttonContainer_Setup();
+
 	// Group for the buttons
 	buttons = this.add.group();
 
 	// Create the button for the black hole bomb
 	this.blackHoleButton_Setup();
 	
-	// // Create the play button
+	// Create the play button
 	this.playButton_Setup();
 	
-	// // Create the locked buttons
+	// Create the locked buttons
 	this.lockedButtons_Setup();
+
+	// The hud that contains the values for the cannon and the shield.
+	this.selector = this.add.group();
+	this.selector_Create();
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -353,9 +363,9 @@ BasicGame.Nivel1.prototype = {
 	/*this.velocityText = this.add.text((this.allign_X(this.enemyPlace)), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
 
 	// Display for the amount of bombPool left.
-	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText = this.add.text(540, 480, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
 
-	// Display for the time of the bomb.
+	// // Display for the time of the bomb.
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
@@ -415,30 +425,23 @@ BasicGame.Nivel1.prototype = {
     lockedButtons_Setup: function() {
 	
 	lockedButtons = this.add.group();
-	lockedButtons.createMultiple(5, 'lockedButton');
+	lockedButtons.createMultiple(2, 'lockedButton');
 	lockedButtons.setAll('anchor.x', 0.5);
 	lockedButtons.setAll('anchor.y', 0.5);
 	lockedButtons.setAll('outOfBoundsKill', true);
 	lockedButtons.setAll('checkWorldBounds', true);
-	lockedButtons.setAll('scale.x', 0.175);
-	lockedButtons.setAll('scale.y', 0.175);
+	lockedButtons.setAll('scale.x', 0.1);
+	lockedButtons.setAll('scale.y', 0.1);
 
-	beforeButton = this.blackHoleButton;
-	for(i = 0; i < 2; i++) {
-	    x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
-	    beforeButton = x;
-	};
+	lockedButtons.getAt(0).reset(441, 543);
+	lockedButtons.getAt(1).reset(560, 543);
 	beforeButton = this.playButton;
-	lockedButtons.forEachDead(function(button) {
-	    button.reset(beforeButton.x + 100, beforeButton.y);
-	    beforeButton = button;
-	}, this);
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Bomb: function () {
 	
-	this.blackHoleButton.frame = 1;
+	// this.blackHoleButton.frame = 1;
 	if (!started && usingBlackHole && (numberOfBombs > 0)) {
 	    // Intance of a bomb
 	    x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
@@ -493,6 +496,7 @@ BasicGame.Nivel1.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonContainer_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
 			 //this.gridLine_Setup,
@@ -501,6 +505,7 @@ BasicGame.Nivel1.prototype = {
 			 this.plusButton_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Create,
 			 this.start,
 			 this.scoreText_Setup,
 			 this.try_To_Destroy);

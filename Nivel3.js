@@ -41,7 +41,7 @@ BasicGame.Nivel3 = function(game) {
     this.bombOnMouse; // The sprite that appears on the mouse
     
     this.cannonOnMouse; // The sprite that appears on the mouse
-    
+    this.shieldOnMouse; // The sprite that appears on the mouse
     // Counters
     this.timeCounter; // Time counter.
     this.explosionTimeCounter; // Tells the time remaining before de bomb explodes.
@@ -141,7 +141,7 @@ BasicGame.Nivel3.prototype = {
 
 	bulletSpeed = 0; // The speed of the bullets.
 	shieldTime = 0; // The time in which the shield will activate.
-	enemyBulletSpeed = 3; // Speed of the bullets shot by the timeEnemy.
+	enemyBulletSpeed = 2; // Speed of the bullets shot by the timeEnemy.
 
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -165,7 +165,7 @@ BasicGame.Nivel3.prototype = {
 	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
-	
+	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 	//this.gridLine_Setup();
 	/*
 	this.line = this.add.sprite(1000, 1000,'ground');
@@ -217,7 +217,7 @@ BasicGame.Nivel3.prototype = {
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
 	this.cannonOnMouse.reset(1000, 1000);
-
+	this.shieldOnMouse.reset(1000, 1000);
 	
 	if (usingBlackHole) {
 	    this.find_Grid_Place();
@@ -244,9 +244,9 @@ BasicGame.Nivel3.prototype = {
 	} else if(usingShield){
 	    this.find_Grid_Place();
 	    //This should be added later
-	    //x = this.allign_X(this.gridX - 0.5);
-	    //y = 460;
-	    //this.shieldOnMouse.reset(x, y);
+	    x = this.allign_X(this.gridX - 0.5);
+	    y = 460;
+	    this.shieldOnMouse.reset(x, y);
 	    
 	}
 	
@@ -271,6 +271,16 @@ BasicGame.Nivel3.prototype = {
 	    if (!enemyShot) {
 		this.enemyTimePool.forEachAlive(function(enemy) {
 	    	    this.enemy_Fire(enemy);
+		}, this);
+		this.shieldPool.forEachAlive(function(shield) {
+		    this.time.events.add(Phaser.Timer.SECOND * (shieldTime * 0.8), function(shield) {
+			shield.shieldActive = true;
+			console.log("ACIVO");
+		    }, this, shield);
+		    this.time.events.add(Phaser.Timer.SECOND * (shieldTime + 0.2), function(shield) {
+			shield.shieldActive = false;
+			console.log("INACTIVO");
+		    }, this, shield);
 		}, this);
 	    }
 	}
@@ -434,6 +444,7 @@ BasicGame.Nivel3.prototype = {
     enemy_Fire: function(enemy) {
 	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
 	bullet.reset(enemy.x, enemy.y + enemy.height/2);
+	console.log(enemyBulletSpeed);
 	bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
 	enemyShot = true;
     },
@@ -590,49 +601,16 @@ BasicGame.Nivel3.prototype = {
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		shield.time = shieldTime;
+		// shieldTime += 1;
+		// console.log("k" + shield.time);
+		// console.log("w" + shieldTime);
 		console.log("Shieldtime: " + shield.time);
 		numberOfShields -= 1;
 		
-		this.shieldButton.frame = 0;
+		this.shieldButton.frame = 0;		
 		usingShield = false;
 	    }
  	}
-    },
-
-    // Lets the player use the shields.
-    select_Shield: function() {
-	if (!started){
-	    usingShield = (numberOfShields > 0);
-	    if (!usingShield) {
-		this.shieldPool.forEachAlive(function(shield) {
-		    shield.kill();
-		}, this);
-		numberOfShields = TOTAL_ENEMIES;
-	    }
-	}
-    },
-
-    // Creates the shield button.
-    shieldButton_Setup: function() {
-	this.shieldButton = this.add.button(405, this.world.height - 60, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
-	this.shieldButton.anchor.setTo(0.5, 0.5);
-	this.shieldButton.scale.setTo(0.4, 0.4);
-	buttons.add(this.shieldButton);
-	this.minusButton_Setup(this.shieldButton, this.decrease_Time_Shield);
-	this.plusButton_Setup(this.shieldButton, this.increase_Time_Shield);
-     },
-
-    // Creates the cannons.
-    shieldPool_Setup: function() {
-	this.shieldPool = this.add.group();
-	this.shieldPool.enableBody = true;
-	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
-	this.shieldPool.setAll('anchor.x', 0.5);
-	this.shieldPool.setAll('anchor.y', 0.5);
-	this.shieldPool.setAll('scale.x', 0.06);
-	this.shieldPool.setAll('scale.y', 0.06);
-	this.shieldPool.setAll('shieldActive', false);
     },
 
     // Destroys everything created and moves to the winner's menu or the game 
@@ -680,7 +658,7 @@ BasicGame.Nivel3.prototype = {
 			 this.scoreText_Setup,
 			 this.try_To_Destroy);
     },
-     
+
     // Lets the player use the cannons.
     select_Cannon: function() {
 	if (!started){
@@ -698,12 +676,57 @@ BasicGame.Nivel3.prototype = {
 	}
     },
 
+    // Lets the player use the shields.
+    select_Shield: function() {
+	if (!started){
+	    usingShield = (numberOfShields > 0);
+	    if (!usingShield) {
+		this.shieldPool.forEachAlive(function(shield) {
+		    shield.kill();
+		}, this);
+		numberOfShields = TOTAL_ENEMIES;
+	    }
+	}
+    },
+
+    // Creates the shield button.
+    shieldButton_Setup: function() {
+	this.shieldButton = this.add.button(405, this.world.height - 60, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	this.shieldButton.anchor.setTo(0.5, 0.5);
+	this.shieldButton.scale.setTo(0.4, 0.4);
+	buttons.add(this.shieldButton);
+	this.minusButton_Setup(this.shieldButton, this.decrease_Time_Shield);
+	this.plusButton_Setup(this.shieldButton, this.increase_Time_Shield);
+     },
+
+    shieldOnMouse_Setup: function() {
+	// Image that appears on the mouse when the cannon button is pressed.
+	this.shieldOnMouse = this.add.sprite(1000, 1000, 'cannon');
+	this.shieldOnMouse.anchor.setTo(0.5, 0.5);
+	this.shieldOnMouse.scale.setTo(0.06, 0.06);
+	this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
+    },
+
+    // Creates the cannons.
+    shieldPool_Setup: function() {
+	this.shieldPool = this.add.group();
+	this.shieldPool.enableBody = true;
+	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
+	this.shieldPool.setAll('anchor.x', 0.5);
+	this.shieldPool.setAll('anchor.y', 0.5);
+	this.shieldPool.setAll('scale.x', 0.06);
+	this.shieldPool.setAll('scale.y', 0.06);
+	this.shieldPool.setAll('shieldActive', false);
+    },
+     
     shield_Hit: function(shieldGen, bullet) {
 	if (shieldGen.shieldActive) {
-	    bullet.angle = 180;
-	    bullet.velocity.y = -(bullet.velocity.y);
+	    bullet.angle = 0;
+	    bullet.body.velocity.y = -(bullet.body.velocity.y);
 	} else {
 	    this.lost = true;
+	    shieldGen.kill();
 	}
     },
 

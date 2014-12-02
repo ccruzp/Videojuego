@@ -75,6 +75,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonContainer_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -85,6 +86,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Create,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -111,6 +113,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonContainer_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -121,6 +124,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Create,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -147,6 +151,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonContainer_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -157,6 +162,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Create,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -176,9 +182,9 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the black hole bomb button.
     blackHoleButton_Setup: function() {
-	this.blackHoleButton = this.add.button(200, this.world.height - 60, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
+	this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 90, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.4, 0.4);
+	this.blackHoleButton.scale.setTo(0.25, 0.25);
 	buttons.add(this.blackHoleButton);
     },
     
@@ -190,6 +196,13 @@ BasicGame.MainMenu.prototype = {
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
     },
     
+    // The button container
+    buttonContainer_Setup: function() {
+	this.buttonContainer = this.add.sprite(500, 530, 'buttonContainer');
+	this.buttonContainer.anchor.setTo(0.5, 0.5);
+	this.buttonContainer.scale.setTo(0.26, 0.26);
+    },
+
     // Decreases the game's counter and the bomb's counter.
     countdown: function () {
 	if (started) {
@@ -280,9 +293,9 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the play button
     playButton_Setup: function() {
-	this.playButton = this.add.button(this.world.centerX, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	this.playButton = this.add.button(this.world.centerX, this.world.height - 40, 'playButton', this.start, this, 0, 0, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.1, 0.1);
+	this.playButton.scale.setTo(0.035, 0.035);
 	buttons.add(this.playButton);
     },
 
@@ -312,6 +325,21 @@ BasicGame.MainMenu.prototype = {
 	}		
     },
     
+    // Creates the selector images.
+    selector_Create: function() {
+	var selector = this.add.sprite(125, 500, 'selector');
+	selector.anchor.setTo(0.5, 0.5);
+	selector.scale.setTo(0.4, 0.4);
+	selector.frame = 0;
+	this.selector.add(selector);
+	
+	selector = this.add.sprite(900, 500, 'selector');
+	selector.anchor.setTo(0.5, 0.5);
+	selector.scale.setTo(0.4, 0.4);
+	selector.frame = 0;
+	this.selector.add(selector);
+    },
+
     //Starts the actual game level
     start: function () {
 	started = true;
