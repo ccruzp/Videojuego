@@ -43,8 +43,8 @@ BasicGame.Boot.prototype = {
 	this.load.image('cannon', 'assets/Mockup/PNGs/cannon.png');
 
 	// The shield generator
-	// this.load.spritesheet('shield', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
-	this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
+	this.load.spritesheet('shield', 'assets/Spritesheets/shieldGen_Spritesheet.png', 401, 500, 2);
+	// this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
 
 
 	// The bullet
