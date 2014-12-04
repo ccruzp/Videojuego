@@ -138,8 +138,9 @@ BasicGame.Nivel3.prototype = {
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
 	enemyShot = false; // Boolean that says if the enemy has shoot.
+	shotRebound = false // Boolean that says if the bullet rebounded on a shield.
 
-	bulletSpeed = 0; // The speed of the bullets.
+	missileSpeed = 0; // The speed of the missile shot by the player.
 	shieldTime = 0; // The time in which the shield will activate.
 	enemyBulletSpeed = 2; // Speed of the bullets shot by the timeEnemy.
 
@@ -213,6 +214,7 @@ BasicGame.Nivel3.prototype = {
 	// this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Velocity, null, this);
 	this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
 	this.physics.arcade.overlap(this.shieldPool, this.enemyBulletPool, this.shield_Hit, null, this);
+	this.physics.arcade.overlap(this.enemyTimePool, this.enemyBulletPool, this.enemy_Hit, null, this);
 
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
@@ -258,7 +260,7 @@ BasicGame.Nivel3.prototype = {
 	}, this);
 	
 	// Updating buttons displays
-	this.cannonButtonText.text = '' + bulletSpeed;
+	this.cannonButtonText.text = '' + missileSpeed;
 	this.shieldButtonText.text = '' + shieldTime;
 
 	// Updating shield sprite.
@@ -283,11 +285,9 @@ BasicGame.Nivel3.prototype = {
 		this.shieldPool.forEachAlive(function(shield) {
 		    this.time.events.add(Phaser.Timer.SECOND * (shield.time * 1), function(shield) {
 			shield.shieldActive = true;
-			console.log("ACIVO");
 		    }, this, shield);
 		    this.time.events.add(Phaser.Timer.SECOND * (shield.time + 0.2), function(shield) {
 			shield.shieldActive = false;
-			console.log("INACTIVO");
 		    }, this, shield);
 		}, this);
 	    }
@@ -412,8 +412,8 @@ BasicGame.Nivel3.prototype = {
 
     // Decreases the velocity of the bullets.
     decrease_Fire: function() {
-	if (!started && bulletSpeed > 0) {
-	    bulletSpeed -= 1;
+	if (!started && missileSpeed > 0) {
+	    missileSpeed -= 1;
 	}
     },
 
@@ -443,7 +443,7 @@ BasicGame.Nivel3.prototype = {
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
 	// Display for the velocity of the bullet.
-	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + bulletSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
 
 	// Display for the activation time of the shield.
@@ -458,6 +458,14 @@ BasicGame.Nivel3.prototype = {
 	console.log(enemyBulletSpeed);
 	bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
 	enemyShot = true;
+    },
+
+    // If the enemy is shot.
+    enemy_Hit: function(enemy, bullet) {
+	if (shotRebound) {
+	    enemy.kill();
+	    bullet.kill();
+	}
     },
 
     // Creates the bullets for the enemies shots
@@ -526,7 +534,7 @@ BasicGame.Nivel3.prototype = {
     fire: function(cannon) {
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
-	missile.body.velocity.y = (-1) * bulletSpeed * GRID_SPACE;
+	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED * 0.8), this.deactivate_Enemy_Shield, this);
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
@@ -535,7 +543,7 @@ BasicGame.Nivel3.prototype = {
     // Increases the velocity of the bullets.
     increase_Fire: function() {
 	if (!started) {
-	    bulletSpeed += 1;
+	    missileSpeed += 1;
 	}
     },
 
@@ -612,9 +620,6 @@ BasicGame.Nivel3.prototype = {
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		shield.time = shieldTime;
-		// shieldTime += 1;
-		// console.log("k" + shield.time);
-		// console.log("w" + shieldTime);
 		console.log("Shieldtime: " + shield.time);
 		numberOfShields -= 1;
 		
@@ -687,7 +692,7 @@ BasicGame.Nivel3.prototype = {
 	}
     },
 
-    // Lets the player use the shields.
+    // Lets the player use the shield
     select_Shield: function() {
 	if (!started){
 	    usingShield = (numberOfShields > 0);
@@ -712,9 +717,9 @@ BasicGame.Nivel3.prototype = {
 
     shieldOnMouse_Setup: function() {
 	// Image that appears on the mouse when the cannon button is pressed.
-	this.shieldOnMouse = this.add.sprite(1000, 1000, 'cannon');
+	this.shieldOnMouse = this.add.sprite(1000, 1000, 'shield');
 	this.shieldOnMouse.anchor.setTo(0.5, 0.5);
-	this.shieldOnMouse.scale.setTo(0.06, 0.06);
+	this.shieldOnMouse.scale.setTo(0.12, 0.12);
 	this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
     },
 
@@ -737,9 +742,9 @@ BasicGame.Nivel3.prototype = {
      
     shield_Hit: function(shieldGen, bullet) {
 	if (shieldGen.shieldActive) {
-	    // shieldGen.animations.hield.play();
 	    bullet.angle = 0;
 	    bullet.body.velocity.y = -(bullet.body.velocity.y);
+	    shotRebound = true;
 	} else {
 	    this.lost = true;
 	    shieldGen.kill();
@@ -785,6 +790,11 @@ BasicGame.Nivel3.prototype = {
     	if (this.missilePool.countLiving() > 0) {
     	    this.missilePool.forEachAlive(function(missile) {
     		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.shieldPool.countLiving() > 0) {
+    	    this.shieldPool.forEachAlive(function(shield) {
+    		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
     	    }, this);
     	}
 
