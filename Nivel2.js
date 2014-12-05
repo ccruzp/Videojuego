@@ -133,6 +133,17 @@ BasicGame.Nivel2.prototype = {
 
     
     create: function() {
+	BOMB_TOTAL_TIME = 3;
+	ENEMY_VELOCITY = 3; // Velocity of the enemy
+	//--------------------------------
+	
+	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
+	
+	DISTANCE_ENEMIES = 0; // Amount of distance enemies
+	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
+	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+	
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 	shot = false; // Boolean that says if the cannons have shot.
@@ -258,6 +269,7 @@ BasicGame.Nivel2.prototype = {
 	if (started) {
 	    
 	    this.cannonPool.forEachAlive(function(cannon) {
+		// console.log(this.missilePool.countLiving());
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
 		    console.log('peace');
 		    this.fire(cannon);
@@ -685,9 +697,7 @@ BasicGame.Nivel2.prototype = {
 	if (!enemyShield) {
 	    enemy.kill();
 	// } else {
-	//     var vel = missile.body.velocity.y;
-	//     missile.body.velocity.y = -vel;
-	//     missile.angle = 180;
+	//     this.quit_Game(false);
 	}// else{
 	  //  
 	//}
