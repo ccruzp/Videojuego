@@ -200,7 +200,7 @@ BasicGame.MainMenu.prototype = {
 	    //placedBomb should be a number, not a boolean
 	    if (placedBomb) {
 		this.explosionTimeCounter -= 1;
-		bombBeep.play('',0,1,false);
+		if(this.explosionTimeCounter >= 0){ bombBeep.play('',0,1,false);}
 	    }
 	}
     },

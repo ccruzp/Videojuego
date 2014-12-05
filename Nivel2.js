@@ -12,6 +12,8 @@ BasicGame.Nivel2 = function(game) {
     UP_MARGIN = 60;          //Horizontal Margin for the grid
     ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
     COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
+    
+    TIMES_TO_PASS = 5; //Number of times that the level is needed to be passed
 
     //this.line;  //The line that helps you to use the numbers of the grid
     
@@ -40,6 +42,7 @@ BasicGame.Nivel2 = function(game) {
     this.cannonPool; // Group of cannons
     this.missilePool; // Group of missiles
     this.enemyVelocityPool; // Group of enemies
+    
     this.enemy; // Instance of an enemy
     this.bombOnMouse; // The sprite that appears on the mouse
     
@@ -75,6 +78,9 @@ BasicGame.Nivel2 = function(game) {
     this.score;
     this.timeOfGame;
 
+    // Variable to play the level multiple times
+    this.timesPassed = TIMES_TO_PASS;
+    
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
     
@@ -144,9 +150,12 @@ BasicGame.Nivel2.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
 	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
+	
+	//Beep sound of the bomb
+	bombBeep = this.add.audio('bombBeep');
 
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
-	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
+	this.physics.startSystem(Phaser.Physics.ARCADE); //Game physics system.
 
 	//this.enemyDistance = this.game.rnd.integerInRange(1, 10);
 	//Sets the value of enemyShieldSpeed and enemyGridDistance
@@ -247,8 +256,10 @@ BasicGame.Nivel2.prototype = {
 
 	// If the game started move enemies.
 	if (started) {
+	    
 	    this.cannonPool.forEachAlive(function(cannon) {
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		    console.log('peace');
 		    this.fire(cannon);
 		}
 	    }, this);
@@ -269,7 +280,55 @@ BasicGame.Nivel2.prototype = {
 
 	/*((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES))*/
 	if (!this.enemyVelocityPool.getFirstAlive()) {
-	    this.quit_Game(true);
+	    this.timesPassed -=1;
+	    
+	    if(this.timesPassed ==0){
+		this.quit_Game(true);
+	    }else{
+		//Resets the enemies and bombs, maybe should be a function
+		//------------------------------------------------------------
+		this.get_Enemy_Distance_Speed();
+		
+		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
+		this.explosionTimeCounter = this.bombTime;
+		this.blackHoleButtonText.text =  '' + this.explosionTimeCounter;
+		//----------------------------------------------------------
+		this.enemyVelocityPool.forEach(function(enemy) {
+		    initialY =this.allign_Y(10-this.enemyGridDistance)+ (enemy.height/5);
+		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+		    
+		    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+		    enemy.frame = 1;
+		    enemy.reset(aux1, initialY);
+		    enemy.body.setSize(100, 100, 0, 0);
+		    enemy.animations.add('shield', [1, 0], 10, false);
+		    enemy.animations.add('unshield', [0, 1], 10, false);			},this);
+		/*
+		this.enemyDistancePool.forEach(function(enemy) {
+		    var enemy = this.enemyDistancePool.getFirstExists(false);
+		    initialY = 40 - (enemy.height/2);
+		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);	    
+		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
+		    enemy.frame = this.enemyVelocity;
+		    enemy.reset(aux1, initialY);
+
+		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+		    text.visible = true;
+		    text.x = (this.allign_X(this.enemyPlace))+38;
+		    text.text = 'Velocidad: ' + this.enemyVelocity;
+		},this);*/
+		//----------------------------------------------------------
+		
+		this.explosionTimeCounter = this.bombTime;
+		numberOfBombs = TOTAL_ENEMIES;
+		numberOfCannons = TOTAL_ENEMIES;
+		placedBomb = false;
+		//usingBlackHole = true;
+		started = false;
+	    //------------------------------------------------------------
+	    }
+	    
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
@@ -291,7 +350,6 @@ BasicGame.Nivel2.prototype = {
     },
 
     // Create the bombPool
-    //Is this used on level 1 (?) requires removing the enemyVelocityPool 
     bombPool_Setup: function() {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
@@ -303,15 +361,39 @@ BasicGame.Nivel2.prototype = {
 	this.bombPool.setAll('scale.y', 0.15);
 	this.bombPool.forEach(function(bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+
+	    // Enabling the input for bombs.
+	    bomb.inputEnabled = true;
+	    // Adding hand cursor for hovering over the bombs before game has started.
+	    bomb.events.onInputOver.add(function(bomb) {
+		if (!started) {
+		    bomb.input.useHandCursor = true;
+		} else {
+		    bomb.input.useHandCursor = false;
+		}
+	    }, this);
+
+	    // Making invisible the text display and killing bomb clicked before has not started.
+	    bomb.events.onInputDown.add(function(bomb) {
+		if (!started) {
+		    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		    text.visible = false;
+		    bomb.kill();
+		    numberOfBombs += 1;
+		    usingBlackHoleBomb = true;
+		}
+	    }, this);
 	}, this);
 	// Group for the text displays
 	this.bombTextPool = this.add.group();
+	
 	// Time until explosion display.
-	this.enemyVelocityPool.forEach(function() {
+	this.bombPool.forEach(function() {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
+	
     },
 
     // Creates the missiles.
@@ -349,7 +431,7 @@ BasicGame.Nivel2.prototype = {
 	this.cannonOnMouse.scale.setTo(0.06, 0.06);
 	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
     },
-
+    
     // Creates the cannons.
     cannonPool_Setup: function() {
 	this.cannonPool = this.add.group();
@@ -360,6 +442,15 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool.setAll('anchor.y', 0.5);
 	this.cannonPool.setAll('scale.x', 0.06);
 	this.cannonPool.setAll('scale.y', 0.06);
+	
+	// Group for the text displays
+	this.cannonTextPool = this.add.group();
+	// Time until explosion display.
+	this.cannonPool.forEach(function() {
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.cannonTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
     },
        
     //Disables the velocity enemies shield
@@ -416,8 +507,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.setAll('scale.y', 0.05);
 
 	this.enemyVelocityPool.forEach(function(enemy) {
-	    initialY = 50 - (enemy.height/2);
-	    initialY = initialY + this.allign_Y(10-this.enemyGridDistance) - UP_MARGIN;
+	    initialY =this.allign_Y(10-this.enemyGridDistance)+ (enemy.height/5);
 	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
@@ -427,10 +517,20 @@ BasicGame.Nivel2.prototype = {
 	    enemy.animations.add('shield', [1, 0], 10, false);
 	    enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
+	
+	// Group for the text displays
+	this.enemyVelocityTextPool = this.add.group();
+	// Time of each enemy.
+	this.enemyVelocityPool.forEach(function(enemy) {
+	    var text = this.add.text((this.allign_X(this.enemyPlace))+38, enemy.y, 'Escudo: ' + this.enemyShieldSpeed, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyVelocityTextPool);
+	    text.visible = true;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
     },
 
     // Makes the cannon shoot.
     fire: function(cannon) {
+	console.log('fool');
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
 	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
@@ -598,7 +698,7 @@ BasicGame.Nivel2.prototype = {
 	this.quit_Game(false);
     },
         
-    get_Enemy_Distance_Speed: function(Distance){
+    get_Enemy_Distance_Speed: function(){
 	
 	aux = this.game.rnd.integerInRange(1, 27);
 	if (aux > 13){
@@ -713,7 +813,10 @@ BasicGame.Nivel2.prototype = {
 		    } 
 		}else{
 		    if(aux == 1) {
-			this.enemyGridDistance = 1;
+			this.enemyGridDistance = 2;
+			//Distance = 1 is no longer used
+			//Because is too close to the cannon
+			/*this.enemyGridDistance = 1;*/
 			this.enemyShieldSpeed = 1;
 		    }
 		    if(aux == 2) {

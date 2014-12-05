@@ -2,22 +2,22 @@ BasicGame.Nivel1 = function (game) {
 
     //Grid Stuff
     //-----------------------------------------------------------------------
-    GRID_SPACE = 38;         //Length of the squares of the grid
-    LEFT_MARGIN = 196;        //Left Margin for the grid
-    UP_MARGIN = 60;          //Horizontal Margin for the grid
-    ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
-    COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
+    GRID_SPACE = 38;        //Length of the squares of the grid
+    LEFT_MARGIN = 196;      //Left Margin for the grid
+    UP_MARGIN = 60;         //Horizontal Margin for the grid
+    ROWS_NUMBER = 10;       //Number of horizontal spaces in the grid
+    COLUMNS_NUMBER = 16;    //Number of vertical spaces in the grid
    
-    TOTAL_ENEMIES = 1; //Total = Distance + Velocity    
-    //TOTAL_TIME = 10; // Time for explosion. Constant to be removed
-    //BOMB_TOTAL_TIME = 3; //Refer to bombTime
-    //ENEMY_VELOCITY = 3; // Refer to enemyVelocity
+    TOTAL_ENEMIES = 1;      //Total = Distance + Velocity    
+    //TOTAL_TIME = 10;      //Time for explosion. Constant to be removed
+    //BOMB_TOTAL_TIME = 3;  //Refer to bombTime
+    //ENEMY_VELOCITY = 3;   //Refer to enemyVelocity
     
-    TIMES_TO_PASS = 5; //Number of times that the level is needed to be passed
+    TIMES_TO_PASS = 5;      //Number of times that the level is needed to be passed
     
     //this.line;//The line that helps you to use the numbers of the grid
     
-    this.enemyOutOfGrid; //Booleans, set if an enemy is out of the grid
+    this.enemyOutOfGrid;    //Booleans, set if an enemy is out of the grid
 
     //Grid adjustment in boxes
     this.gridX = 0;
@@ -29,11 +29,11 @@ BasicGame.Nivel1 = function (game) {
     this.enemyVelocity = game.rnd.integerInRange(1, ROWS_NUMBER/2); // Velocity of the enemy
     
 
-    this.bombPool; // Group of bombPool
-    //this.bomb; // Instance of the group of bombPool
+    this.bombPool;          //Group of bombPool
+    //this.bomb;            //Instance of the group of bombPool
     this.enemyDistancePool; // Group of Distance enemies
-    this.enemy; // Instance of an enemy
-    this.bombOnMouse; // The sprite that appears on the mouse (Might be removed)
+    this.enemy;             //Instance of an enemy
+    this.bombOnMouse;       //The sprite that appears on the mouse (Might be removed)
     
     // Counters
     //this.timeCounter; // Time counter. Variable to be removed
@@ -335,7 +335,7 @@ BasicGame.Nivel1.prototype = {
 	// Group for the text displays
 	this.bombTextPool = this.add.group();
 	// Time until explosion display.
-	this.enemyDistancePool.forEach(function() {
+	this.bombPool.forEach(function() {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
