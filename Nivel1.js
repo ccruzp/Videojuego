@@ -48,6 +48,7 @@ BasicGame.Nivel1 = function (game) {
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.blackHoleButtonText; // Text display the time before the bombs explode
+    
     // Buttons
     /*this.buttons; // Group for locked buttons*/
     this.blackHoleButton; // Black hole bomb button
@@ -65,6 +66,10 @@ BasicGame.Nivel1 = function (game) {
    
     //Aligned enemy in the grid.
     this.enemyPlace = 0; //Is alligned later before used
+    
+    //Instruction Screen 
+    this.blackScreen;
+    this.beginGame = false;
 };
 
 BasicGame.Nivel1.prototype = {
@@ -119,7 +124,8 @@ BasicGame.Nivel1.prototype = {
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
 	//Beep sound of the bomb
 	bombBeep = this.add.audio('bombBeep');
-	
+	this.timesPassed = TIMES_TO_PASS;	
+
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');
 	// Game physics system.
@@ -177,7 +183,15 @@ BasicGame.Nivel1.prototype = {
 	
 	// Mouse input
 	this.input.onDown.add(this.put_Bomb, this);
+	
+	//Mouse input
+	this.input.onDown.add(this.begin_Game,this);
 
+	// Creating auxiliar black screen.
+	this.blackScreen = this.add.sprite(0, 0, 'blackScreen');
+	this.blackScreen.alpha = 0.9;
+	this.beginGame = false;
+	
     },
     
     // Everything that needs to be done or modified constantly in the game goes
@@ -293,6 +307,12 @@ BasicGame.Nivel1.prototype = {
 	    this.quit_Game(false);
 	}
 
+    },
+    
+    //Skip the instructions window
+    begin_Game: function(){
+	this.blackScreen.destroy();
+	this.beginGame = true;
     },
     
     //Creates the bombPool

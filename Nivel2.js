@@ -304,39 +304,34 @@ BasicGame.Nivel2.prototype = {
 		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 		this.explosionTimeCounter = this.bombTime;
-		this.blackHoleButtonText.text =  '' + this.explosionTimeCounter;
-		//----------------------------------------------------------
+		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
+		
 		this.enemyVelocityPool.forEach(function(enemy) {
-		    initialY =this.allign_Y(10-this.enemyGridDistance)+ (enemy.height/5);
+		    initialY =this.allign_Y(10-this.enemyGridDistance)/*+ (enemy.height/7)*/;
 		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 		    
-		    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 		    enemy.frame = 1;
 		    enemy.reset(aux1, initialY);
 		    enemy.body.setSize(100, 100, 0, 0);
-		    enemy.animations.add('shield', [1, 0], 10, false);
-		    enemy.animations.add('unshield', [0, 1], 10, false);			},this);
-		/*
-		this.enemyDistancePool.forEach(function(enemy) {
-		    var enemy = this.enemyDistancePool.getFirstExists(false);
-		    initialY = 40 - (enemy.height/2);
-		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);	    
-		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
-		    enemy.frame = this.enemyVelocity;
-		    enemy.reset(aux1, initialY);
-
-		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+		    //enemy.animations.play('shield');
+		    
+		    var text = this.enemyVelocityTextPool.getAt(this.enemyVelocityPool.getIndex(enemy));
 		    text.visible = true;
 		    text.x = (this.allign_X(this.enemyPlace))+38;
-		    text.text = 'Velocidad: ' + this.enemyVelocity;
-		},this);*/
-		//----------------------------------------------------------
+		    text.y = enemy.y;
+		    text.text = 'Escudo: ' + this.enemyShieldSpeed;
+		},this);
 		
+		this.cannonPool.forEach(function(cannon){
+		    cannon.kill();
+		},this); 
+
 		this.explosionTimeCounter = this.bombTime;
 		numberOfBombs = TOTAL_ENEMIES;
 		numberOfCannons = TOTAL_ENEMIES;
+		shot = false;
 		placedBomb = false;
-		//usingBlackHole = true;
 		started = false;
 	    //------------------------------------------------------------
 	    }
@@ -454,7 +449,7 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool.setAll('anchor.y', 0.5);
 	this.cannonPool.setAll('scale.x', 0.06);
 	this.cannonPool.setAll('scale.y', 0.06);
-	
+	/*
 	// Group for the text displays
 	this.cannonTextPool = this.add.group();
 	// Time until explosion display.
@@ -462,7 +457,7 @@ BasicGame.Nivel2.prototype = {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.cannonTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
-	}, this);
+	}, this);*/
     },
        
     //Disables the velocity enemies shield
@@ -519,7 +514,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.setAll('scale.y', 0.05);
 
 	this.enemyVelocityPool.forEach(function(enemy) {
-	    initialY =this.allign_Y(10-this.enemyGridDistance)+ (enemy.height/5);
+	    initialY =this.allign_Y(10-this.enemyGridDistance)/*+ (enemy.height/7)*/;
 	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
@@ -546,8 +541,9 @@ BasicGame.Nivel2.prototype = {
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
 	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
-	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.8), this.deactivate_Enemy_Shield, this);
-	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.2), this.activate_Enemy_Shield, this);
+	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.75), this.deactivate_Enemy_Shield, this);
+	//The second timer should not  generate the shield, instead the enemy should shoot some thing to the player 
+	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.05), this.activate_Enemy_Shield, this);
 	shot = true;
     },
 	

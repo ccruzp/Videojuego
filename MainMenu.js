@@ -173,7 +173,7 @@ BasicGame.MainMenu.prototype = {
     allign_Y: function(y){
 	return y*GRID_SPACE + UP_MARGIN;
     },
-
+    
     // Creates the black hole bomb button.
     blackHoleButton_Setup: function() {
 	this.blackHoleButton = this.add.button(200, this.world.height - 60, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
