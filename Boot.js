@@ -15,8 +15,6 @@ BasicGame.Boot.prototype = {
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('ground', 'assets/platform2.png');
 
-	// Time enemy
-	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 	this.load.image('missile', 'assets/missile.png');
 
 	// Loading menu buttons' spritesheets
@@ -27,7 +25,8 @@ BasicGame.Boot.prototype = {
 
 	// Loading enemies' spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
-	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip.png', 1000, 1000, 2);
+	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip_spritesheet.png', 499, 500, 2);
+	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 	
 	// Loading buttons' spritesheets
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);

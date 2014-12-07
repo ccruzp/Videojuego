@@ -33,7 +33,7 @@ BasicGame.Nivel2 = function(game) {
     //ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
     
     DISTANCE_ENEMIES = 0; // Amount of distance enemies
-    VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+    VELOCITY_ENEMIES = 2; // Amount of velocity enemies
     TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
 
     this.bombPool; // Group of bombs
@@ -80,7 +80,7 @@ BasicGame.Nivel2 = function(game) {
     
     //equations for the kids to enjoy
     this.enemyShieldSpeed = 2.5;
-    this.enemyGridDistance = 1;
+    // this.enemyGridDistance = 1;
 };
 
 BasicGame.Nivel2.prototype = {
@@ -103,7 +103,7 @@ BasicGame.Nivel2.prototype = {
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
-	console.log(level);
+	// console.log(level);
 	this.score = score;
 	this.level = level;
     	this.allign_X = allign_X;
@@ -134,9 +134,8 @@ BasicGame.Nivel2.prototype = {
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies
-	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+	VELOCITY_ENEMIES = 2; // Amount of velocity enemies
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
-	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
 	
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
@@ -159,9 +158,9 @@ BasicGame.Nivel2.prototype = {
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
-	//this.enemyDistance = this.game.rnd.integerInRange(1, 10);
-	//Sets the value of enemyShieldSpeed and enemyGridDistance
-	this.get_Enemy_Distance_Speed();
+	// //this.enemyDistance = this.game.rnd.integerInRange(1, 10);
+	// //Sets the value of enemyShieldSpeed and enemyGridDistance
+	// this.get_Enemy_Distance_Speed();
 	
 	//this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
 	//this.enemyShieldSpeed = this.enemyShieldSpeed.toPrecision(3);
@@ -201,7 +200,9 @@ BasicGame.Nivel2.prototype = {
 	this.displays_Setup();
 	// Score Texts
 	this.scoreText_Setup();
-	
+	// Enemy's shieldTime text
+	this.enemy_ShieldTime_Text_Setup();
+
 	this.timeOfGame = this.time.now; // Score counter.
 
 	this.input.onDown.add(this.put_Weapon, this); // Mouse input.
@@ -260,7 +261,7 @@ BasicGame.Nivel2.prototype = {
 	if (started) {
 	    this.cannonPool.forEachAlive(function(cannon) {
 		// console.log(this.missilePool.countLiving());
-		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !cannon.shot) {
 		    this.fire(cannon);
 		}
 	    }, this);
@@ -397,11 +398,6 @@ BasicGame.Nivel2.prototype = {
 	// Game time display.
 	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
 	
-	// Display for velocity of the enemies.
-	/*this.velocityText = this.add.text(25, 225, 'Velocidad: ' + ENEMY_VELOCITY, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
-	// Display for time of next unshield.
-	this.velocityText = this.add.text(25, 225, 'Tiempo: ' + this.enemyShieldSpeed , { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);
-
 	// Display for the amount of bombs left.
 	this.bombsRemainingText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
 
@@ -414,30 +410,43 @@ BasicGame.Nivel2.prototype = {
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
     },
     
+    // Enemy's shieldTime text
+    enemy_ShieldTime_Text_Setup: function() {
+	this.shieldTimeText = this.add.group();
+	
+	this.enemyVelocityPool.forEachAlive(function(enemy) {
+	    var display = this.add.text(enemy.x + 25, enemy.y, 'Tiempo: ' + enemy.shieldTime, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.shieldTimeText);
+	},this);
+    },
+
     // Creates the velocity enemies of the level.
     enemyVelocityPool_Setup: function() {
 	this.enemyVelocityPool = this.add.group();
 	this.enemyVelocityPool.enableBody = true;
 	this.enemyVelocityPool.physicsBodyType = Phaser.Physics.ARCADE;
+	console.log("T" + TOTAL_ENEMIES);
 	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
 	this.enemyVelocityPool.setAll('anchor.x', 0.5);
-	this.enemyVelocityPool.setAll('anchor.y', 0.5);
+	this.enemyVelocityPool.setAll('anchor.y', 0.2);
 	this.enemyVelocityPool.setAll('outOfBoundsKill', true);
 	this.enemyVelocityPool.setAll('checkWorldBounds', true);
-	this.enemyVelocityPool.setAll('scale.x', 0.05);
-	this.enemyVelocityPool.setAll('scale.y', 0.05);
+	this.enemyVelocityPool.setAll('scale.x', 0.1);
+	this.enemyVelocityPool.setAll('scale.y', 0.1);
 
+	// //this.enemyDistance = this.game.rnd.integerInRange(1, 10);
+	// //Sets the value of enemyShieldSpeed and enemyGridDistance
 	this.enemyVelocityPool.forEach(function(enemy) {
+	    this.get_Enemy_Distance_Speed(enemy);
 	    initialY = 50 - (enemy.height/2);
-	    initialY = initialY + this.allign_Y(10-this.enemyGridDistance) - UP_MARGIN;
+	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
 	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, 0);
-	    enemy.animations.add('shield', [1, 0], 10, false);
-	    enemy.animations.add('unshield', [0, 1], 10, false);
+	    // enemy.animations.add('shield', [1, 0], 10, false);
+	    // enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
     },
 
@@ -445,12 +454,155 @@ BasicGame.Nivel2.prototype = {
     fire: function(cannon) {
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	missile.reset(cannon.x, cannon.y - cannon.height/2);
-	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
-	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.8), this.deactivate_Enemy_Shield, this);
-	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.2), this.activate_Enemy_Shield, this);
-	shot = true;
+	// missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
+	missile.body.velocity.y = (-1) * cannon.shotVelocity * GRID_SPACE;
+
+	this.enemyVelocityPool.forEachAlive(function(enemy) {
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.8), this.deactivate_Enemy_Shield, this);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this);
+	}, this);
+	cannon.shot = true;
+
     },
 	
+    get_Enemy_Distance_Speed: function(enemy){
+	aux = this.game.rnd.integerInRange(1, 27);
+	if (aux > 13){
+	    if (aux > 20){
+		if(aux>23){
+		    if(aux == 24) {
+			enemy.pos = 10;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 25) {
+			enemy.pos = 10;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 26) {
+			enemy.pos = 10;
+			enemy.shieldTime = 5;
+		    }
+		    if(aux == 27) {
+			enemy.pos = 10;
+			enemy.shieldTime = 10;
+		    }
+		}else{
+		    if(aux == 21) {
+			enemy.pos = 9;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 22) {
+			enemy.pos = 9;
+			enemy.shieldTime = 3;
+		    }
+		    if(aux == 23) {
+			enemy.pos = 9;
+			enemy.shieldTime = 9;
+		    }
+		}
+	    }else{
+		if(aux>17){
+		    if(aux == 18) {
+			enemy.pos = 8;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 19) {
+			enemy.pos = 8;
+			enemy.shieldTime = 4;
+		    }
+		    if(aux == 20) {
+			enemy.pos = 8;
+			enemy.shieldTime = 8;
+		    } 
+		}else{
+		    if(aux == 14) {
+			enemy.pos = 6;
+			enemy.shieldTime = 6;
+		    }
+		    if(aux == 15) {
+			enemy.pos = 7;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 16) {
+			enemy.pos = 7;
+			enemy.shieldTime = 7;
+		    }
+		    if(aux == 17) {
+			enemy.pos = 8;
+			enemy.shieldTime = 1;
+		    }
+		}
+	    }
+	}else{
+	    
+	    if (aux > 7){
+		if(aux>10){
+		    if(aux == 11) {
+			enemy.pos = 6;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 12) {
+			enemy.pos = 6;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 13) {
+			enemy.pos = 6;
+			enemy.shieldTime = 3;
+		    } 
+		}else{
+		    if(aux == 8) {
+			enemy.pos = 4;
+			enemy.shieldTime = 4;
+		    }
+		    if(aux == 9) {
+			enemy.pos = 5;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 10) {
+			enemy.pos = 5;
+			enemy.shieldTime = 5;
+		    }
+		}
+	    }else{
+		if(aux>4){
+		    if(aux == 5) {
+			enemy.pos = 3;
+			enemy.shieldTime = 3;
+		    }
+		    if(aux == 6) {
+			enemy.pos = 4;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 7) {
+			enemy.pos = 4;
+			enemy.shieldTime = 2;
+		    } 
+		}else{
+		    if(aux == 1) {
+			enemy.pos = 1;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 2) {
+			enemy.pos = 2;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 3) {
+			enemy.pos = 2;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 4) {
+			enemy.pos = 3;
+			enemy.shieldTime = 1;
+		    }
+		}    
+	    }
+	    
+	}
+	// console.log(aux);
+	// console.log(enemy.pos);
+	// console.log(enemy.shieldTime);
+    },
+
     // Increases the velocity of the missiles.
     increase_Fire: function() {
 	if (!started) {
@@ -476,22 +628,6 @@ BasicGame.Nivel2.prototype = {
 	    beforeButton = button;
 	}, this);
     },
-
-    // // Creates the minus button for the cannons.
-    // minusButton_Setup: function(button, func) {
-    // 	var minusButton = this.add.button(button.x + 40, button.y + 20, 'minusButton', func, 2, 1, 0);
-    // 	minusButton.anchor.setTo(0.5, 0.5);
-    // 	minusButton.scale.setTo(0.02, 0.02);
-    // 	buttons.add(minusButton);
-    // },
-
-    // // Creates the plus button for the cannons.
-    // plusButton_Setup: function(button, func) {
-    // 	var plusButton = this.add.button(button.x + 40, button.y - 20, 'plusButton', func, 2, 1, 0);
-    // 	plusButton.anchor.setTo(0.5, 0.5);
-    // 	plusButton.scale.setTo(0.02, 0.02);
-    // 	buttons.add(plusButton);
-    // },
 
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Weapon: function() {
@@ -527,6 +663,7 @@ BasicGame.Nivel2.prototype = {
 		var cannon = this.cannonPool.getFirstExists(false);
 		cannon.body.setSize(10, 10);
 		cannon.reset(x, y);
+		cannon.shotVelocity = missileSpeed;
 		numberOfCannons -= 1;
 		
 		this.cannonButton.frame = 0;
@@ -543,6 +680,7 @@ BasicGame.Nivel2.prototype = {
 	buttons.destroy(true);
 	lockedButtons.destroy(true);
 	this.bombTextPool.destroy(true);
+	this.shieldTimeText.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
 	background.kill();
@@ -595,9 +733,8 @@ BasicGame.Nivel2.prototype = {
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Velocity: function(enemy, missile) {
 	if (!enemyShield) {
+	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
-	// } else {
-	//     this.quit_Game(false);
 	}// else{
 	  //  
 	//}
@@ -608,144 +745,6 @@ BasicGame.Nivel2.prototype = {
 	this.quit_Game(false);
     },
         
-    get_Enemy_Distance_Speed: function(Distance){
-	
-	aux = this.game.rnd.integerInRange(1, 27);
-	if (aux > 13){
-	    if (aux > 20){
-		if(aux>23){
-		    if(aux == 24) {
-			this.enemyGridDistance = 10;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 25) {
-			this.enemyGridDistance = 10;
-			this.enemyShieldSpeed = 2;
-		    }
-		    if(aux == 26) {
-			this.enemyGridDistance = 10;
-			this.enemyShieldSpeed = 5;
-		    }
-		    if(aux == 27) {
-			this.enemyGridDistance = 10;
-			this.enemyShieldSpeed = 10;
-		    }
-		}else{
-		    if(aux == 21) {
-			this.enemyGridDistance = 9;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 22) {
-			this.enemyGridDistance = 9;
-			this.enemyShieldSpeed = 3;
-		    }
-		    if(aux == 23) {
-			this.enemyGridDistance = 9;
-			this.enemyShieldSpeed = 9;
-		    }
-		}
-	    }else{
-		if(aux>17){
-		    if(aux == 18) {
-			this.enemyGridDistance = 8;
-			this.enemyShieldSpeed = 2;
-		    }
-		    if(aux == 19) {
-			this.enemyGridDistance = 8;
-			this.enemyShieldSpeed = 4;
-		    }
-		    if(aux == 20) {
-			this.enemyGridDistance = 8;
-			this.enemyShieldSpeed = 8;
-		    } 
-		}else{
-		    if(aux == 14) {
-			this.enemyGridDistance = 6;
-			this.enemyShieldSpeed = 6;
-		    }
-		    if(aux == 15) {
-			this.enemyGridDistance = 7;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 16) {
-			this.enemyGridDistance = 7;
-			this.enemyShieldSpeed = 7;
-		    }
-		    if(aux == 17) {
-			this.enemyGridDistance = 8;
-			this.enemyShieldSpeed = 1;
-		    }
-		}
-	    }
-	}else{
-	    
-	    if (aux > 7){
-		if(aux>10){
-		    if(aux == 11) {
-			this.enemyGridDistance = 6;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 12) {
-			this.enemyGridDistance = 6;
-			this.enemyShieldSpeed = 2;
-		    }
-		    if(aux == 13) {
-			this.enemyGridDistance = 6;
-			this.enemyShieldSpeed = 3;
-		    } 
-		}else{
-		    if(aux == 8) {
-			this.enemyGridDistance = 4;
-			this.enemyShieldSpeed = 4;
-		    }
-		    if(aux == 9) {
-			this.enemyGridDistance = 5;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 10) {
-			this.enemyGridDistance = 5;
-			this.enemyShieldSpeed = 5;
-		    }
-		}
-	    }else{
-		if(aux>4){
-		    if(aux == 5) {
-			this.enemyGridDistance = 3;
-			this.enemyShieldSpeed = 3;
-		    }
-		    if(aux == 6) {
-			this.enemyGridDistance = 4;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 7) {
-			this.enemyGridDistance = 4;
-			this.enemyShieldSpeed = 2;
-		    } 
-		}else{
-		    if(aux == 1) {
-			this.enemyGridDistance = 1;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 2) {
-			this.enemyGridDistance = 2;
-			this.enemyShieldSpeed = 1;
-		    }
-		    if(aux == 3) {
-			this.enemyGridDistance = 2;
-			this.enemyShieldSpeed = 2;
-		    }
-		    if(aux == 4) {
-			this.enemyGridDistance = 3;
-			this.enemyShieldSpeed = 1;
-		    }
-		}    
-	    }
-	    
-	}
-	console.log(aux);
-	console.log(this.enemyGridDistance);
-	console.log(this.enemyShieldSpeed);
-    },
 
     // NO TOCAR SIN MI PERMISO :)
     // Solo la comenté una vez u.u
