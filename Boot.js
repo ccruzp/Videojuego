@@ -11,6 +11,7 @@ BasicGame.Boot.prototype = {
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
 	this.load.image('background', 'assets/img/background_purple_Half.png');
+	this.load.image('blackScreen', 'assets/img/background4.png');
 
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('ground', 'assets/platform2.png');
@@ -56,6 +57,7 @@ BasicGame.Boot.prototype = {
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
 	this.load.audio('bombBeep', 'assets/audio/beep.mp3', true);
+	this.load.audio('blackHoleSound', 'assets/audio/blackHole-whoosh.mp3', true);
     },
 
     create: function () {
@@ -88,7 +90,6 @@ BasicGame.Boot.prototype = {
     //     //  By this point the preloader assets have loaded to the cache, we've set the game settings
     //     //  So now let's start the real preloader going
         this.state.start('Preloader');
-
     }
 
 };
