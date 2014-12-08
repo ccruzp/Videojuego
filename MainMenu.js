@@ -307,25 +307,29 @@ BasicGame.MainMenu.prototype = {
   
     // Lets the player use the bombs.
     select_Bomb: function () {
-	console.log('Im here');
-	usingBlackHole = (numberOfBombs > 0);
-	if (!usingBlackHole) {
-	    console.log('Im there');
-	    // this.bombPool.removeAll();
-	    this.blackHoleButton.frame = 0;
-	    this.bombPool.forEachAlive(function(bomb) {
-		bomb.kill();
-	    }, this);
-	    this.bombTextPool.forEach(function(l) {
-		l.visible = false;
-	    }, this);
-	    numberOfBombs = TOTAL_ENEMIES;
-	}		
+	if(this.beginGame){
+	    console.log('Im here');
+	    usingBlackHole = (numberOfBombs > 0);
+	    if (!usingBlackHole) {
+		console.log('Im there');
+		// this.bombPool.removeAll();
+		this.blackHoleButton.frame = 0;
+		this.bombPool.forEachAlive(function(bomb) {
+		    bomb.kill();
+		}, this);
+		this.bombTextPool.forEach(function(l) {
+		    l.visible = false;
+		}, this);
+		numberOfBombs = TOTAL_ENEMIES;
+	    }
+	}
     },
     
     //Starts the actual game level
     start: function () {
-	started = true;
+	if(this.beginGame){
+	    started = true;
+	}
     },
 
     // If the bomb's counter is equal to zero then the enemy is killed.

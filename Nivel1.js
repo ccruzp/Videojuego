@@ -44,10 +44,14 @@ BasicGame.Nivel1 = function (game) {
     this.bombsRemainingTextPool;
     this.enemyDistanceTextPool;
     this.otherTextPool;
+    this.instructionsTextPool;
     this.velocityText; // Text display of velocity
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.blackHoleButtonText; // Text display the time before the bombs explode
+    this.initialLevelText; //Text with the level name shown in the blackScreen
+    this.initialInstructionText;//Text with instruction shown in blackScreen
+    this.mouseToContinueText; //Text that says "press the mouse, dude"
     
     // Buttons
     /*this.buttons; // Group for locked buttons*/
@@ -194,11 +198,15 @@ BasicGame.Nivel1.prototype = {
 	this.blackScreen.alpha = 0.9;
 	this.beginGame = false;
 	
+	//Generating instructions text
+	this.blackScreen_Displays_Setup();
     },
     
     // Everything that needs to be done or modified constantly in the game goes
     // here.
     update: function () {
+	//Begin game after the user reads the instructions
+	
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyDistancePool, this.bombPool, 
 				    this.try_To_Destroy, null, this);
@@ -211,22 +219,22 @@ BasicGame.Nivel1.prototype = {
 	    x = this.allign_X(this.gridX-0.5);
 	    y = this.allign_Y(this.gridY-0.5);
 	    this.bombOnMouse.reset(x,y);
-	
+	    
 	    // Display of the time left before the bomb explodes.
 	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES -1);
 	    text.visible = true;
 	    text.text = this.bombTime;
 	    text.x = x;
 	    text.y = y;
-
+		
 	    //lineY = this.allign_Y(this.gridY-0.5); 
 	    //this.line.reset(LEFT_MARGIN,lineY);
 	}
-
+	
 	// Update displays.
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
-
+	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -234,7 +242,7 @@ BasicGame.Nivel1.prototype = {
 	    var hola = (this.explosionTimeCounter > 0);
 	    text.visible = hola;
 	}, this); 
-
+	
 	// If the game started move enemies.
 	if (started) {
 	    // enemy.body.velocity.y = this.ENEMY_VELOCITY * this.GRID_SPACE;
@@ -242,9 +250,9 @@ BasicGame.Nivel1.prototype = {
 		enemy.body.velocity.y = this.enemyVelocity * GRID_SPACE;
 		
 		var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
-	    text.visible = false;
+		text.visible = false;
 	    }, this);
-
+	    
 	    //If the game started, hide the Velocity text
 	    // this.velocityText.visible = false;
 	}
@@ -261,7 +269,7 @@ BasicGame.Nivel1.prototype = {
 		}, this);
 	    }, this);
 	}
-
+	
 	// if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
 	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == TOTAL_ENEMIES ){
 	    this.timesPassed -=1;
@@ -282,7 +290,7 @@ BasicGame.Nivel1.prototype = {
 		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 		    enemy.frame = this.enemyVelocity;
 		    enemy.reset(aux1, initialY);
-
+		    
 		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
 		    text.visible = true;
 		    text.x = (this.allign_X(this.enemyPlace))+38;
@@ -294,7 +302,7 @@ BasicGame.Nivel1.prototype = {
 		placedBomb = false;
 		//usingBlackHole = true;
 		started = false;
-	    //------------------------------------------------------------
+		//------------------------------------------------------------
 	    }
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
@@ -306,15 +314,36 @@ BasicGame.Nivel1.prototype = {
 	}, this);
 	
 	if (this.enemyOutOfGrid) {
-	    this.quit_Game(false);
-	}
-
+		this.quit_Game(false);
+	}	
     },
     
     //Skip the instructions window
     begin_Game: function(){
-	this.blackScreen.destroy();
-	this.beginGame = true;
+	//Begins the game 1 second after the mouse is pressed
+	this.time.events.add(Phaser.Timer.SECOND * 1, function() {
+	    this.blackScreen.destroy();
+	    this.beginGame = true;
+	    this.instructionsTextPool.destroy(true);
+	},this);
+	
+    },
+    
+    //
+    // Creates the texts that the games uses
+    blackScreen_Displays_Setup: function(){
+	this.instructionsTextPool = this.add.group();
+	
+	//Texts used in the instruction screen
+	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 1', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
+	this.initialLevelText.anchor.setTo(0.5,0.5);
+	
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Coloca las bombas a la distancia adecuada para ganar', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.mouseToContinueText.anchor.setTo(0.5,0.5);
+	
     },
     
     //Creates the bombPool
@@ -380,9 +409,8 @@ BasicGame.Nivel1.prototype = {
 	// Display for the time of the bomb.
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
-
     },
-
+    
     // Creates the distance enemies of the level.
     enemyDistancePool_Setup: function() {
 	this.enemyDistancePool = this.add.group();
@@ -460,33 +488,32 @@ BasicGame.Nivel1.prototype = {
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Bomb: function () {
 	
-	this.blackHoleButton.frame = 1;
-	if (!started && usingBlackHole && (numberOfBombs > 0)) {
-	    // Intance of a bomb
-	    x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
-	    y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
-	    /*
-	    this.bombPool.forEachDead(function(bomb) {
-		console.log(this.bombPool.getIndex(bomb));
-	    }, this);
-	    */
-	    var bomb = this.bombPool.getFirstExists(false);
-	    bomb.body.setSize(10, 10, 4, 4);
-	    bomb.frame = 1;
-	    bomb.reset(x, y);
-	    
-	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
-	    text.visible = true;
-	    text.x = x+6;
-	    text.y = y+6;
-	    numberOfBombs -= 1;
-	    
-	    placedBomb = true;
+	if(this.beginGame){
+	    //console.log('dude');
+	    this.blackHoleButton.frame = 1;
+	    if (!started && usingBlackHole && (numberOfBombs > 0)) {
+		// Intance of a bomb
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
+		
+		var bomb = this.bombPool.getFirstExists(false);
+		bomb.body.setSize(10, 10, 4, 4);
+		bomb.frame = 1;
+		bomb.reset(x, y);
+		
+		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		text.visible = true;
+		text.x = x+6;
+		text.y = y+6;
+		numberOfBombs -= 1;
+		
+		placedBomb = true;
+	    }
+	    this.blackHoleButton.frame = 0;
+	    this.bombOnMouse.reset(1000, 1000);
+    	    usingBlackHole = false;
+	    //this.line.reset(1000, 1000);
 	}
-	this.blackHoleButton.frame = 0;
-	this.bombOnMouse.reset(1000, 1000);
-    	usingBlackHole = false;
-	//this.line.reset(1000, 1000);
     },
 
     // Destroys everything created and moves to the winner's menu or the game 
