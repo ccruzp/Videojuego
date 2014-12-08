@@ -56,6 +56,7 @@ BasicGame.Boot.prototype = {
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
 	this.load.audio('bombBeep', 'assets/audio/beep.mp3', true);
+	this.load.audio('blackHoleSound', 'assets/audio/blackHole-whoosh.mp3', true);
     },
 
     create: function () {

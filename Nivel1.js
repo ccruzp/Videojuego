@@ -122,8 +122,10 @@ BasicGame.Nivel1.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
-	//Beep sound of the bomb
+	//Loading sounds
 	bombBeep = this.add.audio('bombBeep');
+	blackHoleSound = this.add.audio('blackHoleSound');
+	
 	this.timesPassed = TIMES_TO_PASS;	
 
 	// Creating background.

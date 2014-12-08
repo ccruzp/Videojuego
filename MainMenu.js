@@ -199,8 +199,11 @@ BasicGame.MainMenu.prototype = {
 	    }
 	    //placedBomb should be a number, not a boolean
 	    if (placedBomb) {
+		
+		//This should be changed to work with each bomb counter
 		this.explosionTimeCounter -= 1;
-		if(this.explosionTimeCounter >= 0){ bombBeep.play('',0,1,false);}
+		if(this.explosionTimeCounter >= 1){ bombBeep.play('',0,1,false);}
+		if(this.explosionTimeCounter ==0){ blackHoleSound.play('',0,1,false);}
 	    }
 	}
     },
