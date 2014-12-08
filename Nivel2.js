@@ -181,6 +181,7 @@ BasicGame.Nivel2.prototype = {
 	this.line.anchor.setTo(0, 0.5);
 	*/
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
+	this.enemyVelocityLaserPool_Setup();
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the missiles for the cannons.
 	this.cannonPool_Setup(); // Create the cannonPool.
@@ -296,11 +297,12 @@ BasicGame.Nivel2.prototype = {
     },
     
     //Activates the velocity enemies shield
-    activate_Enemy_Shield: function() {
-	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    enemy.animations.play('shield');
-	}, this);
-	enemyShield = true;
+    activate_Enemy_Shield: function(enemy) {
+	// this.enemyVelocityPool.forEachAlive(function(enemy) {
+	//     enemy.animations.play('shield');
+	// }, this);
+	enemy.frame = 1;
+	enemy.shielded = true;
     },
 
     // Create the bombPool
@@ -324,24 +326,6 @@ BasicGame.Nivel2.prototype = {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
-	}, this);
-    },
-
-    // Creates the missiles.
-    missilePool_Setup: function() {
-	this.missilePool = this.add.group();
-	this.missilePool.enableBody = true;
-	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
-	this.missilePool.setAll('anchor.x', 0.5);
-	this.missilePool.setAll('anchor.y', 0.5);
-	this.missilePool.setAll('scale.x', 0.25);
-	this.missilePool.setAll('scale.y', 0.25);
-	// this.missilePool.setAll('angle', 180);
-	this.missilePool.setAll('outOfBoundsKill', true);
-	this.missilePool.setAll('checkWorldBounds', true);
-	this.missilePool.forEach(function(missile) {
-	    missile.body.setSize(10, 10, 0, -25);
 	}, this);
     },
 
@@ -376,11 +360,13 @@ BasicGame.Nivel2.prototype = {
     },
        
     //Disables the velocity enemies shield
-    deactivate_Enemy_Shield: function() {
-	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    enemy.animations.play('unshield');
-	}, this);
-	enemyShield = false;
+    deactivate_Enemy_Shield: function(enemy) {
+
+	// this.enemyVelocityPool.forEachAlive(function(enemy) {
+	//     enemy.animations.play('unshield');
+	// }, this);
+	enemy.frame = 0;
+	enemy.shielded = false;
     },
 
     // Decreases the velocity of the missiles.
@@ -419,12 +405,26 @@ BasicGame.Nivel2.prototype = {
 	},this);
     },
 
+    // Creates the velocity enemies' laser.
+    enemyVelocityLaserPool_Setup: function() {
+	this.enemyVelocityLaserPool = this.add.group();
+	this.enemyVelocityLaserPool.enableBody = true;
+	this.enemyVelocityLaserPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyVelocityLaserPool.createMultiple(VELOCITY_ENEMIES, 'velocityEnemyLaser');
+	this.enemyVelocityLaserPool.setAll('anchor.x', 0.5);
+	this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
+	this.enemyVelocityLaserPool.setAll('scale.x', 0.5);
+	this.enemyVelocityLaserPool.setAll('scale.y', 0.5);
+	this.enemyVelocityLaserPool.setAll('outOfBoundsKill', true);
+	this.enemyVelocityLaserPool.setAll('checkWorldBounds', true);
+    },
+
     // Creates the velocity enemies of the level.
     enemyVelocityPool_Setup: function() {
 	this.enemyVelocityPool = this.add.group();
 	this.enemyVelocityPool.enableBody = true;
 	this.enemyVelocityPool.physicsBodyType = Phaser.Physics.ARCADE;
-	console.log("T" + TOTAL_ENEMIES);
+	// console.log("T" + TOTAL_ENEMIES);
 	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
 	this.enemyVelocityPool.setAll('anchor.x', 0.5);
 	this.enemyVelocityPool.setAll('anchor.y', 0.2);
@@ -432,7 +432,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.setAll('checkWorldBounds', true);
 	this.enemyVelocityPool.setAll('scale.x', 0.1);
 	this.enemyVelocityPool.setAll('scale.y', 0.1);
-
+	this.enemyVelocityPool.setAll('shielded', true);
 	// //this.enemyDistance = this.game.rnd.integerInRange(1, 10);
 	// //Sets the value of enemyShieldSpeed and enemyGridDistance
 	this.enemyVelocityPool.forEach(function(enemy) {
@@ -458,8 +458,8 @@ BasicGame.Nivel2.prototype = {
 	missile.body.velocity.y = (-1) * cannon.shotVelocity * GRID_SPACE;
 
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.8), this.deactivate_Enemy_Shield, this);
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.8), this.deactivate_Enemy_Shield, this, enemy);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
 	}, this);
 	cannon.shot = true;
 
@@ -629,6 +629,24 @@ BasicGame.Nivel2.prototype = {
 	}, this);
     },
 
+    // Creates the missiles.
+    missilePool_Setup: function() {
+	this.missilePool = this.add.group();
+	this.missilePool.enableBody = true;
+	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
+	this.missilePool.setAll('anchor.x', 0.5);
+	this.missilePool.setAll('anchor.y', 0.5);
+	this.missilePool.setAll('scale.x', 0.25);
+	this.missilePool.setAll('scale.y', 0.25);
+	// this.missilePool.setAll('angle', 180);
+	this.missilePool.setAll('outOfBoundsKill', true);
+	this.missilePool.setAll('checkWorldBounds', true);
+	this.missilePool.forEach(function(missile) {
+	    missile.body.setSize(10, 10, 0, -25);
+	}, this);
+    },
+
     // Creates a black hole bomb in the place clicked inside the grid.
     put_Weapon: function() {
 	if (!started) {
@@ -732,7 +750,9 @@ BasicGame.Nivel2.prototype = {
 
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Velocity: function(enemy, missile) {
-	if (!enemyShield) {
+	console.log("enemigo: " + this.enemyVelocityPool.getIndex(enemy));
+	console.log("escudo:"  + enemy.shielded);
+	if (!enemy.shielded) {
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
 	}// else{
