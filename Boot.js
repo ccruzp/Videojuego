@@ -11,18 +11,13 @@ BasicGame.Boot.prototype = {
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
 	this.load.image('background', 'assets/img/background_purple_Half.png');
+	this.load.image('blackScreen', 'assets/img/background4.png');
 
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('ground', 'assets/platform2.png');
 
-	// Time enemy
-	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 	this.load.image('missile', 'assets/missile.png');
 
-	// Button container.
-	this.load.image('buttonContainer', 'assets/Mockup/PNGs/buttons_GUI.png');
-	// Value selector.
-	this.load.spritesheet('selector', 'assets/Spritesheets/Selector/Selector_HUD.png', 505, 500, 3);
 	// Loading menu buttons' spritesheets
 	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
 	this.load.spritesheet('nextLevelButton', 'assets/Spritesheets/nextLevelButton.png', 2000, 585, 2);
@@ -31,8 +26,11 @@ BasicGame.Boot.prototype = {
 
 	// Loading enemies' spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
-	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip.png', 1000, 1000, 2);
-	
+	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip_spritesheet.png', 499, 500, 2);
+	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
+
+	// Velocity enemy's laser
+	this.load.spritesheet('velocityEnemyLaser', 'assets/Spritesheets/velocityEnemyLaser_spritesheet.png', 491, 4970, 11);
 	// Loading buttons' spritesheets
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);
@@ -47,8 +45,8 @@ BasicGame.Boot.prototype = {
 	this.load.image('cannon', 'assets/Mockup/PNGs/cannon.png');
 
 	// The shield generator
-	// this.load.spritesheet('shield', 'assets/Spritesheets/blackHoleBomb.png', 420, 420, 19);
-	this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
+	this.load.spritesheet('shield', 'assets/Spritesheets/shieldGen_Spritesheet.png', 401, 500, 2);
+	// this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
 
 
 	// The bullet
@@ -59,6 +57,7 @@ BasicGame.Boot.prototype = {
 	this.load.audio('rankS', 'assets/audio/dun.mp3', true);
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
 	this.load.audio('bombBeep', 'assets/audio/beep.mp3', true);
+	this.load.audio('blackHoleSound', 'assets/audio/blackHole-whoosh.mp3', true);
     },
 
     create: function () {
@@ -91,7 +90,6 @@ BasicGame.Boot.prototype = {
     //     //  By this point the preloader assets have loaded to the cache, we've set the game settings
     //     //  So now let's start the real preloader going
         this.state.start('Preloader');
-
     }
 
 };
