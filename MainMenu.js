@@ -31,16 +31,22 @@ BasicGame.MainMenu.prototype = {
 	// instructionsButton = this.add.button(this.world.centerX, this.world.centerY - 100, 'instructionsButton', this.startGame, this, 1, 0, 1, 0);
 	// instructionsButton.anchor.setTo(0.5, 0.5);
 	// instructionsButton.scale.setTo(0.3, 0.3);
+	
+	//Button to jump to level 1
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY - 150, 'newGameButton', this.startGame, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.3, 0.3);
 	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	text.anchor.setTo(0.5, 0.5);    
+	
+	//Button to jump to level 2
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY, 'newGameButton', this.startGame2, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.3, 0.3);
 	text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	text.anchor.setTo(0.5, 0.5);    
+	
+	//Button to jump to level 3
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY + 150, 'newGameButton', this.startGame3, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.3, 0.3);
@@ -249,12 +255,14 @@ BasicGame.MainMenu.prototype = {
 	}
 
 	//Static grid numbers----------------------------------------------------	
-   	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5);
-	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2
+   	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5); //Left numbers space
+	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2 //Vertical space
+	forConstant3 = LEFT_MARGIN - (GRID_SPACE/2);
 	for( i= 0; i < ROWS_NUMBER; i = i + 1) {
 	    y = (i * GRID_SPACE) + UP_MARGIN;
 	    
 	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	    this.add.text( forConstant3, y + forConstant2, String(10-i), style );
 	}
 	//Static vertical lines--------------------------------------------------
 	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;
