@@ -132,7 +132,11 @@ BasicGame.Nivel3.prototype = {
 	VELOCITY_ENEMIES = 0; // Amount of velocity enemies
 	TIME_ENEMIES = 1;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
-	
+
+	TIMES_TO_PASS = 1;	
+	this.timesPassed = TIMES_TO_PASS;
+	this.beginGame = true;
+
 	started = false; // Boolean that says if the game has begun.
 	lost = false; // Boolean that says if the game has been lost.
 	shot = false; // Boolean that says if the cannons have shot.
@@ -272,6 +276,7 @@ BasicGame.Nivel3.prototype = {
 	    }
 	}, this);
 	// If the game started move enemies.
+	console.log("STARTED:" + started);
 	if (started) {
 	    this.cannonPool.forEachAlive(function(cannon) {
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
@@ -456,6 +461,7 @@ BasicGame.Nivel3.prototype = {
 	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
 	bullet.reset(enemy.x, enemy.y + enemy.height/2);
 	console.log(enemyBulletSpeed);
+	console.log("B"+this.enemyBulletPool.getIndex(bullet));
 	bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
 	enemyShot = true;
     },
@@ -771,34 +777,34 @@ BasicGame.Nivel3.prototype = {
     // Solo la comenté una vez u.u
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
-    render: function() {
-    	if (this.enemyTimePool.countLiving() > 0) {
-    	    this.enemyTimePool.forEachAlive(function(enemy) {
-    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.bombPool.countLiving() > 0) {
-    	    this.bombPool.forEachAlive(function(bomb) {
-    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.cannonPool.countLiving() > 0) {
-    	    this.cannonPool.forEachAlive(function(cannon) {
-    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.missilePool.countLiving() > 0) {
-    	    this.missilePool.forEachAlive(function(missile) {
-    		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
-    	if (this.shieldPool.countLiving() > 0) {
-    	    this.shieldPool.forEachAlive(function(shield) {
-    		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
-    	    }, this);
-    	}
+//     render: function() {
+//     	if (this.enemyTimePool.countLiving() > 0) {
+//     	    this.enemyTimePool.forEachAlive(function(enemy) {
+//     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+//     	    }, this);
+//     	}
+//     	if (this.bombPool.countLiving() > 0) {
+//     	    this.bombPool.forEachAlive(function(bomb) {
+//     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+//     	    }, this);
+//     	}
+//     	if (this.cannonPool.countLiving() > 0) {
+//     	    this.cannonPool.forEachAlive(function(cannon) {
+//     		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+//     	    }, this);
+//     	}
+//     	if (this.missilePool.countLiving() > 0) {
+//     	    this.missilePool.forEachAlive(function(missile) {
+//     		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
+//     	    }, this);
+//     	}
+//     	if (this.shieldPool.countLiving() > 0) {
+//     	    this.shieldPool.forEachAlive(function(shield) {
+//     		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
+//     	    }, this);
+//     	}
 
-    }
+//     }
 };
 /*Functions commons to Nivel1 and Nivel2 (every level by now)
   allign_X

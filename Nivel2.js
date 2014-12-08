@@ -13,7 +13,7 @@ BasicGame.Nivel2 = function(game) {
     ROWS_NUMBER = 10; // Number of horizontal spaces in the grid
     COLUMNS_NUMBER = 16;   // Number of vertical spaces in the grid
     
-    TIMES_TO_PASS = 1; //Number of times that the level is needed to be passed
+    TIMES_TO_PASS = 5; //Number of times that the level is needed to be passed
 
     //this.line;  //The line that helps you to use the numbers of the grid
     
@@ -136,7 +136,8 @@ BasicGame.Nivel2.prototype = {
 	BOMB_TOTAL_TIME = 3;
 	ENEMY_VELOCITY = 3; // Velocity of the enemy
 	//--------------------------------
-	
+	TIMES_TO_PASS = 1;	
+	this.timesPassed = TIMES_TO_PASS;
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies
@@ -321,7 +322,7 @@ BasicGame.Nivel2.prototype = {
 		    enemy.body.setSize(100, 100, 0, 0);
 		    //enemy.animations.play('shield');
 		    
-		    var text = this.enemyVelocityTextPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+		    var text = this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy));
 		    text.visible = true;
 		    text.x = (this.allign_X(this.enemyPlace))+38;
 		    text.y = enemy.y;
@@ -522,6 +523,8 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.setAll('scale.x', 0.1);
 	this.enemyVelocityPool.setAll('scale.y', 0.1);
 	this.enemyVelocityPool.setAll('shielded', true);
+
+
 	// //this.enemyDistance = this.game.rnd.integerInRange(1, 10);
 	// //Sets the value of enemyShieldSpeed and enemyGridDistance
 	this.enemyVelocityPool.forEach(function(enemy) {
@@ -541,9 +544,9 @@ BasicGame.Nivel2.prototype = {
 	    // enemy.animations.add('shield', [1, 0], 10, false);
 	    // enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
-	
-	// Group for the text displays
-	this.enemyVelocityTextPool = this.add.group();
+
+    // Group for the text displays
+	// this.enemyVelocityTextPool = this.add.group();
 	// // Time of each enemy.
 	// this.enemyVelocityPool.forEach(function(enemy) {
 	//     var text = this.add.text((this.allign_X(this.enemyPlace))+38, enemy.y, 'Escudo: ' + this.enemyShieldSpeed, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyVelocityTextPool);
