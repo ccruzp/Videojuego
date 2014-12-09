@@ -31,6 +31,8 @@ BasicGame.Boot.prototype = {
 
 	// Velocity enemy's laser
 	this.load.spritesheet('velocityEnemyLaser', 'assets/Spritesheets/velocityEnemyLaser_spritesheet.png', 491, 4970, 11);
+	this.load.image('laser', 'assets/Mockup/PNGs/enemyVelocityLaser.png');
+
 	// Loading buttons' spritesheets
 	this.load.spritesheet('blackHoleButton', 'assets/Spritesheets/Button_bomb_sheet.png', 250, 242, 2);
 	this.load.spritesheet('cannonButton', 'assets/Spritesheets/Button_cannon_spritesheet_z.png', 250, 242, 2);

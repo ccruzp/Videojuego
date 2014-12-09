@@ -35,7 +35,7 @@ BasicGame.Nivel2 = function(game) {
     //ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
     
     DISTANCE_ENEMIES = 0; // Amount of distance enemies
-    VELOCITY_ENEMIES = 2; // Amount of velocity enemies
+    VELOCITY_ENEMIES = 1; // Amount of velocity enemies
     TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
 
     this.bombPool; // Group of bombs
@@ -141,7 +141,7 @@ BasicGame.Nivel2.prototype = {
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies
-	VELOCITY_ENEMIES = 2; // Amount of velocity enemies
+	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
 	
 	// Initializing boolean variables.
@@ -359,8 +359,18 @@ BasicGame.Nivel2.prototype = {
 	// this.enemyVelocityPool.forEachAlive(function(enemy) {
 	//     enemy.animations.play('shield');
 	// }, this);
+
 	enemy.frame = 1;
 	enemy.shielded = true;
+
+// ----
+	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
+	// laser.enableBody = true;
+	// laser.physicsBodyType = Phaser.Physics.ARCADE;
+	// laser.anchor.setTo(0.5, 0.5);
+	// laser.scale.setTo(0.2, 0.2);
+	// laser.body.velocity.y = 3 * GRID_SPACE;
+// ----
     },
 
     // Create the bombPool
