@@ -588,22 +588,29 @@ BasicGame.Nivel2.prototype = {
     fire: function(cannon) {
 	console.log('fool');
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
-	missile.reset(cannon.x, cannon.y - cannon.height/2);
+	// missile.reset(cannon.x, cannon.y - cannon.height/2);
+	missile.reset(cannon.x, cannon.y);
+	
 // <<<<<<< HEAD
 	// missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
 	missile.body.velocity.y = (-1) * cannon.shotVelocity * GRID_SPACE;
 
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.8), this.deactivate_Enemy_Shield, this, enemy);
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
+	    // this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.8), this.deactivate_Enemy_Shield, this, enemy);
+	    // this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
+	//     this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
+	// }, this);
+	// cannon.shot = true;
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.75), this.deactivate_Enemy_Shield, this, enemy);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.05), this.activate_Enemy_Shield, this, enemy);
+	    cannon.shot = true;
 	}, this);
-	cannon.shot = true;
 
 // =======
 // 	missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
-// 	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.75), this.deactivate_Enemy_Shield, this);
-// 	//The second timer should not  generate the shield, instead the enemy should shoot some thing to the player 
-// 	this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.05), this.activate_Enemy_Shield, this);
+	// this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 0.75), this.deactivate_Enemy_Shield, this);
+	// //The second timer should not  generate the shield, instead the enemy should shoot some thing to the player 
+	// this.time.events.add(Phaser.Timer.SECOND * (this.enemyShieldSpeed * 1.05), this.activate_Enemy_Shield, this);
 // 	shot = true;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
     },
