@@ -467,6 +467,16 @@ BasicGame.Nivel2.prototype = {
 	}
     },
     
+    //Desalligns a number to get the x in the grid
+    desallign_X: function(X){
+	return (X-LEFT_MARGIN)/GRID_SPACE;
+    },
+    
+    //Desalligns a number to get the y in the grid
+    desallign_Y: function(Y){
+	return (Y-UP_MARGIN)/GRID_SPACE;
+    },
+
     // Creates several text displays.
     displays_Setup: function() {
 
@@ -531,13 +541,21 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
 	    this.get_Enemy_Distance_Speed(enemy);
-	    initialY = 50 - (enemy.height/2);
-	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
+//	    initialY = 50 - (enemy.height/2);
+//	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
 // =======
-// 	    initialY =this.allign_Y(10-this.enemyGridDistance)/*+ (enemy.height/7)*/;
+	    //The commented lines are no longer used
+ 	    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
 	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
+	    //This can be erased at any time, is used to test the function
+	    //--------------------------------------------------------------
+	    console.log('Im here, the next function gives you the Y place of the enemy');
+	    console.log('The first row is 0, and is the one at the top')
+	    console.log(this.desallign_Y(initialY));
+	    //--------------------------------------------------------------
+
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
