@@ -138,7 +138,8 @@ BasicGame.Nivel1.prototype = {
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	// Creating the grid for the game.
-	this.make_Grid();
+	option = 1;
+	this.make_Grid(option);
 	
 	// Bomb's time counter.
 	this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
@@ -436,6 +437,8 @@ BasicGame.Nivel1.prototype = {
 	    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 	    enemy.frame = this.enemyVelocity;
 	    enemy.reset(aux1, initialY);
+	    enemy.enemyVelocity = this.enemyVelocity;
+	    console.log(enemy.enemyVelocity);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    
@@ -489,7 +492,6 @@ BasicGame.Nivel1.prototype = {
     put_Bomb: function () {
 	
 	if(this.beginGame){
-	    //console.log('dude');
 	    this.blackHoleButton.frame = 1;
 	    if (!started && usingBlackHole && (numberOfBombs > 0)) {
 		// Intance of a bomb
@@ -500,6 +502,8 @@ BasicGame.Nivel1.prototype = {
 		bomb.body.setSize(10, 10, 4, 4);
 		bomb.frame = 1;
 		bomb.reset(x, y);
+		//bomb.z = this.gridY-1;
+		//console.log(bomb.z);
 		
 		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 		text.visible = true;

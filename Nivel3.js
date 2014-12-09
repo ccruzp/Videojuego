@@ -162,8 +162,10 @@ BasicGame.Nivel3.prototype = {
 	numberOfShields = TOTAL_ENEMIES; // Number of shields available in this level.
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
-
-	this.make_Grid(); // Creating the grid for the game.
+	
+	// Creating the grid for the game.
+	option = 3;
+	this.make_Grid(option);
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
 

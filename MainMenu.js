@@ -237,7 +237,7 @@ BasicGame.MainMenu.prototype = {
     },*/
         
     //Draws the grid
-    make_Grid: function (/*WIDTH, HEIGHT*/) {
+    make_Grid: function (gridOption) {
 	
 	//We will make a unique grid, with static tiles
 	var style = { font: "15px Arial", fill: "#ffffff", align: "center" };
@@ -258,11 +258,30 @@ BasicGame.MainMenu.prototype = {
    	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5); //Left numbers space
 	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2 //Vertical space
 	forConstant3 = LEFT_MARGIN - (GRID_SPACE/2);
-	for( i= 0; i < ROWS_NUMBER; i = i + 1) {
-	    y = (i * GRID_SPACE) + UP_MARGIN;
-	    
-	    this.add.text( forConstant1, y + forConstant2, String(i+1), style );
-	    this.add.text( forConstant3, y + forConstant2, String(10-i), style );
+	
+	if(gridOption==1){
+	    for( i= 0; i < ROWS_NUMBER; i = i + 1) {
+		y = (i * GRID_SPACE) + UP_MARGIN;
+		//Rigth screen numbers.
+		this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+	    }
+	}
+	
+	if(gridOption==2){
+	    for( i= 0; i < ROWS_NUMBER; i = i + 1) {
+		y = (i * GRID_SPACE) + UP_MARGIN;
+		//Left Screen numbers. Inversed order.
+		this.add.text( forConstant3, y + forConstant2, String(10-i), style );
+	    }
+	}
+	
+	if(gridOption==3){
+	    for( i= 0; i < ROWS_NUMBER; i = i + 1) {
+		y = (i * GRID_SPACE) + UP_MARGIN;
+		//Both numbers
+		this.add.text( forConstant1, y + forConstant2, String(i+1), style );
+		this.add.text( forConstant3, y + forConstant2, String(10-i), style );
+	    }
 	}
 	//Static vertical lines--------------------------------------------------
 	forConstant1 =(GRID_SPACE * ROWS_NUMBER) + UP_MARGIN;

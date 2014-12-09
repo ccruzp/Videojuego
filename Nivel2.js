@@ -174,8 +174,9 @@ BasicGame.Nivel2.prototype = {
 	
 	//this.enemyShieldSpeed = 10/(this.game.rnd.integerInRange(1, 10));
 	//this.enemyShieldSpeed = this.enemyShieldSpeed.toPrecision(3);
-
-	this.make_Grid(); // Creating the grid for the game.
+	
+	option = 2;
+	this.make_Grid(option); //Creates game grid
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
 
