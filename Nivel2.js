@@ -192,10 +192,10 @@ BasicGame.Nivel2.prototype = {
 	this.line.anchor.setTo(0, 0.5);
 	*/
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
-	this.enemyVelocityLaserPool_Setup();
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the missiles for the cannons.
 	this.cannonPool_Setup(); // Create the cannonPool.
+	this.enemyVelocityLaserPool_Setup();
 
 	// Counters.
 	//this.timeCounter = TOTAL_TIME; // Game's time counter. Not used
@@ -361,17 +361,19 @@ BasicGame.Nivel2.prototype = {
 	//     enemy.animations.play('shield');
 	// }, this);
 
-	enemy.frame = 1;
+	// enemy.frame = 1;
 	enemy.shielded = true;
 
-// ----
+	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+	laser.reset(enemy.x, enemy.y + 30);
+	laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
 	// laser.enableBody = true;
 	// laser.physicsBodyType = Phaser.Physics.ARCADE;
 	// laser.anchor.setTo(0.5, 0.5);
 	// laser.scale.setTo(0.2, 0.2);
 	// laser.body.velocity.y = 3 * GRID_SPACE;
-// ----
+	// enemy.pos
     },
 
     // Create the bombPool
@@ -523,9 +525,9 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityLaserPool.physicsBodyType = Phaser.Physics.ARCADE;
 	this.enemyVelocityLaserPool.createMultiple(VELOCITY_ENEMIES, 'velocityEnemyLaser');
 	this.enemyVelocityLaserPool.setAll('anchor.x', 0.5);
-	this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
-	this.enemyVelocityLaserPool.setAll('scale.x', 0.5);
-	this.enemyVelocityLaserPool.setAll('scale.y', 0.5);
+	// this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
+	this.enemyVelocityLaserPool.setAll('scale.x', 0.09);
+	this.enemyVelocityLaserPool.setAll('scale.y', 0.09);
 	this.enemyVelocityLaserPool.setAll('outOfBoundsKill', true);
 	this.enemyVelocityLaserPool.setAll('checkWorldBounds', true);
     },
@@ -566,7 +568,7 @@ BasicGame.Nivel2.prototype = {
 	    console.log(this.desallign_Y(initialY));
 	    //--------------------------------------------------------------
 
-	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    aux1 = this.allign_X(this.enemyPlace) - (GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, 0);
