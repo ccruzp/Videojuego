@@ -228,20 +228,17 @@ BasicGame.Nivel2.prototype = {
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyVelocityPool, this.missilePool, this.try_To_Destroy_Velocity, null, this);
-	this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.missilePool, function(laser, missile) {
-	    var cannon = this.cannonPool.getAt(this.missilePool.getIndex(missile));
+	// this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, this.destroy_Missile_And_Cannon, this);
+	this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, function(laser, cannon) {
+	    var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	    // missile.kill();
 	    laser.events.onAnimationComplete.add(function() {
 		missile.kill();
 		cannon.kill();
 		laser.kill();
-		// if (this.enemyVelocityPool.countLiving() == 0) {
-		// 	bomb.kill();
-		// }
 	    }, this);
 	    
 	}, null, this);
-	// this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
 
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
@@ -378,7 +375,7 @@ BasicGame.Nivel2.prototype = {
 	enemy.shielded = true;
 
 	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
-	laser.body.setSize(10, 50 * enemy.pos, 0, 0);
+	laser.body.setSize(10, 500 * enemy.pos, 0, 0);
 	laser.reset(enemy.x, enemy.y + 30);
 	laser.animations.play('laser' + (enemy.pos-1));
 
@@ -504,7 +501,7 @@ BasicGame.Nivel2.prototype = {
     desallign_Y: function(Y){
 	return (Y-UP_MARGIN)/GRID_SPACE;
     },
-
+	
     // Creates several text displays.
     displays_Setup: function() {
 
