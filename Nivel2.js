@@ -228,6 +228,19 @@ BasicGame.Nivel2.prototype = {
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyVelocityPool, this.missilePool, this.try_To_Destroy_Velocity, null, this);
+	this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.missilePool, function(laser, missile) {
+	    var cannon = this.cannonPool.getAt(this.missilePool.getIndex(missile));
+	    // missile.kill();
+	    laser.events.onAnimationComplete.add(function() {
+		missile.kill();
+		cannon.kill();
+		laser.kill();
+		// if (this.enemyVelocityPool.countLiving() == 0) {
+		// 	bomb.kill();
+		// }
+	    }, this);
+	    
+	}, null, this);
 	// this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
 
 	//Hide the weapons cursors
@@ -365,8 +378,11 @@ BasicGame.Nivel2.prototype = {
 	enemy.shielded = true;
 
 	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+	laser.body.setSize(10, 50 * enemy.pos, 0, 0);
 	laser.reset(enemy.x, enemy.y + 30);
-	laser.frame = enemy.pos - 1;
+	laser.animations.play('laser' + (enemy.pos-1));
+
+	// laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
 	// laser.enableBody = true;
 	// laser.physicsBodyType = Phaser.Physics.ARCADE;
@@ -526,10 +542,24 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityLaserPool.createMultiple(VELOCITY_ENEMIES, 'velocityEnemyLaser');
 	this.enemyVelocityLaserPool.setAll('anchor.x', 0.5);
 	// this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
-	this.enemyVelocityLaserPool.setAll('scale.x', 0.09);
+	this.enemyVelocityLaserPool.setAll('scale.x', 0.12);
 	this.enemyVelocityLaserPool.setAll('scale.y', 0.09);
 	this.enemyVelocityLaserPool.setAll('outOfBoundsKill', true);
 	this.enemyVelocityLaserPool.setAll('checkWorldBounds', true);
+
+	this.enemyVelocityLaserPool.forEach(function(laser) {
+	    // laser.body.setSize(10, 100, 0, 0);
+	    laser.animations.add('laser1', [0,1], 5, false);
+	    laser.animations.add('laser2', [0,1,2], 5, false);
+	    laser.animations.add('laser3', [0,1,2,3], 5, false);
+	    laser.animations.add('laser4', [0,1,2,3,4], 5, false);
+	    laser.animations.add('laser5', [0,1,2,3,4,5], 5, false);
+	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 5, false);
+	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 5, false);
+	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 5, false);
+	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 5, false);
+	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 5, false);
+	}, this);
     },
 
     // Creates the velocity enemies of the level.
@@ -1087,7 +1117,11 @@ BasicGame.Nivel2.prototype = {
     // 		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
-
+    // 	if (this.enemyVelocityLaserPool.countLiving() > 0) {
+    // 	    this.enemyVelocityLaserPool.forEachAlive(function(laser) {
+    // 		this.game.debug.body(laser, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
     // }
     
 };
