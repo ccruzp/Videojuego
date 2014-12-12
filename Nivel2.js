@@ -377,7 +377,11 @@ BasicGame.Nivel2.prototype = {
 	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
 	laser.body.setSize(10, 500 * enemy.pos, 0, 0);
 	laser.reset(enemy.x, enemy.y + 30);
-	laser.animations.play('laser' + (enemy.pos-1));
+	if (enemy.pos <= 2) {
+	    laser.animations.play('laser' + 1);
+	} else {
+	    laser.animations.play('laser' + (enemy.pos-1));
+	}
 
 	// laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
@@ -546,16 +550,16 @@ BasicGame.Nivel2.prototype = {
 
 	this.enemyVelocityLaserPool.forEach(function(laser) {
 	    // laser.body.setSize(10, 100, 0, 0);
-	    laser.animations.add('laser1', [0,1], 5, false);
-	    laser.animations.add('laser2', [0,1,2], 5, false);
-	    laser.animations.add('laser3', [0,1,2,3], 5, false);
-	    laser.animations.add('laser4', [0,1,2,3,4], 5, false);
-	    laser.animations.add('laser5', [0,1,2,3,4,5], 5, false);
-	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 5, false);
-	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 5, false);
-	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 5, false);
-	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 5, false);
-	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 5, false);
+	    laser.animations.add('laser1', [0,1], 10, false);
+	    laser.animations.add('laser2', [0,1,2], 10, false);
+	    laser.animations.add('laser3', [0,1,2,3], 10, false);
+	    laser.animations.add('laser4', [0,1,2,3,4], 10, false);
+	    laser.animations.add('laser5', [0,1,2,3,4,5], 10, false);
+	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 10, false);
+	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 10, false);
+	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 10, false);
+	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 10, false);
+	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 10, false);
 	}, this);
     },
 
