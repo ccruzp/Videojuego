@@ -192,10 +192,10 @@ BasicGame.Nivel2.prototype = {
 	this.line.anchor.setTo(0, 0.5);
 	*/
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
-	this.enemyVelocityLaserPool_Setup();
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the missiles for the cannons.
 	this.cannonPool_Setup(); // Create the cannonPool.
+	this.enemyVelocityLaserPool_Setup();
 
 	// Counters.
 	//this.timeCounter = TOTAL_TIME; // Game's time counter. Not used
@@ -228,7 +228,17 @@ BasicGame.Nivel2.prototype = {
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	this.physics.arcade.overlap(this.enemyVelocityPool, this.missilePool, this.try_To_Destroy_Velocity, null, this);
-	// this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
+	// this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, this.destroy_Missile_And_Cannon, this);
+	this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, function(laser, cannon) {
+	    var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
+	    // missile.kill();
+	    laser.events.onAnimationComplete.add(function() {
+		missile.kill();
+		cannon.kill();
+		laser.kill();
+	    }, this);
+	    
+	}, null, this);
 
 	//Hide the weapons cursors
 	this.bombOnMouse.reset(1000, 1000);
@@ -361,17 +371,26 @@ BasicGame.Nivel2.prototype = {
 	//     enemy.animations.play('shield');
 	// }, this);
 
-	enemy.frame = 1;
+	// enemy.frame = 1;
 	enemy.shielded = true;
 
-// ----
+	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+	laser.body.setSize(10, 500 * enemy.pos, 0, 0);
+	laser.reset(enemy.x, enemy.y + 30);
+	if (enemy.pos <= 2) {
+	    laser.animations.play('laser' + 1);
+	} else {
+	    laser.animations.play('laser' + (enemy.pos-1));
+	}
+
+	// laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
 	// laser.enableBody = true;
 	// laser.physicsBodyType = Phaser.Physics.ARCADE;
 	// laser.anchor.setTo(0.5, 0.5);
 	// laser.scale.setTo(0.2, 0.2);
 	// laser.body.velocity.y = 3 * GRID_SPACE;
-// ----
+	// enemy.pos
     },
 
     // Create the bombPool
@@ -486,7 +505,7 @@ BasicGame.Nivel2.prototype = {
     desallign_Y: function(Y){
 	return (Y-UP_MARGIN)/GRID_SPACE;
     },
-
+	
     // Creates several text displays.
     displays_Setup: function() {
 
@@ -523,11 +542,25 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityLaserPool.physicsBodyType = Phaser.Physics.ARCADE;
 	this.enemyVelocityLaserPool.createMultiple(VELOCITY_ENEMIES, 'velocityEnemyLaser');
 	this.enemyVelocityLaserPool.setAll('anchor.x', 0.5);
-	this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
-	this.enemyVelocityLaserPool.setAll('scale.x', 0.5);
-	this.enemyVelocityLaserPool.setAll('scale.y', 0.5);
+	// this.enemyVelocityLaserPool.setAll('anchor.y', 0.5);
+	this.enemyVelocityLaserPool.setAll('scale.x', 0.12);
+	this.enemyVelocityLaserPool.setAll('scale.y', 0.09);
 	this.enemyVelocityLaserPool.setAll('outOfBoundsKill', true);
 	this.enemyVelocityLaserPool.setAll('checkWorldBounds', true);
+
+	this.enemyVelocityLaserPool.forEach(function(laser) {
+	    // laser.body.setSize(10, 100, 0, 0);
+	    laser.animations.add('laser1', [0,1], 10, false);
+	    laser.animations.add('laser2', [0,1,2], 10, false);
+	    laser.animations.add('laser3', [0,1,2,3], 10, false);
+	    laser.animations.add('laser4', [0,1,2,3,4], 10, false);
+	    laser.animations.add('laser5', [0,1,2,3,4,5], 10, false);
+	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 10, false);
+	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 10, false);
+	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 10, false);
+	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 10, false);
+	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 10, false);
+	}, this);
     },
 
     // Creates the velocity enemies of the level.
@@ -566,7 +599,7 @@ BasicGame.Nivel2.prototype = {
 	    console.log(this.desallign_Y(initialY));
 	    //--------------------------------------------------------------
 
-	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    aux1 = this.allign_X(this.enemyPlace) - (GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, 0);
@@ -1090,7 +1123,11 @@ BasicGame.Nivel2.prototype = {
     // 		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
-
+    // 	if (this.enemyVelocityLaserPool.countLiving() > 0) {
+    // 	    this.enemyVelocityLaserPool.forEachAlive(function(laser) {
+    // 		this.game.debug.body(laser, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
     // }
     
 };
