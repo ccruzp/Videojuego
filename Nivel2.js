@@ -614,7 +614,12 @@ BasicGame.Nivel2.prototype = {
 // 	shot = true;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
     },
-	
+    
+    // Function used both for enemies of the time and Velocity
+    // If used in velocity enemies, enemy.pos represents the position,
+    // and enemy.shieldTime represents the time to activate the shield
+    // If used in time enemies, enemy.pos represents the position,
+    // and enemy.shieldTime represents the velocity of the enemy bullet 
     get_Enemy_Distance_Speed: function(enemy){
 	aux = this.game.rnd.integerInRange(1, 27);
 	if (aux > 13){

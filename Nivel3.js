@@ -6,7 +6,7 @@ BasicGame.Nivel3 = function(game) {
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     //Grid Stuff
-    //---------------------------------------------------------------------------
+    //----------------------------------------------------------------------
     GRID_SPACE = 38;         //Length of the squares of the grid
     LEFT_MARGIN = 196;        //Left Margin for the grid
     UP_MARGIN = 60;          //Horizontal Margin for the grid
@@ -123,6 +123,8 @@ BasicGame.Nivel3.prototype = {
 
     
     create: function() {
+
+	//Why is this here????------------------------------------------------
 	// Initializing boolean variables.
 	TOTAL_TIME = 10; // Time for explosion
 	BOMB_TOTAL_TIME = 3;
@@ -132,6 +134,8 @@ BasicGame.Nivel3.prototype = {
 	VELOCITY_ENEMIES = 0; // Amount of velocity enemies
 	TIME_ENEMIES = 1;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
+	//Why is this here????------------------------------------------------
+
 
 	TIMES_TO_PASS = 1;	
 	this.timesPassed = TIMES_TO_PASS;
@@ -290,7 +294,7 @@ BasicGame.Nivel3.prototype = {
 	    	    this.enemy_Fire(enemy);
 		}, this);
 		this.shieldPool.forEachAlive(function(shield) {
-		    this.time.events.add(Phaser.Timer.SECOND * (shield.time * 1), function(shield) {
+		    this.time.events.add(Phaser.Timer.SECOND * (shield.time - 0.1), function(shield) {
 			shield.shieldActive = true;
 		    }, this, shield);
 		    this.time.events.add(Phaser.Timer.SECOND * (shield.time + 0.2), function(shield) {
@@ -461,10 +465,12 @@ BasicGame.Nivel3.prototype = {
     // The enemy's shot.
     enemy_Fire: function(enemy) {
 	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
-	bullet.reset(enemy.x, enemy.y + enemy.height/2);
+	bullet.reset(enemy.x, enemy.y /* enemy.height/2*/);
 	console.log(enemyBulletSpeed);
 	console.log("B"+this.enemyBulletPool.getIndex(bullet));
-	bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
+	/*bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;*/
+	bullet.body.velocity.y = /*enemy.shieldTime*/enemy.shieldTime * GRID_SPACE;
+	console.log(enemy.shieldTime);
 	enemyShot = true;
     },
 
@@ -524,11 +530,17 @@ BasicGame.Nivel3.prototype = {
 	this.enemyTimePool.setAll('anchor.y', 0.5);
 	this.enemyTimePool.setAll('outOfBoundsKill', true);
 	this.enemyTimePool.setAll('checkWorldBounds', true);
-	this.enemyTimePool.setAll('scale.x', 0.075);
-	this.enemyTimePool.setAll('scale.y', 0.075);
+	//this.enemyTimePool.setAll('scale.x', 0.075);
+	//this.enemyTimePool.setAll('scale.y', 0.075);
+	this.enemyTimePool.setAll('scale.x', 0.055);
+	this.enemyTimePool.setAll('scale.y', 0.055);
 
 	this.enemyTimePool.forEach(function(enemy) {
-	    initialY = 50 - (enemy.height/2);
+	    this.get_Enemy_Distance_Speed(enemy);
+	    initialY =this.allign_Y(10-enemy.pos)
+	    //initialY = 55 - (enemy.height/2);
+	    //initialY = 50 - (enemy.height/2);
+	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
@@ -536,6 +548,16 @@ BasicGame.Nivel3.prototype = {
 	    // enemy.animations.add('shield', [1, 0], 10, false);
 	    // enemy.animations.add('unshield', [0, 1], 10, false);
 	}, this);
+	
+	// Group for the text displays
+	this.enemyTimeTextPool = this.add.group();
+	// Velocity of each enemy.
+	this.enemyTimePool.forEach(function(enemy) {
+	    var text = this.add.text(/*(this.allign_X(this.enemyPlace))*/enemy.x+60, enemy.y, 'Velocidad: ' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyTimeTextPool);
+	    text.visible = true;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
     },
 
     // Makes the cannon shoot.
@@ -547,7 +569,150 @@ BasicGame.Nivel3.prototype = {
 	this.time.events.add(Phaser.Timer.SECOND * (ENEMY_SHIELD_SPEED + 0.2), this.activate_Enemy_Shield, this);
 	shot = true;
     },
-
+    
+    // Function used both for enemies of the time and Velocity
+    // If used in velocity enemies, enemy.pos represents the position,
+    // and enemy.shieldTime represents the time to activate the shield
+    // If used in time enemies, enemy.pos represents the position,
+    // and enemy.shieldTime represents the velocity of the enemy bullet 
+    get_Enemy_Distance_Speed: function(enemy){
+	aux = this.game.rnd.integerInRange(1, 27);
+	if (aux > 13){
+	    if (aux > 20){
+		if(aux>23){
+		    if(aux == 24) {
+			enemy.pos = 10;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 25) {
+			enemy.pos = 10;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 26) {
+			enemy.pos = 10;
+			enemy.shieldTime = 5;
+		    }
+		    if(aux == 27) {
+			enemy.pos = 10;
+			enemy.shieldTime = 10;
+		    }
+		}else{
+		    if(aux == 21) {
+			enemy.pos = 9;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 22) {
+			enemy.pos = 9;
+			enemy.shieldTime = 3;
+		    }
+		    if(aux == 23) {
+			enemy.pos = 9;
+			enemy.shieldTime = 9;
+		    }
+		}
+	    }else{
+		if(aux>17){
+		    if(aux == 18) {
+			enemy.pos = 8;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 19) {
+			enemy.pos = 8;
+			enemy.shieldTime = 4;
+		    }
+		    if(aux == 20) {
+			enemy.pos = 8;
+			enemy.shieldTime = 8;
+		    } 
+		}else{
+		    if(aux == 14) {
+			enemy.pos = 6;
+			enemy.shieldTime = 6;
+		    }
+		    if(aux == 15) {
+			enemy.pos = 7;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 16) {
+			enemy.pos = 7;
+			enemy.shieldTime = 7;
+		    }
+		    if(aux == 17) {
+			enemy.pos = 8;
+			enemy.shieldTime = 1;
+		    }
+		}
+	    }
+	}else{
+	    
+	    if (aux > 7){
+		if(aux>10){
+		    if(aux == 11) {
+			enemy.pos = 6;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 12) {
+			enemy.pos = 6;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 13) {
+			enemy.pos = 6;
+			enemy.shieldTime = 3;
+		    } 
+		}else{
+		    if(aux == 8) {
+			enemy.pos = 4;
+			enemy.shieldTime = 4;
+		    }
+		    if(aux == 9) {
+			enemy.pos = 5;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 10) {
+			enemy.pos = 5;
+			enemy.shieldTime = 5;
+		    }
+		}
+	    }else{
+		if(aux>4){
+		    if(aux == 5) {
+			enemy.pos = 3;
+			enemy.shieldTime = 3;
+		    }
+		    if(aux == 6) {
+			enemy.pos = 4;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 7) {
+			enemy.pos = 4;
+			enemy.shieldTime = 2;
+		    } 
+		}else{
+		    if(aux == 1) {
+			enemy.pos = 1;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 2) {
+			enemy.pos = 2;
+			enemy.shieldTime = 1;
+		    }
+		    if(aux == 3) {
+			enemy.pos = 2;
+			enemy.shieldTime = 2;
+		    }
+		    if(aux == 4) {
+			enemy.pos = 3;
+			enemy.shieldTime = 1;
+		    }
+		}    
+	    }
+	    
+	}
+	console.log(aux);
+	console.log("ENEPOS"+enemy.pos);
+	console.log("ENETIME"+enemy.shieldTime);
+    },
+    
     // Increases the velocity of the bullets.
     increase_Fire: function() {
 	if (!started) {
