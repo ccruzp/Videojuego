@@ -158,6 +158,7 @@ BasicGame.Nivel2.prototype = {
 	usingCannon = false; // Says if the player selected the cannon.
 	//-------------------------------------------------------------
 	this.beginGame = true;
+	this.lost = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
 	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
@@ -236,6 +237,7 @@ BasicGame.Nivel2.prototype = {
 		missile.kill();
 		cannon.kill();
 		laser.kill();
+		this.lost = true;
 	    }, this);
 	    
 	}, null, this);
@@ -360,6 +362,9 @@ BasicGame.Nivel2.prototype = {
 	    if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	}, this);
 	
+	if (this.lost) {
+	    this.quit_Game(false);
+	}
 	// if (this.enemyOutOfGrid) {
 	//     this.quit_Game(false);
 	// }
