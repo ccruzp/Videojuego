@@ -473,6 +473,18 @@ BasicGame.Nivel2.prototype = {
 	this.cannonPool.setAll('anchor.y', 0.5);
 	this.cannonPool.setAll('scale.x', 0.06);
 	this.cannonPool.setAll('scale.y', 0.06);
+
+	this.cannonTextPool = this.add.group();
+	this.cannonPool.forEach(function(cannon) {
+	    cannon.inputEnabled = true;
+	    cannon.events.onInputDown.add(function(cannon) {
+		cannon.kill();
+		numberOfCannons += 1;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "20px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.cannonTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
 	/*
 	// Group for the text displays
 	this.cannonTextPool = this.add.group();
@@ -639,7 +651,7 @@ BasicGame.Nivel2.prototype = {
 	//     this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
 	// }, this);
 	// cannon.shot = true;
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.75), this.deactivate_Enemy_Shield, this, enemy);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.85), this.deactivate_Enemy_Shield, this, enemy);
 	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.05), this.activate_Enemy_Shield, this, enemy);
 	    cannon.shot = true;
 	}, this);
@@ -876,7 +888,12 @@ BasicGame.Nivel2.prototype = {
 		cannon.reset(x, y);
 		cannon.shotVelocity = missileSpeed;
 		numberOfCannons -= 1;
-		
+		var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		text.visible = true;
+		text.x = cannon.x;
+		text.y = cannon.y + 15;
+		text.text = '' + missileSpeed;
+
 		this.cannonButton.frame = 0;
 		usingCannon = false;
 	    }
@@ -943,9 +960,10 @@ BasicGame.Nivel2.prototype = {
 
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Velocity: function(enemy, missile) {
-	console.log("enemigo: " + this.enemyVelocityPool.getIndex(enemy));
-	console.log("escudo:"  + enemy.shielded);
-	if (!enemy.shielded) {
+	// console.log("enemigo: " + this.enemyVelocityPool.getIndex(enemy));
+	// console.log("escudo:"  + enemy.shielded);
+	console.log("PROBANDO: " + (enemy.pos == missileSpeed * enemy.shieldTime));
+	if (!enemy.shielded && (enemy.pos == missileSpeed * enemy.shieldTime)) {
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
 	}// else{
