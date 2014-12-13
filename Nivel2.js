@@ -937,7 +937,7 @@ BasicGame.Nivel2.prototype = {
 		text.visible = true;
 		text.x = cannon.x;
 		text.y = cannon.y + 15;
-		text.text = '' + missileSpeed;
+		text.text = '' + cannon.shotVelocity;
 
 		this.cannonButton.frame = 0;
 		usingCannon = false;
