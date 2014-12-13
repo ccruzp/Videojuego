@@ -612,16 +612,16 @@ BasicGame.Nivel2.prototype = {
 
 	this.enemyVelocityLaserPool.forEach(function(laser) {
 	    // laser.body.setSize(10, 100, 0, 0);
-	    laser.animations.add('laser1', [0,1], 15, false);
-	    laser.animations.add('laser2', [0,1,2], 15, false);
-	    laser.animations.add('laser3', [0,1,2,3], 15, false);
-	    laser.animations.add('laser4', [0,1,2,3,4], 15, false);
-	    laser.animations.add('laser5', [0,1,2,3,4,5], 15, false);
-	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 15, false);
-	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 15, false);
-	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 15, false);
-	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 15, false);
-	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 15, false);
+	    laser.animations.add('laser1', [0,1], 10, false);
+	    laser.animations.add('laser2', [0,1,2], 10, false);
+	    laser.animations.add('laser3', [0,1,2,3], 10, false);
+	    laser.animations.add('laser4', [0,1,2,3,4], 10, false);
+	    laser.animations.add('laser5', [0,1,2,3,4,5], 10, false);
+	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 10, false);
+	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 10, false);
+	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 10, false);
+	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 10, false);
+	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 10, false);
 	}, this);
     },
 
@@ -937,7 +937,7 @@ BasicGame.Nivel2.prototype = {
 		text.visible = true;
 		text.x = cannon.x;
 		text.y = cannon.y + 15;
-		text.text = '' + missileSpeed;
+		text.text = '' + cannon.shotVelocity;
 
 		this.cannonButton.frame = 0;
 		usingCannon = false;

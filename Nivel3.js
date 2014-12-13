@@ -302,7 +302,6 @@ BasicGame.Nivel3.prototype = {
 	    }
 	}, this);
 	// If the game started move enemies.
-	//console.log("STARTED:" + started);
 	if (started) {
 	    //console.log("STARTED:");
 	    this.cannonPool.forEachAlive(function(cannon) {
@@ -478,11 +477,18 @@ BasicGame.Nivel3.prototype = {
 	this.missilePool = this.add.group();
 	this.missilePool.enableBody = true;
 	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.missilePool.createMultiple(TOTAL_ENEMIES, 'bullet');
+	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
 	this.missilePool.setAll('anchor.x', 0.5);
 	this.missilePool.setAll('anchor.y', 0.5);
+	this.missilePool.setAll('scale.x', 0.25);
+	this.missilePool.setAll('scale.y', 0.25);
+	// this.missilePool.setAll('angle', 180);
 	this.missilePool.setAll('outOfBoundsKill', true);
 	this.missilePool.setAll('checkWorldBounds', true);
+	this.missilePool.forEach(function(missile) {
+	    missile.body.setSize(10, 10, 0, -25);
+	}, this);
+
     },
 
     // Creates the button for the cannon.
@@ -513,6 +519,18 @@ BasicGame.Nivel3.prototype = {
 	this.cannonPool.setAll('anchor.y', 0.5);
 	this.cannonPool.setAll('scale.x', 0.06);
 	this.cannonPool.setAll('scale.y', 0.06);
+	
+	this.cannonTextPool = this.add.group();
+	this.cannonPool.forEach(function(cannon) {
+	    cannon.inputEnabled = true;
+	    cannon.events.onInputDown.add(function(cannon) {
+		cannon.kill();
+		numberOfCannons += 1;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "20px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.cannonTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
     },
        
     //Disables the velocity enemies shield
@@ -886,7 +904,13 @@ BasicGame.Nivel3.prototype = {
 		cannon.reset(x, y);
 		
 		numberOfCannons -= 1;
-		
+	
+		var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		text.visible = true;
+		text.x = cannon.x;
+		text.y = cannon.y + 15;
+		text.text = '' + missileSpeed;
+	
 		this.cannonButton.frame = 0;
 		usingCannon = false;
 
@@ -897,9 +921,12 @@ BasicGame.Nivel3.prototype = {
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		shield.time = shieldTime;
-		console.log("Shieldtime: " + shield.time);
 		numberOfShields -= 1;
-		
+		var text = this.shieldTextPool.getAt(this.shieldPool.getIndex(shield));
+		text.visible = true;
+		text.x = shield.x - 1;
+		text.y = shield.y;
+		text.text = shield.time;
 		this.shieldButton.frame = 0;		
 		usingShield = false;
 	    }
@@ -1011,6 +1038,18 @@ BasicGame.Nivel3.prototype = {
 	this.shieldPool.setAll('scale.x', 0.12);
 	this.shieldPool.setAll('scale.y', 0.12);
 	this.shieldPool.setAll('shieldActive', false);
+	this.shieldTextPool = this.add.group();
+	this.shieldPool.forEach(function(shield) {
+	    shield.inputEnabled = true;
+	    shield.events.onInputDown.add(function(shield) {
+		shield.kill();
+		numberOfShields += 1;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "25px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.shieldTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
 	// this.shieldPool.forEach(function(shield) {
 	//     // Adding the bomb animation to each bomb.
 	//     shield.animations.add('shield', [0, 1, 0], 10, false);
