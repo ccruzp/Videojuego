@@ -351,8 +351,8 @@ BasicGame.Nivel3.prototype = {
 	    if(this.timesPassed == 0){
 		this.quit_Game(true);
 	    } else{
-	    
-	    //Resets the enemies and bombs, maybe should be a function
+		
+		//Resets the enemies and bombs, maybe should be a function
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
 		
@@ -385,6 +385,7 @@ BasicGame.Nivel3.prototype = {
 		},this);
 		
 		this.shieldPool.forEach(function(shield){
+		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
 		    shield.kill();
 		},this); 
 		
@@ -921,6 +922,7 @@ BasicGame.Nivel3.prototype = {
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		shield.time = shieldTime;
+		shield.shieldActive = false;
 		numberOfShields -= 1;
 		var text = this.shieldTextPool.getAt(this.shieldPool.getIndex(shield));
 		text.visible = true;
@@ -1002,6 +1004,7 @@ BasicGame.Nivel3.prototype = {
 	    usingShield = (numberOfShields > 0);
 	    if (!usingShield) {
 		this.shieldPool.forEachAlive(function(shield) {
+		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
 		    shield.kill();
 		}, this);
 		numberOfShields = TOTAL_ENEMIES;
@@ -1042,6 +1045,7 @@ BasicGame.Nivel3.prototype = {
 	this.shieldPool.forEach(function(shield) {
 	    shield.inputEnabled = true;
 	    shield.events.onInputDown.add(function(shield) {
+		this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
 		shield.kill();
 		numberOfShields += 1;
 	    }, this);
@@ -1057,7 +1061,14 @@ BasicGame.Nivel3.prototype = {
     },
      
     shield_Hit: function(shieldGen, bullet) {
-	if (shieldGen.shieldActive) {
+	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
+	// console.log("POS" +  enemy.pos);
+	// console.log("VEL" + enemy.shieldTime);
+	// console.log("TIME" + shieldGen.time);
+	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
+	console.log("ACTIVE" + shieldGen.shieldActive);
+	if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	    console.log("GOL");
 	    bullet.angle = 0;
 	    bullet.body.velocity.y = -(bullet.body.velocity.y);
 	    shotRebound = true;
