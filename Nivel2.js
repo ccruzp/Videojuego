@@ -65,6 +65,10 @@ BasicGame.Nivel2 = function(game) {
     this.blackHoleButtonText; // Text display for the time in which the bomb will explode
     this.cannonButtonText; // Text display for the speed of the missile.
 
+    this.initialLevelText; //Text with the level name shown in the blackScreen
+    this.initialInstructionText;//Text with instruction shown in blackScreen
+    this.mouseToContinueText; //Text that says "press the mouse, dude" SHOULD BE A CONSTANT
+
     // Buttons
     /*this.buttons; // Group for locked buttons*/
     this.blackHoleButton; // Black hole bomb button
@@ -221,6 +225,15 @@ BasicGame.Nivel2.prototype = {
 	this.input.onDown.add(this.put_Weapon, this); // Mouse input.
 
 	this.time.events.loop(Phaser.Timer.SECOND, this.countdown, this); // Every second activates this.countdown.
+
+	//Mouse input
+	this.input.onDown.add(this.begin_Game,this);
+	// Creating auxiliar black screen.
+	this.blackScreen = this.add.sprite(0, 0, 'blackScreen');
+	this.blackScreen.alpha = 0.9;
+	this.beginGame = false;
+	//Generating instructions text
+	this.blackScreen_Displays_Setup();
 
     },
     
@@ -404,6 +417,32 @@ BasicGame.Nivel2.prototype = {
 	// enemy.pos
     },
 
+    //Skip the instructions window
+    begin_Game: function(){
+	//Begins the game 1 second after the mouse is pressed
+	this.time.events.add(Phaser.Timer.SECOND * 1, function() {
+	    this.blackScreen.destroy();
+	    this.beginGame = true;
+	    this.instructionsTextPool.destroy(true);
+	},this);
+    },
+
+    // Creates the texts that the games uses
+    blackScreen_Displays_Setup: function(){
+	this.instructionsTextPool = this.add.group();
+	
+	//Texts used in the instruction screen
+	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 2', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
+	this.initialLevelText.anchor.setTo(0.5,0.5);
+	
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Deshabilita al enemigo antes de que te destruya', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.mouseToContinueText.anchor.setTo(0.5,0.5);
+	
+    },
+    
     // Create the bombPool
     bombPool_Setup: function() {
 	this.bombPool = this.add.group();

@@ -49,9 +49,10 @@ BasicGame.Nivel1 = function (game) {
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.blackHoleButtonText; // Text display the time before the bombs explode
+    
     this.initialLevelText; //Text with the level name shown in the blackScreen
     this.initialInstructionText;//Text with instruction shown in blackScreen
-    this.mouseToContinueText; //Text that says "press the mouse, dude"
+    this.mouseToContinueText; //Text that says "press the mouse, dude" SHOULD BE A CONSTANT
     
     // Buttons
     /*this.buttons; // Group for locked buttons*/
@@ -193,14 +194,13 @@ BasicGame.Nivel1.prototype = {
 	
 	//Mouse input
 	this.input.onDown.add(this.begin_Game,this);
-
 	// Creating auxiliar black screen.
 	this.blackScreen = this.add.sprite(0, 0, 'blackScreen');
 	this.blackScreen.alpha = 0.9;
 	this.beginGame = false;
-	
 	//Generating instructions text
 	this.blackScreen_Displays_Setup();
+
     },
     
     // Everything that needs to be done or modified constantly in the game goes
@@ -330,7 +330,6 @@ BasicGame.Nivel1.prototype = {
 	
     },
     
-    //
     // Creates the texts that the games uses
     blackScreen_Displays_Setup: function(){
 	this.instructionsTextPool = this.add.group();
