@@ -109,7 +109,7 @@ BasicGame.MainMenu.prototype = {
 	text.destroy();
 	background.destroy();
 	time = 0;
-	level = 1;
+	level = 2;
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel2',true,false,time,level,score,
@@ -145,7 +145,7 @@ BasicGame.MainMenu.prototype = {
 	text.destroy();
 	background.destroy();
 	time = 0;
-	level = 1;
+	level = 3;
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel3',true,false,time,level,score,
