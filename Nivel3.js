@@ -30,6 +30,8 @@ BasicGame.Nivel3 = function(game) {
     VELOCITY_ENEMIES = 0; // Amount of velocity enemies
     TIME_ENEMIES = 1;
     TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
+    
+    TIMES_TO_PASS = 5;      //Number of times that the level is needed to be passed
 
     this.bombPool; // Group of bombs
     this.cannonPool; // Group of cannons
@@ -79,8 +81,15 @@ BasicGame.Nivel3 = function(game) {
     this.score;
     this.timeOfGame;
 
+    // Variable to play the level multiple times
+    this.timesPassed = TIMES_TO_PASS;
+    
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
+    
+    //Instruction Screen 
+    this.blackScreen;
+    this.beginGame = false;
 };
 
 BasicGame.Nivel3.prototype = {
@@ -129,7 +138,7 @@ BasicGame.Nivel3.prototype = {
 
 	//Why is this here????------------------------------------------------
 	// Initializing boolean variables.
-	TOTAL_TIME = 10; // Time for explosion
+	TOTAL_TIME = 400; // Time for explosion
 	BOMB_TOTAL_TIME = 3;
 	ENEMY_VELOCITY = 3; // Velocity of the enemy
 	ENEMY_SHIELD_SPEED = 2.5;
@@ -139,8 +148,7 @@ BasicGame.Nivel3.prototype = {
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
 	//Why is this here????------------------------------------------------
 
-
-	TIMES_TO_PASS = 1;	
+	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.beginGame = true;
 
@@ -294,8 +302,9 @@ BasicGame.Nivel3.prototype = {
 	    }
 	}, this);
 	// If the game started move enemies.
-	console.log("STARTED:" + started);
+	//console.log("STARTED:" + started);
 	if (started) {
+	    //console.log("STARTED:");
 	    this.cannonPool.forEachAlive(function(cannon) {
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
 		    this.fire(cannon);
@@ -306,7 +315,7 @@ BasicGame.Nivel3.prototype = {
 	    	    this.enemy_Fire(enemy);
 		}, this);
 		this.shieldPool.forEachAlive(function(shield) {
-		    this.time.events.add(Phaser.Timer.SECOND * (shield.time - 0.1), function(shield) {
+		    this.time.events.add(Phaser.Timer.SECOND * (shield.time - 0.14), function(shield) {
 			shield.shieldActive = true;
 		    }, this, shield);
 		    this.time.events.add(Phaser.Timer.SECOND * (shield.time + 0.2), function(shield) {
@@ -337,7 +346,61 @@ BasicGame.Nivel3.prototype = {
 	//     this.quit_Game(true);
 	// }
 	if (!this.enemyTimePool.getFirstAlive()) {
-	    this.quit_Game(true);
+	    console.log('im here');
+	    this.timesPassed -=1;
+	    
+	    if(this.timesPassed == 0){
+		this.quit_Game(true);
+	    } else{
+	    
+	    //Resets the enemies and bombs, maybe should be a function
+		//------------------------------------------------------------
+		// this.get_Enemy_Distance_Speed();
+		
+		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
+		this.explosionTimeCounter = this.bombTime;
+		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
+		shieldTime = 0;
+		//this.shieldButtonText.text = '' + shieldTime;
+
+		this.enemyTimePool.forEach(function(enemy) {
+		    this.get_Enemy_Distance_Speed(enemy);
+		    initialY =this.allign_Y(10-enemy.pos)
+		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+		    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+		    enemy.frame = 1;
+		    enemy.reset(aux1, initialY);
+		    enemy.body.setSize(100, 100, 0, enemy.height/2);
+		    
+		    var text = this.enemyTimeTextPool.getAt(this.enemyTimePool.getIndex(enemy));
+		    text.visible = true;
+		    text.x = (this.allign_X(this.enemyPlace))+38;
+		    text.y = enemy.y;
+		    text.text = 'Escudo: ' + enemy.shieldTime;
+		
+		}, this);
+		
+		this.cannonPool.forEach(function(cannon){
+		    cannon.kill();
+		},this);
+		
+		this.shieldPool.forEach(function(shield){
+		    shield.kill();
+		},this); 
+		
+		this.explosionTimeCounter = this.bombTime;
+		numberOfBombs = TOTAL_ENEMIES;
+		numberOfCannons = TOTAL_ENEMIES
+		numberOfShields = TOTAL_ENEMIES;
+		shot = false;
+		placedBomb = false;
+		enemyShield = false;
+		shotRebound = false;
+		enemyShot = false;
+		started = false;
+		//------------------------------------------------------------
+	    }	
 	}
 	// If an enemy reaches the botom of the grid you lose the game.
 	// this.enemyVelocityPool.forEachAlive(function(enemy) {
@@ -510,7 +573,7 @@ BasicGame.Nivel3.prototype = {
 	console.log(enemyBulletSpeed);
 	console.log("B"+this.enemyBulletPool.getIndex(bullet));
 	/*bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;*/
-	bullet.body.velocity.y = /*enemy.shieldTime*/enemy.shieldTime * GRID_SPACE;
+	bullet.body.velocity.y = enemy.shieldTime * GRID_SPACE;
 	console.log(enemy.shieldTime);
 	enemyShot = true;
     },
@@ -749,7 +812,7 @@ BasicGame.Nivel3.prototype = {
 	    }
 	    
 	}
-	console.log(aux);
+//	console.log(aux);
 	console.log("ENEPOS"+enemy.pos);
 	console.log("ENETIME"+enemy.shieldTime);
     },
