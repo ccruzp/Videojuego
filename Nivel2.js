@@ -829,8 +829,8 @@ BasicGame.Nivel2.prototype = {
 		    } 
 		}else{
 		    if(aux == 1) {
-			enemy.pos = 1;
-			enemy.shieldTime = 1;
+			enemy.pos = 5;
+			enemy.shieldTime = 5;
 		    }
 		    if(aux == 2) {
 			enemy.pos = 2;
