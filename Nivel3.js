@@ -1067,7 +1067,8 @@ BasicGame.Nivel3.prototype = {
 	// console.log("TIME" + shieldGen.time);
 	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
 	console.log("ACTIVE" + shieldGen.shieldActive);
-	if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
 	    console.log("GOL");
 	    bullet.angle = 0;
 	    bullet.body.velocity.y = -(bullet.body.velocity.y);
