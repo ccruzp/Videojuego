@@ -49,9 +49,10 @@ BasicGame.Nivel1 = function (game) {
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.blackHoleButtonText; // Text display the time before the bombs explode
+    
     this.initialLevelText; //Text with the level name shown in the blackScreen
     this.initialInstructionText;//Text with instruction shown in blackScreen
-    this.mouseToContinueText; //Text that says "press the mouse, dude"
+    this.mouseToContinueText; //Text that says "press the mouse, dude" SHOULD BE A CONSTANT
     
     // Buttons
     /*this.buttons; // Group for locked buttons*/
@@ -138,7 +139,8 @@ BasicGame.Nivel1.prototype = {
 	this.physics.startSystem(Phaser.Physics.ARCADE);
 	
 	// Creating the grid for the game.
-	this.make_Grid();
+	option = 1;
+	this.make_Grid(option);
 	
 	// Bomb's time counter.
 	this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
@@ -192,14 +194,13 @@ BasicGame.Nivel1.prototype = {
 	
 	//Mouse input
 	this.input.onDown.add(this.begin_Game,this);
-
 	// Creating auxiliar black screen.
 	this.blackScreen = this.add.sprite(0, 0, 'blackScreen');
 	this.blackScreen.alpha = 0.9;
 	this.beginGame = false;
-	
 	//Generating instructions text
 	this.blackScreen_Displays_Setup();
+
     },
     
     // Everything that needs to be done or modified constantly in the game goes
@@ -329,7 +330,6 @@ BasicGame.Nivel1.prototype = {
 	
     },
     
-    //
     // Creates the texts that the games uses
     blackScreen_Displays_Setup: function(){
 	this.instructionsTextPool = this.add.group();
@@ -338,7 +338,7 @@ BasicGame.Nivel1.prototype = {
 	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 1', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
 	this.initialLevelText.anchor.setTo(0.5,0.5);
 	
-	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Coloca las bombas a la distancia adecuada para ganar', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'No dejes que los enemigos lleguen a tu planeta', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.initialInstructionText.anchor.setTo(0.5,0.5);
 
 	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
@@ -436,6 +436,8 @@ BasicGame.Nivel1.prototype = {
 	    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 	    enemy.frame = this.enemyVelocity;
 	    enemy.reset(aux1, initialY);
+	    enemy.enemyVelocity = this.enemyVelocity;
+	    console.log(enemy.enemyVelocity);
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    
@@ -489,7 +491,6 @@ BasicGame.Nivel1.prototype = {
     put_Bomb: function () {
 	
 	if(this.beginGame){
-	    //console.log('dude');
 	    this.blackHoleButton.frame = 1;
 	    if (!started && usingBlackHole && (numberOfBombs > 0)) {
 		// Intance of a bomb
@@ -500,6 +501,8 @@ BasicGame.Nivel1.prototype = {
 		bomb.body.setSize(10, 10, 4, 4);
 		bomb.frame = 1;
 		bomb.reset(x, y);
+		//bomb.z = this.gridY-1;
+		//console.log(bomb.z);
 		
 		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 		text.visible = true;
