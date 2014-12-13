@@ -232,9 +232,9 @@ BasicGame.Nivel2.prototype = {
 	// this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, this.destroy_Missile_And_Cannon, this);
 	this.physics.arcade.overlap(this.enemyVelocityLaserPool, this.cannonPool, function(laser, cannon) {
 	    var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
-	    // missile.kill();
+	    missile.kill();
 	    laser.events.onAnimationComplete.add(function() {
-		missile.kill();
+		// missile.kill();
 		cannon.kill();
 		laser.kill();
 		this.lost = true;
@@ -385,9 +385,15 @@ BasicGame.Nivel2.prototype = {
 	if (enemy.pos <= 2) {
 	    laser.animations.play('laser' + 1);
 	} else {
-	    laser.animations.play('laser' + (enemy.pos-1));
+	    // var text = "laser" + (enemy.pos - 1);
+	    // console.log(text);
+	    // laser.animations.play(text);
+	    laser.animations.play('laser' + (enemy.pos - 1));
 	}
-
+	laser.events.onAnimationComplete.add(function() {
+	    this.lost = true;
+	}, this);
+	
 	// laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
 	// laser.enableBody = true;
@@ -567,16 +573,16 @@ BasicGame.Nivel2.prototype = {
 
 	this.enemyVelocityLaserPool.forEach(function(laser) {
 	    // laser.body.setSize(10, 100, 0, 0);
-	    laser.animations.add('laser1', [0,1], 10, false);
-	    laser.animations.add('laser2', [0,1,2], 10, false);
-	    laser.animations.add('laser3', [0,1,2,3], 10, false);
-	    laser.animations.add('laser4', [0,1,2,3,4], 10, false);
-	    laser.animations.add('laser5', [0,1,2,3,4,5], 10, false);
-	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 10, false);
-	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 10, false);
-	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 10, false);
-	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 10, false);
-	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 10, false);
+	    laser.animations.add('laser1', [0,1], 15, false);
+	    laser.animations.add('laser2', [0,1,2], 15, false);
+	    laser.animations.add('laser3', [0,1,2,3], 15, false);
+	    laser.animations.add('laser4', [0,1,2,3,4], 15, false);
+	    laser.animations.add('laser5', [0,1,2,3,4,5], 15, false);
+	    laser.animations.add('laser6', [0,1,2,3,4,5,6], 15, false);
+	    laser.animations.add('laser7', [0,1,2,3,4,5,6,7], 15, false);
+	    laser.animations.add('laser8', [0,1,2,3,4,5,6,7,8], 15, false);
+	    laser.animations.add('laser9', [0,1,2,3,4,5,6,7,8,9], 15, false);
+	    laser.animations.add('laser10', [0,1,2,3,4,5,6,7,8,9,10], 15, false);
 	}, this);
     },
 
@@ -611,9 +617,9 @@ BasicGame.Nivel2.prototype = {
 	    
 	    //This can be erased at any time, is used to test the function
 	    //--------------------------------------------------------------
-	    console.log('Im here, the next function gives you the Y place of the enemy');
-	    console.log('The first row is 0, and is the one at the top')
-	    console.log(this.desallign_Y(initialY));
+	    // console.log('Im here, the next function gives you the Y place of the enemy');
+	    // console.log('The first row is 0, and is the one at the top')
+	    // console.log(this.desallign_Y(initialY));
 	    //--------------------------------------------------------------
 
 	    aux1 = this.allign_X(this.enemyPlace) - (GRID_SPACE/2);
@@ -636,7 +642,7 @@ BasicGame.Nivel2.prototype = {
 
     // Makes the cannon shoot.
     fire: function(cannon) {
-	console.log('fool');
+	// console.log('fool');
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
 	// missile.reset(cannon.x, cannon.y - cannon.height/2);
 	missile.reset(cannon.x, cannon.y);
@@ -803,9 +809,9 @@ BasicGame.Nivel2.prototype = {
 	    }
 	    
 	}
-	console.log(aux);
-	console.log("ENEPOS"+enemy.pos);
-	console.log("ENETIME"+enemy.shieldTime);
+	// console.log(aux);
+	// console.log("ENEPOS"+enemy.pos);
+	// console.log("ENETIME"+enemy.shieldTime);
     },
 
     // Increases the velocity of the missiles.
@@ -962,8 +968,9 @@ BasicGame.Nivel2.prototype = {
     try_To_Destroy_Velocity: function(enemy, missile) {
 	// console.log("enemigo: " + this.enemyVelocityPool.getIndex(enemy));
 	// console.log("escudo:"  + enemy.shielded);
-	console.log("PROBANDO: " + (enemy.pos == missileSpeed * enemy.shieldTime));
-	if (!enemy.shielded && (enemy.pos == missileSpeed * enemy.shieldTime)) {
+	// console.log("PROBANDO: " + (enemy.pos == missileSpeed * enemy.shieldTime));
+	// if (!enemy.shielded && (enemy.pos == missileSpeed * enemy.shieldTime)) {
+	if (enemy.pos == missileSpeed * enemy.shieldTime) {
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
 	}// else{
@@ -1151,8 +1158,8 @@ BasicGame.Nivel2.prototype = {
     // 		this.game.debug.body(laser, false, 'rgb(255, 0, 0)');
     // 	    }, this);
     // 	}
+    // 	this.game.debug.body(this.barra, false, 'rgb(255, 0, 0)');
     // }
-    
 };
 /*Functions commons to Nivel1 and Nivel2 (every level by now)
   allign_X

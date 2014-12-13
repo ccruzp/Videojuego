@@ -57,8 +57,9 @@ BasicGame.Preloader.prototype = {
 
 	// The shield generator
 	this.load.spritesheet('shield', 'assets/Spritesheets/shieldGen_Spritesheet.png', 401, 500, 2);
-	// this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
 
+	// Invisible spritesheet.
+	// this.load.image('shield', 'assets/Mockup/PNGs/cannon.png');
 
 	// The bullet
 	this.load.image('bullet', 'assets/bullet.png');
