@@ -140,7 +140,7 @@ BasicGame.Nivel2.prototype = {
 	BOMB_TOTAL_TIME = 3;
 	ENEMY_VELOCITY = 3; // Velocity of the enemy
 	//--------------------------------
-	TIMES_TO_PASS = 1;	
+	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
@@ -331,7 +331,6 @@ BasicGame.Nivel2.prototype = {
 	    }else{
 		//Resets the enemies and bombs, maybe should be a function
 		//------------------------------------------------------------
-		// this.get_Enemy_Distance_Speed();
 		
 		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
@@ -339,7 +338,10 @@ BasicGame.Nivel2.prototype = {
 		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
 		
 		this.enemyVelocityPool.forEach(function(enemy) {
-		    initialY =this.allign_Y(10-this.enemyGridDistance)/*+ (enemy.height/7)*/;
+		    this.get_Enemy_Distance_Speed(enemy);
+		    console.log('posicion' + enemy.pos);
+		    console.log('tiempo' + enemy.shieldTime);
+		    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 		    
 		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
@@ -350,16 +352,24 @@ BasicGame.Nivel2.prototype = {
 		    
 		    var text = this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy));
 		    text.visible = true;
-		    text.x = (this.allign_X(this.enemyPlace))+38;
+		    text.x = enemy.x + 25;
 		    text.y = enemy.y;
-		    // text.text = 'Escudo: ' + this.enemyShieldSpeed;
+		    text.text = 'Tiempo: ' + enemy.shieldTime;
 		},this);
 		
 		this.cannonPool.forEach(function(cannon){
 		    cannon.kill();
+		    cannon.shot = false;
+		    var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		    text.visible = false;
 		},this); 
-
+		
+		this.enemyVelocityLaserPool.forEach(function(laser){
+		    laser.kill();
+		},this);
+		
 		this.explosionTimeCounter = this.bombTime;
+		missileSpeed = 0;
 		numberOfBombs = TOTAL_ENEMIES;
 		numberOfCannons = TOTAL_ENEMIES;
 		shot = false;
@@ -391,21 +401,23 @@ BasicGame.Nivel2.prototype = {
 
 	// enemy.frame = 1;
 	enemy.shielded = true;
-
-	laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
-	laser.body.setSize(10, 500 * enemy.pos, 0, 0);
-	laser.reset(enemy.x, enemy.y + 30);
-	if (enemy.pos <= 2) {
-	    laser.animations.play('laser' + 1);
-	} else {
-	    // var text = "laser" + (enemy.pos - 1);
-	    // console.log(text);
-	    // laser.animations.play(text);
-	    laser.animations.play('laser' + (enemy.pos - 1));
+	if(enemy.died ==  false){
+	    console.log('I get here');
+	    laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+	    laser.body.setSize(10, 500 * enemy.pos, 0, 0);
+	    laser.reset(enemy.x, enemy.y + 30);
+	    if (enemy.pos <= 2) {
+		laser.animations.play('laser' + 1);
+	    } else {
+		// var text = "laser" + (enemy.pos - 1);
+		// console.log(text);
+		// laser.animations.play(text);
+		laser.animations.play('laser' + (enemy.pos - 1));
+	    }
+	    laser.events.onAnimationComplete.add(function() {
+		this.lost = true;
+	    }, this);
 	}
-	laser.events.onAnimationComplete.add(function() {
-	    this.lost = true;
-	}, this);
 	
 	// laser.frame = enemy.pos - 1;
 	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
@@ -549,6 +561,7 @@ BasicGame.Nivel2.prototype = {
 	// }, this);
 	enemy.frame = 0;
 	enemy.shielded = false;
+	enemy.died = false;
     },
 
     // Decreases the velocity of the missiles.
@@ -994,6 +1007,12 @@ BasicGame.Nivel2.prototype = {
 		// this.bombPool.removeAll();
 		this.cannonPool.forEachAlive(function(cannon) {
 		    cannon.kill();
+		    var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		text.visible = false;
+		//text.x = cannon.x;
+		//text.y = cannon.y + 15;
+		//text.text = '' + cannon.shotVelocity;
+
 		}, this);
 		/*this.bombTextPool.forEach(function(display) {
 		  display.visible = false;
@@ -1012,6 +1031,7 @@ BasicGame.Nivel2.prototype = {
 	if (enemy.pos == missileSpeed * enemy.shieldTime) {
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
+	    enemy.died = true;
 	}// else{
 	  //  
 	//}
