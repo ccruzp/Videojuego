@@ -179,7 +179,7 @@ BasicGame.Nivel3.prototype = {
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 	
 	// Creating the grid for the game.
-	option = 3;
+	option = 2;
 	this.make_Grid(option);
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
