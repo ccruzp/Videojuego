@@ -196,10 +196,10 @@ BasicGame.Nivel3.prototype = {
 	this.line.anchor.setTo(0, 0.5);
 	*/
 	// this.enemyVelocityPool_Setup(); // Setup the enemies.
+	this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
 	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the bullets for the cannons.
-	this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
 	this.cannonPool_Setup(); // Create the cannonPool.
 	this.shieldPool_Setup(); // Create the shieldPool.
 	
@@ -309,6 +309,8 @@ BasicGame.Nivel3.prototype = {
 		    this.fire(cannon);
 		}
 	    }, this);
+	    console.log("HOLA");
+
 	    if (!enemyShot) {
 		this.enemyTimePool.forEachAlive(function(enemy) {
 	    	    this.enemy_Fire(enemy);
@@ -383,6 +385,7 @@ BasicGame.Nivel3.prototype = {
 		this.cannonPool.forEach(function(cannon){
 		    cannon.kill();
 		},this);
+		this.enemyBulletPool.setAll('angle',180);
 		
 		this.shieldPool.forEach(function(shield){
 		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
@@ -589,8 +592,9 @@ BasicGame.Nivel3.prototype = {
     enemy_Fire: function(enemy) {
 	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
 	bullet.reset(enemy.x, enemy.y /* enemy.height/2*/);
+	bullet.angle = 180;
 	console.log(enemyBulletSpeed);
-	console.log("B"+this.enemyBulletPool.getIndex(bullet));
+	console.log("Bala: "+this.enemyBulletPool.getIndex(bullet));
 	/*bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;*/
 	bullet.body.velocity.y = enemy.shieldTime * GRID_SPACE;
 	console.log(enemy.shieldTime);
