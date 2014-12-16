@@ -70,6 +70,9 @@ BasicGame.Preloader.prototype = {
 	this.load.audio('diedS', 'assets/audio/die-or-lose-life.mp3', true);
 	this.load.audio('bombBeep', 'assets/audio/beep.mp3', true);
 	this.load.audio('blackHoleSound', 'assets/audio/blackHole-whoosh.mp3', true);
+	this.load.audio('clock', 'assets/audio/clock.mp3', true);
+	this.load.audio('missile_launch', 'assets/audio/Missle_Launch.mp3', true);
+	
 
 //------------------
 	//	These are the assets we loaded in Boot.js

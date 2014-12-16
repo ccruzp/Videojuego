@@ -170,6 +170,10 @@ BasicGame.Nivel2.prototype = {
 	//Beep sound of the bomb
 	bombBeep = this.add.audio('bombBeep');
 
+	//Beep sound of the bomb
+	clockSound = this.add.audio('clock');
+
+
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); //Game physics system.
 
@@ -296,6 +300,11 @@ BasicGame.Nivel2.prototype = {
 
 	// If the game started move enemies.
 	if (started) {
+	    //Reproduces the clock sound
+	    if(!clockSound.isPlaying){
+		clockSound.play('',0,0.1,false,false);
+	    }
+
 	    this.cannonPool.forEachAlive(function(cannon) {
 
 // <<<<<<< HEAD
@@ -307,6 +316,9 @@ BasicGame.Nivel2.prototype = {
 		    this.fire(cannon);
 		}
 	    }, this);
+	}else{
+	    //Stops the sound of the clock when the game is stopped
+	    clockSound.pause();
 	}
 	
 	// If explosionTimeCounter is 0 start explosion animation.
