@@ -339,6 +339,8 @@ BasicGame.Nivel2.prototype = {
 		
 		this.enemyVelocityPool.forEach(function(enemy) {
 		    this.get_Enemy_Distance_Speed(enemy);
+		    
+		    
 		    console.log('posicion' + enemy.pos);
 		    console.log('tiempo' + enemy.shieldTime);
 		    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
@@ -401,7 +403,9 @@ BasicGame.Nivel2.prototype = {
 
 	// enemy.frame = 1;
 	enemy.shielded = true;
-	if(enemy.died ==  false){
+	console.log('El enemigo ha muerto?');
+	console.log(enemy.died);
+	if(!enemy.died){
 	    console.log('I get here');
 	    laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
 	    laser.body.setSize(10, 500 * enemy.pos, 0, 0);
@@ -559,9 +563,11 @@ BasicGame.Nivel2.prototype = {
 	// this.enemyVelocityPool.forEachAlive(function(enemy) {
 	//     enemy.animations.play('unshield');
 	// }, this);
+	console.log('Deactivate Shield');
 	enemy.frame = 0;
 	enemy.shielded = false;
 	enemy.died = false;
+	console.log(enemy.died);
     },
 
     // Decreases the velocity of the missiles.
@@ -659,7 +665,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
 	    this.get_Enemy_Distance_Speed(enemy);
-//	    initialY = 50 - (enemy.height/2);
+	    //initialY = 50 - (enemy.height/2);
 //	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
 // =======
 	    //The commented lines are no longer used
@@ -674,7 +680,7 @@ BasicGame.Nivel2.prototype = {
 	    // console.log(this.desallign_Y(initialY));
 	    //--------------------------------------------------------------
 
-	    aux1 = this.allign_X(this.enemyPlace) - (GRID_SPACE/2);
+ 	    aux1 = this.allign_X(this.enemyPlace) - (GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
 	    enemy.body.setSize(100, 100, 0, 0);
@@ -696,8 +702,8 @@ BasicGame.Nivel2.prototype = {
     fire: function(cannon) {
 	// console.log('fool');
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
-	// missile.reset(cannon.x, cannon.y - cannon.height/2);
-	missile.reset(cannon.x, cannon.y);
+	missile.reset(cannon.x, cannon.y + missile.height/4);
+	//missile.reset(cannon.x, cannon.y);
 	
 // <<<<<<< HEAD
 	// missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
@@ -709,8 +715,12 @@ BasicGame.Nivel2.prototype = {
 	//     this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.2), this.activate_Enemy_Shield, this, enemy);
 	// }, this);
 	// cannon.shot = true;
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.85), this.deactivate_Enemy_Shield, this, enemy);
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.05), this.activate_Enemy_Shield, this, enemy);
+	    //this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.85), this.deactivate_Enemy_Shield, this, enemy);
+	    //this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.05), this.activate_Enemy_Shield, this, enemy);
+	    
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime-1), this.deactivate_Enemy_Shield, this, enemy);
+	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime+0.1), this.activate_Enemy_Shield, this, enemy);
+	    
 	    cannon.shot = true;
 	}, this);
 
@@ -1029,9 +1039,11 @@ BasicGame.Nivel2.prototype = {
 	// console.log("PROBANDO: " + (enemy.pos == missileSpeed * enemy.shieldTime));
 	// if (!enemy.shielded && (enemy.pos == missileSpeed * enemy.shieldTime)) {
 	if (enemy.pos == missileSpeed * enemy.shieldTime) {
+	    console.log('Killing');
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
 	    enemy.died = true;
+	    console.log(enemy.died);
 	}// else{
 	  //  
 	//}
