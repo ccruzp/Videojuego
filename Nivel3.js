@@ -219,7 +219,7 @@ BasicGame.Nivel3.prototype = {
 	// Creating the text displays.
 	this.displays_Setup();
 	// Score Texts
-	// this.scoreText_Setup();
+	this.scoreText_Setup();
 	
 	this.timeOfGame = this.time.now; // Score counter.
 
@@ -616,6 +616,7 @@ BasicGame.Nivel3.prototype = {
 	if (shotRebound) {
 	    enemy.kill();
 	    bullet.kill();
+	    this.score = this.score+80;
 	}
     },
 
@@ -1116,7 +1117,7 @@ BasicGame.Nivel3.prototype = {
     try_To_Destroy_Velocity: function(enemy, bullet) {
 	if (!enemyShield) {
 	    enemy.kill();
-	    this.score = this.score + 80;
+	    //this.score = this.score + 80;
 	} else {
 	    var vel = bullet.body.velocity.y;
 	    bullet.body.velocity.y = -vel;
