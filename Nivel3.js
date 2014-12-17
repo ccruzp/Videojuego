@@ -884,13 +884,14 @@ BasicGame.Nivel3.prototype = {
 	//Commented lines are the code to be used in a function out_Of_GridX
 	
 	//auxX = parseInt((sprite.x-LEFT_MARGIN+GRID_SPACE)/GRID_SPACE);
-	auxY = parseInt((sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
+	//auxY = parseInt((sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
+	auxY = (sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE;
     
 	//if(auxX < 1) this.gridX = 1;
 	//if(auxX > 16) this.gridX = 16;
     
 	if(auxY < 1) /*console.log(auxY)*/;
-	if(auxY > 11) this.quit_Game(false);/*console.log(auxY)*/
+	if(auxY > 11.5) this.quit_Game(false);/*console.log(auxY)*/
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
