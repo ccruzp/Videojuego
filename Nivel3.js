@@ -294,6 +294,9 @@ BasicGame.Nivel3.prototype = {
 	this.cannonButtonText.text = '' + missileSpeed;
 	this.shieldButtonText.text = '' + shieldTime;
 
+	//Update score display
+	this.scoreText.text = '' + this.score;
+	
 	// Updating shield sprite.
 	this.shieldPool.forEachAlive(function(shield) {
 	    if (shield.shieldActive) {
@@ -1113,6 +1116,7 @@ BasicGame.Nivel3.prototype = {
     try_To_Destroy_Velocity: function(enemy, bullet) {
 	if (!enemyShield) {
 	    enemy.kill();
+	    this.score = this.score + 80;
 	} else {
 	    var vel = bullet.body.velocity.y;
 	    bullet.body.velocity.y = -vel;
