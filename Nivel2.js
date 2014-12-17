@@ -297,6 +297,9 @@ BasicGame.Nivel2.prototype = {
 	
 	// Updating buttons displays
 	this.cannonButtonText.text = '' + missileSpeed;
+	
+	//Update score display
+	this.scoreText.text = '' + this.score;
 
 	// If the game started move enemies.
 	if (started) {
@@ -1058,6 +1061,7 @@ BasicGame.Nivel2.prototype = {
 	    console.log('Killing');
 	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
 	    enemy.kill();
+	    this.score = this.score + 80;
 	    enemy.died = true;
 	    console.log(enemy.died);
 	}// else{
