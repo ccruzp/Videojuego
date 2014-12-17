@@ -983,6 +983,8 @@ BasicGame.Nivel2.prototype = {
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
     quit_Game: function(won) {	
+	bombBeep.stop();
+	clockSound.stop();
 	this.playButton.destroy();
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
