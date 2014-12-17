@@ -309,8 +309,12 @@ BasicGame.Nivel3.prototype = {
 		    this.fire(cannon);
 		}
 	    }, this);
-	    console.log("HOLA");
 
+	    console.log("HOLA");
+	    this.enemyBulletPool.forEachAlive(function(bullet) {
+		this.out_Of_GridY(bullet);
+	    }, this);
+	    
 	    if (!enemyShot) {
 		this.enemyTimePool.forEachAlive(function(enemy) {
 	    	    this.enemy_Fire(enemy);
@@ -873,6 +877,20 @@ BasicGame.Nivel3.prototype = {
 	    button.reset(beforeButton.x + 100, beforeButton.y);
 	    beforeButton = button;
 	}, this);
+    },
+
+    //If a sprite is out of the vertical axis of the grid, exits the game
+    out_Of_GridY: function(sprite) {
+	//Commented lines are the code to be used in a function out_Of_GridX
+	
+	//auxX = parseInt((sprite.x-LEFT_MARGIN+GRID_SPACE)/GRID_SPACE);
+	auxY = parseInt((sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
+    
+	//if(auxX < 1) this.gridX = 1;
+	//if(auxX > 16) this.gridX = 16;
+    
+	if(auxY < 1) /*console.log(auxY)*/;
+	if(auxY > 11) this.quit_Game(false);/*console.log(auxY)*/
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
