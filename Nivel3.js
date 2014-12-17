@@ -153,6 +153,7 @@ BasicGame.Nivel3.prototype = {
 	this.beginGame = true;
 
 	started = false; // Boolean that says if the game has begun.
+	console.log("TURURUR " + started);
 	lost = false; // Boolean that says if the game has been lost.
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
@@ -218,7 +219,7 @@ BasicGame.Nivel3.prototype = {
 	// Creating the text displays.
 	this.displays_Setup();
 	// Score Texts
-	this.scoreText_Setup();
+	// this.scoreText_Setup();
 	
 	this.timeOfGame = this.time.now; // Score counter.
 
@@ -963,6 +964,7 @@ BasicGame.Nivel3.prototype = {
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
     quit_Game: function(won) {	
+	this.started = false;
 	this.bombOnMouse.kill();
 	this.bombPool.destroy(true);
 	this.missilePool.destroy(true);
@@ -999,6 +1001,8 @@ BasicGame.Nivel3.prototype = {
 			 this.find_Grid_Place,
 			 //this.gridLine_Setup,
 			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.plusButton_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
 			 this.start,
