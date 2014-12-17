@@ -338,8 +338,14 @@ BasicGame.Nivel1.prototype = {
 	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 1', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
 	this.initialLevelText.anchor.setTo(0.5,0.5);
 	
-	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'No dejes que los enemigos lleguen a tu planeta', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, '¡No dejes que los enemigos lleguen a tu planeta!', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Coloca la bomba en el lugar correcto para destruir al enemigo.', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	// this.initialInstructionText = this.add.text(this.world.width/2, 3*this.world.height/5, 'Recuerda que: distancia = velocidad * tiempo', { font: "15px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
 
 	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.mouseToContinueText.anchor.setTo(0.5,0.5);

@@ -442,7 +442,9 @@ BasicGame.Nivel3.prototype = {
 	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 3', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
 	this.initialLevelText.anchor.setTo(0.5,0.5);
 	
-	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Protege tu planeta usando las naves escudo', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Protege tu planeta usando las naves escudo', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Activa el escudo en el momento correcto para devolver\n                         el disparo al enemigo.', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.initialInstructionText.anchor.setTo(0.5,0.5);
 
 	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);

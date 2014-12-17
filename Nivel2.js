@@ -463,7 +463,9 @@ BasicGame.Nivel2.prototype = {
 	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL 2', { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
 	this.initialLevelText.anchor.setTo(0.5,0.5);
 	
-	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Destruye al enemigo antes de que dispare', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Destruye al enemigo antes de que dispare', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, 'Dispara a la velocidad correcta para destruir al enemigo.', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.initialInstructionText.anchor.setTo(0.5,0.5);
 
 	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
@@ -714,8 +716,8 @@ BasicGame.Nivel2.prototype = {
     fire: function(cannon) {
 	// console.log('fool');
 	var missile = this.missilePool.getAt(this.cannonPool.getIndex(cannon));
-	missile.reset(cannon.x, cannon.y + missile.height/4);
-	//missile.reset(cannon.x, cannon.y);
+	// missile.reset(cannon.x, cannon.y + missile.height/4);
+	missile.reset(cannon.x, cannon.y);
 	
 // <<<<<<< HEAD
 	// missile.body.velocity.y = (-1) * missileSpeed * GRID_SPACE;
@@ -922,8 +924,8 @@ BasicGame.Nivel2.prototype = {
 	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
 	this.missilePool.setAll('anchor.x', 0.5);
 	this.missilePool.setAll('anchor.y', 0.5);
-	this.missilePool.setAll('scale.x', 0.25);
-	this.missilePool.setAll('scale.y', 0.25);
+	this.missilePool.setAll('scale.x', 0.2);
+	this.missilePool.setAll('scale.y', 0.2);
 	// this.missilePool.setAll('angle', 180);
 	this.missilePool.setAll('outOfBoundsKill', true);
 	this.missilePool.setAll('checkWorldBounds', true);
