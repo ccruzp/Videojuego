@@ -186,9 +186,9 @@ BasicGame.MainMenu.prototype = {
     
     // Creates the black hole bomb button.
     blackHoleButton_Setup: function() {
-	this.blackHoleButton = this.add.button(200, this.world.height - 60, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
+	this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.4, 0.4);
+	this.blackHoleButton.scale.setTo(0.25, 0.25);
 	buttons.add(this.blackHoleButton);
     },
     
