@@ -82,6 +82,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonPanel_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -118,6 +119,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonPanel_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -154,6 +156,7 @@ BasicGame.MainMenu.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonPanel_Setup,
 			 // this.bombPool_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
@@ -196,7 +199,14 @@ BasicGame.MainMenu.prototype = {
 	this.bombOnMouse.scale.setTo(0.1, 0.1);
 	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
     },
-    
+
+    // button panel setup.
+    buttonPanel_Setup: function() {
+	this.buttonPanel = this.add.sprite(this.world.width/2, this.world.height - 70, 'buttonPanel');
+	this.buttonPanel.anchor.setTo(0.5, 0.5);
+	this.buttonPanel.scale.setTo(0.3, 0.25);
+    },
+
     // Decreases the game's counter and the bomb's counter.
     countdown: function () {
 	if (started) {

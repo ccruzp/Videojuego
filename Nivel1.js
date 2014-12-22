@@ -83,6 +83,7 @@ BasicGame.Nivel1.prototype = {
 		   allign_Y,
 		   blackHoleButton_Setup,
 		   bombOnMouse_Setup,
+		   buttonPanel_Setup,
 		   //bombPool_Setup,
 		   countdown,
 		   find_Grid_Place,
@@ -102,6 +103,7 @@ BasicGame.Nivel1.prototype = {
 	this.allign_Y = allign_Y;
 	this.blackHoleButton_Setup = blackHoleButton_Setup;
 	this.bombOnMouse_Setup = bombOnMouse_Setup;
+	this.buttonPanel_Setup = buttonPanel_Setup;
 	//this.bombPool_Setup = bombPool_Setup;
 	this.countdown = countdown;
 	this.find_Grid_Place = find_Grid_Place;
@@ -167,6 +169,9 @@ BasicGame.Nivel1.prototype = {
 	
 	// Score counter
 	this.timeOfGame = this.time.now;
+
+	// The button panel.
+	this.buttonPanel_Setup();
 
 	// Group for the buttons
 	buttons = this.add.group();
@@ -529,6 +534,7 @@ BasicGame.Nivel1.prototype = {
     // over menu.
     quit_Game: function (won) {	
 	this.playButton.destroy();
+	this.buttonPanel.kill();
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
 	this.bombTextPool.destroy(true);
@@ -551,6 +557,7 @@ BasicGame.Nivel1.prototype = {
 			 this.allign_Y,
 			 this.blackHoleButton_Setup,
 			 this.bombOnMouse_Setup,
+			 this.buttonPanel_Setup,
 			 this.countdown,
 			 this.find_Grid_Place,
 			 //this.gridLine_Setup,
