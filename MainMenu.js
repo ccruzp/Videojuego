@@ -321,9 +321,9 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the play button
     playButton_Setup: function() {
-	this.playButton = this.add.button(this.world.centerX + 10, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	this.playButton = this.add.button(this.world.centerX, this.world.height - 35, 'playButton', this.start, this, 0, 0, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.1, 0.1);
+	this.playButton.scale.setTo(0.04, 0.04);
 	buttons.add(this.playButton);
     },
 

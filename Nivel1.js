@@ -491,11 +491,11 @@ BasicGame.Nivel1.prototype = {
 	    x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
 	    beforeButton = x;
 	};
-	beforeButton = this.playButton;
-	lockedButtons.forEachDead(function(button) {
-	    button.reset(beforeButton.x + 100, beforeButton.y);
-	    beforeButton = button;
-	}, this);
+	// beforeButton = this.playButton;
+	// lockedButtons.forEachDead(function(button) {
+	//     button.reset(beforeButton.x + 100, beforeButton.y);
+	//     beforeButton = button;
+	// }, this);
     },
 
     // Creates a black hole bomb in the place clicked inside the grid.
