@@ -210,6 +210,8 @@ BasicGame.Nivel3.prototype = {
 	this.timeCounter = TOTAL_TIME; // Game's time counter.
 	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
 
+	// The buttons panel
+	this.buttonPanel_Setup();
 	buttons = this.add.group(); // Group for buttons.
 
 	this.blackHoleButton_Setup(); // Creates the black hole button.
@@ -986,7 +988,8 @@ BasicGame.Nivel3.prototype = {
 	// this.bombTextPool.destroy(true);
 	// this.otherTextPool.destroy(true);
 	// this.bombPool.destroy(true);
-	// background.kill();
+	this.buttonPanel.kill();
+	background.kill();
 	if (won) {
 	    time = this.timeOfGame;
 	    this.level = 3;
