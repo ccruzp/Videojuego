@@ -94,6 +94,7 @@ BasicGame.Nivel1.prototype = {
 		   //lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
+		   selector_Setup,
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
@@ -114,6 +115,7 @@ BasicGame.Nivel1.prototype = {
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
+	this.selector_Setup = selector_Setup;
 	this.start = start;
 	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
@@ -172,6 +174,9 @@ BasicGame.Nivel1.prototype = {
 
 	// The button panel.
 	this.buttonPanel_Setup();
+
+	// The selector.
+	this.selector_Setup();
 
 	// Group for the buttons
 	buttons = this.add.group();
@@ -415,7 +420,8 @@ BasicGame.Nivel1.prototype = {
 	/*this.velocityText = this.add.text((this.allign_X(this.enemyPlace)), 20, 'Velocidad: ' + this.enemyVelocity, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
 
 	// Display for the amount of bombPool left.
-	this.bombsRemainingText = this.add.text(235, this.world.height - 40, '' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y - 44, '' + numberOfBombs, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText.anchor.setTo(0.5, 0.5);
 
 	// Display for the time of the bomb.
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
@@ -478,19 +484,21 @@ BasicGame.Nivel1.prototype = {
     lockedButtons_Setup: function() {
 	
 	lockedButtons = this.add.group();
-	lockedButtons.createMultiple(5, 'lockedButton');
+	lockedButtons.createMultiple(2, 'lockedButton');
 	lockedButtons.setAll('anchor.x', 0.5);
 	lockedButtons.setAll('anchor.y', 0.5);
 	lockedButtons.setAll('outOfBoundsKill', true);
 	lockedButtons.setAll('checkWorldBounds', true);
-	lockedButtons.setAll('scale.x', 0.175);
-	lockedButtons.setAll('scale.y', 0.175);
+	lockedButtons.setAll('scale.x', 0.12);
+	lockedButtons.setAll('scale.y', 0.12);
 
-	beforeButton = this.blackHoleButton;
-	for(i = 0; i < 2; i++) {
-	    x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
-	    beforeButton = x;
-	};
+	lockedButtons.getAt(0).reset(this.world.width/2 - 67, this.world.height - 50);
+	lockedButtons.getAt(1).reset(this.world.width/2 + 67, this.world.height - 50);
+	// beforeButton = this.blackHoleButton;
+	// for(i = 0; i < 2; i++) {
+	//     x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
+	//     beforeButton = x;
+	// };
 	// beforeButton = this.playButton;
 	// lockedButtons.forEachDead(function(button) {
 	//     button.reset(beforeButton.x + 100, beforeButton.y);
@@ -537,6 +545,7 @@ BasicGame.Nivel1.prototype = {
 	this.buttonPanel.kill();
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
+	this.selector.destroy(true);
 	this.bombTextPool.destroy(true);
 	this.enemyDistanceTextPool.destroy(true);
 	this.otherTextPool.destroy(true);
@@ -566,6 +575,7 @@ BasicGame.Nivel1.prototype = {
 			 this.plusButton_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,
 			 this.try_To_Destroy);

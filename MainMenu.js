@@ -93,6 +93,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -130,6 +131,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -167,6 +169,7 @@ BasicGame.MainMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,//Should be part of "displays_Setup"
 			 this.try_To_Destroy);
@@ -204,7 +207,7 @@ BasicGame.MainMenu.prototype = {
     buttonPanel_Setup: function() {
 	this.buttonPanel = this.add.sprite(this.world.width/2, this.world.height - 70, 'buttonPanel');
 	this.buttonPanel.anchor.setTo(0.5, 0.5);
-	this.buttonPanel.scale.setTo(0.3, 0.25);
+	this.buttonPanel.scale.setTo(0.3, 0.27);
     },
 
     // Decreases the game's counter and the bomb's counter.
@@ -266,7 +269,7 @@ BasicGame.MainMenu.prototype = {
 	}
 
 	//Static grid numbers----------------------------------------------------	
-   	forConstant1=LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5); //Left numbers space
+   	forConstant1 = LEFT_MARGIN + GRID_SPACE * (COLUMNS_NUMBER + 0.5); //Left numbers space
 	forConstant2 = ((GRID_SPACE) / 2) - 7.5; //7.5= 15px Arial / 2 //Vertical space
 	forConstant3 = LEFT_MARGIN - (GRID_SPACE/2);
 	
@@ -355,6 +358,20 @@ BasicGame.MainMenu.prototype = {
 	}
     },
     
+    // The selector
+    selector_Setup: function() {
+	this.selector = this.add.group();
+	selectorCannon = this.add.sprite(117, 500, 'selectorCannon');
+	selectorCannon.anchor.setTo(0.5, 0.5);
+	selectorCannon.scale.setTo(0.45, 0.45);
+	this.selector.add(selectorCannon);
+
+	selectorShield = this.add.sprite(883, 500, 'selectorShield');
+	selectorShield.anchor.setTo(0.5, 0.5);
+	selectorShield.scale.setTo(0.45, 0.45);
+	this.selector.add(selectorShield);
+    },
+
     //Starts the actual game level
     start: function () {
 	if(this.beginGame){

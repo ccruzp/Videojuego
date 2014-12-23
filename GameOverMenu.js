@@ -25,6 +25,7 @@ BasicGame.GameOverMenu.prototype = {
 		   //lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
+		   selector_Setup,
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
@@ -49,6 +50,7 @@ BasicGame.GameOverMenu.prototype = {
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
+	this.selector_Setup = selector_Setup;
 	this.start = start;
 	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
@@ -133,6 +135,7 @@ BasicGame.GameOverMenu.prototype = {
 			 //this.lockedButtons_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,
 			 this.try_To_Destroy);

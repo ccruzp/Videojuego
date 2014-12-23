@@ -110,6 +110,7 @@ BasicGame.Nivel3.prototype = {
 		  // lockedButtons_Setup,
 		   playButton_Setup,
 		   select_Bomb,
+		   selector_Setup,
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
@@ -130,6 +131,7 @@ BasicGame.Nivel3.prototype = {
 	//this.lockedButtons_Setup = lockedButtons_Setup;
 	this.playButton_Setup = playButton_Setup;
 	this.select_Bomb = select_Bomb;
+	this.selector_Setup = selector_Setup;
 	this.start = start;
 	this.scoreText_Setup = scoreText_Setup;
 	this.try_To_Destroy = try_To_Destroy;
@@ -212,6 +214,7 @@ BasicGame.Nivel3.prototype = {
 
 	// The buttons panel
 	this.buttonPanel_Setup();
+	this.selector_Setup();
 	buttons = this.add.group(); // Group for buttons.
 
 	this.blackHoleButton_Setup(); // Creates the black hole button.
@@ -587,7 +590,9 @@ BasicGame.Nivel3.prototype = {
 	*/
 
 	// Display for the amount of bombs left.
-	this.bombsRemainingText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	// this.bombsRemainingText = this.add.text(235, this.world.height - 40, 'x' + numberOfBombs, { font: "20px Arial", fill : "#ffffff", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y - 44, '' + numberOfBombs, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText.anchor.setTo(0.5, 0.5);
 
 	// Display for the time of the bomb.
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
@@ -988,6 +993,7 @@ BasicGame.Nivel3.prototype = {
 	// this.bombTextPool.destroy(true);
 	// this.otherTextPool.destroy(true);
 	// this.bombPool.destroy(true);
+	this.selector.destroy(true);
 	this.buttonPanel.kill();
 	background.kill();
 	if (won) {
@@ -1015,6 +1021,7 @@ BasicGame.Nivel3.prototype = {
 			 this.plusButton_Setup,
 			 this.playButton_Setup,
 			 this.select_Bomb,
+			 this.selector_Setup,
 			 this.start,
 			 this.scoreText_Setup,
 			 this.try_To_Destroy);

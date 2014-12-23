@@ -22,6 +22,8 @@ BasicGame.Preloader.prototype = {
 	this.load.image('background', 'assets/img/background_purple_Half.png');
 	this.load.image('blackScreen', 'assets/img/background4.png');
 	this.load.image('buttonPanel', 'assets/Mockup/PNGs/Buttons_HUD.png');
+	this.load.spritesheet('selectorCannon', 'assets/Spritesheets/Selector/Selector_Cannon.png', 505, 498, 2);
+	this.load.spritesheet('selectorShield', 'assets/Spritesheets/Selector/Selector_Shield.png', 503, 500, 2);
 
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('ground', 'assets/platform2.png');
