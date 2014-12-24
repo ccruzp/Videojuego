@@ -224,6 +224,8 @@ BasicGame.Nivel3.prototype = {
 	// The buttons panel
 	this.buttonPanel_Setup();
 	this.selector_Setup();
+	this.cannonSelectorButtonsPool_Setup();
+	this.shieldSelectorButtonsPool_Setup();
 	buttons = this.add.group(); // Group for buttons.
 
 	this.blackHoleButton_Setup(); // Creates the black hole button.
@@ -310,8 +312,8 @@ BasicGame.Nivel3.prototype = {
 	}, this);
 	
 	// Updating buttons displays
-	this.cannonButtonText.text = '' + missileSpeed;
-	this.shieldButtonText.text = '' + shieldTime;
+	// this.cannonButtonText.text = '' + missileSpeed;
+	// this.shieldButtonText.text = '' + shieldTime;
 
 	//Update score display
 	this.scoreText.text = '' + this.score;
@@ -332,12 +334,11 @@ BasicGame.Nivel3.prototype = {
 	    }
 
 	    this.cannonPool.forEachAlive(function(cannon) {
-		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
+		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !cannon.shot) {
 		    this.fire(cannon);
 		}
 	    }, this);
 
-	    console.log("HOLA");
 	    this.enemyBulletPool.forEachAlive(function(bullet) {
 		this.out_Of_GridY(bullet);
 	    }, this);
@@ -355,9 +356,9 @@ BasicGame.Nivel3.prototype = {
 		    }, this, shield);
 		}, this);
 	    }
-	    if (lost) {
-		this.quit_Game(false);
-	    }
+	    // if (lost) {
+	    // 	this.quit_Game(false);
+	    // }
 	}else{
 	    //Stops the sound of the clock when the game is stopped
 	    clockSound.pause();
@@ -445,7 +446,7 @@ BasicGame.Nivel3.prototype = {
 	//     verticalLength = this.allign_Y(ROWS_NUMBER+0.7) ; 
 	//     if (enemy.body.y > (verticalLength)) this.enemyOutOfGrid = true;
 	// }, this);
-	if (this.enemyOutOfGrid) {
+	if (this.enemyOutOfGrid || lost) {
 	    this.quit_Game(false);
 	}
     },
@@ -593,8 +594,6 @@ BasicGame.Nivel3.prototype = {
 	this.cannonButton.anchor.setTo(0.5, 0.5);
 	this.cannonButton.scale.setTo(0.27, 0.27);
 	buttons.add(this.cannonButton);
-	this.minusButton_Setup(this.cannonButton, this.decrease_Fire);
-	this.plusButton_Setup(this.cannonButton, this.increase_Fire);
     },
 
     cannonOnMouse_Setup: function() {
@@ -629,6 +628,44 @@ BasicGame.Nivel3.prototype = {
 	}, this);
     },
        
+    cannonSelectorButtonsPool_Setup: function() {
+	this.cannonSelectorButtonsPool = this.add.group();
+	// var button = this.add.button(195, 555, 'okButton', function() {this.put_Cannon()}, this, 2, 1, 2, 1);
+	// this.cannonSelectorButtonsPool.add(button);
+	var chosen = this.add.sprite(196, 554, 'chosen');
+	this.cannonSelectorButtonsPool.add(chosen);
+	var button = this.add.button(100, 460, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(87, 481, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(113, 481, 'button3', function() {this.set_Missile_Speed(3)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(74, 502, 'button4', function() {this.set_Missile_Speed(4)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(100, 502, 'button5', function() {this.set_Missile_Speed(5)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(126, 502, 'button6', function() {this.set_Missile_Speed(6)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(61, 524, 'button7', function() {this.set_Missile_Speed(7)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(87, 524, 'button8', function() {this.set_Missile_Speed(8)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(113, 524, 'button9', function() {this.set_Missile_Speed(9)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(139, 524, 'button10', function() {this.set_Missile_Speed(10)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+
+	this.cannonSelectorButtonsPool.setAll('anchor.x', 0.5);
+	this.cannonSelectorButtonsPool.setAll('anchor.y', 0.5);
+	this.cannonSelectorButtonsPool.setAll('scale.x', 0.15);
+	this.cannonSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.cannonSelectorButtonsPool.setAll('frame', 0);
+	this.cannonSelectorButtonsPool.setAll('visible', false);
+	button = this.cannonSelectorButtonsPool.getAt(0);
+	button.scale.setTo(0.17, 0.17);
+	button.frame = 1;
+    },
+
     //Disables the velocity enemies shield
     deactivate_Enemy_Shield: function() {
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
@@ -673,13 +710,13 @@ BasicGame.Nivel3.prototype = {
 	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + this.explosionTimeCounter, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
 
-	// Display for the velocity of the bullet.
-	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.cannonButtonText.anchor.setTo(0.5, 0.5);
+	// // Display for the velocity of the bullet.
+	// this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	// this.cannonButtonText.anchor.setTo(0.5, 0.5);
 
-	// Display for the activation time of the shield.
-	this.shieldButtonText = this.add.text(this.shieldButton.x, this.shieldButton.y - 2, '' + shieldTime, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.shieldButtonText.anchor.setTo(0.5, 0.5);
+	// // Display for the activation time of the shield.
+	// this.shieldButtonText = this.add.text(this.shieldButton.x, this.shieldButton.y - 2, '' + shieldTime, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	// this.shieldButtonText.anchor.setTo(0.5, 0.5);
     },
     
     // The enemy's shot.
@@ -747,7 +784,7 @@ BasicGame.Nivel3.prototype = {
 	this.enemyTimePool = this.add.group();
 	this.enemyTimePool.enableBody = true;
 	this.enemyTimePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyTimePool.createMultiple(TOTAL_ENEMIES, 'timeEnemy');
+	this.enemyTimePool.createMultiple(TIME_ENEMIES, 'timeEnemy');
 	this.enemyTimePool.setAll('anchor.x', 0.5);
 	this.enemyTimePool.setAll('anchor.y', 0.5);
 	this.enemyTimePool.setAll('outOfBoundsKill', true);
@@ -1011,25 +1048,47 @@ BasicGame.Nivel3.prototype = {
 		// Update displays.
 		this.bombsRemainingText.text = 'x' + numberOfBombs;
 
-	    } else if (usingCannon && numberOfCannons > 0) {
-		x = this.allign_X(this.gridX - 0.5);
-		y = 460;
-		var cannon = this.cannonPool.getFirstExists(false);
-		cannon.body.setSize(10, 10);
-		cannon.reset(x, y);
+	    } else if (usingCannon // && selectedSpeed
+		       && numberOfCannons > 0 && missileSpeed > 0) {
+	    	x = this.allign_X(this.gridX - 0.5);
+	    	y = 460;
+	    	this.cannon = this.cannonPool.getFirstExists(false);
+	    	this.cannon.body.setSize(10, 10);
+	    	this.cannon.reset(x, y);
+	    	this.cannon.shotVelocity = missileSpeed;
+	    	numberOfCannons -= 1;
+	    	var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(this.cannon));
+	    	text.visible = true;
+	    	text.x = this.cannon.x;
+	    	text.y = this.cannon.y + 15;
+	    	text.text = '' + this.cannon.shotVelocity;
 		
-		numberOfCannons -= 1;
-	
-		var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
-		text.visible = true;
-		text.x = cannon.x;
-		text.y = cannon.y + 15;
-		text.text = '' + missileSpeed;
-	
-		this.cannonButton.frame = 0;
-		usingCannon = false;
-
-	    } else if (usingShield && numberOfShields > 0) {
+		this.selector.getAt(0).frame = 0;
+		this.cannonSelectorButtonsPool.setAll('visible', false);
+		this.cannonSelectorButtonsPool.getAt(0).frame = 1;
+	    	this.cannonButton.frame = 0;
+	    	usingCannon = false;
+		selectedSpeed = false;
+		missileSpeed = 0;
+		// else if (usingCannon && numberOfCannons > 0) {
+		// 	x = this.allign_X(this.gridX - 0.5);
+		// 	y = 460;
+		// 	var cannon = this.cannonPool.getFirstExists(false);
+		// 	cannon.body.setSize(10, 10);
+		// 	cannon.reset(x, y);
+		
+		// 	numberOfCannons -= 1;
+		
+		// 	var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+	      // 	text.visible = true;
+		// 	text.x = cannon.x;
+		// 	text.y = cannon.y + 15;
+		// 	text.text = '' + missileSpeed;
+		
+		// 	this.cannonButton.frame = 0;
+		// 	usingCannon = false;
+		
+	    } else if (usingShield && numberOfShields > 0 && shieldTime > 0) {
 		x = this.allign_X(this.gridX - 0.5);
 		y = 460;
 		var shield = this.shieldPool.getFirstExists(false);
@@ -1043,8 +1102,13 @@ BasicGame.Nivel3.prototype = {
 		text.x = shield.x - 1;
 		text.y = shield.y;
 		text.text = shield.time;
+		
+		this.selector.getAt(1).frame = 0;
+		this.shieldSelectorButtonsPool.setAll('visible', false);
+		this.shieldSelectorButtonsPool.getAt(0).frame = 1;
 		this.shieldButton.frame = 0;		
 		usingShield = false;
+		shieldTime = 0;
 	    }
  	}
     },
@@ -1108,15 +1172,36 @@ BasicGame.Nivel3.prototype = {
     select_Cannon: function() {
 	if (!started){
 	    usingCannon = (numberOfCannons > 0);
+	    this.selector.getAt(0).frame = 1;
+	    this.cannonSelectorButtonsPool.setAll('visible', true);
 	    if (!usingCannon) {
 		// this.bombPool.removeAll();
 		this.cannonPool.forEachAlive(function(cannon) {
 		    cannon.kill();
+		    var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		    text.visible = false;
+		    //text.x = cannon.x;
+		    //text.y = cannon.y + 15;
+		    //text.text = '' + cannon.shotVelocity;
+		    
 		}, this);
 		/*this.bombTextPool.forEach(function(display) {
 		  display.visible = false;
 		  }, this);*/
 		numberOfCannons = TOTAL_ENEMIES;
+		// if (!started){
+		//     usingCannon = (numberOfCannons > 0);
+		//     if (!usingCannon) {
+		// 	// this.bombPool.removeAll();
+		// 	this.cannonPool.forEachAlive(function(cannon) {
+		// 	    cannon.kill();
+		// 	}, this);
+		// 	/*this.bombTextPool.forEach(function(display) {
+		// 	  display.visible = false;
+		// 	  }, this);*/
+		// 	numberOfCannons = TOTAL_ENEMIES;
+		//     }
+		// }
 	    }
 	}
     },
@@ -1125,6 +1210,8 @@ BasicGame.Nivel3.prototype = {
     select_Shield: function() {
 	if (!started){
 	    usingShield = (numberOfShields > 0);
+	    this.selector.getAt(1).frame = 1;
+	    this.shieldSelectorButtonsPool.setAll('visible', true);
 	    if (!usingShield) {
 		this.shieldPool.forEachAlive(function(shield) {
 		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
@@ -1135,14 +1222,42 @@ BasicGame.Nivel3.prototype = {
 	}
     },
 
+    set_Missile_Speed: function(speed) {
+	missileSpeed = speed;
+	this.cannonSelectorButtonsPool.getAt(0).frame = speed + 1;
+    },
+
+    set_Shield_Time: function(time) {
+	shieldTime = time;
+	this.shieldSelectorButtonsPool.getAt(0).frame = time + 1;
+    },
+
+    shield_Hit: function(shieldGen, bullet) {
+	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
+	// console.log("POS" +  enemy.pos);
+	// console.log("VEL" + enemy.shieldTime);
+	// console.log("TIME" + shieldGen.time);
+	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
+	console.log("ACTIVE" + shieldGen.shieldActive);
+	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
+	    console.log("GOL");
+	    bullet.angle = 0;
+	    bullet.body.velocity.y = -(bullet.body.velocity.y);
+	    shotRebound = true;
+	} else {
+	    lost = true;
+	    shieldGen.kill();
+	    bullet.kill();
+	}
+    },
+    
     // Creates the shield button.
     shieldButton_Setup: function() {
 	this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
 	this.shieldButton.anchor.setTo(0.5, 0.5);
 	this.shieldButton.scale.setTo(0.27, 0.27);
 	buttons.add(this.shieldButton);
-	this.minusButton_Setup(this.shieldButton, this.decrease_Time_Shield);
-	this.plusButton_Setup(this.shieldButton, this.increase_Time_Shield);
      },
 
     shieldOnMouse_Setup: function() {
@@ -1183,24 +1298,40 @@ BasicGame.Nivel3.prototype = {
 	// }, this);
     },
      
-    shield_Hit: function(shieldGen, bullet) {
-	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
-	// console.log("POS" +  enemy.pos);
-	// console.log("VEL" + enemy.shieldTime);
-	// console.log("TIME" + shieldGen.time);
-	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
-	console.log("ACTIVE" + shieldGen.shieldActive);
-	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
-	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
-	    console.log("GOL");
-	    bullet.angle = 0;
-	    bullet.body.velocity.y = -(bullet.body.velocity.y);
-	    shotRebound = true;
-	} else {
-	    this.lost = true;
-	    shieldGen.kill();
-	    bullet.kill();
-	}
+    shieldSelectorButtonsPool_Setup: function() {
+	this.shieldSelectorButtonsPool = this.add.group();
+	var chosen = this.add.sprite(803, 554, 'chosen');
+	this.shieldSelectorButtonsPool.add(chosen);
+	var button = this.add.button(903, 460, 'button1', function() {this.set_Shield_Time(1)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 481, 'button2', function() {this.set_Shield_Time(2)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 481, 'button3', function() {this.set_Shield_Time(3)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(877, 502, 'button4', function() {this.set_Shield_Time(4)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(903, 502, 'button5', function() {this.set_Shield_Time(5)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(929, 502, 'button6', function() {this.set_Shield_Time(6)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(864, 524, 'button7', function() {this.set_Shield_Time(7)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 524, 'button8', function() {this.set_Shield_Time(8)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 524, 'button9', function() {this.set_Shield_Time(9)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(942, 524, 'button10', function() {this.set_Shield_Time(10)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+
+	this.shieldSelectorButtonsPool.setAll('anchor.x', 0.5);
+	this.shieldSelectorButtonsPool.setAll('anchor.y', 0.5);
+	this.shieldSelectorButtonsPool.setAll('scale.x', 0.15);
+	this.shieldSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.shieldSelectorButtonsPool.setAll('frame', 0);
+	this.shieldSelectorButtonsPool.setAll('visible', false);
+	button = this.shieldSelectorButtonsPool.getAt(0);
+	button.scale.setTo(0.17, 0.17);
+	button.frame = 1;
     },
 
     // If the enemy's shild is deactivated the enemy is killed.
@@ -1223,34 +1354,39 @@ BasicGame.Nivel3.prototype = {
     // Solo la comenté una vez u.u
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
-//     render: function() {
-//     	if (this.enemyTimePool.countLiving() > 0) {
-//     	    this.enemyTimePool.forEachAlive(function(enemy) {
-//     		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-//     	    }, this);
-//     	}
-//     	if (this.bombPool.countLiving() > 0) {
-//     	    this.bombPool.forEachAlive(function(bomb) {
-//     		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-//     	    }, this);
-//     	}
-//     	if (this.cannonPool.countLiving() > 0) {
-//     	    this.cannonPool.forEachAlive(function(cannon) {
-//     		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-//     	    }, this);
-//     	}
-//     	if (this.missilePool.countLiving() > 0) {
-//     	    this.missilePool.forEachAlive(function(missile) {
-//     		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
-//     	    }, this);
-//     	}
-//     	if (this.shieldPool.countLiving() > 0) {
-//     	    this.shieldPool.forEachAlive(function(shield) {
-//     		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
-//     	    }, this);
-//     	}
+    // render: function() {
+    // 	if (this.enemyTimePool.countLiving() > 0) {
+    // 	    this.enemyTimePool.forEachAlive(function(enemy) {
+    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.bombPool.countLiving() > 0) {
+    // 	    this.bombPool.forEachAlive(function(bomb) {
+    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.cannonPool.countLiving() > 0) {
+    // 	    this.cannonPool.forEachAlive(function(cannon) {
+    // 		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.missilePool.countLiving() > 0) {
+    // 	    this.missilePool.forEachAlive(function(missile) {
+    // 		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.shieldPool.countLiving() > 0) {
+    // 	    this.shieldPool.forEachAlive(function(shield) {
+    // 		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
+    // 	if (this.enemyBulletPool.countLiving() > 0) {
+    // 	    this.enemyBulletPool.forEachAlive(function(bullet) {
+    // 		this.game.debug.body(bullet, false, 'rgb(255, 0, 0)');
+    // 	    }, this);
+    // 	}
 
-//     }
+    // }
 };
 /*Functions commons to Nivel1 and Nivel2 (every level by now)
   allign_X
