@@ -22,8 +22,22 @@ BasicGame.Preloader.prototype = {
 	this.load.image('background', 'assets/img/background_purple_Half.png');
 	this.load.image('blackScreen', 'assets/img/background4.png');
 	this.load.image('buttonPanel', 'assets/Mockup/PNGs/Buttons_HUD.png');
+
+	// Cannon and shield selectors and buttons.
 	this.load.spritesheet('selectorCannon', 'assets/Spritesheets/Selector/Selector_Cannon.png', 505, 498, 2);
 	this.load.spritesheet('selectorShield', 'assets/Spritesheets/Selector/Selector_Shield.png', 503, 500, 2);
+	this.load.spritesheet('okButton', 'assets/Spritesheets/Selector/Selector_OK.png', 174, 200, 3);
+	this.load.spritesheet('chosen', 'assets/Spritesheets/Selector/Selector_Chosen.png', 419, 500, 12);
+	this.load.spritesheet('button1', 'assets/Spritesheets/Selector/Selector_Number_1.png', 171, 200, 2);
+	this.load.spritesheet('button2', 'assets/Spritesheets/Selector/Selector_Number_2.png', 171, 200, 2);
+	this.load.spritesheet('button3', 'assets/Spritesheets/Selector/Selector_Number_3.png', 171, 200, 2);
+	this.load.spritesheet('button4', 'assets/Spritesheets/Selector/Selector_Number_4.png', 171, 200, 2);
+	this.load.spritesheet('button5', 'assets/Spritesheets/Selector/Selector_Number_5.png', 171, 200, 2);
+	this.load.spritesheet('button6', 'assets/Spritesheets/Selector/Selector_Number_6.png', 171, 200, 2);
+	this.load.spritesheet('button7', 'assets/Spritesheets/Selector/Selector_Number_7.png', 171, 200, 2);
+	this.load.spritesheet('button8', 'assets/Spritesheets/Selector/Selector_Number_8.png', 171, 200, 2);
+	this.load.spritesheet('button9', 'assets/Spritesheets/Selector/Selector_Number_9.png', 171, 200, 2);
+	this.load.spritesheet('button10', 'assets/Spritesheets/Selector/Selector_Number_10.png', 171, 200, 2);
 
 	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
 	this.load.image('ground', 'assets/platform2.png');

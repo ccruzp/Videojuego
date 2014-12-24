@@ -182,7 +182,16 @@ BasicGame.Nivel3.prototype = {
 	numberOfShields = TOTAL_ENEMIES; // Number of shields available in this level.
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
-	
+
+//-----------------------------------------------------
+//----------------- Sounds ----------------------------
+	//Beep sound of the bomb
+	bombBeep = this.add.audio('bombBeep');
+
+	//Beep sound of the bomb
+	clockSound = this.add.audio('clock');
+//----------------------------------------------------
+
 	// Creating the grid for the game.
 	option = 2;
 	this.make_Grid(option);
@@ -221,7 +230,7 @@ BasicGame.Nivel3.prototype = {
 	this.cannonButton_Setup(); // Creates the cannon button.
 	this.shieldButton_Setup(); // Creates the shield button.
 	this.playButton_Setup(); // Creates the play button.
-	this.lockedButtons_Setup(); // Creates the locked buttons.
+	// this.lockedButtons_Setup(); // Creates the locked buttons.
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -290,6 +299,9 @@ BasicGame.Nivel3.prototype = {
 	    
 	}
 	
+	// The amount of bombs remaining.
+	this.bombsRemainingText.text = 'x' + numberOfBombs;
+
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -314,7 +326,11 @@ BasicGame.Nivel3.prototype = {
 	}, this);
 	// If the game started move enemies.
 	if (started) {
-	    //console.log("STARTED:");
+	    //Reproduces the clock sound
+	    if(!clockSound.isPlaying){
+		clockSound.play('', 0, 0.1, false, false);
+	    }
+
 	    this.cannonPool.forEachAlive(function(cannon) {
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
 		    this.fire(cannon);
@@ -342,7 +358,11 @@ BasicGame.Nivel3.prototype = {
 	    if (lost) {
 		this.quit_Game(false);
 	    }
+	}else{
+	    //Stops the sound of the clock when the game is stopped
+	    clockSound.pause();
 	}
+
 	// this.enemyBulletPool.forEachAlive(function(bullet) {
 	//     bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;
 	// }, this);
@@ -469,6 +489,30 @@ BasicGame.Nivel3.prototype = {
 
     // Create the bombPool
     //Is this used on level 1 (?) requires removing the enemyVelocityPool 
+    // bombPool_Setup: function() {
+    // 	this.bombPool = this.add.group();
+    // 	this.bombPool.enableBody = true;
+    // 	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+    // 	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
+    // 	this.bombPool.setAll('anchor.x', 0.4);
+    // 	this.bombPool.setAll('anchor.y', 0.4);
+    // 	this.bombPool.setAll('scale.x', 0.15);
+    // 	this.bombPool.setAll('scale.y', 0.15);
+    // 	this.bombPool.forEach(function(bomb) {
+    // 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+    // 	}, this);
+
+    // 	// Group for the text displays
+    // 	this.bombTextPool = this.add.group();
+
+    // 	// Time until explosion display.
+    // 	this.bombPool.forEach(function() {
+    // 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
+    // 	    text.visible = false;
+    // 	    text.anchor.setTo(0.5, 0.5);
+    // 	}, this);
+    // },
+    // Create the bombPool
     bombPool_Setup: function() {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
@@ -480,17 +524,39 @@ BasicGame.Nivel3.prototype = {
 	this.bombPool.setAll('scale.y', 0.15);
 	this.bombPool.forEach(function(bomb) {
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
-	}, this);
 
+	    // Enabling the input for bombs.
+	    bomb.inputEnabled = true;
+	    // Adding hand cursor for hovering over the bombs before game has started.
+	    bomb.events.onInputOver.add(function(bomb) {
+		if (!started) {
+		    bomb.input.useHandCursor = true;
+		} else {
+		    bomb.input.useHandCursor = false;
+		}
+	    }, this);
+
+	    // Making invisible the text display and killing bomb clicked before has not started.
+	    bomb.events.onInputDown.add(function(bomb) {
+		if (!started) {
+		    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		    text.visible = false;
+		    bomb.kill();
+		    numberOfBombs += 1;
+		    usingBlackHoleBomb = true;
+		}
+	    }, this);
+	}, this);
 	// Group for the text displays
 	this.bombTextPool = this.add.group();
-
+	
 	// Time until explosion display.
 	this.bombPool.forEach(function() {
 	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
+	
     },
 
     // Creates the bullets.
@@ -512,11 +578,20 @@ BasicGame.Nivel3.prototype = {
 
     },
 
+    // // Creates the button for the cannon.
+    // cannonButton_Setup: function() {
+    // 	this.cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+    // 	this.cannonButton.anchor.setTo(0.5, 0.5);
+    // 	this.cannonButton.scale.setTo(0.4, 0.4);
+    // 	buttons.add(this.cannonButton);
+    // 	this.minusButton_Setup(this.cannonButton, this.decrease_Fire);
+    // 	this.plusButton_Setup(this.cannonButton, this.increase_Fire);
+    // },
     // Creates the button for the cannon.
     cannonButton_Setup: function() {
-	this.cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	this.cannonButton = this.add.button(this.world.width/2 - 67, this.world.height - 50, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
 	this.cannonButton.anchor.setTo(0.5, 0.5);
-	this.cannonButton.scale.setTo(0.4, 0.4);
+	this.cannonButton.scale.setTo(0.27, 0.27);
 	buttons.add(this.cannonButton);
 	this.minusButton_Setup(this.cannonButton, this.decrease_Fire);
 	this.plusButton_Setup(this.cannonButton, this.increase_Fire);
@@ -977,6 +1052,8 @@ BasicGame.Nivel3.prototype = {
     // Destroys everything created and moves to the winner's menu or the game 
     // over menu.
     quit_Game: function(won) {	
+	bombBeep.stop();
+	clockSound.stop();
 	this.started = false;
 	this.bombOnMouse.kill();
 	this.bombPool.destroy(true);
@@ -984,7 +1061,7 @@ BasicGame.Nivel3.prototype = {
 	this.enemyBulletPool.destroy(true);
 	this.cannonPool.destroy(true);
 	buttons.destroy(true);
-	lockedButtons.destroy(true);
+	// lockedButtons.destroy(true);
 	this.otherTextPool.destroy(true);
 	// this.playButton.destroy();
 	// this.blackHoleButton.destroy();
@@ -1060,9 +1137,9 @@ BasicGame.Nivel3.prototype = {
 
     // Creates the shield button.
     shieldButton_Setup: function() {
-	this.shieldButton = this.add.button(405, this.world.height - 60, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
 	this.shieldButton.anchor.setTo(0.5, 0.5);
-	this.shieldButton.scale.setTo(0.4, 0.4);
+	this.shieldButton.scale.setTo(0.27, 0.27);
 	buttons.add(this.shieldButton);
 	this.minusButton_Setup(this.shieldButton, this.decrease_Time_Shield);
 	this.plusButton_Setup(this.shieldButton, this.increase_Time_Shield);

@@ -361,15 +361,14 @@ BasicGame.MainMenu.prototype = {
     // The selector
     selector_Setup: function() {
 	this.selector = this.add.group();
-	selectorCannon = this.add.sprite(117, 500, 'selectorCannon');
-	selectorCannon.anchor.setTo(0.5, 0.5);
-	selectorCannon.scale.setTo(0.45, 0.45);
-	this.selector.add(selectorCannon);
-
-	selectorShield = this.add.sprite(883, 500, 'selectorShield');
-	selectorShield.anchor.setTo(0.5, 0.5);
-	selectorShield.scale.setTo(0.45, 0.45);
-	this.selector.add(selectorShield);
+	var selector = this.add.sprite(117, 500, 'selectorCannon');
+	this.selector.add(selector);
+	selector = this.add.sprite(883, 500, 'selectorShield');
+	this.selector.add(selector);
+	this.selector.setAll('anchor.x', 0.5);
+	this.selector.setAll('anchor.y', 0.5);
+	this.selector.setAll('scale.x', 0.45);
+	this.selector.setAll('scale.y', 0.45);
     },
 
     //Starts the actual game level
