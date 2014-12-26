@@ -1,7 +1,7 @@
 //This document explains the implementation of a Shuffle Bag and the needed
-//functions for its usability
+//functions for its usability in Phaser.
 
-SHUFFLEBAG_ELEMENTS = 19; //Number of elements in the shuffle bag
+SHUFFLEBAG_ELEMENTS = 27; //Number of elements in the shuffle bag
 
 // Create and initialize a Shuffle Bag
 // Get an element from the shuffle Bag
@@ -19,7 +19,7 @@ shuffleBag_Setup: function(){
     this.shuffleBag.forEach(function(element) {
 	element.value = this.shuffleBag.getIndex(element);
     }, this);
-}
+},
 
 // Gets next element from the shuffle Bag
 shuffleBag_Get: function(random){
@@ -29,28 +29,24 @@ shuffleBag_Get: function(random){
 	this.shuffleBag_Restart();
     }
     
-    else{
-	// Set random values to match values of next element in shuffle Bag 
-	// This element is select randomly from the list of alive elements
-	element = this.shuffleBag.getRandom( SHUFFLEBAG_ELEMENTS-(this.shuffleBag.countLiving()));
-	random = element.value;
-
-	// Kill the element used
-	element.kill();
-
-	// Move the element to the top of the group
-	while(this.shuffleBag.getIndex(element) > 0){
-	    this.shuffleBag.moveUp(element);
-	}
-    }
-
-}
+    // Set random values to match values of next element in shuffle Bag 
+    // This element is select randomly from the list of alive elements
+    element = this.shuffleBag.getRandom( SHUFFLEBAG_ELEMENTS-(this.shuffleBag.countLiving()));
+    random = element.value;
+    
+    // Kill the element used
+    element.kill();
+	
+    // Move the element to the top of the group
+    this.shuffleBag.sendToBack(element);
+      
+},
 
 //Restart the shuffle bag once is "empty"
 shuffleBag_Restart: function(){
     //Revive all elements from the shuffleBag
-    this.shuffleBag.forEachAlive(function(element){
+    this.shuffleBag.forEachDead(function(element){
 	element.reset();
     },this);
     
-}
+},
