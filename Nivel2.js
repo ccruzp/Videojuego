@@ -727,7 +727,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.enableBody = true;
 	this.enemyVelocityPool.physicsBodyType = Phaser.Physics.ARCADE;
 	// console.log("T" + TOTAL_ENEMIES);
-	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES, 'velocityEnemy');
+	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES,'velocityEnemy');
 	this.enemyVelocityPool.setAll('anchor.x', 0.5);
 	this.enemyVelocityPool.setAll('anchor.y', 0.2);
 	this.enemyVelocityPool.setAll('outOfBoundsKill', true);
