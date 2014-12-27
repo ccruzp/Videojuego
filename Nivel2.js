@@ -431,10 +431,6 @@ BasicGame.Nivel2.prototype = {
 	// }
     },
     
-    prueba: function() {
-	console.log("hola");
-    },
-
     //Activates the velocity enemies shield
     activate_Enemy_Shield: function(enemy) {
 	// this.enemyVelocityPool.forEachAlive(function(enemy) {
