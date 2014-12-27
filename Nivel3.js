@@ -560,25 +560,6 @@ BasicGame.Nivel3.prototype = {
 	
     },
 
-    // Creates the bullets.
-    missilePool_Setup: function() {
-	this.missilePool = this.add.group();
-	this.missilePool.enableBody = true;
-	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
-	this.missilePool.setAll('anchor.x', 0.5);
-	this.missilePool.setAll('anchor.y', 0.5);
-	this.missilePool.setAll('scale.x', 0.25);
-	this.missilePool.setAll('scale.y', 0.25);
-	// this.missilePool.setAll('angle', 180);
-	this.missilePool.setAll('outOfBoundsKill', true);
-	this.missilePool.setAll('checkWorldBounds', true);
-	this.missilePool.forEach(function(missile) {
-	    missile.body.setSize(10, 10, 0, -25);
-	}, this);
-
-    },
-
     // // Creates the button for the cannon.
     // cannonButton_Setup: function() {
     // 	this.cannonButton = this.add.button(300, this.world.height - 60, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
@@ -1005,6 +986,25 @@ BasicGame.Nivel3.prototype = {
 	}, this);
     },
 
+    // Creates the bullets.
+    missilePool_Setup: function() {
+	this.missilePool = this.add.group();
+	this.missilePool.enableBody = true;
+	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
+	this.missilePool.setAll('anchor.x', 0.5);
+	this.missilePool.setAll('anchor.y', 0.5);
+	this.missilePool.setAll('scale.x', 0.25);
+	this.missilePool.setAll('scale.y', 0.25);
+	// this.missilePool.setAll('angle', 180);
+	this.missilePool.setAll('outOfBoundsKill', true);
+	this.missilePool.setAll('checkWorldBounds', true);
+	this.missilePool.forEach(function(missile) {
+	    missile.body.setSize(10, 10, 0, -25);
+	}, this);
+
+    },
+
     //If a sprite is out of the vertical axis of the grid, exits the game
     out_Of_GridY: function(sprite) {
 	//Commented lines are the code to be used in a function out_Of_GridX
@@ -1351,7 +1351,6 @@ BasicGame.Nivel3.prototype = {
     },
         
     // NO TOCAR SIN MI PERMISO :)
-    // Solo la comenté una vez u.u
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
     // render: function() {
