@@ -19,7 +19,7 @@ BasicGame.Preloader.prototype = {
 	this.load.setPreloadSprite(this.preloadBar);
 
 	this.load.image('menuBackground', 'assets/img/Menu_Background.png');
-	this.load.image('background', 'assets/img/background_purple_Half.png');
+	this.load.image('background', 'assets/img/background_purple_1.png');
 	this.load.image('blackScreen', 'assets/img/background4.png');
 	this.load.image('buttonPanel', 'assets/Mockup/PNGs/Buttons_HUD.png');
 
