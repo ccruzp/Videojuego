@@ -391,3 +391,113 @@ BasicGame.MainMenu.prototype = {
     },
 
 };
+
+// 26/12/2014 
+// List of functions, Made to change the actual list of functions passed
+//-----------------------------------------------------------------------------
+/*List of functions passed
+  this.allign_X,
+  this.allign_Y,
+  this.blackHoleButton_Setup,
+  this.bombOnMouse_Setup,
+  this.buttonPanel_Setup,
+  //this.bombPool_Setup,
+  this.countdown,
+  this.find_Grid_Place,
+  //this.gridLine_Setup,
+  this.make_Grid,
+  this.minusButton_Setup,
+  this.plusButton_Setup,
+  //this.lockedButtons_Setup,
+  this.playButton_Setup,
+  this.select_Bomb,
+  this.selector_Setup,
+  this.start,
+  this.scoreText_Setup,//Should be part of "displays_Setup"
+  this.try_To_Destroy			 
+*/
+
+/*Functions used in Nivel1.js
+  begin_Game
+  blackScreen_Displays_Setup
+  bombPool_Setup  	  
+  displays_Setup
+  enemyDistancePool_Setup
+  lockedButtons_Setup
+  put_Bomb
+  quit_Game
+*/
+
+/*Functions used in Nivel2.js
+  activate_Enemy_Shield
+  begin_Game
+  blackScreen_Displays_Setup
+  bombPool_Setup
+  cannonButton_Setup
+  cannonOnMouse_Setup
+  cannonPool_Setup
+  cannonSelectorButtonsPool_Setup
+  deactivate_Enemy_Shield
+  decrease_Fire
+  desallign_X
+  desallign_Y
+  displays_Setup
+  enemy_ShieldTime_Text_Setup
+  enemyVelocityLaserPool_Setup
+  enemyVelocityPool_Setup
+  fire
+  get_Enemy_Distance_Speed
+  increase_Fire
+  lockedButtons_Setup
+  missilePool_Setup
+  put_Weapon
+  quit_Game
+  select_Cannon
+  set_Missile_Speed
+  shuffleBag_Get
+  shuffleBag_Restart
+  shuffleBag_Setup
+  try_To_Destroy_Velocity
+  you_Got_Shot
+*/
+
+/*Functions used in Nivel3.js
+  activate_Enemy_Shield
+  begin_Game
+  blackScreen_Displays_SetupbombPool_Setup
+  cannonButton_Setup
+  cannonOnMouse_Setup
+  cannonPool_Setup
+  cannonSelectorButtonsPool_Setup
+  deactivate_Enemy_Shield
+  decrease_Fire
+  decrease_Time_Shield
+  displays_Setup
+  enemy_Fire
+  enemy_Hit
+  enemyBulletPool_Setup
+  enemyVelocityPool_Setup
+  enemyTimePool_Setup
+  fire 
+  get_Enemy_Distance_Speed
+  increase_Fire
+  increase_Time_Shield
+  lockedButtons_Setup
+  missilePool_Setup
+  out_Of_GridY
+  put_Weapon
+  quit_Game
+  select_Cannon
+  select_Shield
+  set_Missile_Speed
+  set_Shield_Time
+  shield_Hit
+  shieldButton_Setup
+  shieldOnMouse_Setup
+  shieldPool_Setup
+  shieldSelectorButtonsPool_Setup
+  try_To_Destroy_Velocity
+  you_Got_Shot
+*/
+
+//-----------------------------------------------------------------------------
