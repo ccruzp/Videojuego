@@ -6,14 +6,16 @@ The time needed for a player to pass the mechanic, is given by T.
 
 So, the time that is going to be evaluated to earn a rank,is given by Rank=X*T.
 
-Notwhitstanding, the total time in each level is given by Time = InitialConstant + X*T + Sum(X_i*S_i);
+Notwhitstanding, the total time in each level is given by Time = InitialConstant + X*T + Sum(X_i*S_i) + X*M;
 
 Where, 
 InitialConstant is the time that the players spends reading the initial instructions.
 X*T is the time required to evaluate each mechanic of each round.
 S_i is the simulation time given in each X_i round. Note that S_i is not constant, depends on the time of each mechanic.
+X*M is the time required to move the mouse and play. M is approximately constant.
 
 So, to determine the Rank consider the following:
 
 1. To Handle the InitialConstant time, rank should be counted since the player clicks the first time.
-2. To handle each simulation time, every time a new enemy is generated, the simulation time should be substracted to the total time.
+2. To handle each simulation time, every time a new enemy is generated, a variable "simulationTime" is updated adding the neccesary time to the given mechanic.
+3. At the moment of calculate the time used by the player, is substracted the quantity X*M. M is fixed, and can be any value considered by the programmer. 
