@@ -29,7 +29,7 @@ BasicGame.GameOverMenu.prototype = {
 		   start,
 		   scoreText_Setup,
 		   try_To_Destroy) {
-	this.timeOfGame = lastTime;
+	//this.timeOfGame = lastTime;
 	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
 	this.nextLevel = nextLevel;
 	this.nextLevelName = "Nivel" + nextLevel;

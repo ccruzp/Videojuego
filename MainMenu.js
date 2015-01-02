@@ -500,4 +500,15 @@ BasicGame.MainMenu.prototype = {
   you_Got_Shot
 */
 
+//Common Functions right now
+/*
+  begin_Game
+  blackScreen_Displays_Setup
+  displays_Setup
+*/
+
+//Functions that should be passed to every level
+/*
+*/
+
 //-----------------------------------------------------------------------------

@@ -38,7 +38,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.nextLevel = nextLevel;
 	this.lastScore = score;
 	this.timeOfGame = lastTime;
-	this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
+	//this.timeOfGame = this.time.elapsedSecondsSince(this.timeOfGame);
 	if(this.nextLevel != 0) this.nextLevelName = "Nivel" + this.nextLevel;
 	else this.nextLevelName = 'MainMenu';
 	
@@ -83,8 +83,9 @@ BasicGame.WinnerMenu.prototype = {
 	aux = 0;
 	this.rankBoolean = true; 
 	this.score = 0;
-	this.maxTime = 70; 
+	this.maxTime = 100; 
 	this.timeOfGame = Math.floor(this.timeOfGame);
+	console.log('timeOfGame ' + this.timeOfGame);
 	this.scoreTime = this.maxTime - this.timeOfGame;
 	
 	music = this.add.audio('coin');
