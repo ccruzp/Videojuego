@@ -65,6 +65,7 @@ BasicGame.Nivel1 = function (game) {
     //Score system variables
     this.score;
     this.timeOfGame;
+    this.simulationTime;
 
     // Variable to play the level multiple times
     this.timesPassed = TIMES_TO_PASS;
@@ -136,6 +137,7 @@ BasicGame.Nivel1.prototype = {
 	blackHoleSound = this.add.audio('blackHoleSound');
 	
 	this.timesPassed = TIMES_TO_PASS;	
+	this.simulationTime = 0;
 
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');
@@ -148,6 +150,7 @@ BasicGame.Nivel1.prototype = {
 	
 	// Bomb's time counter.
 	this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
+	this.simulationTime = this.simulationTime + this.bombTime; 
 	this.explosionTimeCounter = this.bombTime; // Time counter
 	
 	//Start the game inside the grid
@@ -169,8 +172,8 @@ BasicGame.Nivel1.prototype = {
 	// Game's time counter.
 	//this.timeCounter = TOTAL_TIME;
 	
-	// Score counter
-	this.timeOfGame = this.time.now;
+	// Score counter---> Now is set in "Begin Game"
+	//this.timeOfGame = this.time.now;
 
 	// The button panel.
 	this.buttonPanel_Setup();
@@ -292,6 +295,7 @@ BasicGame.Nivel1.prototype = {
 		//------------------------------------------------------------
 		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
+		this.simulationTime = this.simulationTime + this.bombTime;
 		this.explosionTimeCounter = this.bombTime;
 		this.blackHoleButtonText.text =  '' + this.explosionTimeCounter;
 		this.enemyDistancePool.forEach(function(enemy) {
@@ -332,12 +336,15 @@ BasicGame.Nivel1.prototype = {
     //Skip the instructions window
     begin_Game: function(){
 	//Begins the game 1 second after the mouse is pressed
-	this.time.events.add(Phaser.Timer.SECOND * 1, function() {
-	    this.blackScreen.destroy();
-	    this.beginGame = true;
-	    this.instructionsTextPool.destroy(true);
-	},this);
-	
+	if(!this.beginGame){
+	    this.time.events.add(Phaser.Timer.SECOND * 1, function() {
+		this.blackScreen.destroy();
+		this.beginGame = true;
+		this.instructionsTextPool.destroy(true);
+		//Start the game time
+		this.timeOfGame = this.time.now;
+	    },this);
+	}
     },
     
     // Creates the texts that the games uses
@@ -552,7 +559,12 @@ BasicGame.Nivel1.prototype = {
 	this.bombPool.destroy(true);
 	background.kill();
 	if (won) {
-	    time = this.timeOfGame;
+	    //Tiempo total de juego
+	    time = this.time.elapsedSecondsSince(this.timeOfGame);
+	    //Tiempo restando el tiempo de simulacion
+	    time = time - this.simulationTime;
+	    //Tiempo restando una constante
+	    time = time - TIMES_TO_PASS * 5;
 	    this.level = 2;
 	    nextState = 'WinnerMenu';
 	} else {

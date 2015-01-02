@@ -83,6 +83,7 @@ BasicGame.Nivel2 = function(game) {
     //Score system variables
     this.score;
     this.timeOfGame;
+    this.simulationTime
 
     // Variable to play the level multiple times
     this.timesPassed = TIMES_TO_PASS;
@@ -149,6 +150,7 @@ BasicGame.Nivel2.prototype = {
 	//--------------------------------
 	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
+	this.simulationTime = 0;
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies
@@ -177,9 +179,11 @@ BasicGame.Nivel2.prototype = {
 	//Beep sound of the bomb
 	bombBeep = this.add.audio('bombBeep');
 
-	//Beep sound of the bomb
+	//Sound of the exploding bomb
+	blackHoleSound = this.add.audio('blackHoleSound');
+	
+	//Clock Sound
 	clockSound = this.add.audio('clock');
-
 
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); //Game physics system.
@@ -379,6 +383,8 @@ BasicGame.Nivel2.prototype = {
 		    
 		    console.log('posicion' + enemy.pos);
 		    console.log('tiempo' + enemy.shieldTime);
+		    this.simulationTime = this.simulationTime + enemy.shieldTime; 
+	
 		    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 		    
@@ -757,6 +763,7 @@ BasicGame.Nivel2.prototype = {
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
 	    this.get_Enemy_Distance_Speed(enemy);
+	    this.simulationTime = this.simulationTime + enemy.shieldTime;
 	    //initialY = 50 - (enemy.height/2);
 //	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
 // =======
@@ -1090,7 +1097,11 @@ BasicGame.Nivel2.prototype = {
 	this.buttonPanel.kill();
 	background.kill();
 	if (won) {
-	    time = this.timeOfGame;
+	    time = this.time.elapsedSecondsSince(this.timeOfGame);
+	    time = time - this.simulationTime;
+	    time = time - TIMES_TO_PASS * 5;
+	    
+	    //time = this.timeOfGame;
 	    this.level = 3;
 	    nextState = 'WinnerMenu';
 	} else {

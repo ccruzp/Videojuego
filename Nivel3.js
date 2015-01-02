@@ -80,7 +80,8 @@ BasicGame.Nivel3 = function(game) {
     //Score system variables
     this.score;
     this.timeOfGame;
-
+    this.simulationTime;
+    
     // Variable to play the level multiple times
     this.timesPassed = TIMES_TO_PASS;
     
@@ -154,7 +155,8 @@ BasicGame.Nivel3.prototype = {
 
 	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
-	this.beginGame = true;
+	this.simulationTime = 0;
+	//this.beginGame = true;
 
 	started = false; // Boolean that says if the game has begun.
 	console.log("TURURUR " + started);
@@ -403,6 +405,7 @@ BasicGame.Nivel3.prototype = {
 
 		this.enemyTimePool.forEach(function(enemy) {
 		    this.get_Enemy_Distance_Speed(enemy);
+		    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);	   
 		    initialY =this.allign_Y(10-enemy.pos)
 		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 		    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
@@ -777,6 +780,7 @@ BasicGame.Nivel3.prototype = {
 
 	this.enemyTimePool.forEach(function(enemy) {
 	    this.get_Enemy_Distance_Speed(enemy);
+	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
 	    initialY =this.allign_Y(10-enemy.pos)
 	    //initialY = 55 - (enemy.height/2);
 	    //initialY = 50 - (enemy.height/2);
@@ -1138,7 +1142,9 @@ BasicGame.Nivel3.prototype = {
 	this.buttonPanel.kill();
 	background.kill();
 	if (won) {
-	    time = this.timeOfGame;
+	    time = this.time.elapsedSecondsSince(this.timeOfGame);
+	    time = time - this.simulationTime;
+	    time = time - TIMES_TO_PASS * 5;
 	    this.level = 3;
 	    nextState = 'WinnerMenu';
 	} else {
