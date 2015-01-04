@@ -221,9 +221,18 @@ BasicGame.MainMenu.prototype = {
 	    if (placedBomb) {
 		
 		//This should be changed to work with each bomb counter
-		this.explosionTimeCounter -= 1;
-		if(this.explosionTimeCounter >= 1){ bombBeep.play('',0,1,false);}
-		if(this.explosionTimeCounter ==0){ blackHoleSound.play('',0,1,false);}
+		// this.explosionTimeCounter -= 1;
+		// if(this.explosionTimeCounter >= 1){ bombBeep.play('',0,1,false);}
+		// if(this.explosionTimeCounter ==0){ blackHoleSound.play('',0,1,false);}
+		this.bombPool.forEachAlive(function(bomb) {
+		    bomb.counter -= 1;
+		    if (bomb.counter >= 1) { 
+			bombBeep.play('', 0, 1, false);
+		    }
+		    if (bomb.counter == 0 ) { 
+			blackHoleSound.play('', 0, 1, false);
+		    }
+		}, this);
 	    }
 	}
     },
@@ -380,8 +389,9 @@ BasicGame.MainMenu.prototype = {
 
     // If the bomb's counter is equal to zero then the enemy is killed.
     try_To_Destroy: function(enemy, bomb) {
-	var explosionY = (initialY + (GRID_SPACE * this.enemyVelocity * this.bombTime));
-	if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
+	var explosionY = (initialY + (GRID_SPACE * enemy.speed * bomb.time));
+	// if (this.explosionTimeCounter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
+	if (bomb.counter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    this.score = this.score + 80;
 	    enemy.kill();
 	    //Functionality for the 'x' times to continue
