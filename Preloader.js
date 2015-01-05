@@ -45,7 +45,9 @@ BasicGame.Preloader.prototype = {
 	this.load.image('missile', 'assets/missile.png');
 
 	// Loading menu buttons' spritesheets
-	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
+	this.load.spritesheet('level1', 'assets/Spritesheets/level1Button.png', 1990, 570, 2);
+	this.load.spritesheet('level2', 'assets/Spritesheets/level2Button.png', 1990, 570, 2);
+	this.load.spritesheet('level3', 'assets/Spritesheets/level3Button.png', 1990, 570, 2);
 	this.load.spritesheet('nextLevelButton', 'assets/Spritesheets/nextLevelButton.png', 2000, 585, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
 	this.load.spritesheet('instructionsButton', 'assets/Spritesheets/instructionsButton.png', 1992, 555, 2);
