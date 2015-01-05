@@ -339,13 +339,17 @@ BasicGame.MainMenu.prototype = {
 	buttons.add(this.playButton);
     },
 
+    //DEPRECATED, USE DISPLAYS_SETUP INSTEAD
     //Setups the score text. Use it after init "this.otherTextPool" group
+    /*
     scoreText_Setup: function(){
 
 	// Game score display.
 	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
 	this.scoreText.anchor.set(0.5);
-    },
+    },*/
+    //DEPRECATED, USE DISPLAYS_SETUP INSTEAD
+    
   
     // Lets the player use the bombs.
     select_Bomb: function () {
@@ -675,6 +679,10 @@ BasicGame.MainMenu.prototype = {
 	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
 	//------------------------------------------------	
+
+	// Game score display.
+	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
+	this.scoreText.anchor.set(0.5);
 
     },
     
@@ -1068,7 +1076,63 @@ BasicGame.MainMenu.prototype = {
 	}, this);
     },
     
+        // Creates a black hole bomb in the place clicked inside the grid.
+    put_Weapon: function() {
+	if (!started && this.beginGame) {
+	    if (usingBlackHole && (numberOfBombs > 0)) {
+		// Puts an instance of a bomb
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
+
+		var bomb = this.bombPool.getFirstExists(false);
+		bomb.body.setSize(10, 10, 4, 4);
+		bomb.reset(x, y);
+		
+		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		// text.visible = true;
+		text.x = x + 6;
+		text.y = y + 6;
+		numberOfBombs -= 1;
+		
+		placedBomb = true;
+		//}
+		this.blackHoleButton.frame = 0;
+		this.bombOnMouse.reset(1000, 1000);
+    		usingBlackHole = false;
+		//this.line.reset(1000, 1000);
+		
+		// Update displays.
+		this.bombsRemainingText.text = 'x' + numberOfBombs;
+
+	    } else if (usingCannon // && selectedSpeed
+		       && numberOfCannons > 0 && missileSpeed > 0) {
+	    	x = this.allign_X(this.gridX - 0.5);
+	    	y = 460;
+	    	this.cannon = this.cannonPool.getFirstExists(false);
+	    	this.cannon.body.setSize(10, 10);
+	    	this.cannon.reset(x, y);
+	    	this.cannon.shotVelocity = missileSpeed;
+	    	numberOfCannons -= 1;
+	    	var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(this.cannon));
+	    	text.visible = true;
+	    	text.x = this.cannon.x;
+	    	text.y = this.cannon.y + 15;
+	    	text.text = '' + this.cannon.shotVelocity;
+
+		this.selector.getAt(0).frame = 0;
+		this.cannonSelectorButtonsPool.setAll('visible', false);
+		this.cannonSelectorButtonsPool.getAt(0).frame = 1;
+	    	this.cannonButton.frame = 0;
+	    	usingCannon = false;
+		selectedSpeed = false;
+		missileSpeed = 0;
+	    }
+ 	}
+    },
+    
+    // DEPRECATED, USE PUT_WEAPON INSTEAD
     // Creates a black hole bomb in the place clicked inside the grid.
+    /*
     put_Bomb: function () {
 	
 	if(this.beginGame){
@@ -1099,7 +1163,105 @@ BasicGame.MainMenu.prototype = {
 	    //this.line.reset(1000, 1000);
 	}
     },
+    //DEPRECATED, USE PUT_WEAPON INSTEAD
+    */
+    
  
+    // Lets the player use the cannons.
+    select_Cannon: function() {
+	if (!started){
+	    usingCannon = (numberOfCannons > 0);
+	    this.selector.getAt(0).frame = 1;
+	    this.cannonSelectorButtonsPool.setAll('visible', true);
+	    if (!usingCannon) {
+		// this.bombPool.removeAll();
+		this.cannonPool.forEachAlive(function(cannon) {
+		    cannon.kill();
+		    var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
+		text.visible = false;
+		//text.x = cannon.x;
+		//text.y = cannon.y + 15;
+		//text.text = '' + cannon.shotVelocity;
+
+		}, this);
+		/*this.bombTextPool.forEach(function(display) {
+		  display.visible = false;
+		  }, this);*/
+		numberOfCannons = TOTAL_ENEMIES;
+	    }
+	}
+    },
+
+    set_Missile_Speed: function(speed) {
+	missileSpeed = speed;
+	this.cannonSelectorButtonsPool.getAt(0).frame = speed + 1;
+    },
+
+    //-----------------------------------------------------------------------------
+    // Gets next element from the shuffle Bag
+    shuffleBag_Get: function(/*random*/){
+	// If shuffleBag is empty, restart the shuffleBag (function)
+	if (this.shuffleBag.countLiving() == 0){
+	    this.shuffleBag_Restart();
+	}
+	// Set random values to match values of next element in shuffle Bag 
+	element = this.shuffleBag.getRandom( SHUFFLEBAG_ELEMENTS-(this.shuffleBag.countLiving()));
+	random = element.value;
+	// Kill the element used
+	element.kill();
+	
+	//console.log('Element Index ' + this.shuffleBag.getIndex(element));
+	//this.shuffleBag.bringToTop(element);
+	this.shuffleBag.sendToBack(element);
+	//console.log('Element Index2 ' + this.shuffleBag.getIndex(element));
+	
+	//Sum 1 to be compatible with get_Enemy_Distance
+	return (random+1);
+    },
+    //Restart the shuffle bag once is "empty"
+    shuffleBag_Restart: function(){
+	//Revive all elements from the shuffleBag
+	console.log('I get here Dude');
+	this.shuffleBag.forEachDead(function(element){
+	    element.reset();
+	},this);   
+    },
+    // Create and initialize the Shuffle Bag
+    shuffleBag_Setup: function(){
+	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
+	this.shuffleBag = this.add.group();
+	this.shuffleBag.createMultiple(SHUFFLEBAG_ELEMENTS,'','',true);   
+	// Initializes the shuffle bag, each element having its index value
+	this.shuffleBag.forEach(function(element) {
+	    element.value = this.shuffleBag.getIndex(element);
+	}, this);
+    },
+    //-----------------------------------------------------------------------------
+    
+    // If the enemy's shild is deactivated the enemy is killed.
+    try_To_Destroy_Velocity: function(enemy, missile) {
+	var cannon = this.cannonPool.getAt(this.missilePool.getIndex(missile));
+	// console.log("PROBANDO: " + (enemy.pos == missileSpeed * enemy.shieldTime));
+	// console.log("POS: " + enemy.pos);
+	// console.log("SPEED: " + missileSpeed)
+	// if (!enemy.shielded && (enemy.pos == missileSpeed * enemy.shieldTime)) {
+	if (enemy.pos == cannon.shotVelocity * enemy.shieldTime) {
+	    console.log('Killing');
+	    this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy)).visible = false;
+	    enemy.kill();
+	    this.score = this.score + 80;
+	    enemy.died = true;
+	    console.log(enemy.died);
+	}// else{
+	  //  
+	//}
+	missile.kill();
+    },
+    
+    you_Got_Shot: function() {
+	this.quit_Game(false);
+    },
+
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
 

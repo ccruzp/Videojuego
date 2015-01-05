@@ -1353,11 +1353,7 @@ BasicGame.Nivel3.prototype = {
 	    bullet.angle = 180;
 	}
     },
-    
-    you_Got_Shot: function() {
-	this.quit_Game(false);
-    },
-        
+         
     // NO TOCAR SIN MI PERMISO :)
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
@@ -1395,17 +1391,3 @@ BasicGame.Nivel3.prototype = {
 
     // }
 };
-/*Functions commons to Nivel1 and Nivel2 (every level by now)
-  allign_X
-  allign_Y
-  blackHoleButton_Setup
-  bombOnMouse_Setup
-  countdown
-  find_Grid_Place
-  gridLine_Setup  
-  makegrid
-  playButton_Setup
-  select_Bomb
-  start
-  try_To_Destroy
-*/
