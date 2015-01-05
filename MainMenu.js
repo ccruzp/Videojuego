@@ -400,6 +400,388 @@ BasicGame.MainMenu.prototype = {
 	}
     },
 
+
+    //Added Functions
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+
+    
+    //Activates the velocity enemies shield
+    activate_Enemy_Shield: function(enemy) {
+	// this.enemyVelocityPool.forEachAlive(function(enemy) {
+	//     enemy.animations.play('shield');
+	// }, this);
+
+	// enemy.frame = 1;
+	enemy.shielded = true;
+	console.log('El enemigo ha muerto?');
+	console.log(enemy.died);
+	if(!enemy.died){
+	    console.log('I get here');
+	    laser = this.enemyVelocityLaserPool.getAt(this.enemyVelocityPool.getIndex(enemy));
+	    laser.body.setSize(10, 500 * enemy.pos, 0, 0);
+	    laser.reset(enemy.x, enemy.y + 30);
+	    if (enemy.pos <= 2) {
+		laser.animations.play('laser' + 1);
+	    } else {
+		// var text = "laser" + (enemy.pos - 1);
+		// console.log(text);
+		// laser.animations.play(text);
+		laser.animations.play('laser' + (enemy.pos - 1));
+	    }
+	    laser.events.onAnimationComplete.add(function() {
+		this.lost = true;
+	    }, this);
+	}
+	
+	// laser.frame = enemy.pos - 1;
+	// laser = this.add.sprite(enemy.x, enemy.y + 10, 'laser');
+	// laser.enableBody = true;
+	// laser.physicsBodyType = Phaser.Physics.ARCADE;
+	// laser.anchor.setTo(0.5, 0.5);
+	// laser.scale.setTo(0.2, 0.2);
+	// laser.body.velocity.y = 3 * GRID_SPACE;
+	// enemy.pos
+    },
+    
+    //Skip the instructions window
+    begin_Game: function(){
+	//Begins the game 1 second after the mouse is pressed
+	if(!this.beginGame){
+	    this.time.events.add(Phaser.Timer.SECOND * 1, function() {
+		this.blackScreen.destroy();
+		this.beginGame = true;
+		this.instructionsTextPool.destroy(true);
+		//Start the game time
+		this.timeOfGame = this.time.now;
+	    },this);
+	}
+    },
+    
+    // Creates the texts that the games uses
+    blackScreen_Displays_Setup: function(){
+	this.instructionsTextPool = this.add.group();
+	
+	//Texts used in the instruction screen
+	this.initialLevelText = this.add.text(this.world.width/2, this.world.height/5, 'NIVEL ' + this.level, { font: "140px Times New Roman", fill: "#f7d913", align: "left" },this.instructionsTextPool);
+	this.initialLevelText.anchor.setTo(0.5,0.5);
+	
+	// this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, '¡No dejes que los enemigos lleguen a tu planeta!', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, this.levelMessage, { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	// this.initialInstructionText = this.add.text(this.world.width/2, 3*this.world.height/5, 'Recuerda que: distancia = velocidad * tiempo', { font: "15px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	// this.initialInstructionText.anchor.setTo(0.5,0.5);
+
+	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
+	this.mouseToContinueText.anchor.setTo(0.5,0.5);
+	
+    },
+        
+    //Creates the bombPool
+    bombPool_Setup: function() {
+	this.bombPool = this.add.group();
+	this.bombPool.enableBody = true;
+	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
+	this.bombPool.setAll('anchor.x', 0.4);
+	this.bombPool.setAll('anchor.y', 0.4);
+	this.bombPool.setAll('scale.x', 0.15);
+	this.bombPool.setAll('scale.y', 0.15);
+	this.bombPool.forEach(function(bomb) {
+	   
+	    // Adding the bomb animation to each bomb.
+	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
+	    //Setting the comb time given the Distance enemies
+	    var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
+	    bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
+	    //Setting the counter, to track the time to explosion of each bomb
+	    bomb.counter = bomb.time;
+	    // Enabling the input for bombs.
+	    bomb.inputEnabled = true;
+	    // Adding hand cursor for hovering over the bombs before game has started.
+	    bomb.events.onInputOver.add(function(bomb) {
+		if (!started) {
+		    bomb.input.useHandCursor = true;
+		} else {
+		    bomb.input.useHandCursor = false;
+		}
+	    }, this);
+
+	    // Making invisible the text display and killing bomb clicked before has not started.
+	    bomb.events.onInputDown.add(function(bomb) {
+		if (!started) {
+		    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		    text.visible = false;
+		    bomb.kill();
+		    numberOfBombs += 1;
+		    usingBlackHoleBomb = true;
+		}
+	    }, this);
+	}, this);
+
+	// Group for the text displays
+	this.bombTextPool = this.add.group();
+	// Time until explosion display.
+	this.bombPool.forEach(function() {
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.bombTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);	
+    },
+    
+    
+    // Creates the button for the cannon.
+    cannonButton_Setup: function() {
+	this.cannonButton = this.add.button(this.world.width/2 - 67, this.world.height - 50, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	this.cannonButton.anchor.setTo(0.5, 0.5);
+	this.cannonButton.scale.setTo(0.27, 0.27);
+	buttons.add(this.cannonButton);
+    },
+
+    cannonOnMouse_Setup: function() {
+	// Image that appears on the mouse when the cannon button is pressed.
+	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
+	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
+	this.cannonOnMouse.scale.setTo(0.06, 0.06);
+	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
+    },
+    
+    // Creates the cannons.
+    cannonPool_Setup: function() {
+	this.cannonPool = this.add.group();
+	this.cannonPool.enableBody = true;
+	this.cannonPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.cannonPool.setAll('anchor.x', 0.5);
+	this.cannonPool.setAll('anchor.y', 0.5);
+	this.cannonPool.setAll('scale.x', 0.06);
+	this.cannonPool.setAll('scale.y', 0.06);
+
+	this.cannonTextPool = this.add.group();
+	this.cannonPool.forEach(function(cannon) {
+	    cannon.inputEnabled = true;
+	    cannon.events.onInputDown.add(function(cannon) {
+		cannon.kill();
+		numberOfCannons += 1;
+		this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon)).visible = false;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "20px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.cannonTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+	/*
+	// Group for the text displays
+	this.cannonTextPool = this.add.group();
+	// Time until explosion display.
+	this.cannonPool.forEach(function() {
+	    var text = this.add.text(0, 0, '', { font: "20px Arial", fill: "#000000", align: "left" }, this.cannonTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);*/
+    },
+       
+    cannonSelectorButtonsPool_Setup: function() {
+	this.cannonSelectorButtonsPool = this.add.group();
+	// var button = this.add.button(195, 555, 'okButton', function() {this.put_Cannon()}, this, 2, 1, 2, 1);
+	// this.cannonSelectorButtonsPool.add(button);
+	var chosen = this.add.sprite(196, 554, 'chosen');
+	this.cannonSelectorButtonsPool.add(chosen);
+	var button = this.add.button(100, 460, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(87, 481, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(113, 481, 'button3', function() {this.set_Missile_Speed(3)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(74, 502, 'button4', function() {this.set_Missile_Speed(4)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(100, 502, 'button5', function() {this.set_Missile_Speed(5)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(126, 502, 'button6', function() {this.set_Missile_Speed(6)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(61, 524, 'button7', function() {this.set_Missile_Speed(7)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(87, 524, 'button8', function() {this.set_Missile_Speed(8)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(113, 524, 'button9', function() {this.set_Missile_Speed(9)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+	button = this.add.button(139, 524, 'button10', function() {this.set_Missile_Speed(10)}, this, 1, 0, 1, 0);
+	this.cannonSelectorButtonsPool.add(button);
+
+	this.cannonSelectorButtonsPool.setAll('anchor.x', 0.5);
+	this.cannonSelectorButtonsPool.setAll('anchor.y', 0.5);
+	this.cannonSelectorButtonsPool.setAll('scale.x', 0.15);
+	this.cannonSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.cannonSelectorButtonsPool.setAll('frame', 0);
+	this.cannonSelectorButtonsPool.setAll('visible', false);
+	button = this.cannonSelectorButtonsPool.getAt(0);
+	button.scale.setTo(0.17, 0.17);
+	button.frame = 1;
+    },
+
+    //Disables the velocity enemies shield
+    deactivate_Enemy_Shield: function(enemy) {
+	// this.enemyVelocityPool.forEachAlive(function(enemy) {
+	//     enemy.animations.play('unshield');
+	// }, this);
+	console.log('Deactivate Shield');
+	enemy.frame = 0;
+	enemy.shielded = false;
+	enemy.died = false;
+	console.log(enemy.died);
+    },
+
+    // Decreases the velocity of the missiles.
+    decrease_Fire: function() {
+	if (!started && missileSpeed > 0) {
+	    missileSpeed -= 1;
+	}
+    },
+    
+    //Desalligns a number to get the x in the grid
+    desallign_X: function(X){
+	return (X-LEFT_MARGIN)/GRID_SPACE;
+    },
+    
+    //Desalligns a number to get the y in the grid
+    desallign_Y: function(Y){
+	return (Y-UP_MARGIN)/GRID_SPACE;
+    },
+	  
+    // Creates the texts that the games uses
+    displays_Setup: function(){
+
+	this.otherTextPool = this.add.group();	
+	// Game time display.
+	this.levelText = this.add.text(931, 85, '' + this.level, { font: "30px Arial", fill: "#000000", align: "left" }, this.otherTextPool);
+		
+	// Display for velocity of the enemies.
+	/*this.velocityText = this.add.text((this.allign_X(this.enemyPlace)), 20, 'Velocidad: ' + enemy.speed, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
+
+	// Display for the amount of bombPool left.
+	this.bombsRemainingText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y - 44, '' + numberOfBombs, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText.anchor.setTo(0.5, 0.5);
+
+	// Display for the time of the bomb.
+	var bomb = this.bombPool.getFirstExists(false);	
+	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
+    },
+    
+    // Creates the distance enemies of the level.
+    enemyDistancePool_Setup: function() {
+	this.enemyDistancePool = this.add.group();
+	this.enemyDistancePool.enableBody = true;
+	this.enemyDistancePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyDistancePool.createMultiple(TOTAL_ENEMIES, 'distanceEnemy');
+	this.enemyDistancePool.setAll('anchor.x', 0.5);
+	this.enemyDistancePool.setAll('anchor.y', 0.025);
+	this.enemyDistancePool.setAll('outOfBoundsKill', true);
+	this.enemyDistancePool.setAll('checkWorldBounds', true);
+	this.enemyDistancePool.setAll('scale.x', 0.067);
+	this.enemyDistancePool.setAll('scale.y', 0.067);
+
+	//this.enemyDistancePool.setAll('scale.x', 0.125);
+	//this.enemyDistancePool.setAll('scale.y', 0.125);
+
+	this.enemyDistancePool.forEach(function(enemy) {
+	    // var enemy = this.enemyDistancePool.getFirstExists(false);
+	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
+	    initialY = 40 - (enemy.height/2);
+	    enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    
+	    aux1 = this.allign_X(enemy.place)-(GRID_SPACE/2);
+	    enemy.frame = enemy.speed;
+	    enemy.reset(aux1, initialY);
+	    enemy.speed = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+	    enemy.body.setSize(100, 100, 0, enemy.height/2);
+	    enemy.inputEnabled = true;
+	    
+	    enemy.events.onInputOver.add(function(enemy) {
+		enemy.frame = enemy.speed + 10;
+		enemy.scale.setTo(0.15, 0.15);
+		enemy.body.reset(enemy.x, enemy.y);
+	    }, this);
+	    enemy.events.onInputOut.add(function(enemy) {
+		enemy.frame = enemy.speed;
+		enemy.scale.setTo(0.067, 0.067);
+		enemy.body.reset(enemy.x, enemy.y);
+	    }, this);
+	}, this);
+	
+	// Group for the text displays
+	this.enemyDistanceTextPool = this.add.group();
+	// Velocity of each enemy.
+	this.enemyDistancePool.forEach(function(enemy) {
+	    var text = this.add.text((this.allign_X(enemy.place))+38, 20, 'Velocidad: ' + enemy.speed, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyDistanceTextPool);
+	    text.visible = true;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+    },
+
+    // Creates the locked buttons
+    lockedButtons_Setup: function() {
+	
+	lockedButtons = this.add.group();
+	lockedButtons.createMultiple(2, 'lockedButton');
+	lockedButtons.setAll('anchor.x', 0.5);
+	lockedButtons.setAll('anchor.y', 0.5);
+	lockedButtons.setAll('outOfBoundsKill', true);
+	lockedButtons.setAll('checkWorldBounds', true);
+	lockedButtons.setAll('scale.x', 0.12);
+	lockedButtons.setAll('scale.y', 0.12);
+
+	lockedButtons.getAt(0).reset(this.world.width/2 - 67, this.world.height - 50);
+	lockedButtons.getAt(1).reset(this.world.width/2 + 67, this.world.height - 50);
+	// beforeButton = this.blackHoleButton;
+	// for(i = 0; i < 2; i++) {
+	//     x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
+	//     beforeButton = x;
+	// };
+	// beforeButton = this.playButton;
+	// lockedButtons.forEachDead(function(button) {
+	//     button.reset(beforeButton.x + 100, beforeButton.y);
+	//     beforeButton = button;
+	// }, this);
+    },
+
+    // Creates a black hole bomb in the place clicked inside the grid.
+    put_Bomb: function () {
+	
+	if(this.beginGame){
+	    this.blackHoleButton.frame = 1;
+	    if (!started && usingBlackHole && (numberOfBombs > 0)) {
+		// Intance of a bomb
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
+		
+		var bomb = this.bombPool.getFirstExists(false);
+		bomb.body.setSize(10, 10, 4, 4);
+		bomb.frame = 1;
+		bomb.reset(x, y);
+		//bomb.z = this.gridY-1;
+		//console.log(bomb.z);
+		
+		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		text.visible = true;
+		text.x = x+6;
+		text.y = y+6;
+		numberOfBombs -= 1;
+		
+		placedBomb = true;
+	    }
+	    this.blackHoleButton.frame = 0;
+	    this.bombOnMouse.reset(1000, 1000);
+    	    usingBlackHole = false;
+	    //this.line.reset(1000, 1000);
+	}
+    },
+ 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+
 };
 
 // 26/12/2014 
@@ -427,7 +809,7 @@ BasicGame.MainMenu.prototype = {
   this.try_To_Destroy			 
 */
 
-/*Functions used in Nivel1.js
+/*Functions used Nivel1.js
   begin_Game
   blackScreen_Displays_Setup
   bombPool_Setup  	  
@@ -437,7 +819,6 @@ BasicGame.MainMenu.prototype = {
   put_Bomb
   quit_Game
 */
-
 /*Functions used in Nivel2.js
   activate_Enemy_Shield
   begin_Game
@@ -510,15 +891,7 @@ BasicGame.MainMenu.prototype = {
   you_Got_Shot
 */
 
-//Common Functions right now
-/*
-  begin_Game
-  blackScreen_Displays_Setup
-  displays_Setup
-*/
-
 //Functions that should be passed to every level
 /*
+ALL NIGGA, ALL
 */
-
-//-----------------------------------------------------------------------------

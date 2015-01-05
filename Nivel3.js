@@ -152,10 +152,12 @@ BasicGame.Nivel3.prototype = {
 	TIME_ENEMIES = 1;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
 	//Why is this here????------------------------------------------------
-
+	
 	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
+	//The message given to the player this level
+	this.levelMessage = 'Activa el escudo en el momento correcto para devolver\n                         el disparo al enemigo.';
 	//this.beginGame = true;
 
 	started = false; // Boolean that says if the game has begun.
