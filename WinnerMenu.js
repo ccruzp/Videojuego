@@ -98,12 +98,12 @@ BasicGame.WinnerMenu.prototype = {
 					    align: "left" });
 	winnerText.anchor.setTo(0.5, 0.5);
 	
-	timeText = this.add.text(30, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(3) + ' segundos',
+	/*timeText = this.add.text(30, this.world.height-140, 'Tiempo total: '+ this.timeOfGame.toPrecision(3) + ' segundos',
 					  { font: "40px Arial", fill: "#ffffff",
-					    align: "left" });
+					    align: "left" });*/
 	
-	scoreText = this.add.text(350, this.world.height-60, 'Score: '+ this.score,
-					  { font: "40px Arial", fill: "#ffffff",
+	scoreText = this.add.text(70, this.world.height-100, 'Score: '+ this.score,
+					  { font: "70px Arial", fill: "#ffffff",
 					    align: "left" });
 	
 	/*scoreTimeText = this.add.text(30, this.world.height-60, 'TiempoAux: '+ this.scoreTime,

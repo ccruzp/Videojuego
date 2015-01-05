@@ -588,7 +588,7 @@ BasicGame.Nivel1.prototype = {
 	    //Tiempo restando el tiempo de simulacion
 	    time = time - this.simulationTime;
 	    //Tiempo restando una constante
-	    time = time - TIMES_TO_PASS * 5;
+	    time = time - TIMES_TO_PASS * 4;
 	    this.level = 2;
 	    nextState = 'WinnerMenu';
 	} else {

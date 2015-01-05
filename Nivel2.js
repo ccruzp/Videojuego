@@ -1099,7 +1099,7 @@ BasicGame.Nivel2.prototype = {
 	if (won) {
 	    time = this.time.elapsedSecondsSince(this.timeOfGame);
 	    time = time - this.simulationTime;
-	    time = time - TIMES_TO_PASS * 5;
+	    time = time - TIMES_TO_PASS * 4;
 	    
 	    //time = this.timeOfGame;
 	    this.level = 3;
