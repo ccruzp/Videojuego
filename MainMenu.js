@@ -78,25 +78,65 @@ BasicGame.MainMenu.prototype = {
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel1',true,false,time,level,score,
+			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
+			 this.begin_Game,
 			 this.blackHoleButton_Setup,
+			 this.blackScreen_Displays_Setup,
 			 this.bombOnMouse_Setup,
+			 this.bombPool_Setup,
 			 this.buttonPanel_Setup,
-			 // this.bombPool_Setup,
+			 this.cannonButton_Setup,
+			 this.cannonOnMouse_Setup,
+			 this.cannonPool_Setup,
+			 this.cannonSelectorButtonsPool_Setup,
 			 this.countdown,
+			 this.deactivate_Enemy_Shield,
+			 this.decrease_Fire,
+			 this.decrease_Time_Shield,
+			 this.desallign_X,
+			 this.desallign_Y,
+			 this.displays_Setup,
 			 this.find_Grid_Place,
-			 //this.gridLine_Setup,
+			 this.enemy_Fire,
+			 this.enemy_Hit,
+			 this.enemy_ShieldTime_Text_Setup,
+			 this.enemyBulletPool_Setup,
+			 this.enemyDistancePool_Setup,
+			 this.enemyTimePool_Setup,
+			 this.enemyVelocityLaserPool_Setup,
+			 this.enemyVelocityPool_Setup,
+			 this.fire,
+			 this.get_Enemy_Distance_Speed,
+			 this.increase_Fire,
+			 this.increase_Time_Shield,
+			 this.lockedButtons_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
-			 this.plusButton_Setup,
-			 //this.lockedButtons_Setup,
+			 this.missilePool_Setup,
+			 this.out_Of_GridY,
 			 this.playButton_Setup,
+			 this.plusButton_Setup,
+			 this.put_Weapon,
 			 this.select_Bomb,
+			 this.select_Cannon,
+			 this.select_Shield,
 			 this.selector_Setup,
+			 this.set_Missile_Speed,
+			 this.set_Shield_Time,
+			 this.shield_Hit,
+			 this.shieldButton_Setup,
+			 this.shieldOnMouse_Setup,
+			 this.shieldSelectorButtonsPool_Setup,
+			 this.shuffleBag_Get,
+			 this.shuffleBag_Restart,
+			 this.shuffleBag_Setup,
 			 this.start,
-			 this.scoreText_Setup,//Should be part of "displays_Setup"
-			 this.try_To_Destroy);
+			 this.try_To_Destroy,
+			 this.try_To_Destroy_Time,
+			 this.try_To_Destroy_Velocity,
+			 this.you_Got_Shot);
     },
 
     startGame2: function (pointer) {
@@ -116,25 +156,65 @@ BasicGame.MainMenu.prototype = {
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel2',true,false,time,level,score,
+			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
+			 this.begin_Game,
 			 this.blackHoleButton_Setup,
+			 this.blackScreen_Displays_Setup,
 			 this.bombOnMouse_Setup,
+			 this.bombPool_Setup,
 			 this.buttonPanel_Setup,
-			 // this.bombPool_Setup,
+			 this.cannonButton_Setup,
+			 this.cannonOnMouse_Setup,
+			 this.cannonPool_Setup,
+			 this.cannonSelectorButtonsPool_Setup,
 			 this.countdown,
+			 this.deactivate_Enemy_Shield,
+			 this.decrease_Fire,
+			 this.decrease_Time_Shield,
+			 this.desallign_X,
+			 this.desallign_Y,
+			 this.displays_Setup,
 			 this.find_Grid_Place,
-			 // this.gridLine_Setup,
+			 this.enemy_Fire,
+			 this.enemy_Hit,
+			 this.enemy_ShieldTime_Text_Setup,
+			 this.enemyBulletPool_Setup,
+			 this.enemyDistancePool_Setup,
+			 this.enemyTimePool_Setup,
+			 this.enemyVelocityLaserPool_Setup,
+			 this.enemyVelocityPool_Setup,
+			 this.fire,
+			 this.get_Enemy_Distance_Speed,
+			 this.increase_Fire,
+			 this.increase_Time_Shield,
+			 this.lockedButtons_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
-			 this.plusButton_Setup,
-			 //this.lockedButtons_Setup,
+			 this.missilePool_Setup,
+			 this.out_Of_GridY,
 			 this.playButton_Setup,
+			 this.plusButton_Setup,
+			 this.put_Weapon,
 			 this.select_Bomb,
+			 this.select_Cannon,
+			 this.select_Shield,
 			 this.selector_Setup,
+			 this.set_Missile_Speed,
+			 this.set_Shield_Time,
+			 this.shield_Hit,
+			 this.shieldButton_Setup,
+			 this.shieldOnMouse_Setup,
+			 this.shieldSelectorButtonsPool_Setup,
+			 this.shuffleBag_Get,
+			 this.shuffleBag_Restart,
+			 this.shuffleBag_Setup,
 			 this.start,
-			 this.scoreText_Setup,//Should be part of "displays_Setup"
-			 this.try_To_Destroy);
+			 this.try_To_Destroy,
+			 this.try_To_Destroy_Time,
+			 this.try_To_Destroy_Velocity,
+			 this.you_Got_Shot);
     },
 
     startGame3: function (pointer) {
@@ -154,25 +234,65 @@ BasicGame.MainMenu.prototype = {
 	score = 0;
 	console.log(level);
 	this.state.start('Nivel3',true,false,time,level,score,
+			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
+			 this.begin_Game,
 			 this.blackHoleButton_Setup,
+			 this.blackScreen_Displays_Setup,
 			 this.bombOnMouse_Setup,
+			 this.bombPool_Setup,
 			 this.buttonPanel_Setup,
-			 // this.bombPool_Setup,
+			 this.cannonButton_Setup,
+			 this.cannonOnMouse_Setup,
+			 this.cannonPool_Setup,
+			 this.cannonSelectorButtonsPool_Setup,
 			 this.countdown,
+			 this.deactivate_Enemy_Shield,
+			 this.decrease_Fire,
+			 this.decrease_Time_Shield,
+			 this.desallign_X,
+			 this.desallign_Y,
+			 this.displays_Setup,
 			 this.find_Grid_Place,
-			 // this.gridLine_Setup,
+			 this.enemy_Fire,
+			 this.enemy_Hit,
+			 this.enemy_ShieldTime_Text_Setup,
+			 this.enemyBulletPool_Setup,
+			 this.enemyDistancePool_Setup,
+			 this.enemyTimePool_Setup,
+			 this.enemyVelocityLaserPool_Setup,
+			 this.enemyVelocityPool_Setup,
+			 this.fire,
+			 this.get_Enemy_Distance_Speed,
+			 this.increase_Fire,
+			 this.increase_Time_Shield,
+			 this.lockedButtons_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
-			 this.plusButton_Setup,
-			 //this.lockedButtons_Setup,
+			 this.missilePool_Setup,
+			 this.out_Of_GridY,
 			 this.playButton_Setup,
+			 this.plusButton_Setup,
+			 this.put_Weapon,
 			 this.select_Bomb,
+			 this.select_Cannon,
+			 this.select_Shield,
 			 this.selector_Setup,
+			 this.set_Missile_Speed,
+			 this.set_Shield_Time,
+			 this.shield_Hit,
+			 this.shieldButton_Setup,
+			 this.shieldOnMouse_Setup,
+			 this.shieldSelectorButtonsPool_Setup,
+			 this.shuffleBag_Get,
+			 this.shuffleBag_Restart,
+			 this.shuffleBag_Setup,
 			 this.start,
-			 this.scoreText_Setup,//Should be part of "displays_Setup"
-			 this.try_To_Destroy);
+			 this.try_To_Destroy,
+			 this.try_To_Destroy_Time,
+			 this.try_To_Destroy_Velocity,
+			 this.you_Got_Shot);
     },
 
 //Functions used in every level, ordered alphabetically
@@ -398,6 +518,7 @@ BasicGame.MainMenu.prototype = {
 	if (bomb.counter == 0 && enemy.body.y > explosionY && enemy.body.y <= explosionY + 25) {
 	    this.score = this.score + 80;
 	    enemy.kill();
+	    //bomb.kill();
 	    //Functionality for the 'x' times to continue
 	    //this.timesPassed -= 1;
 	    //started = false;
@@ -408,7 +529,6 @@ BasicGame.MainMenu.prototype = {
     //Added Functions
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-
     
     //Activates the velocity enemies shield
     activate_Enemy_Shield: function(enemy) {
@@ -498,7 +618,7 @@ BasicGame.MainMenu.prototype = {
 	   
 	    // Adding the bomb animation to each bomb.
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
-	    //Setting the comb time given the Distance enemies
+	    //Setting the bomb time given the Distance enemies
 	    var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
 	    bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 	    //Setting the counter, to track the time to explosion of each bomb
@@ -644,6 +764,13 @@ BasicGame.MainMenu.prototype = {
 	}
     },
     
+    // Decreases the velocity of the bullets.
+    decrease_Time_Shield: function() {
+	if (!started && shieldTime > 0) {
+	    shieldTime -= 1;
+	}
+    },
+    
     //Desalligns a number to get the x in the grid
     desallign_X: function(X){
 	return (X-LEFT_MARGIN)/GRID_SPACE;
@@ -675,15 +802,39 @@ BasicGame.MainMenu.prototype = {
 	
 	//THIS IS NOT IN THE DISPLAYS_SETUP OF LEVEL 1, check if errors happens
 	//------------------------------------------------
+	if(this.level > 1){
 	// Display for the velocity of the missile.
 	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.cannonButtonText.anchor.setTo(0.5, 0.5);
+	}
 	//------------------------------------------------	
 
 	// Game score display.
 	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
 	this.scoreText.anchor.set(0.5);
 
+    },
+
+    // The enemy's shot.
+    enemy_Fire: function(enemy) {
+	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
+	bullet.reset(enemy.x, enemy.y /* enemy.height/2*/);
+	bullet.angle = 180;
+	console.log(enemyBulletSpeed);
+	console.log("Bala: "+this.enemyBulletPool.getIndex(bullet));
+	/*bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;*/
+	bullet.body.velocity.y = enemy.shieldTime * GRID_SPACE;
+	console.log(enemy.shieldTime);
+	enemyShot = true;
+    },
+
+    // If the enemy is shot.
+    enemy_Hit: function(enemy, bullet) {
+	if (shotRebound) {
+	    enemy.kill();
+	    bullet.kill();
+	    this.score = this.score+80;
+	}
     },
     
     // Enemy's shieldTime text
@@ -693,6 +844,19 @@ BasicGame.MainMenu.prototype = {
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
 	    var display = this.add.text(enemy.x + 25, enemy.y, 'Tiempo: ' + enemy.shieldTime, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.shieldTimeText);
 	},this);
+    },
+     
+    // Creates the bullets for the enemies shots
+    enemyBulletPool_Setup: function() {
+	this.enemyBulletPool = this.add.group();
+	this.enemyBulletPool.enableBody = true;
+	this.enemyBulletPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyBulletPool.createMultiple(TOTAL_ENEMIES, 'bullet');
+	this.enemyBulletPool.setAll('anchor.x', 0.5);
+	this.enemyBulletPool.setAll('anchor.y', 0.5);
+	this.enemyBulletPool.setAll('angle', 180);
+	// this.enemyBulletPool.setAll('outOfBoundsKill', true);
+	// this.enemyBulletPool.setAll('checkWorldBounds', true);
     },
 
     // Creates the distance enemies of the level.
@@ -745,7 +909,47 @@ BasicGame.MainMenu.prototype = {
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
     },
-    
+
+    // Creates the Time enemies of the level.
+    enemyTimePool_Setup: function() {
+	this.enemyTimePool = this.add.group();
+	this.enemyTimePool.enableBody = true;
+	this.enemyTimePool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyTimePool.createMultiple(TIME_ENEMIES, 'timeEnemy');
+	this.enemyTimePool.setAll('anchor.x', 0.5);
+	this.enemyTimePool.setAll('anchor.y', 0.5);
+	this.enemyTimePool.setAll('outOfBoundsKill', true);
+	this.enemyTimePool.setAll('checkWorldBounds', true);
+	//this.enemyTimePool.setAll('scale.x', 0.075);
+	//this.enemyTimePool.setAll('scale.y', 0.075);
+	this.enemyTimePool.setAll('scale.x', 0.055);
+	this.enemyTimePool.setAll('scale.y', 0.055);
+
+	this.enemyTimePool.forEach(function(enemy) {
+	    this.get_Enemy_Distance_Speed(enemy);
+	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
+	    initialY =this.allign_Y(10-enemy.pos)
+	    //initialY = 55 - (enemy.height/2);
+	    //initialY = 50 - (enemy.height/2);
+	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
+	    enemy.frame = 1;
+	    enemy.reset(aux1, initialY);
+	    enemy.body.setSize(100, 100, 0, enemy.height/2);
+	    // enemy.animations.add('shield', [1, 0], 10, false);
+	    // enemy.animations.add('unshield', [0, 1], 10, false);
+	}, this);
+	
+	// Group for the text displays
+	this.enemyTimeTextPool = this.add.group();
+	// Velocity of each enemy.
+	this.enemyTimePool.forEach(function(enemy) {
+	    var text = this.add.text(/*(this.allign_X(this.enemyPlace))*/enemy.x+60, enemy.y, 'Velocidad: ' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyTimeTextPool);
+	    text.visible = true;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
+    },
     
     // Creates the velocity enemies' laser.
     enemyVelocityLaserPool_Setup: function() {
@@ -1015,6 +1219,13 @@ BasicGame.MainMenu.prototype = {
 	    missileSpeed += 1;
 	}
     },
+
+    // Increases the velocity of the bullets.
+    increase_Time_Shield: function() {
+	if (!started) {
+	    shieldTime += 1;
+	}
+    },
     
     // Creates the locked buttons
     lockedButtons_Setup: function() {
@@ -1074,9 +1285,24 @@ BasicGame.MainMenu.prototype = {
 	this.missilePool.forEach(function(missile) {
 	    missile.body.setSize(10, 10, 0, -25);
 	}, this);
+    },    
+    
+    //If a sprite is out of the vertical axis of the grid, exits the game
+    out_Of_GridY: function(sprite) {
+	//Commented lines are the code to be used in a function out_Of_GridX
+	
+	//auxX = parseInt((sprite.x-LEFT_MARGIN+GRID_SPACE)/GRID_SPACE);
+	//auxY = parseInt((sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE);
+	auxY = (sprite.y-UP_MARGIN+GRID_SPACE)/GRID_SPACE;
+    
+	//if(auxX < 1) this.gridX = 1;
+	//if(auxX > 16) this.gridX = 16;
+    
+	if(auxY < 1) /*console.log(auxY)*/;
+	if(auxY > 11.5) this.quit_Game(false);/*console.log(auxY)*/
     },
     
-        // Creates a black hole bomb in the place clicked inside the grid.
+    // Creates a black hole bomb in the place clicked inside the grid.
     put_Weapon: function() {
 	if (!started && this.beginGame) {
 	    if (usingBlackHole && (numberOfBombs > 0)) {
@@ -1126,6 +1352,27 @@ BasicGame.MainMenu.prototype = {
 	    	usingCannon = false;
 		selectedSpeed = false;
 		missileSpeed = 0;
+	    } else if (usingShield && numberOfShields > 0 && shieldTime > 0) {
+		x = this.allign_X(this.gridX - 0.5);
+		y = 460;
+		var shield = this.shieldPool.getFirstExists(false);
+		shield.body.setSize(10, 10);
+		shield.reset(x, y);
+		shield.time = shieldTime;
+		shield.shieldActive = false;
+		numberOfShields -= 1;
+		var text = this.shieldTextPool.getAt(this.shieldPool.getIndex(shield));
+		text.visible = true;
+		text.x = shield.x - 1;
+		text.y = shield.y;
+		text.text = shield.time;
+		
+		this.selector.getAt(1).frame = 0;
+		this.shieldSelectorButtonsPool.setAll('visible', false);
+		this.shieldSelectorButtonsPool.getAt(0).frame = 1;
+		this.shieldButton.frame = 0;		
+		usingShield = false;
+		shieldTime = 0;
 	    }
  	}
     },
@@ -1165,8 +1412,7 @@ BasicGame.MainMenu.prototype = {
     },
     //DEPRECATED, USE PUT_WEAPON INSTEAD
     */
-    
- 
+     
     // Lets the player use the cannons.
     select_Cannon: function() {
 	if (!started){
@@ -1192,9 +1438,133 @@ BasicGame.MainMenu.prototype = {
 	}
     },
 
+    // Lets the player use the shield
+    select_Shield: function() {
+	if (!started){
+	    usingShield = (numberOfShields > 0);
+	    this.selector.getAt(1).frame = 1;
+	    this.shieldSelectorButtonsPool.setAll('visible', true);
+	    if (!usingShield) {
+		this.shieldPool.forEachAlive(function(shield) {
+		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
+		    shield.kill();
+		}, this);
+		numberOfShields = TOTAL_ENEMIES;
+	    }
+	}
+    },
+
     set_Missile_Speed: function(speed) {
 	missileSpeed = speed;
 	this.cannonSelectorButtonsPool.getAt(0).frame = speed + 1;
+    },
+
+
+    set_Shield_Time: function(time) {
+	shieldTime = time;
+	this.shieldSelectorButtonsPool.getAt(0).frame = time + 1;
+    },
+
+    shield_Hit: function(shieldGen, bullet) {
+	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
+	// console.log("POS" +  enemy.pos);
+	// console.log("VEL" + enemy.shieldTime);
+	// console.log("TIME" + shieldGen.time);
+	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
+	console.log("ACTIVE" + shieldGen.shieldActive);
+	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
+	    console.log("GOL");
+	    bullet.angle = 0;
+	    bullet.body.velocity.y = -(bullet.body.velocity.y);
+	    shotRebound = true;
+	} else {
+	    lost = true;
+	    shieldGen.kill();
+	    bullet.kill();
+	}
+    },
+    
+    // Creates the shield button.
+    shieldButton_Setup: function() {
+	this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	this.shieldButton.anchor.setTo(0.5, 0.5);
+	this.shieldButton.scale.setTo(0.27, 0.27);
+	buttons.add(this.shieldButton);
+     },
+
+    shieldOnMouse_Setup: function() {
+	// Image that appears on the mouse when the cannon button is pressed.
+	this.shieldOnMouse = this.add.sprite(1000, 1000, 'shield');
+	this.shieldOnMouse.anchor.setTo(0.5, 0.5);
+	this.shieldOnMouse.scale.setTo(0.12, 0.12);
+	this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
+    },
+
+    // Creates the cannons.
+    shieldPool_Setup: function() {
+	this.shieldPool = this.add.group();
+	this.shieldPool.enableBody = true;
+	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
+	this.shieldPool.setAll('anchor.x', 0.5);
+	this.shieldPool.setAll('anchor.y', 0.5);
+	this.shieldPool.setAll('scale.x', 0.12);
+	this.shieldPool.setAll('scale.y', 0.12);
+	this.shieldPool.setAll('shieldActive', false);
+	this.shieldTextPool = this.add.group();
+	this.shieldPool.forEach(function(shield) {
+	    shield.inputEnabled = true;
+	    shield.events.onInputDown.add(function(shield) {
+		this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
+		shield.kill();
+		numberOfShields += 1;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "25px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.shieldTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
+	// this.shieldPool.forEach(function(shield) {
+	//     // Adding the bomb animation to each bomb.
+	//     shield.animations.add('shield', [0, 1, 0], 10, false);
+	// }, this);
+    },
+     
+    shieldSelectorButtonsPool_Setup: function() {
+	this.shieldSelectorButtonsPool = this.add.group();
+	var chosen = this.add.sprite(803, 554, 'chosen');
+	this.shieldSelectorButtonsPool.add(chosen);
+	var button = this.add.button(903, 460, 'button1', function() {this.set_Shield_Time(1)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 481, 'button2', function() {this.set_Shield_Time(2)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 481, 'button3', function() {this.set_Shield_Time(3)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(877, 502, 'button4', function() {this.set_Shield_Time(4)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(903, 502, 'button5', function() {this.set_Shield_Time(5)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(929, 502, 'button6', function() {this.set_Shield_Time(6)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(864, 524, 'button7', function() {this.set_Shield_Time(7)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 524, 'button8', function() {this.set_Shield_Time(8)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 524, 'button9', function() {this.set_Shield_Time(9)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(942, 524, 'button10', function() {this.set_Shield_Time(10)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+
+	this.shieldSelectorButtonsPool.setAll('anchor.x', 0.5);
+	this.shieldSelectorButtonsPool.setAll('anchor.y', 0.5);
+	this.shieldSelectorButtonsPool.setAll('scale.x', 0.15);
+	this.shieldSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.shieldSelectorButtonsPool.setAll('frame', 0);
+	this.shieldSelectorButtonsPool.setAll('visible', false);
+	button = this.shieldSelectorButtonsPool.getAt(0);
+	button.scale.setTo(0.17, 0.17);
+	button.frame = 1;
     },
 
     //-----------------------------------------------------------------------------
@@ -1237,6 +1607,18 @@ BasicGame.MainMenu.prototype = {
 	}, this);
     },
     //-----------------------------------------------------------------------------
+
+    // If the enemy's shild is deactivated the enemy is killed.
+    try_To_Destroy_Time: function(enemy, bullet) {
+	if (!enemyShield) {
+	    enemy.kill();
+	    //this.score = this.score + 80;
+	} else {
+	    var vel = bullet.body.velocity.y;
+	    bullet.body.velocity.y = -vel;
+	    bullet.angle = 180;
+	}
+    },
     
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Velocity: function(enemy, missile) {
@@ -1376,5 +1758,129 @@ BasicGame.MainMenu.prototype = {
 
 //Functions that should be passed to every level
 /*
-ALL NIGGA, ALL
+ALL NIGGA, ALL, Here is the list of all functions in MainMenu.js 05/01/2015
+allign_X,
+allign_Y,
+blackHoleButton_Setup,
+bombOnMouse_Setup,
+buttonPanel_Setup,
+bombPool_Setup,
+countdown,
+find_Grid_Place,
+make_Grid,
+minusButton_Setup,
+plusButton_Setup,
+playButton_Setup,
+select_Bomb,
+selector_Setup,
+start,
+try_To_Destroy  
+  ++
+activate_Enemy_Shield
+begin_Game
+blackScreen_Displays_Setup
+bombPool_Setup
+cannonButton_Setup
+cannonOnMouse_Setup
+cannonPool_Setup
+cannonSelectorButtonsPool_Setup
+deactivate_Enemy_Shield
+decrease_Fire
+decrease_Time_Shield
+desallign_X
+desallign_Y
+displays_Setup
+enemy_Fire
+enemy_Hit
+enemy_ShieldTime_Text_Setup
+enemyBulletPool_Setup
+enemyDistancePool_Setup
+enemyTimePool_Setup
+enemyVelocityLaserPool_Setup
+enemyVelocityPool_Setup
+fire
+get_Enemy_Distance_Speed
+increase_Fire
+increase_Time_Shield
+lockedButtons_Setup
+missilePool_Setup
+out_Of_GridY
+put_Weapon
+select_Cannon
+select_Shield
+set_Missile_Speed
+set_Shield_Time
+shield_Hit
+shieldButton_Setup
+shieldOnMouse_Setup
+shieldSelectorButtonsPool_Setup
+shuffleBag_Get
+shuffleBag_Restart
+shuffleBag_Setup
+try_To_Destroy_Time
+try_To_Destroy_Velocity
+you_Got_Shot
+*/
+
+
+/* Here is the same list, as is going to be passed through every level
+this.activate_Enemy_Shield
+this.allign_X,
+this.allign_Y,
+this.begin_Game
+this.blackHoleButton_Setup,
+this.blackScreen_Displays_Setup
+this.bombOnMouse_Setup,
+this.bombPool_Setup
+this.buttonPanel_Setup,
+this.cannonButton_Setup
+this.cannonOnMouse_Setup
+this.cannonPool_Setup
+this.cannonSelectorButtonsPool_Setup
+this.countdown,
+this.deactivate_Enemy_Shield
+this.decrease_Fire
+this.decrease_Time_Shield
+this.desallign_X
+this.desallign_Y
+this.displays_Setup
+this.find_Grid_Place,
+this.enemy_Fire
+this.enemy_Hit
+this.enemy_ShieldTime_Text_Setup
+this.enemyBulletPool_Setup
+this.enemyDistancePool_Setup
+this.enemyTimePool_Setup
+this.enemyVelocityLaserPool_Setup
+this.enemyVelocityPool_Setup
+this.fire
+this.get_Enemy_Distance_Speed
+this.increase_Fire
+this.increase_Time_Shield
+this.lockedButtons_Setup
+this.make_Grid,
+this.minusButton_Setup,
+this.missilePool_Setup
+this.out_Of_GridY
+this.playButton_Setup,
+this.plusButton_Setup,
+this.put_Weapon
+this.select_Bomb,
+this.select_Cannon
+this.select_Shield
+this.selector_Setup,
+this.set_Missile_Speed
+this.set_Shield_Time
+this.shield_Hit
+this.shieldButton_Setup
+this.shieldOnMouse_Setup
+this.shieldSelectorButtonsPool_Setup
+this.shuffleBag_Get
+this.shuffleBag_Restart
+this.shuffleBag_Setup
+this.start
+this.try_To_Destroy  
+this.try_To_Destroy_Time
+this.try_To_Destroy_Velocity
+this.you_Got_Shot
 */
