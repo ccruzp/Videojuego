@@ -415,6 +415,7 @@ BasicGame.Nivel1.prototype = {
 		    var bomb = this.bombPool.getAt(index);
 		    bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 		    bomb.counter = bomb.time;
+		    bomb.frame = 1;
 		    this.simulationTime = this.simulationTime + bomb.time;
 		    // this.explosionTimeCounter = bomb.time;
 		    this.blackHoleButtonText.text =  '' + bomb.counter;
@@ -474,24 +475,65 @@ BasicGame.Nivel1.prototype = {
 	    nextState = 'GameOverMenu';
 	}
 	this.state.start(nextState, true, false, time, this.level,this.score,
+			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
+			 this.begin_Game,
 			 this.blackHoleButton_Setup,
+			 this.blackScreen_Displays_Setup,
 			 this.bombOnMouse_Setup,
+			 this.bombPool_Setup,
 			 this.buttonPanel_Setup,
+			 this.cannonButton_Setup,
+			 this.cannonOnMouse_Setup,
+			 this.cannonPool_Setup,
+			 this.cannonSelectorButtonsPool_Setup,
 			 this.countdown,
+			 this.deactivate_Enemy_Shield,
+			 this.decrease_Fire,
+			 this.decrease_Time_Shield,
+			 this.desallign_X,
+			 this.desallign_Y,
+			 this.displays_Setup,
 			 this.find_Grid_Place,
-			 //this.gridLine_Setup,
+			 this.enemy_Fire,
+			 this.enemy_Hit,
+			 this.enemy_ShieldTime_Text_Setup,
+			 this.enemyBulletPool_Setup,
+			 this.enemyDistancePool_Setup,
+			 this.enemyTimePool_Setup,
+			 this.enemyVelocityLaserPool_Setup,
+			 this.enemyVelocityPool_Setup,
+			 this.fire,
+			 this.get_Enemy_Distance_Speed,
+			 this.increase_Fire,
+			 this.increase_Time_Shield,
+			 this.lockedButtons_Setup,
 			 this.make_Grid,
 			 this.minusButton_Setup,
-			 this.plusButton_Setup,
+			 this.missilePool_Setup,
+			 this.out_Of_GridY,
 			 this.playButton_Setup,
+			 this.plusButton_Setup,
+			 this.put_Weapon,
 			 this.select_Bomb,
+			 this.select_Cannon,
+			 this.select_Shield,
 			 this.selector_Setup,
+			 this.set_Missile_Speed,
+			 this.set_Shield_Time,
+			 this.shield_Hit,
+			 this.shieldButton_Setup,
+			 this.shieldOnMouse_Setup,
+			 this.shieldSelectorButtonsPool_Setup,
+			 this.shuffleBag_Get,
+			 this.shuffleBag_Restart,
+			 this.shuffleBag_Setup,
 			 this.start,
-			 this.scoreText_Setup,
-			 this.try_To_Destroy);
-	
+			 this.try_To_Destroy,
+			 this.try_To_Destroy_Time,
+			 this.try_To_Destroy_Velocity,
+			 this.you_Got_Shot);
     },
     
     // This function is for debug (and other stuff xD, but we're using it for
