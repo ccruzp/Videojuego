@@ -129,9 +129,18 @@ BasicGame.MainMenu.prototype = {
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Get,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
+			 /*this.shuffleBag_Get,
 			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,
+			 this.shuffleBag_Setup,*/
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
@@ -207,9 +216,18 @@ BasicGame.MainMenu.prototype = {
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Get,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
+			 /*this.shuffleBag_Get,
 			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,
+			 this.shuffleBag_Setup,*/
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
@@ -285,9 +303,18 @@ BasicGame.MainMenu.prototype = {
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Get,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
+			 /*this.shuffleBag_Get,
 			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,
+			 this.shuffleBag_Setup,*/
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
@@ -618,9 +645,15 @@ BasicGame.MainMenu.prototype = {
 	   
 	    // Adding the bomb animation to each bomb.
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
-	    //Setting the bomb time given the Distance enemies
-	    var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
-	    bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
+	    
+	    //Do this if there are Distance Enemies
+	    if(DISTANCE_ENEMIES > 0){
+		//Setting the bomb time given the Distance enemies
+		var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
+		bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
+	    } else{
+		bomb.time = this.game.rnd.integerInRange(2, 10);
+	    }
 	    //Setting the counter, to track the time to explosion of each bomb
 	    bomb.counter = bomb.time;
 	    // Enabling the input for bombs.
@@ -879,12 +912,13 @@ BasicGame.MainMenu.prototype = {
 	    // var enemy = this.enemyDistancePool.getFirstExists(false);
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
-	    enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
-	    
+	    //enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    enemy.place = this.shuffleBag_X_Axis_Get();
+		    
 	    aux1 = this.allign_X(enemy.place)-(GRID_SPACE/2);
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
-	    enemy.speed = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+	    enemy.speed = this.shuffleBag_Bomb_Get();
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    
@@ -1075,7 +1109,7 @@ BasicGame.MainMenu.prototype = {
     // If used in time enemies, enemy.pos represents the position,
     // and enemy.shieldTime represents the velocity of the enemy bullet 
     get_Enemy_Distance_Speed: function(enemy){
-	aux = this.shuffleBag_Get();
+	aux = this.shuffleBag_Velocity_Get();
 	//aux = this.game.rnd.integerInRange(1, 27);
 	if (aux > 13){
 	    if (aux > 20){
@@ -1569,43 +1603,121 @@ BasicGame.MainMenu.prototype = {
 
     //-----------------------------------------------------------------------------
     // Gets next element from the shuffle Bag
-    shuffleBag_Get: function(/*random*/){
+    
+    shuffleBag_Bomb_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
-	if (this.shuffleBag.countLiving() == 0){
-	    this.shuffleBag_Restart();
+	if (this.shuffleBagBomb.countLiving() == 0){
+	    this.shuffleBagBomb_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
-	element = this.shuffleBag.getRandom( SHUFFLEBAG_ELEMENTS-(this.shuffleBag.countLiving()));
+	element = this.shuffleBagBomb.getRandom( 5-(this.shuffleBagBomb.countLiving()));
 	random = element.value;
 	// Kill the element used
 	element.kill();
 	
 	//console.log('Element Index ' + this.shuffleBag.getIndex(element));
 	//this.shuffleBag.bringToTop(element);
-	this.shuffleBag.sendToBack(element);
+	this.shuffleBagBomb.sendToBack(element);
 	//console.log('Element Index2 ' + this.shuffleBag.getIndex(element));
 	
 	//Sum 1 to be compatible with get_Enemy_Distance
 	return (random+1);
     },
     //Restart the shuffle bag once is "empty"
-    shuffleBag_Restart: function(){
+    shuffleBag_Bomb_Restart: function(){
 	//Revive all elements from the shuffleBag
-	console.log('I get here Dude');
-	this.shuffleBag.forEachDead(function(element){
+	console.log('Everyday Im Shuffling');
+	this.shuffleBagBomb.forEachDead(function(element){
 	    element.reset();
 	},this);   
     },
     // Create and initialize the Shuffle Bag
-    shuffleBag_Setup: function(){
+    shuffleBag_Bomb_Setup: function(){
 	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
-	this.shuffleBag = this.add.group();
-	this.shuffleBag.createMultiple(SHUFFLEBAG_ELEMENTS,'','',true);   
+	this.shuffleBagBomb = this.add.group();
+	this.shuffleBagBomb.createMultiple(/*SHUFFLEBAG_ELEMENTS*/5,'','',true);   
 	// Initializes the shuffle bag, each element having its index value
-	this.shuffleBag.forEach(function(element) {
-	    element.value = this.shuffleBag.getIndex(element);
+	this.shuffleBagBomb.forEach(function(element) {
+	    element.value = this.shuffleBagBomb.getIndex(element);
 	}, this);
     },
+    
+    shuffleBag_Velocity_Get: function(/*random*/){
+	// If shuffleBag is empty, restart the shuffleBag (function)
+	if (this.shuffleBagVelocity.countLiving() == 0){
+	    this.shuffleBagVelocity_Restart();
+	}
+	// Set random values to match values of next element in shuffle Bag 
+	element = this.shuffleBagVelocity.getRandom( 27-(this.shuffleBagVelocity.countLiving()));
+	random = element.value;
+	// Kill the element used
+	element.kill();
+	
+	//console.log('Element Index ' + this.shuffleBag.getIndex(element));
+	//this.shuffleBag.bringToTop(element);
+	this.shuffleBagVelocity.sendToBack(element);
+	//console.log('Element Index2 ' + this.shuffleBag.getIndex(element));
+	
+	//Sum 1 to be compatible with get_Enemy_Distance
+	return (random+1);
+    },
+    //Restart the shuffle bag once is "empty"
+    shuffleBag_Velocity_Restart: function(){
+	//Revive all elements from the shuffleBag
+	console.log('I get here Dude');
+	this.shuffleBagVelocity.forEachDead(function(element){
+	    element.reset();
+	},this);   
+    },
+    // Create and initialize the Shuffle Bag
+    shuffleBag_Velocity_Setup: function(){
+	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
+	this.shuffleBagVelocity = this.add.group();
+	this.shuffleBagVelocity.createMultiple(/*SHUFFLEBAG_ELEMENTS*/27,'','',true);   
+	// Initializes the shuffle bag, each element having its index value
+	this.shuffleBagVelocity.forEach(function(element) {
+	    element.value = this.shuffleBagVelocity.getIndex(element);
+	}, this);
+    },    
+    
+    shuffleBag_X_Axis_Get: function(/*random*/){
+	// If shuffleBag is empty, restart the shuffleBag (function)
+	if (this.shuffleBagXAxis.countLiving() == 0){
+	    this.shuffleBagXAxis_Restart();
+	}
+	// Set random values to match values of next element in shuffle Bag 
+	element = this.shuffleBagXAxis.getRandom( 16-(this.shuffleBagXAxis.countLiving()));
+	random = element.value;
+	// Kill the element used
+	element.kill();
+	
+	//console.log('Element Index ' + this.shuffleBag.getIndex(element));
+	//this.shuffleBag.bringToTop(element);
+	this.shuffleBagXAxis.sendToBack(element);
+	//console.log('Element Index2 ' + this.shuffleBag.getIndex(element));
+	
+	//Sum 1 to be compatible with get_Enemy_Distance
+	return (random+1);
+    },
+    //Restart the shuffle bag once is "empty"
+    shuffleBag_X_Axis_Restart: function(){
+	//Revive all elements from the shuffleBag
+	console.log('I get here Dude');
+	this.shuffleBagXAxis.forEachDead(function(element){
+	    element.reset();
+	},this);   
+    },
+    // Create and initialize the Shuffle Bag
+    shuffleBag_X_Axis_Setup: function(){
+	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
+	this.shuffleBagXAxis = this.add.group();
+	this.shuffleBagXAxis.createMultiple(/*SHUFFLEBAG_ELEMENTS*/16,'','',true);   
+	// Initializes the shuffle bag, each element having its index value
+	this.shuffleBagXAxis.forEach(function(element) {
+	    element.value = this.shuffleBagXAxis.getIndex(element);
+	}, this);
+    },
+
     //-----------------------------------------------------------------------------
 
     // If the enemy's shild is deactivated the enemy is killed.
@@ -1883,4 +1995,24 @@ this.try_To_Destroy
 this.try_To_Destroy_Time
 this.try_To_Destroy_Velocity
 this.you_Got_Shot
+*/
+
+// Added-Erased 06-01-2015
+/*
+Added:
+this.shuffleBag_Bomb_Get
+this.shuffleBag_Bomb_Restart
+this.shuffleBag_Bomb_Setup
+this.shuffleBag_Velocity_Get
+this.shuffleBag_Velocity_Restart
+this.shuffleBag_Velocity_Setup
+this.shuffleBag_X_Axis_Get
+this.shuffleBag_X_Axis_Restart
+this.shuffleBag_X_Axis_Setup
+
+Erased:
+this.shuffleBag_Get
+this.shuffleBag_Restart
+this.shuffleBag_Setup
+
 */

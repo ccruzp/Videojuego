@@ -61,9 +61,15 @@ BasicGame.GameOverMenu.prototype = {
 		   shieldButton_Setup,
 		   shieldOnMouse_Setup,
 		   shieldSelectorButtonsPool_Setup,
-		   shuffleBag_Get,
-		   shuffleBag_Restart,
-		   shuffleBag_Setup,
+		   shuffleBag_Bomb_Get,
+		   shuffleBag_Bomb_Restart,
+		   shuffleBag_Bomb_Setup,
+		   shuffleBag_Velocity_Get,
+		   shuffleBag_Velocity_Restart,
+		   shuffleBag_Velocity_Setup,
+		   shuffleBag_X_Axis_Get,
+		   shuffleBag_X_Axis_Restart,
+		   shuffleBag_X_Axis_Setup,
 		   start,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
@@ -125,9 +131,17 @@ BasicGame.GameOverMenu.prototype = {
 	this.shieldButton_Setup = shieldButton_Setup;
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-	this.shuffleBag_Get = shuffleBag_Get;
-	this.shuffleBag_Restart = shuffleBag_Restart;
-	this.shuffleBag_Setup = shuffleBag_Setup;
+	
+	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
+	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
+	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
+	this.shuffleBag_Velocity_Get = shuffleBag_Velocity_Get;
+	this.shuffleBag_Velocity_Restart = shuffleBag_Velocity_Restart;
+	this.shuffleBag_Velocity_Setup = shuffleBag_Velocity_Setup;
+	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
+	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
+	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
+	
 	this.start = start;
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
@@ -249,9 +263,15 @@ BasicGame.GameOverMenu.prototype = {
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Get,
-			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,

@@ -150,9 +150,15 @@ BasicGame.Nivel2.prototype = {
 		   shieldButton_Setup,
 		   shieldOnMouse_Setup,
 		   shieldSelectorButtonsPool_Setup,
-		   shuffleBag_Get,
-		   shuffleBag_Restart,
-		   shuffleBag_Setup,
+		   shuffleBag_Bomb_Get,
+		   shuffleBag_Bomb_Restart,
+		   shuffleBag_Bomb_Setup,
+		   shuffleBag_Velocity_Get,
+		   shuffleBag_Velocity_Restart,
+		   shuffleBag_Velocity_Setup,
+		   shuffleBag_X_Axis_Get,
+		   shuffleBag_X_Axis_Restart,
+		   shuffleBag_X_Axis_Setup,
 		   start,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
@@ -212,9 +218,17 @@ BasicGame.Nivel2.prototype = {
 	this.shieldButton_Setup = shieldButton_Setup;
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-	this.shuffleBag_Get = shuffleBag_Get;
-	this.shuffleBag_Restart = shuffleBag_Restart;
-	this.shuffleBag_Setup = shuffleBag_Setup;
+	
+	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
+	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
+	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
+	this.shuffleBag_Velocity_Get = shuffleBag_Velocity_Get;
+	this.shuffleBag_Velocity_Restart = shuffleBag_Velocity_Restart;
+	this.shuffleBag_Velocity_Setup = shuffleBag_Velocity_Setup;
+	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
+	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
+	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
+	
 	this.start = start;
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
@@ -294,7 +308,9 @@ BasicGame.Nivel2.prototype = {
 	this.line.anchor.setTo(0, 0.5);
 	*/
 
-	this.shuffleBag_Setup(); //Sets up the shuffle bag
+	this.shuffleBag_Velocity_Setup(); //Sets up the shuffle bag
+	this.shuffleBag_X_Axis_Setup();
+	this.shuffleBag_Bomb_Setup();
 	this.enemyVelocityPool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the missiles for the cannons.
@@ -323,8 +339,7 @@ BasicGame.Nivel2.prototype = {
 
 	// Creating the text displays.
 	this.displays_Setup();
-	// Score Texts
-	this.scoreText_Setup();
+
 	// Enemy's shieldTime text
 	this.enemy_ShieldTime_Text_Setup();
 
@@ -454,7 +469,7 @@ BasicGame.Nivel2.prototype = {
 		//Resets the enemies and bombs, maybe should be a function
 		//------------------------------------------------------------
 		
-		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
+		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 		this.explosionTimeCounter = this.bombTime;
 		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
@@ -468,7 +483,7 @@ BasicGame.Nivel2.prototype = {
 		    this.simulationTime = this.simulationTime + enemy.shieldTime; 
 	
 		    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
-		    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+		    this.enemyPlace = this.shuffleBag_X_Axis_Get();
 		    
 		    aux1 = this.allign_X(this.enemyPlace)-(GRID_SPACE/2);
 		    enemy.frame = 1;
@@ -601,9 +616,15 @@ BasicGame.Nivel2.prototype = {
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Get,
-			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
