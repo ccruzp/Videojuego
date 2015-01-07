@@ -299,6 +299,7 @@ BasicGame.Nivel3.prototype = {
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
 
+	this.shuffleBag_X_Axis_Setup();
 	this.shuffleBag_Velocity_Setup(); //Sets up the shuffle bag
 	this.shuffleBag_X_Axis_Setup();
 	this.shuffleBag_Bomb_Setup();

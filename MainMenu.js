@@ -316,9 +316,6 @@ BasicGame.MainMenu.prototype = {
 			 this.shuffleBag_X_Axis_Get,
 			 this.shuffleBag_X_Axis_Restart,
 			 this.shuffleBag_X_Axis_Setup,
-			 /*this.shuffleBag_Get,
-			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,*/
 			 this.start,
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
@@ -1677,6 +1674,8 @@ BasicGame.MainMenu.prototype = {
     // Create and initialize the Shuffle Bag
     shuffleBag_Velocity_Setup: function(){
 	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
+	console.log("HOLA");
+
 	this.shuffleBagVelocity = this.add.group();
 	this.shuffleBagVelocity.createMultiple(/*SHUFFLEBAG_ELEMENTS*/27,'','',true);   
 	// Initializes the shuffle bag, each element having its index value

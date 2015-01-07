@@ -568,6 +568,7 @@ BasicGame.Nivel2.prototype = {
 	}
 	this.state.start(nextState, true, false, 
 			 time, this.level,this.score,
+			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
 			 this.begin_Game,
