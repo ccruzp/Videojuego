@@ -128,6 +128,7 @@ BasicGame.MainMenu.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,
@@ -215,6 +216,8 @@ BasicGame.MainMenu.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
+			 
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,
@@ -302,6 +305,7 @@ BasicGame.MainMenu.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,
@@ -2015,4 +2019,10 @@ this.shuffleBag_Get
 this.shuffleBag_Restart
 this.shuffleBag_Setup
 
+*/
+
+// Added-Erased 07-01-2015
+/*
+Added:
+this.shieldPool_Setup
 */

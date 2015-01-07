@@ -133,6 +133,7 @@ BasicGame.Nivel1.prototype = {
 		   shield_Hit,
 		   shieldButton_Setup,
 		   shieldOnMouse_Setup,
+		   shieldPool_Setup,
 		   shieldSelectorButtonsPool_Setup,
 		   shuffleBag_Bomb_Get,
 		   shuffleBag_Bomb_Restart,
@@ -201,8 +202,8 @@ BasicGame.Nivel1.prototype = {
 	this.shield_Hit = shield_Hit;
 	this.shieldButton_Setup = shieldButton_Setup;
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
-	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-		 
+	this.shieldPool_Setup = shieldPool_Setup;
+	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;	
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
 	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
 	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
@@ -551,6 +552,7 @@ BasicGame.Nivel1.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,

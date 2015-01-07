@@ -60,6 +60,7 @@ BasicGame.GameOverMenu.prototype = {
 		   shield_Hit,
 		   shieldButton_Setup,
 		   shieldOnMouse_Setup,
+		   shieldPool_Setup,
 		   shieldSelectorButtonsPool_Setup,
 		   shuffleBag_Bomb_Get,
 		   shuffleBag_Bomb_Restart,
@@ -129,9 +130,9 @@ BasicGame.GameOverMenu.prototype = {
 	this.set_Shield_Time = set_Shield_Time;
 	this.shield_Hit = shield_Hit;
 	this.shieldButton_Setup = shieldButton_Setup;
-	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
+	this.shieldOnMouse_Setup = shieldOnMouse_Setup;	
+	this.shieldPool_Setup = shieldPool_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-	
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
 	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
 	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
@@ -141,7 +142,6 @@ BasicGame.GameOverMenu.prototype = {
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-	
 	this.start = start;
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
@@ -262,6 +262,7 @@ BasicGame.GameOverMenu.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,

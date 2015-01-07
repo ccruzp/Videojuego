@@ -146,6 +146,7 @@ BasicGame.Nivel3.prototype = {
 		   shield_Hit,
 		   shieldButton_Setup,
 		   shieldOnMouse_Setup,
+		   shieldPool_Setup,
 		   shieldSelectorButtonsPool_Setup,
 		   shuffleBag_Bomb_Get,
 		   shuffleBag_Bomb_Restart,
@@ -214,6 +215,7 @@ BasicGame.Nivel3.prototype = {
 	this.shield_Hit = shield_Hit;
 	this.shieldButton_Setup = shieldButton_Setup;
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
+	this.shieldPool_Setup = shieldPool_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
 	
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
@@ -297,6 +299,10 @@ BasicGame.Nivel3.prototype = {
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
 
+	this.shuffleBag_Velocity_Setup(); //Sets up the shuffle bag
+	this.shuffleBag_X_Axis_Setup();
+	this.shuffleBag_Bomb_Setup();
+	
 	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
@@ -336,7 +342,7 @@ BasicGame.Nivel3.prototype = {
 	// Creating the text displays.
 	this.displays_Setup();
 	// Score Texts
-	this.scoreText_Setup();
+	// this.scoreText_Setup();
 	
 	this.timeOfGame = this.time.now; // Score counter.
 
@@ -768,6 +774,7 @@ BasicGame.Nivel3.prototype = {
 			 this.shield_Hit,
 			 this.shieldButton_Setup,
 			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
 			 this.shieldSelectorButtonsPool_Setup,
 			 this.shuffleBag_Bomb_Get,
 			 this.shuffleBag_Bomb_Restart,
