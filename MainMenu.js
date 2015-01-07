@@ -917,6 +917,7 @@ BasicGame.MainMenu.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    //enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    console.log('I crash in enemyDistance');
 	    enemy.place = this.shuffleBag_X_Axis_Get();
 		    
 	    aux1 = this.allign_X(enemy.place)-(GRID_SPACE/2);
@@ -962,7 +963,7 @@ BasicGame.MainMenu.prototype = {
 	//this.enemyTimePool.setAll('scale.y', 0.075);
 	this.enemyTimePool.setAll('scale.x', 0.055);
 	this.enemyTimePool.setAll('scale.y', 0.055);
-
+	console.log('Time Enemies');
 	this.enemyTimePool.forEach(function(enemy) {
 	    this.get_Enemy_Distance_Speed(enemy);
 	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);

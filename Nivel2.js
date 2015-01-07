@@ -266,6 +266,7 @@ BasicGame.Nivel2.prototype = {
 	//-------------------------------------------------------------
 	usingBlackHole = false; // Says if the player selected the bomb.
 	usingCannon = false; // Says if the player selected the cannon.
+	usingShield = false;
 	//-------------------------------------------------------------
 	this.beginGame = true;
 	this.lost = false;
