@@ -178,6 +178,7 @@ BasicGame.WinnerMenu.prototype = {
 	// this.playAgainButton.anchor.setTo(0.5, 0.5);
 	// this.playAgainButton.scale.setTo(0.5, 0.5);
 	aux = 0;
+	this.ended = false; // Establishes if the game is finished
 	this.rankBoolean = true; 
 	this.score = 0;
 	this.maxTime = 200; 
@@ -243,6 +244,7 @@ BasicGame.WinnerMenu.prototype = {
     },
 
     next_Level: function () {
+	if(!this.rankBoolean){
 	winnerText.destroy();
 	// this.playAgainButton.destroy();
 	background.destroy();
@@ -314,6 +316,7 @@ BasicGame.WinnerMenu.prototype = {
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
 			 this.you_Got_Shot);
+	}
     },
 
     update_Score: function(){
