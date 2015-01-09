@@ -536,6 +536,13 @@ BasicGame.MainMenu.prototype = {
     start: function () {
 	if(this.beginGame){
 	    started = true;
+	    
+	    if (this.enemyVelocityPool != null) {
+		this.enemyVelocityPool.forEachAlive(function(enemy) {
+		    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime-1), this.deactivate_Enemy_Shield, this, enemy);
+		    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime+0.1), this.activate_Enemy_Shield, this, enemy);
+		},this);
+	    }
 	}
     },
 
@@ -1090,8 +1097,8 @@ BasicGame.MainMenu.prototype = {
 	    //this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 0.85), this.deactivate_Enemy_Shield, this, enemy);
 	    //this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime * 1.05), this.activate_Enemy_Shield, this, enemy);
 	    
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime-1), this.deactivate_Enemy_Shield, this, enemy);
-	    this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime+0.1), this.activate_Enemy_Shield, this, enemy);
+	    // this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime-1), this.deactivate_Enemy_Shield, this, enemy);
+	    // this.time.events.add(Phaser.Timer.SECOND * (enemy.shieldTime+0.1), this.activate_Enemy_Shield, this, enemy);
 	    
 	    cannon.shot = true;
 	}, this);

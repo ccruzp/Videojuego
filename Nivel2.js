@@ -434,12 +434,7 @@ BasicGame.Nivel2.prototype = {
 
 	    this.cannonPool.forEachAlive(function(cannon) {
 
-// <<<<<<< HEAD
 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !cannon.shot) {
-// =======
-// 		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !shot) {
-// 		    console.log('peace');
-// >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
 		    this.fire(cannon);
 		}
 	    }, this);
