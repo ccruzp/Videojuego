@@ -180,7 +180,7 @@ BasicGame.WinnerMenu.prototype = {
 	aux = 0;
 	this.rankBoolean = true; 
 	this.score = 0;
-	this.maxTime = 100; 
+	this.maxTime = 200; 
 	this.timeOfGame = Math.floor(this.timeOfGame);
 	console.log('timeOfGame ' + this.timeOfGame);
 	this.scoreTime = this.maxTime - this.timeOfGame;
