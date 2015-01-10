@@ -337,7 +337,18 @@ BasicGame.MainMenu.prototype = {
     
     // Creates the black hole bomb button.
     blackHoleButton_Setup: function() {
-	this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
+	// this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
+	this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', function() {
+	    this.bombPool.forEachAlive(function(bomb) {
+		bomb.kill();
+	    }, this);
+	    this.bombTextPool.forEach(function(l) {
+		l.visible = false;
+	    }, this);
+	    numberOfBombs = TOTAL_ENEMIES;
+	    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+	    this.bombOnMouseText.visible = true;
+	}, this, null, null, 1, 0);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
 	this.blackHoleButton.scale.setTo(0.25, 0.25);
 	buttons.add(this.blackHoleButton);
@@ -345,10 +356,20 @@ BasicGame.MainMenu.prototype = {
     
     //Setups the bomb that appears on the mouse
     bombOnMouse_Setup: function() {
-	this.bombOnMouse = this.add.sprite(1000, 1000, 'bomb');
+	this.bombOnMouse = this.add.sprite(this.blackHoleButton.x, this.blackHoleButton.y, 'bomb');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
-	this.bombOnMouse.scale.setTo(0.1, 0.1);
-	this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+	this.bombOnMouse.scale.setTo(0.15, 0.15);
+	// this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
+	this.bombOnMouse.inputEnabled = true;
+	this.bombOnMouse.input.enableDrag(true);
+	// this.bombOnMouse.events.onDragStart.add(function() {
+	//     console.log("STARTED")
+	// }, this);
+	this.bombOnMouse.events.onDragStop.add(function() {
+	    // console.log("STOPPED");
+	    usingBlackHole = true;
+	    this.put_Weapon();
+	}, this);
     },
 
     // button panel setup.
@@ -506,7 +527,6 @@ BasicGame.MainMenu.prototype = {
 	    usingBlackHole = (numberOfBombs > 0);
 	    if (!usingBlackHole) {
 		console.log('Im there');
-		// this.bombPool.removeAll();
 		this.blackHoleButton.frame = 0;
 		this.bombPool.forEachAlive(function(bomb) {
 		    bomb.kill();
@@ -515,6 +535,12 @@ BasicGame.MainMenu.prototype = {
 		    l.visible = false;
 		}, this);
 		numberOfBombs = TOTAL_ENEMIES;
+	    // } else {
+	    // 	this.find_Grid_Place();
+	    // 	x = this.allign_X(this.gridX-0.5);
+	    // 	y = this.allign_Y(this.gridY-0.5);
+	    // 	this.bombOnMouse.reset(x, y);
+	    // 	this.bombOnMouse.isDragged = true;
 	    }
 	}
     },
@@ -838,8 +864,8 @@ BasicGame.MainMenu.prototype = {
 
 	// Display for the time of the bomb.
 	var bomb = this.bombPool.getFirstExists(false);	
-	this.blackHoleButtonText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.blackHoleButtonText.anchor.setTo(0.5, 0.5);
+	this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.bombOnMouseText.anchor.setTo(0.5, 0.5);
 	
 	//THIS IS NOT IN THE DISPLAYS_SETUP OF LEVEL 1, check if errors happens
 	//------------------------------------------------
@@ -1350,6 +1376,7 @@ BasicGame.MainMenu.prototype = {
 	if (!started && this.beginGame) {
 	    if (usingBlackHole && (numberOfBombs > 0)) {
 		// Puts an instance of a bomb
+		this.find_Grid_Place();
 		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
 		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
 
@@ -1366,7 +1393,12 @@ BasicGame.MainMenu.prototype = {
 		placedBomb = true;
 		//}
 		this.blackHoleButton.frame = 0;
-		this.bombOnMouse.reset(1000, 1000);
+		if (numberOfBombs > 0) {
+		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		} else {
+		    this.bombOnMouse.reset(1000, 1000);
+		}
+		this.bombOnMouseText.visible = false;
     		usingBlackHole = false;
 		//this.line.reset(1000, 1000);
 		

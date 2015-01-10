@@ -50,7 +50,7 @@ BasicGame.Nivel1 = function (game) {
     this.velocityText; // Text display of velocity
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
-    this.blackHoleButtonText; // Text display the time before the bombs explode
+    this.bombOnMouseText; // Text display the time before the bombs explode
     
     this.initialLevelText; //Text with the level name shown in the blackScreen
     this.initialInstructionText;//Text with instruction shown in blackScreen
@@ -269,9 +269,6 @@ BasicGame.Nivel1.prototype = {
 	
 	//Start the game inside the grid
 	this.enemyOutOfGrid = false;
-
-	// Bomb that appears on the mouse
-	this.bombOnMouse_Setup();
 	
 	//Line that follows the bombs in the grid
 	//this.gridLine_Setup();
@@ -317,6 +314,9 @@ BasicGame.Nivel1.prototype = {
 	// // Create the locked buttons
 	this.lockedButtons_Setup();
 
+	// Bomb that appears on the mouse
+	this.bombOnMouse_Setup();
+
 	// Creating the text displays.
 	this.displays_Setup();
 	
@@ -350,13 +350,13 @@ BasicGame.Nivel1.prototype = {
 				    this.try_To_Destroy, null, this);
 	
 	// Hide the bomb cursors.
-	this.bombOnMouse.reset(1000,1000);
-	
+	// this.bombOnMouse.reset(1000,1000);
+	// console.log("PRUEBA " + this.input.mousePointer.isDown);
 	if (usingBlackHole) {
-	    this.find_Grid_Place();
-	    x = this.allign_X(this.gridX-0.5);
-	    y = this.allign_Y(this.gridY-0.5);
-	    this.bombOnMouse.reset(x,y);
+	    // this.find_Grid_Place();
+	    // x = this.allign_X(this.gridX-0.5);
+	    // y = this.allign_Y(this.gridY-0.5);
+	    // this.bombOnMouse.reset(x,y);
 	    
 	    // Display of the time left before the bomb explodes.
 	    this.bombTextPool.forEach(function(text) {
@@ -371,6 +371,8 @@ BasicGame.Nivel1.prototype = {
 	}
 	
 	// Update displays.
+	this.bombOnMouseText.x = this.bombOnMouse.x;
+	this.bombOnMouseText.y = this.bombOnMouse.y;
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
 	
@@ -425,10 +427,12 @@ BasicGame.Nivel1.prototype = {
 		// bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 		// this.simulationTime = this.simulationTime + bomb.time;
 		// this.explosionTimeCounter = bomb.time;
-		// this.blackHoleButtonText.text =  '' + this.explosionTimeCounter
+		// this.bombOnMouseText.text =  '' + this.explosionTimeCounter
 		;
 		this.enemyDistancePool.forEach(function(enemy) {
 		    // var enemy = this.enemyDistancePool.getFirstExists(false);
+		    this.bombOnMouse.reset(this.world.width/2, this.world.height -82);
+		    this.bombOnMouseText.visible = true;
 		    initialY = 40 - (enemy.height/2);
 		    //enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);	    
 		    enemy.speed = this.shuffleBag_Bomb_Get();
@@ -445,7 +449,7 @@ BasicGame.Nivel1.prototype = {
 		    bomb.frame = 1;
 		    this.simulationTime = this.simulationTime + bomb.time;
 		    // this.explosionTimeCounter = bomb.time;
-		    this.blackHoleButtonText.text =  '' + bomb.counter;
+		    this.bombOnMouseText.text =  '' + bomb.counter;
 		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
 		    text.visible = true;
 		    text.x = (this.allign_X(enemy.place))+38;

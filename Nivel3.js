@@ -60,7 +60,7 @@ BasicGame.Nivel3 = function(game) {
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.livesText; // Text display of lives
-    this.blackHoleButtonText; // Text display for the time in which the bomb will explode
+    this.bombOnMouseText; // Text display for the time in which the bomb will explode
     this.cannonButtonText; // Text display for the speed of the bullet.
     this.shieldButtonText; // Text display for the activaation time of the shield.
     this.initialLevelText; //Text with the level name shown in the blackScreen
@@ -304,10 +304,6 @@ BasicGame.Nivel3.prototype = {
 	this.shuffleBag_X_Axis_Setup();
 	this.shuffleBag_Bomb_Setup();
 	
-	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
-
-	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
-	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 	//this.gridLine_Setup();
 	/*
 	this.line = this.add.sprite(1000, 1000,'ground');
@@ -339,6 +335,10 @@ BasicGame.Nivel3.prototype = {
 	this.shieldButton_Setup(); // Creates the shield button.
 	this.playButton_Setup(); // Creates the play button.
 	// this.lockedButtons_Setup(); // Creates the locked buttons.
+
+	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
+	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
+	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -372,26 +372,32 @@ BasicGame.Nivel3.prototype = {
 	this.physics.arcade.overlap(this.enemyTimePool, this.enemyBulletPool, this.enemy_Hit, null, this);
 
 	//Hide the weapons cursors
-	this.bombOnMouse.reset(1000, 1000);
+	// this.bombOnMouse.reset(1000, 1000);
 	this.cannonOnMouse.reset(1000, 1000);
 	this.shieldOnMouse.reset(1000, 1000);
 	
 	if (usingBlackHole) {
-	    this.find_Grid_Place();
-	    x = this.allign_X(this.gridX - 0.5);
-	    y = this.allign_Y(this.gridY - 0.5);
-	    this.bombOnMouse.reset(x, y);
+	    // this.find_Grid_Place();
+	    // x = this.allign_X(this.gridX - 0.5);
+	    // y = this.allign_Y(this.gridY - 0.5);
+	    // this.bombOnMouse.reset(x, y);
 
-	    // Display of the time left before the bomb explodes.
-	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
-	    text.visible = true;
-	    text.text = BOMB_TOTAL_TIME;
-	    text.x = x;
-	    text.y = y;
+	    // // Display of the time left before the bomb explodes.
+	    // var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
+	    // text.visible = true;
+	    // text.text = BOMB_TOTAL_TIME;
+	    // text.x = x;
+	    // text.y = y;
 
-	    lineY = this.allign_Y(this.gridY - 0.5); 
+	    // lineY = this.allign_Y(this.gridY - 0.5); 
 	    //this.line.reset(LEFT_MARGIN, lineY);
-
+	    this.bombTextPool.forEach(function(text) {
+		var bomb = this.bombPool.getAt(this.bombTextPool.getIndex(text));
+		text.visible = true;
+		text.text = bomb.time;
+		text.x = x;
+		text.y = y;
+	    }, this);
 	} else if (usingCannon) {
 	     this.find_Grid_Place();
 	     x = this.allign_X(this.gridX - 0.5);
@@ -408,6 +414,8 @@ BasicGame.Nivel3.prototype = {
 	}
 	
 	// The amount of bombs remaining.
+	this.bombOnMouseText.x = this.bombOnMouse.x;
+	this.bombOnMouseText.y = this.bombOnMouse.y;
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 
 	// Updating existing bomb's text display.
@@ -503,7 +511,7 @@ BasicGame.Nivel3.prototype = {
 		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 		this.explosionTimeCounter = this.bombTime;
-		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
+		this.bombOnMouseText.text=  '' + this.explosionTimeCounter;
 		shieldTime = 0;
 		//this.shieldButtonText.text = '' + shieldTime;
 

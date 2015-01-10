@@ -64,7 +64,7 @@ BasicGame.Nivel2 = function(game) {
     this.levelText; // Text display of time
     this.explosionTimeText; // Text display for the explosionTimeCounter
     this.livesText; // Text display of lives
-    this.blackHoleButtonText; // Text display for the time in which the bomb will explode
+    this.bombOnMouseText; // Text display for the time in which the bomb will explode
     this.cannonButtonText; // Text display for the speed of the missile.
 
     this.initialLevelText; //Text with the level name shown in the blackScreen
@@ -297,10 +297,6 @@ BasicGame.Nivel2.prototype = {
 	this.make_Grid(option); //Creates game grid
 	
 	this.enemyOutOfGrid = false; // Start the game inside the grid.
-
-	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
-
-	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	
 	//this.gridLine_Setup();
 	/*
@@ -338,6 +334,10 @@ BasicGame.Nivel2.prototype = {
 	this.cannonButton_Setup(); // Creates the cannon button.
 	this.playButton_Setup(); // Creates the play button.
 	this.lockedButtons_Setup(); // Creates the locked buttons.
+
+	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
+
+	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -381,27 +381,33 @@ BasicGame.Nivel2.prototype = {
 	}, null, this);
 
 	//Hide the weapons cursors
-	this.bombOnMouse.reset(1000, 1000);
+	// this.bombOnMouse.reset(1000, 1000);
 	this.cannonOnMouse.reset(1000, 1000);
 
 	
 	if (usingBlackHole) {
-	    this.find_Grid_Place();
-	    x = this.allign_X(this.gridX - 0.5);
-	    y = this.allign_Y(this.gridY - 0.5);
-	    this.bombOnMouse.reset(x, y);
+	    // this.find_Grid_Place();
+	    // x = this.allign_X(this.gridX - 0.5);
+	    // y = this.allign_Y(this.gridY - 0.5);
+	    // this.bombOnMouse.reset(x, y);
 
-	    // Display of the time left before the bomb explodes.
-	    var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
-	    // text.anchor.setTo(0.5, 0.5);
-	    text.visible = true;
-	    text.text = BOMB_TOTAL_TIME;
-	    text.x = x;
-	    text.y = y;
+	    // // Display of the time left before the bomb explodes.
+	    // var text = this.bombTextPool.getAt(TOTAL_ENEMIES - 1);
+	    // // text.anchor.setTo(0.5, 0.5);
+	    // text.visible = true;
+	    // text.text = BOMB_TOTAL_TIME;
+	    // text.x = x;
+	    // text.y = y;
 
-	    lineY = this.allign_Y(this.gridY - 0.5); 
-	    //this.line.reset(LEFT_MARGIN, lineY);
-
+	    // lineY = this.allign_Y(this.gridY - 0.5); 
+	    // //this.line.reset(LEFT_MARGIN, lineY);
+	    this.bombTextPool.forEach(function(text) {
+		var bomb = this.bombPool.getAt(this.bombTextPool.getIndex(text));
+		text.visible = true;
+		text.text = bomb.time;
+		text.x = x;
+		text.y = y;
+	    }, this);
 	} else if (usingCannon) {
 	     this.find_Grid_Place();
 	     x = this.allign_X(this.gridX - 0.5);
@@ -410,6 +416,8 @@ BasicGame.Nivel2.prototype = {
 	}
 
 	// The amount of bombs remaining.
+	this.bombOnMouseText.x = this.bombOnMouse.x;
+	this.bombOnMouseText.y = this.bombOnMouse.y;
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 
 	// Updating existing bomb's text display.
@@ -469,7 +477,7 @@ BasicGame.Nivel2.prototype = {
 		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 		this.explosionTimeCounter = this.bombTime;
-		this.blackHoleButtonText.text=  '' + this.explosionTimeCounter;
+		this.bombOnMouseText.text=  '' + this.explosionTimeCounter;
 		
 		this.enemyVelocityPool.forEach(function(enemy) {
 		    this.get_Enemy_Distance_Speed(enemy);
