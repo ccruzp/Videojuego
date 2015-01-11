@@ -793,40 +793,159 @@ BasicGame.Nivel3.prototype = {
 			 this.you_Got_Shot);
     },
 
+    shield_Hit: function(shieldGen, bullet) {
+	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
+	// console.log("POS" +  enemy.pos);
+	// console.log("VEL" + enemy.shieldTime);
+	// console.log("TIME" + shieldGen.time);
+	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
+	console.log("ACTIVE" + shieldGen.shieldActive);
+	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
+	    console.log("GOL");
+	    bullet.angle = 0;
+	    bullet.body.velocity.y = -(bullet.body.velocity.y);
+	    shotRebound = true;
+	} else {
+	    lost = true;
+	    shieldGen.kill();
+	    bullet.kill();
+	}
+    },
+    
+    // Creates the shield button.
+    shieldButton_Setup: function() {
+	this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	this.shieldButton.anchor.setTo(0.5, 0.5);
+	this.shieldButton.scale.setTo(0.27, 0.27);
+	buttons.add(this.shieldButton);
+     },
+
+    shieldOnMouse_Setup: function() {
+	// Image that appears on the mouse when the cannon button is pressed.
+	this.shieldOnMouse = this.add.sprite(1000, 1000, 'shield');
+	this.shieldOnMouse.anchor.setTo(0.5, 0.5);
+	this.shieldOnMouse.scale.setTo(0.12, 0.12);
+	this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
+    },
+
+    // Creates the cannons.
+    shieldPool_Setup: function() {
+	this.shieldPool = this.add.group();
+	this.shieldPool.enableBody = true;
+	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
+	this.shieldPool.setAll('anchor.x', 0.5);
+	this.shieldPool.setAll('anchor.y', 0.5);
+	this.shieldPool.setAll('scale.x', 0.12);
+	this.shieldPool.setAll('scale.y', 0.12);
+	this.shieldPool.setAll('shieldActive', false);
+	this.shieldTextPool = this.add.group();
+	this.shieldPool.forEach(function(shield) {
+	    shield.body.setSize(100, 100, 0, -10);
+	    shield.inputEnabled = true;
+	    shield.events.onInputDown.add(function(shield) {
+		this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
+		shield.kill();
+		numberOfShields += 1;
+	    }, this);
+	    var text = this.add.text(0,0, '', { font: "25px Arial", fill: "rgb(0, 0, 0)", align: "left" }, this.shieldTextPool);
+	    text.visible = false;
+	    text.anchor.setTo(0.5, 0.5);
+	}, this);
+
+	// this.shieldPool.forEach(function(shield) {
+	//     // Adding the bomb animation to each bomb.
+	//     shield.animations.add('shield', [0, 1, 0], 10, false);
+	// }, this);
+    },
+     
+    shieldSelectorButtonsPool_Setup: function() {
+	this.shieldSelectorButtonsPool = this.add.group();
+	var chosen = this.add.sprite(803, 554, 'chosen');
+	this.shieldSelectorButtonsPool.add(chosen);
+	var button = this.add.button(903, 460, 'button1', function() {this.set_Shield_Time(1)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 481, 'button2', function() {this.set_Shield_Time(2)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 481, 'button3', function() {this.set_Shield_Time(3)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(877, 502, 'button4', function() {this.set_Shield_Time(4)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(903, 502, 'button5', function() {this.set_Shield_Time(5)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(929, 502, 'button6', function() {this.set_Shield_Time(6)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(864, 524, 'button7', function() {this.set_Shield_Time(7)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(890, 524, 'button8', function() {this.set_Shield_Time(8)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(916, 524, 'button9', function() {this.set_Shield_Time(9)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+	button = this.add.button(942, 524, 'button10', function() {this.set_Shield_Time(10)}, this, 1, 0, 1, 0);
+	this.shieldSelectorButtonsPool.add(button);
+
+	this.shieldSelectorButtonsPool.setAll('anchor.x', 0.5);
+	this.shieldSelectorButtonsPool.setAll('anchor.y', 0.5);
+	this.shieldSelectorButtonsPool.setAll('scale.x', 0.15);
+	this.shieldSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.shieldSelectorButtonsPool.setAll('frame', 0);
+	this.shieldSelectorButtonsPool.setAll('visible', false);
+	button = this.shieldSelectorButtonsPool.getAt(0);
+	button.scale.setTo(0.17, 0.17);
+	button.frame = 1;
+    },
+
+    // If the enemy's shild is deactivated the enemy is killed.
+    try_To_Destroy_Velocity: function(enemy, bullet) {
+	if (!enemyShield) {
+	    enemy.kill();
+	    //this.score = this.score + 80;
+	} else {
+	    var vel = bullet.body.velocity.y;
+	    bullet.body.velocity.y = -vel;
+	    bullet.angle = 180;
+	}
+    },
+    
+    you_Got_Shot: function() {
+	this.quit_Game(false);
+    },
+        
     // NO TOCAR SIN MI PERMISO :)
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
-    // render: function() {
-    // 	if (this.enemyTimePool.countLiving() > 0) {
-    // 	    this.enemyTimePool.forEachAlive(function(enemy) {
-    // 		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.bombPool.countLiving() > 0) {
-    // 	    this.bombPool.forEachAlive(function(bomb) {
-    // 		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.cannonPool.countLiving() > 0) {
-    // 	    this.cannonPool.forEachAlive(function(cannon) {
-    // 		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.missilePool.countLiving() > 0) {
-    // 	    this.missilePool.forEachAlive(function(missile) {
-    // 		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.shieldPool.countLiving() > 0) {
-    // 	    this.shieldPool.forEachAlive(function(shield) {
-    // 		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
-    // 	if (this.enemyBulletPool.countLiving() > 0) {
-    // 	    this.enemyBulletPool.forEachAlive(function(bullet) {
-    // 		this.game.debug.body(bullet, false, 'rgb(255, 0, 0)');
-    // 	    }, this);
-    // 	}
+    render: function() {
+    	if (this.enemyTimePool.countLiving() > 0) {
+    	    this.enemyTimePool.forEachAlive(function(enemy) {
+    		this.game.debug.body(enemy, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.bombPool.countLiving() > 0) {
+    	    this.bombPool.forEachAlive(function(bomb) {
+    		this.game.debug.body(bomb, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.cannonPool.countLiving() > 0) {
+    	    this.cannonPool.forEachAlive(function(cannon) {
+    		this.game.debug.body(cannon, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.missilePool.countLiving() > 0) {
+    	    this.missilePool.forEachAlive(function(missile) {
+    		this.game.debug.body(missile, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.shieldPool.countLiving() > 0) {
+    	    this.shieldPool.forEachAlive(function(shield) {
+    		this.game.debug.body(shield, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
+    	if (this.enemyBulletPool.countLiving() > 0) {
+    	    this.enemyBulletPool.forEachAlive(function(bullet) {
+    		this.game.debug.body(bullet, false, 'rgb(255, 0, 0)');
+    	    }, this);
+    	}
 
-    // }
+    }
 };

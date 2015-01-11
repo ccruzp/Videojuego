@@ -203,7 +203,7 @@ BasicGame.Nivel1.prototype = {
 	this.shieldButton_Setup = shieldButton_Setup;
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
 	this.shieldPool_Setup = shieldPool_Setup;
-	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;	
+	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
 	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
 	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
@@ -213,7 +213,6 @@ BasicGame.Nivel1.prototype = {
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-			 
 	this.start = start;
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
@@ -225,6 +224,7 @@ BasicGame.Nivel1.prototype = {
 	
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 
+	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 	// lost = false; // Boolean that says if the player lost the game.
