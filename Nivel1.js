@@ -222,6 +222,7 @@ BasicGame.Nivel1.prototype = {
     
     create: function () {
 	
+	TOTAL_ENEMIES = 1;
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 
 	this.enemyVelocityPool = null;
@@ -358,14 +359,22 @@ BasicGame.Nivel1.prototype = {
 	    y = this.allign_Y(this.gridY-0.5);
 	    this.bombOnMouse.reset(x,y);
 	    
-	    // Display of the time left before the bomb explodes.
-	    this.bombTextPool.forEach(function(text) {
+	    // Display for the time of the bomb.
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+	    text.visible = true;
+	    text.text = bomb.time;
+	    text.x = x;
+	    text.y = y;
+		
+	    /*this.bombTextPool.forEach(function(text) {
+		
 		var bomb = this.bombPool.getAt(this.bombTextPool.getIndex(text));
 		text.visible = true;
 		text.text = bomb.time;
 		text.x = x;
 		text.y = y;
-	    }, this);
+	    }, this);*/
 	    //lineY = this.allign_Y(this.gridY-0.5); 
 	    //this.line.reset(LEFT_MARGIN,lineY);
 	}
@@ -373,6 +382,10 @@ BasicGame.Nivel1.prototype = {
 	// Update displays.
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
+	
+	// Display for the time of the bomb.
+	var bomb = this.bombPool.getFirstExists(false);	
+	if(bomb!= null) this.blackHoleButtonText.text = '' + bomb.time;
 	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
@@ -427,6 +440,7 @@ BasicGame.Nivel1.prototype = {
 		// this.explosionTimeCounter = bomb.time;
 		// this.blackHoleButtonText.text =  '' + this.explosionTimeCounter
 		;
+		/*
 		this.enemyDistancePool.forEach(function(enemy) {
 		    // var enemy = this.enemyDistancePool.getFirstExists(false);
 		    initialY = 40 - (enemy.height/2);
@@ -451,6 +465,33 @@ BasicGame.Nivel1.prototype = {
 		    text.x = (this.allign_X(enemy.place))+38;
 		    text.text = 'Velocidad: ' + enemy.speed;
 		},this);
+		*/
+		if(this.timesPassed > 3){
+		    TOTAL_ENEMIES = 1;
+		    DISTANCE_ENEMIES = 1;
+		} else if (this.timesPassed > 1){
+		    TOTAL_ENEMIES = 2;
+		    DISTANCE_ENEMIES = 2;
+		}else {
+		    TOTAL_ENEMIES = 3;
+		    DISTANCE_ENEMIES = 3;		
+		}
+		
+		this.enemyDistancePool.destroy(true);
+		this.enemyDistanceTextPool.destroy(true);
+		this.bombPool.destroy(true);
+		this.bombTextPool.destroy(true);
+		
+		this.enemyDistancePool_Setup();
+		this.bombPool_Setup();
+		this.bombPool.forEach(function(bomb) {
+		    this.simulationTime = this.simulationTime + bomb.time; 
+		    // this.explosionTimeCounter = bomb.time; // Time counter
+		}, this);
+		
+		// Display for the time of the bomb.
+		//var bomb = this.bombPool.getFirstExists(false);	
+		//this.blackHoleButtonText = '' + bomb.time;
 		
 		// this.explosionTimeCounter = bomb.time;
 		numberOfBombs = TOTAL_ENEMIES;

@@ -1616,7 +1616,7 @@ BasicGame.MainMenu.prototype = {
     shuffleBag_Bomb_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
 	if (this.shuffleBagBomb.countLiving() == 0){
-	    this.shuffleBagBomb_Restart();
+	    this.shuffleBag_Bomb_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
 	element = this.shuffleBagBomb.getRandom( 5-(this.shuffleBagBomb.countLiving()));
