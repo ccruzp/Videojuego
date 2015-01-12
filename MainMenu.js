@@ -1050,7 +1050,9 @@ BasicGame.MainMenu.prototype = {
 	    //The commented lines are no longer used
  	    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
-	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    this.enemyPlace = this.shuffleBag_X_Axis_Get();
+	
+	    //this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    //This can be erased at any time, is used to test the function
 	    //--------------------------------------------------------------
