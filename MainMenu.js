@@ -1000,7 +1000,9 @@ BasicGame.MainMenu.prototype = {
 	    initialY =this.allign_Y(10-enemy.pos)
 	    //initialY = 55 - (enemy.height/2);
 	    //initialY = 50 - (enemy.height/2);
-	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    //this.enemyPlace= this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    this.enemyPlace = this.shuffleBag_X_Axis_Get();
+	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
@@ -1076,7 +1078,9 @@ BasicGame.MainMenu.prototype = {
 	    //The commented lines are no longer used
  	    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
-	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    this.enemyPlace = this.shuffleBag_X_Axis_Get();
+	
+	    //this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    //This can be erased at any time, is used to test the function
 	    //--------------------------------------------------------------
@@ -1398,7 +1402,11 @@ BasicGame.MainMenu.prototype = {
 		} else {
 		    this.bombOnMouse.reset(1000, 1000);
 		}
-		this.bombOnMouseText.visible = false;
+		
+		//var bomb = this.bombPool.getFirstExists(false);	
+		//if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+		
+		//this.bombOnMouseText.visible = false;
     		usingBlackHole = false;
 		//this.line.reset(1000, 1000);
 		
@@ -1648,7 +1656,7 @@ BasicGame.MainMenu.prototype = {
     shuffleBag_Bomb_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
 	if (this.shuffleBagBomb.countLiving() == 0){
-	    this.shuffleBagBomb_Restart();
+	    this.shuffleBag_Bomb_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
 	element = this.shuffleBagBomb.getRandom( 5-(this.shuffleBagBomb.countLiving()));

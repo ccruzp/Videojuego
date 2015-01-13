@@ -505,9 +505,47 @@ BasicGame.Nivel3.prototype = {
 	    } else{
 		
 		//Resets the enemies and bombs, maybe should be a function
+		
+		this.enemyBulletPool.destroy(true);
+		this.enemyTimePool.destroy(true);
+		this.enemyTimeTextPool.destroy(true);
+		this.bombPool.destroy(true);
+		this.bombTextPool.destroy(true);
+		this.missilePool.destroy(true);
+		this.cannonPool.destroy(true);
+		this.cannonTextPool.destroy(true);
+		this.shieldPool.destroy(true);
+		this.shieldTextPool.destroy(true);
+
+		//Set number of enemies in the next wave
+		if(this.timesPassed > 3){
+		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
+		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+		    TIME_ENEMIES = 1;
+		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		} else if (this.timesPassed > 1){
+		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
+		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+		    TIME_ENEMIES = 2;
+		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		}else {
+		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
+		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+		    TIME_ENEMIES = 3;
+		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		}
+		
+		this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
+		this.enemyTimePool_Setup(); // Setup the enemies.
+		this.bombPool_Setup(); // Create the bombs.
+		this.missilePool_Setup(); // Creating the bullets
+		this.cannonPool_Setup(); // Create the cannonPool.
+		this.shieldPool_Setup(); // Create the shieldPool.
+	
+
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
-		
+		/*
 		this.enemyVelocity = this.game.rnd.integerInRange(1, ROWS_NUMBER/2);
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
 		this.explosionTimeCounter = this.bombTime;
@@ -542,7 +580,7 @@ BasicGame.Nivel3.prototype = {
 		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
 		    shield.kill();
 		},this); 
-		
+		*/
 		this.explosionTimeCounter = this.bombTime;
 		numberOfBombs = TOTAL_ENEMIES;
 		numberOfCannons = TOTAL_ENEMIES

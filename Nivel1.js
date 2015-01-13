@@ -222,6 +222,7 @@ BasicGame.Nivel1.prototype = {
     
     create: function () {
 	
+	TOTAL_ENEMIES = 1;
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 
 	this.enemyVelocityPool = null;
@@ -353,28 +354,29 @@ BasicGame.Nivel1.prototype = {
 	// this.bombOnMouse.reset(1000,1000);
 	// console.log("PRUEBA " + this.input.mousePointer.isDown);
 	if (usingBlackHole) {
-	    // this.find_Grid_Place();
-	    // x = this.allign_X(this.gridX-0.5);
-	    // y = this.allign_Y(this.gridY-0.5);
-	    // this.bombOnMouse.reset(x,y);
 	    
-	    // Display of the time left before the bomb explodes.
-	    this.bombTextPool.forEach(function(text) {
-		var bomb = this.bombPool.getAt(this.bombTextPool.getIndex(text));
-		text.visible = true;
-		text.text = bomb.time;
-		text.x = x;
-		text.y = y;
-	    }, this);
-	    //lineY = this.allign_Y(this.gridY-0.5); 
-	    //this.line.reset(LEFT_MARGIN,lineY);
+	    // Display for the time of the bomb.
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+	    text.visible = true;
+	    text.text = bomb.time;
+	    text.x = x;
+	    text.y = y;
 	}
 	
 	// Update displays.
 	this.bombOnMouseText.x = this.bombOnMouse.x;
 	this.bombOnMouseText.y = this.bombOnMouse.y;
+	var bomb = this.bombPool.getFirstExists(false);	
+	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	else this.bombOnMouseText.text = 'JEJE';
+		
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
+	
+	// Display for the time of the bomb.
+	// var bomb = this.bombPool.getFirstExists(false);	
+	// if(bomb!= null) this.blackHoleButtonText.text = '' + bomb.time;
 	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
@@ -429,6 +431,7 @@ BasicGame.Nivel1.prototype = {
 		// this.explosionTimeCounter = bomb.time;
 		// this.bombOnMouseText.text =  '' + this.explosionTimeCounter
 		;
+		/*
 		this.enemyDistancePool.forEach(function(enemy) {
 		    // var enemy = this.enemyDistancePool.getFirstExists(false);
 		    this.bombOnMouse.reset(this.world.width/2, this.world.height -82);
@@ -455,6 +458,41 @@ BasicGame.Nivel1.prototype = {
 		    text.x = (this.allign_X(enemy.place))+38;
 		    text.text = 'Velocidad: ' + enemy.speed;
 		},this);
+		*/
+		if(this.timesPassed > 3){
+		    TOTAL_ENEMIES = 1;
+		    DISTANCE_ENEMIES = 1;
+		} else if (this.timesPassed > 1){
+		    TOTAL_ENEMIES = 2;
+		    DISTANCE_ENEMIES = 2;
+		}else {
+		    TOTAL_ENEMIES = 3;
+		    DISTANCE_ENEMIES = 3;		
+		}
+		
+		this.enemyDistancePool.destroy(true);
+		this.enemyDistanceTextPool.destroy(true);
+		this.bombPool.destroy(true);
+		this.bombTextPool.destroy(true);
+		//this.bombOnMouseText.destroy(true);
+
+		this.enemyDistancePool_Setup();
+		this.bombPool_Setup();
+		this.bombPool.forEach(function(bomb) {
+		    this.simulationTime = this.simulationTime + bomb.time; 
+		    // this.explosionTimeCounter = bomb.time; // Time counter
+		}, this);
+		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+	    
+		
+		// Display for the time of the bomb.
+		/*var bomb = this.bombPool.getFirstExists(false);	
+		this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+		this.bombOnMouseText.anchor.setTo(0.5, 0.5);
+		*/
+		// Display for the time of the bomb.
+		//var bomb = this.bombPool.getFirstExists(false);	
+		//this.blackHoleButtonText = '' + bomb.time;
 		
 		// this.explosionTimeCounter = bomb.time;
 		numberOfBombs = TOTAL_ENEMIES;
