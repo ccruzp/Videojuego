@@ -394,6 +394,7 @@ BasicGame.Nivel3.prototype = {
 
 	    // lineY = this.allign_Y(this.gridY - 0.5); 
 	    //this.line.reset(LEFT_MARGIN, lineY);
+	    /*
 	    this.bombTextPool.forEach(function(text) {
 		var bomb = this.bombPool.getAt(this.bombTextPool.getIndex(text));
 		text.visible = true;
@@ -401,6 +402,20 @@ BasicGame.Nivel3.prototype = {
 		text.x = x;
 		text.y = y;
 	    }, this);
+	    */
+	    this.find_Grid_Place();
+	    x = this.allign_X(this.gridX - 0.5);
+	    y = this.allign_Y(this.gridY - 0.5);
+	    this.bombOnMouse.reset(x, y);
+	    
+	    // Display for the time of the bomb.
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+	    text.visible = true;
+	    text.text = bomb.time;
+	    text.x = x;
+	    text.y = y;
+
 	} else if (usingCannon) {
 	     this.find_Grid_Place();
 	     x = this.allign_X(this.gridX - 0.5);
@@ -425,9 +440,14 @@ BasicGame.Nivel3.prototype = {
 	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
+	    /*
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 	    text.text = this.explosionTimeCounter;
 	    text.visible = (this.explosionTimeCounter > 0);
+	    */
+	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+	    text.text = bomb.counter;
+	    text.visible = (bomb.counter > 0);
 	}, this);
 	
 	// Updating buttons displays
@@ -488,14 +508,26 @@ BasicGame.Nivel3.prototype = {
 	// }, this);
 	
 	// If explosionTimeCounter is 0 start explosion animation.
-	if (this.explosionTimeCounter == 0) {
+	/*if (this.explosionTimeCounter == 0) {
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.animations.play('explode');
 		bomb.events.onAnimationComplete.add(function() {
 		    bomb.kill();
 		}, this);
 	    }, this);
-	}
+	}*/
+	this.bombPool.forEachAlive(function(bomb) {
+	    if (bomb.counter == 0) {
+		bomb.animations.play('explode');
+		bomb.events.onAnimationComplete.add(function() {
+		    bomb.kill();
+		    // if (this.enemyDistancePool.countLiving() == 0) {
+		    // 	bomb.kill();
+		    // }
+		}, this);
+	    }
+	}, this);
+
 
 	/*((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES))*/
 	// if (!this.enemyVelocityPool.getFirstAlive()) {
@@ -546,7 +578,7 @@ BasicGame.Nivel3.prototype = {
 		this.missilePool_Setup(); // Creating the bullets
 		this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
-	
+		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
