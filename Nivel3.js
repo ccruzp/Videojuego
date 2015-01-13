@@ -289,6 +289,9 @@ BasicGame.Nivel3.prototype = {
 	//Beep sound of the bomb
 	bombBeep = this.add.audio('bombBeep');
 
+	//Sound of the exploding bomb
+	blackHoleSound = this.add.audio('blackHoleSound');
+	
 	//Beep sound of the bomb
 	clockSound = this.add.audio('clock');
 //----------------------------------------------------
@@ -417,7 +420,9 @@ BasicGame.Nivel3.prototype = {
 	this.bombOnMouseText.x = this.bombOnMouse.x;
 	this.bombOnMouseText.y = this.bombOnMouse.y;
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
-
+	var bomb = this.bombPool.getFirstExists(false);	
+	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
@@ -961,6 +966,7 @@ BasicGame.Nivel3.prototype = {
     // NO TOCAR SIN MI PERMISO :)
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
+    /*
     render: function() {
     	if (this.enemyTimePool.countLiving() > 0) {
     	    this.enemyTimePool.forEachAlive(function(enemy) {
@@ -993,5 +999,5 @@ BasicGame.Nivel3.prototype = {
     	    }, this);
     	}
 
-    }
+    }*/
 };

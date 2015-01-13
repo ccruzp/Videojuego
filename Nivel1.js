@@ -369,7 +369,6 @@ BasicGame.Nivel1.prototype = {
 	this.bombOnMouseText.y = this.bombOnMouse.y;
 	var bomb = this.bombPool.getFirstExists(false);	
 	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
-	else this.bombOnMouseText.text = 'JEJE';
 		
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
