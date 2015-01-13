@@ -974,7 +974,9 @@ BasicGame.MainMenu.prototype = {
 	    initialY =this.allign_Y(10-enemy.pos)
 	    //initialY = 55 - (enemy.height/2);
 	    //initialY = 50 - (enemy.height/2);
-	    this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    //this.enemyPlace= this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
+	    this.enemyPlace = this.shuffleBag_X_Axis_Get();
+	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
