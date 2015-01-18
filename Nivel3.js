@@ -798,7 +798,7 @@ BasicGame.Nivel3.prototype = {
 	    time = this.time.elapsedSecondsSince(this.timeOfGame);
 	    time = time - this.simulationTime;
 	    time = time - TIMES_TO_PASS * 4;
-	    this.level = 3;
+	    this.level = 0;
 	    nextState = 'WinnerMenu';
 	} else {
 	    //	Then let's go back to the game over menu.
