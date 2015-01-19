@@ -251,7 +251,8 @@ BasicGame.Nivel2.prototype = {
 	this.simulationTime = 0;
 
 	//The message given to the player this level
-	this.levelMessage = 'Dispara a la velocidad correcta para destruir al enemigo.';
+	//this.levelMessage = 'Dispara a la velocidad correcta para destruir al enemigo.';
+	this.levelMessage = 'Dispara a la velocidad correcta para detener al enemigo.';
 	//ENEMY_SHIELD_SPEED = 2.5; //Refer to this.enemyShieldSpeed
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies

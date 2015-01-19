@@ -254,7 +254,8 @@ BasicGame.Nivel1.prototype = {
 	this.simulationTime = 0;
 	
 	//The message given to the player this level
-	this.levelMessage = 'Coloca la bomba en el lugar correcto para destruir al enemigo.';
+	//this.levelMessage = 'Coloca la bomba en el lugar correcto para destruir al enemigo.';
+	this.levelMessage = 'Coloca la trampa a la distancia correcta para atrapar al enemigo.';
 	
 	// Creating background.
 	background = this.add.sprite(0, 0, 'background');

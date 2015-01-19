@@ -258,7 +258,8 @@ BasicGame.Nivel3.prototype = {
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
 	//The message given to the player this level
-	this.levelMessage = 'Activa el escudo en el momento correcto para devolver\n                         el disparo al enemigo.';
+	//this.levelMessage = 'Activa el escudo en el momento correcto para devolver\n                         el disparo al enemigo.';
+	this.levelMessage = 'Activa el escudo en el momento correcto para devolver\n                         el ataque al enemigo.';
 	//this.beginGame = true;
 
 	started = false; // Boolean that says if the game has begun.

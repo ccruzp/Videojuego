@@ -664,9 +664,14 @@ BasicGame.MainMenu.prototype = {
 	// this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, '¡No dejes que los enemigos lleguen a tu planeta!', { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	// this.initialInstructionText.anchor.setTo(0.5,0.5);
 
+	
 	this.initialInstructionText = this.add.text(this.world.width/2, this.world.height/2, this.levelMessage, { font: "30px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.initialInstructionText.anchor.setTo(0.5,0.5);
-
+	if(this.level = 1){
+	    this.initialInstructionText.addColor('#11ffff', 12);
+	    this.initialInstructionText.addColor('#ffffff', 25);
+	}
+	
 	// this.initialInstructionText = this.add.text(this.world.width/2, 3*this.world.height/5, 'Recuerda que: distancia = velocidad * tiempo', { font: "15px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	// this.initialInstructionText.anchor.setTo(0.5,0.5);
 
