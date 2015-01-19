@@ -353,9 +353,11 @@ BasicGame.MainMenu.prototype = {
 	    this.bombTextPool.forEach(function(l) {
 		l.visible = false;
 	    }, this);
-	    numberOfBombs = TOTAL_ENEMIES;
-	    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
-	    this.bombOnMouseText.visible = true;
+	    numberOfBombs = DISTANCE_ENEMIES;
+	    if(DISTANCE_ENEMIES > 0){
+		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		this.bombOnMouseText.visible = true;
+	    }
 	}, this, null, null, 1, 0);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
 	this.blackHoleButton.scale.setTo(0.25, 0.25);
@@ -542,7 +544,7 @@ BasicGame.MainMenu.prototype = {
 		this.bombTextPool.forEach(function(l) {
 		    l.visible = false;
 		}, this);
-		numberOfBombs = TOTAL_ENEMIES;
+		numberOfBombs = DISTANCE_ENEMIES;
 	    // } else {
 	    // 	this.find_Grid_Place();
 	    // 	x = this.allign_X(this.gridX-0.5);
@@ -678,7 +680,7 @@ BasicGame.MainMenu.prototype = {
 	this.bombPool = this.add.group();
 	this.bombPool.enableBody = true;
 	this.bombPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.bombPool.createMultiple(TOTAL_ENEMIES, 'bomb');
+	this.bombPool.createMultiple(DISTANCE_ENEMIES, 'bomb');
 	this.bombPool.setAll('anchor.x', 0.4);
 	this.bombPool.setAll('anchor.y', 0.4);
 	this.bombPool.setAll('scale.x', 0.15);
@@ -753,7 +755,7 @@ BasicGame.MainMenu.prototype = {
 	this.cannonPool = this.add.group();
 	this.cannonPool.enableBody = true;
 	this.cannonPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.cannonPool.createMultiple(TOTAL_ENEMIES, 'cannon');
+	this.cannonPool.createMultiple(VELOCITY_ENEMIES, 'cannon');
 	this.cannonPool.setAll('anchor.x', 0.5);
 	this.cannonPool.setAll('anchor.y', 0.5);
 	this.cannonPool.setAll('scale.x', 0.06);
@@ -871,16 +873,18 @@ BasicGame.MainMenu.prototype = {
 	this.bombsRemainingText.anchor.setTo(0.5, 0.5);
 
 	// Display for the time of the bomb.
-	var bomb = this.bombPool.getFirstExists(false);	
-	this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.bombOnMouseText.anchor.setTo(0.5, 0.5);
+	if(DISTANCE_ENEMIES > 0){
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	    this.bombOnMouseText.anchor.setTo(0.5, 0.5);
+	}
 	
 	//THIS IS NOT IN THE DISPLAYS_SETUP OF LEVEL 1, check if errors happens
 	//------------------------------------------------
-	if(this.level > 1){
-	// Display for the velocity of the missile.
-	this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	this.cannonButtonText.anchor.setTo(0.5, 0.5);
+	if(VELOCITY_ENEMIES > 0){
+	    // Display for the velocity of the missile.
+	    this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	    this.cannonButtonText.anchor.setTo(0.5, 0.5);
 	}
 	//------------------------------------------------	
 
@@ -926,7 +930,7 @@ BasicGame.MainMenu.prototype = {
 	this.enemyBulletPool = this.add.group();
 	this.enemyBulletPool.enableBody = true;
 	this.enemyBulletPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyBulletPool.createMultiple(TOTAL_ENEMIES, 'bullet');
+	this.enemyBulletPool.createMultiple(TIME_ENEMIES, 'bullet');
 	this.enemyBulletPool.setAll('anchor.x', 0.5);
 	this.enemyBulletPool.setAll('anchor.y', 0.5);
 	this.enemyBulletPool.setAll('angle', 180);
@@ -939,7 +943,7 @@ BasicGame.MainMenu.prototype = {
 	this.enemyDistancePool = this.add.group();
 	this.enemyDistancePool.enableBody = true;
 	this.enemyDistancePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyDistancePool.createMultiple(TOTAL_ENEMIES, 'distanceEnemy');
+	this.enemyDistancePool.createMultiple(DISTANCE_ENEMIES, 'distanceEnemy');
 	this.enemyDistancePool.setAll('anchor.x', 0.5);
 	this.enemyDistancePool.setAll('anchor.y', 0.025);
 	this.enemyDistancePool.setAll('outOfBoundsKill', true);
@@ -1064,7 +1068,7 @@ BasicGame.MainMenu.prototype = {
 	this.enemyVelocityPool.enableBody = true;
 	this.enemyVelocityPool.physicsBodyType = Phaser.Physics.ARCADE;
 	// console.log("T" + TOTAL_ENEMIES);
-	this.enemyVelocityPool.createMultiple(TOTAL_ENEMIES,'velocityEnemy');
+	this.enemyVelocityPool.createMultiple(VELOCITY_ENEMIES,'velocityEnemy');
 	this.enemyVelocityPool.setAll('anchor.x', 0.5);
 	this.enemyVelocityPool.setAll('anchor.y', 0.2);
 	this.enemyVelocityPool.setAll('outOfBoundsKill', true);
@@ -1339,33 +1343,44 @@ BasicGame.MainMenu.prototype = {
 	lockedButtons.setAll('scale.y', 0.12);
 	
 	//Generalized form, it should cover the level 1, 2 and 3
+	/*
 	if(this.level < 3){
 	    lockedButtons.getAt(0).reset(this.world.width/2 + 67, this.world.height - 50);
 	}
 	if(this.level < 2){
 	    lockedButtons.getAt(1).reset(this.world.width/2 - 67, this.world.height - 50);
+	}*/
+/*
+	if(this.level == 1 ){
+	    lockedButtons.getAt(1).reset(this.world.width/2 - 67, this.world.height - 50);
+	    lockedButtons.getAt(0).reset(this.world.width/2 + 67, this.world.height - 50);
 	}
-	
-	//---------------------------------------------------------------------
-	//Nivel 1 version------------------------
-	/*lockedButtons.getAt(0).reset(this.world.width/2 - 67, this.world.height - 50);
-	lockedButtons.getAt(1).reset(this.world.width/2 + 67, this.world.height - 50);*/
-	//---------------------------------------
-	//Nivel 2 version------------------------
-	/*lockedButtons.getAt(0).reset(this.world.width/2 + 67, this.world.height - 50);*/
-	//---------------------------------------
-	//---------------------------------------------------------------------
-	
-	// beforeButton = this.blackHoleButton;
-	// for(i = 0; i < 2; i++) {
-	//     x = lockedButtons.getAt(i).reset(beforeButton.x + 100, beforeButton.y);
-	//     beforeButton = x;
-	// };
-	// beforeButton = this.playButton;
-	// lockedButtons.forEachDead(function(button) {
-	//     button.reset(beforeButton.x + 100, beforeButton.y);
-	//     beforeButton = button;
-	// }, this);
+	else if(this.level == 2 ){
+	    lockedButtons.getAt(1).reset(this.world.width/2, this.world.height - 82);
+	    lockedButtons.getAt(0).reset(this.world.width/2 + 67, this.world.height - 50);
+	}
+	else if(this.level == 3 ){
+	    lockedButtons.getAt(1).reset(this.world.width/2 - 67, this.world.height - 50);
+	    lockedButtons.getAt(0).reset(this.world.width/2, this.world.height - 82);
+	    } else {}
+*/
+	// The game should not have a level without unlocked weapons
+	// If there are not distance enemies, lock the bombs
+	if(DISTANCE_ENEMIES == 0){
+	    var button = lockedButtons.getFirstExists(false);	
+	    button.reset(this.world.width/2, this.world.height - 82);
+	}
+	// If there are not velocity enemies, lock the cannons
+	if(VELOCITY_ENEMIES == 0){
+	    var button = lockedButtons.getFirstExists(false);	
+	    button.reset(this.world.width/2 - 67, this.world.height - 50);
+	}
+	// If there are not time enemies, lock the shields
+	if(TIME_ENEMIES == 0){
+	    var button = lockedButtons.getFirstExists(false);	
+	    button.reset(this.world.width/2 + 67, this.world.height - 50);
+	}
+
     },
     
     // Creates the missiles.
@@ -1373,7 +1388,7 @@ BasicGame.MainMenu.prototype = {
 	this.missilePool = this.add.group();
 	this.missilePool.enableBody = true;
 	this.missilePool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.missilePool.createMultiple(TOTAL_ENEMIES, 'missile');
+	this.missilePool.createMultiple(VELOCITY_ENEMIES, 'missile');
 	this.missilePool.setAll('anchor.x', 0.5);
 	this.missilePool.setAll('anchor.y', 0.5);
 	this.missilePool.setAll('scale.x', 0.2);
@@ -1542,7 +1557,7 @@ BasicGame.MainMenu.prototype = {
 		/*this.bombTextPool.forEach(function(display) {
 		  display.visible = false;
 		  }, this);*/
-		numberOfCannons = TOTAL_ENEMIES;
+		numberOfCannons = VELOCITY_ENEMIES;
 	    }
 	}
     },
@@ -1558,7 +1573,7 @@ BasicGame.MainMenu.prototype = {
 		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
 		    shield.kill();
 		}, this);
-		numberOfShields = TOTAL_ENEMIES;
+		numberOfShields = TIME_ENEMIES;
 	    }
 	}
     },
@@ -1615,7 +1630,7 @@ BasicGame.MainMenu.prototype = {
 	this.shieldPool = this.add.group();
 	this.shieldPool.enableBody = true;
 	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
+	this.shieldPool.createMultiple(TIME_ENEMIES, 'shield');
 	this.shieldPool.setAll('anchor.x', 0.5);
 	this.shieldPool.setAll('anchor.y', 0.5);
 	this.shieldPool.setAll('scale.x', 0.12);

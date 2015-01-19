@@ -256,6 +256,7 @@ BasicGame.Nivel2.prototype = {
 	
 	DISTANCE_ENEMIES = 0; // Amount of distance enemies
 	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
+	TIME_ENEMIES = 0;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
 
 	// Initializing boolean variables.
@@ -276,8 +277,8 @@ BasicGame.Nivel2.prototype = {
 	this.beginGame = true;
 	this.lost = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
-	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
-	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
+	numberOfBombs = DISTANCE_ENEMIES; // Number of bombs available in this level.
+	numberOfCannons = VELOCITY_ENEMIES; // Number of cannons available in this level.
 	
 	//Beep sound of the bomb
 	bombBeep = this.add.audio('bombBeep');
@@ -343,7 +344,7 @@ BasicGame.Nivel2.prototype = {
 	
 	this.lockedButtons_Setup(); // Creates the locked buttons.
 
-	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
+	//this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 
@@ -414,11 +415,12 @@ BasicGame.Nivel2.prototype = {
 	}
 
 	// The amount of bombs remaining.
-	this.bombOnMouseText.x = this.bombOnMouse.x;
-	this.bombOnMouseText.y = this.bombOnMouse.y;
-	var bomb = this.bombPool.getFirstExists(false);	
-	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
-	
+	if(DISTANCE_ENEMIES > 0){
+	    this.bombOnMouseText.x = this.bombOnMouse.x;
+	    this.bombOnMouseText.y = this.bombOnMouse.y;
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	}
 	// Update Displays
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
@@ -508,7 +510,9 @@ BasicGame.Nivel2.prototype = {
 		this.cannonPool_Setup(); // Create the cannonPool.
 		this.enemyVelocityLaserPool_Setup();
 		this.enemy_ShieldTime_Text_Setup(); // Enemy's shieldTime text
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		if(DISTANCE_ENEMIES > 0){
+		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		}
 		/*
 		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
@@ -558,8 +562,8 @@ BasicGame.Nivel2.prototype = {
 		*/
 		this.explosionTimeCounter = this.bombTime;
 		missileSpeed = 0;
-		numberOfBombs = TOTAL_ENEMIES;
-		numberOfCannons = TOTAL_ENEMIES;
+		numberOfBombs = DISTANCE_ENEMIES;
+		numberOfCannons = VELOCITY_ENEMIES;
 		shot = false;
 		placedBomb = false;
 		started = false;

@@ -228,7 +228,8 @@ BasicGame.Nivel1.prototype = {
 	
 	TOTAL_ENEMIES = 1;
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
-
+	VELOCITY_ENEMIES = 0;
+	TIME_ENEMIES = 0;
 	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
@@ -241,7 +242,7 @@ BasicGame.Nivel1.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	
-	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
+	numberOfBombs = DISTANCE_ENEMIES; // Number of bombPool available in this level.
 	//Loading sounds
 	bombBeep = this.add.audio('bombBeep');
 	blackHoleSound = this.add.audio('blackHoleSound');
@@ -425,7 +426,7 @@ BasicGame.Nivel1.prototype = {
 	// }
 	
 	// if ((!this.bombPool.getFirstAlive()) && (this.timeCounter < TOTAL_TIME) && (numberOfBombs < TOTAL_ENEMIES)) {
-	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == TOTAL_ENEMIES ){
+	if ((!this.bombPool.getFirstAlive()) && this.enemyDistancePool.countDead() == DISTANCE_ENEMIES ){
 	    this.timesPassed -=1;
 	    
 	    if(this.timesPassed ==0){
@@ -502,7 +503,7 @@ BasicGame.Nivel1.prototype = {
 		//this.blackHoleButtonText = '' + bomb.time;
 		
 		// this.explosionTimeCounter = bomb.time;
-		numberOfBombs = TOTAL_ENEMIES;
+		numberOfBombs = DISTANCE_ENEMIES;
 		placedBomb = false;
 		//usingBlackHole = true;
 		started = false;

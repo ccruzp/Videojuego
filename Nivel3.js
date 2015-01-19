@@ -283,9 +283,9 @@ BasicGame.Nivel3.prototype = {
 	//-------------------------------------------------------------
 
 	placedBomb = false; // Says if a bomb has been placed on the grid.
-	numberOfBombs = TOTAL_ENEMIES; // Number of bombs available in this level.
-	numberOfCannons = TOTAL_ENEMIES; // Number of cannons available in this level.
-	numberOfShields = TOTAL_ENEMIES; // Number of shields available in this level.
+	numberOfBombs = DISTANCE_ENEMIES; // Number of bombs available in this level.
+	numberOfCannons = VELOCITY_ENEMIES; // Number of cannons available in this level.
+	numberOfShields = TIME_ENEMIES; // Number of shields available in this level.
 	background = this.add.sprite(0, 0, 'background'); // Creating background.
 	this.physics.startSystem(Phaser.Physics.ARCADE); // Game physics system.
 
@@ -324,7 +324,7 @@ BasicGame.Nivel3.prototype = {
 	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the bullets for the cannons.
-	this.cannonPool_Setup(); // Create the cannonPool.
+	//this.cannonPool_Setup(); // Create the cannonPool.
 	this.shieldPool_Setup(); // Create the shieldPool.
 	
 	// Counters.
@@ -334,20 +334,20 @@ BasicGame.Nivel3.prototype = {
 	// The buttons panel
 	this.buttonPanel_Setup();
 	this.selector_Setup();
-	this.cannonSelectorButtonsPool_Setup();
+	//this.cannonSelectorButtonsPool_Setup();
 	this.shieldSelectorButtonsPool_Setup();
 	buttons = this.add.group(); // Group for buttons.
 
 	this.blackHoleButton_Setup(); // Creates the black hole button.
-	this.cannonButton_Setup(); // Creates the cannon button.
+	//this.cannonButton_Setup(); // Creates the cannon button.
 	this.shieldButton_Setup(); // Creates the shield button.
 	this.playButton_Setup(); // Creates the play button.
 	this.homeButton_Setup(); // Create the Home Button
 	
-	// this.lockedButtons_Setup(); // Creates the locked buttons.
+	this.lockedButtons_Setup(); // Creates the locked buttons.
 
-	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
-	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
+	//this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
+	//this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 
 	// Creating the text displays.
@@ -383,7 +383,7 @@ BasicGame.Nivel3.prototype = {
 
 	//Hide the weapons cursors
 	// this.bombOnMouse.reset(1000, 1000);
-	this.cannonOnMouse.reset(1000, 1000);
+	//this.cannonOnMouse.reset(1000, 1000);
 	this.shieldOnMouse.reset(1000, 1000);
 	
 	if (usingBlackHole) {
@@ -439,12 +439,13 @@ BasicGame.Nivel3.prototype = {
 	}
 	
 	// The amount of bombs remaining.
-	this.bombOnMouseText.x = this.bombOnMouse.x;
-	this.bombOnMouseText.y = this.bombOnMouse.y;
-	this.bombsRemainingText.text = 'x' + numberOfBombs;
-	var bomb = this.bombPool.getFirstExists(false);	
-	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
-	
+	if(DISTANCE_ENEMIES > 0){
+	    this.bombOnMouseText.x = this.bombOnMouse.x;
+	    this.bombOnMouseText.y = this.bombOnMouse.y;
+	    this.bombsRemainingText.text = 'x' + numberOfBombs;
+	    var bomb = this.bombPool.getFirstExists(false);	
+	    if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	}
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
 	    /*
@@ -479,16 +480,18 @@ BasicGame.Nivel3.prototype = {
 		clockSound.play('', 0, 0.1, false, false);
 	    }
 
-	    this.cannonPool.forEachAlive(function(cannon) {
-		if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !cannon.shot) {
-		    this.fire(cannon);
-		}
-	    }, this);
-
-	    this.enemyBulletPool.forEachAlive(function(bullet) {
-		this.out_Of_GridY(bullet);
-	    }, this);
+	    if(VELOCITY_ENEMIES > 0){
+		this.cannonPool.forEachAlive(function(cannon) {
+		    if(this.missilePool.countLiving() < VELOCITY_ENEMIES && !cannon.shot) {
+			this.fire(cannon);
+		    }
+		}, this);
 	    
+		this.enemyBulletPool.forEachAlive(function(bullet) {
+		    this.out_Of_GridY(bullet);
+		}, this);
+		
+	    }
 	    if (!enemyShot) {
 		this.enemyTimePool.forEachAlive(function(enemy) {
 	    	    this.enemy_Fire(enemy);
@@ -556,8 +559,8 @@ BasicGame.Nivel3.prototype = {
 		this.bombPool.destroy(true);
 		this.bombTextPool.destroy(true);
 		this.missilePool.destroy(true);
-		this.cannonPool.destroy(true);
-		this.cannonTextPool.destroy(true);
+		//this.cannonPool.destroy(true);
+		//this.cannonTextPool.destroy(true);
 		this.shieldPool.destroy(true);
 		this.shieldTextPool.destroy(true);
 
@@ -583,9 +586,9 @@ BasicGame.Nivel3.prototype = {
 		this.enemyTimePool_Setup(); // Setup the enemies.
 		this.bombPool_Setup(); // Create the bombs.
 		this.missilePool_Setup(); // Creating the bullets
-		this.cannonPool_Setup(); // Create the cannonPool.
+		//this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		//this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
@@ -626,9 +629,9 @@ BasicGame.Nivel3.prototype = {
 		},this); 
 		*/
 		this.explosionTimeCounter = this.bombTime;
-		numberOfBombs = TOTAL_ENEMIES;
-		numberOfCannons = TOTAL_ENEMIES
-		numberOfShields = TOTAL_ENEMIES;
+		numberOfBombs = DISTANCE_ENEMIES;
+		numberOfCannons = VELOCITY_ENEMIES
+		numberOfShields = TIME_ENEMIES;
 		shot = false;
 		placedBomb = false;
 		enemyShield = false;
@@ -887,7 +890,7 @@ BasicGame.Nivel3.prototype = {
 			 this.try_To_Destroy_Velocity,
 			 this.you_Got_Shot);
     },
-
+/*
     shield_Hit: function(shieldGen, bullet) {
 	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
 	// console.log("POS" +  enemy.pos);
@@ -929,7 +932,7 @@ BasicGame.Nivel3.prototype = {
 	this.shieldPool = this.add.group();
 	this.shieldPool.enableBody = true;
 	this.shieldPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.shieldPool.createMultiple(TOTAL_ENEMIES, 'shield');
+	this.shieldPool.createMultiple(TIME_ENEMIES, 'shield');
 	this.shieldPool.setAll('anchor.x', 0.5);
 	this.shieldPool.setAll('anchor.y', 0.5);
 	this.shieldPool.setAll('scale.x', 0.12);
@@ -1006,7 +1009,7 @@ BasicGame.Nivel3.prototype = {
     you_Got_Shot: function() {
 	this.quit_Game(false);
     },
-        
+  */      
     // NO TOCAR SIN MI PERMISO :)
     // This function is for debug (and other stuff xD, but we're using it for
     // debugging sprite's sizes).    
