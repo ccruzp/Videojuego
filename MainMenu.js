@@ -1346,9 +1346,16 @@ BasicGame.MainMenu.prototype = {
 	lockedButtons.setAll('anchor.y', 0.5);
 	lockedButtons.setAll('outOfBoundsKill', true);
 	lockedButtons.setAll('checkWorldBounds', true);
+	lockedButtons.setAll('alpha',0.85);
+	//This is used with lock4.png
+	lockedButtons.setAll('scale.x', 0.03);
+	lockedButtons.setAll('scale.y', 0.03);
+	
+	/* This is used with lockedButton.png
 	lockedButtons.setAll('scale.x', 0.12);
 	lockedButtons.setAll('scale.y', 0.12);
-	
+	*/
+
 	//Generalized form, it should cover the level 1, 2 and 3
 	/*
 	if(this.level < 3){

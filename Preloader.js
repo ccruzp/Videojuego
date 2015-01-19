@@ -40,7 +40,9 @@ BasicGame.Preloader.prototype = {
 	this.load.spritesheet('button9', 'assets/Spritesheets/Selector/Selector_Number_9.png', 171, 200, 2);
 	this.load.spritesheet('button10', 'assets/Spritesheets/Selector/Selector_Number_10.png', 171, 200, 2);
 
-	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
+	//this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
+	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock4.png');
+	
 	this.load.image('ground', 'assets/platform2.png');
 	
 	this.load.image('missile', 'assets/missile.png');
