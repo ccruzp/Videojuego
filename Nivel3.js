@@ -787,11 +787,11 @@ BasicGame.Nivel3.prototype = {
 	bombBeep.stop();
 	clockSound.stop();
 	this.started = false;
-	this.bombOnMouse.kill();
+	//this.bombOnMouse.kill();
 	this.bombPool.destroy(true);
 	this.missilePool.destroy(true);
 	this.enemyBulletPool.destroy(true);
-	this.cannonPool.destroy(true);
+	//this.cannonPool.destroy(true);
 	buttons.destroy(true);
 	// lockedButtons.destroy(true);
 	this.otherTextPool.destroy(true);
