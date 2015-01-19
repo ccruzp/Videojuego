@@ -114,6 +114,8 @@ BasicGame.Nivel1.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   go_To_Home,
+		   homeButton_Setup,	 
 		   increase_Fire,
 		   increase_Time_Shield,
 		   lockedButtons_Setup,
@@ -183,6 +185,8 @@ BasicGame.Nivel1.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.go_To_Home = go_To_Home;
+	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
 	this.increase_Time_Shield = increase_Time_Shield;
 	this.lockedButtons_Setup = lockedButtons_Setup;
@@ -228,6 +232,7 @@ BasicGame.Nivel1.prototype = {
 	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
+	goHome = false; // Boolean used to return to the main Menu
 	// lost = false; // Boolean that says if the player lost the game.
 	// Boolean that says if the player has selected the black hole bomb.
 	usingBlackHole = false; // Says if the player selected the bomb.
@@ -235,6 +240,7 @@ BasicGame.Nivel1.prototype = {
 	usingShield = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
+	
 	numberOfBombs = TOTAL_ENEMIES; // Number of bombPool available in this level.
 	//Loading sounds
 	bombBeep = this.add.audio('bombBeep');
@@ -311,6 +317,9 @@ BasicGame.Nivel1.prototype = {
 	
 	// // Create the play button
 	this.playButton_Setup();
+	
+	// Create the Home Button
+	this.homeButton_Setup();
 	
 	// // Create the locked buttons
 	this.lockedButtons_Setup();
@@ -483,7 +492,6 @@ BasicGame.Nivel1.prototype = {
 		}, this);
 		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 	    
-		
 		// Display for the time of the bomb.
 		/*var bomb = this.bombPool.getFirstExists(false);	
 		this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
@@ -542,6 +550,9 @@ BasicGame.Nivel1.prototype = {
 	    // level = 1;
 	    nextState = 'GameOverMenu';
 	}
+	if(goHome){
+	    nextState = 'MainMenu';
+	}
 	this.state.start(nextState, true, false, time, this.level,this.score,
 			 this.activate_Enemy_Shield,
 			 this.allign_X,
@@ -574,6 +585,8 @@ BasicGame.Nivel1.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
 			 this.increase_Fire,
 			 this.increase_Time_Shield,
 			 this.lockedButtons_Setup,

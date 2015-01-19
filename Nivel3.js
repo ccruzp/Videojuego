@@ -127,6 +127,8 @@ BasicGame.Nivel3.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   go_To_Home,
+		   homeButton_Setup,	 
 		   increase_Fire,
 		   increase_Time_Shield,
 		   lockedButtons_Setup,
@@ -196,6 +198,8 @@ BasicGame.Nivel3.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.go_To_Home = go_To_Home;
+	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
 	this.increase_Time_Shield = increase_Time_Shield;
 	this.lockedButtons_Setup = lockedButtons_Setup;
@@ -258,6 +262,7 @@ BasicGame.Nivel3.prototype = {
 	//this.beginGame = true;
 
 	started = false; // Boolean that says if the game has begun.
+	goHome = false; // Boolean used to return to the main Menu
 	console.log("TURURUR " + started);
 	lost = false; // Boolean that says if the game has been lost.
 	shot = false; // Boolean that says if the cannons have shot.
@@ -337,6 +342,8 @@ BasicGame.Nivel3.prototype = {
 	this.cannonButton_Setup(); // Creates the cannon button.
 	this.shieldButton_Setup(); // Creates the shield button.
 	this.playButton_Setup(); // Creates the play button.
+	this.homeButton_Setup(); // Create the Home Button
+	
 	// this.lockedButtons_Setup(); // Creates the locked buttons.
 
 	this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
@@ -806,6 +813,9 @@ BasicGame.Nivel3.prototype = {
 	    // level = 2;
 	    nextState = 'GameOverMenu';
 	}
+	if(goHome){
+	    nextState = 'MainMenu';
+	}
 	this.state.start(nextState, true, false, 
 			 time, this.level,this.score,
 			 this.activate_Enemy_Shield,
@@ -839,6 +849,8 @@ BasicGame.Nivel3.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
 			 this.increase_Fire,
 			 this.increase_Time_Shield,
 			 this.lockedButtons_Setup,

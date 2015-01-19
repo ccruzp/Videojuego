@@ -109,6 +109,8 @@ BasicGame.MainMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
 			 this.increase_Fire,
 			 this.increase_Time_Shield,
 			 this.lockedButtons_Setup,
@@ -153,6 +155,7 @@ BasicGame.MainMenu.prototype = {
 	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 	// this.music.stop();
 	
+
 	//	And start the actual game
 	// this.newGameButton.destroy();
 	// this.text.destroy();
@@ -197,6 +200,8 @@ BasicGame.MainMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
 			 this.increase_Fire,
 			 this.increase_Time_Shield,
 			 this.lockedButtons_Setup,
@@ -286,6 +291,9 @@ BasicGame.MainMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
+			 
 			 this.increase_Fire,
 			 this.increase_Time_Shield,
 			 this.lockedButtons_Setup,
@@ -1286,6 +1294,24 @@ BasicGame.MainMenu.prototype = {
 	// console.log("ENETIME"+enemy.shieldTime);
     },
 
+    // Function used to return to the main menu
+    go_To_Home: function(){
+	//Return to the main menu only if the game has begun
+	if(this.beginGame){
+	    goHome = true;
+	    this.quit_Game(false);
+	}
+    },
+
+    // Creates the play button
+    homeButton_Setup: function() {
+	this.homeButton = this.add.button(this.world.width - 65.45, this.world.centerY - 100 , 'homeButton', this.go_To_Home, this, 0, 0, 1, 0);
+	this.homeButton.anchor.setTo(0.5, 0.5);
+	this.homeButton.scale.setTo(0.7, 0.7);
+	buttons.add(this.homeButton);
+    },
+
+
     // Increases the velocity of the missiles.
     increase_Fire: function() {
 	if (!started) {
@@ -2072,4 +2098,11 @@ this.shuffleBag_Setup
 /*
 Added:
 this.shieldPool_Setup
+*/
+
+// Added-Erased 18-01-2015
+/*
+Added: 
+this.homeButton_Setup
+this.go_To_Home:
 */
