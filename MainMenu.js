@@ -679,7 +679,7 @@ BasicGame.MainMenu.prototype = {
 
 	this.mouseToContinueText = this.add.text(this.world.width/2, 4*this.world.height/5, 'Presiona el mouse para continuar', { font: "20px Arial", fill: "#ffffff", align: "left" },this.instructionsTextPool);
 	this.mouseToContinueText.anchor.setTo(0.5,0.5);
-	
+		
     },
         
     //Creates the bombPool
@@ -896,9 +896,13 @@ BasicGame.MainMenu.prototype = {
 	//------------------------------------------------	
 
 	// Game score display.
-	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
+	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center", weight: "bold", }, this.otherTextPool);
 	this.scoreText.anchor.set(0.5);
 
+
+	this.roundText = this.add.text(65.45, 200,'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7' , { font: "bold 20px Arial", fill: "#00ffff", align: "center" },this.otherTextPool);
+	this.roundText.anchor.setTo(0.5,0.5);
+	
     },
 
     // The enemy's shot.

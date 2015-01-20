@@ -86,7 +86,7 @@ BasicGame.Nivel2 = function(game) {
     this.simulationTime
 
     // Variable to play the level multiple times
-    this.timesPassed = TIMES_TO_PASS;
+    this.timesPassed;
     
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
@@ -259,7 +259,9 @@ BasicGame.Nivel2.prototype = {
 	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
 	TIME_ENEMIES = 0;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
-
+	TIMES_TO_PASS = 7;
+	this.timesPassed = TIMES_TO_PASS;
+    
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
 	goHome = false; //Boolean used to return to the main Menu
@@ -490,11 +492,11 @@ BasicGame.Nivel2.prototype = {
 		this.shieldTimeText.destroy(true);
 		
 		//Set number of enemies in the next wave
-		if(this.timesPassed > 3){
+		if(this.timesPassed > 5){
 		    DISTANCE_ENEMIES = 0; 
 		    VELOCITY_ENEMIES = 1; 
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		} else if (this.timesPassed > 1){
+		} else if (this.timesPassed > 3){
 		    DISTANCE_ENEMIES = 0; 
 		    VELOCITY_ENEMIES = 2; 
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
@@ -514,6 +516,7 @@ BasicGame.Nivel2.prototype = {
 		if(DISTANCE_ENEMIES > 0){
 		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 		}
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		/*
 		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));

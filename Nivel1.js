@@ -230,6 +230,7 @@ BasicGame.Nivel1.prototype = {
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 	VELOCITY_ENEMIES = 0;
 	TIME_ENEMIES = 0;
+	TIMES_TO_PASS = 7;
 	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
@@ -469,10 +470,10 @@ BasicGame.Nivel1.prototype = {
 		    text.text = 'Velocidad: ' + enemy.speed;
 		},this);
 		*/
-		if(this.timesPassed > 3){
+		if(this.timesPassed > 5){
 		    TOTAL_ENEMIES = 1;
 		    DISTANCE_ENEMIES = 1;
-		} else if (this.timesPassed > 1){
+		} else if (this.timesPassed > 3){
 		    TOTAL_ENEMIES = 2;
 		    DISTANCE_ENEMIES = 2;
 		}else {
@@ -493,7 +494,7 @@ BasicGame.Nivel1.prototype = {
 		    // this.explosionTimeCounter = bomb.time; // Time counter
 		}, this);
 		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
-	    
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		// Display for the time of the bomb.
 		/*var bomb = this.bombPool.getFirstExists(false);	
 		this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);

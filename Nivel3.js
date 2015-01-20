@@ -83,7 +83,7 @@ BasicGame.Nivel3 = function(game) {
     this.simulationTime;
     
     // Variable to play the level multiple times
-    this.timesPassed = TIMES_TO_PASS;
+    this.timesPassed;
     
     //Aligned enemy in the grid.
     this.enemyPlace = 6;
@@ -254,7 +254,7 @@ BasicGame.Nivel3.prototype = {
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
 	//Why is this here????------------------------------------------------
 	
-	TIMES_TO_PASS = 5;	
+	TIMES_TO_PASS = 7;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
 	//The message given to the player this level
@@ -566,12 +566,12 @@ BasicGame.Nivel3.prototype = {
 		this.shieldTextPool.destroy(true);
 
 		//Set number of enemies in the next wave
-		if(this.timesPassed > 3){
+		if(this.timesPassed > 5){
 		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
 		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
 		    TIME_ENEMIES = 1;
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
-		} else if (this.timesPassed > 1){
+		} else if (this.timesPassed > 3){
 		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
 		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
 		    TIME_ENEMIES = 2;
@@ -590,6 +590,7 @@ BasicGame.Nivel3.prototype = {
 		//this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
 		//this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
