@@ -510,12 +510,23 @@ BasicGame.MainMenu.prototype = {
 	buttons.add(plusButton);
     },
 
-    // Creates the play button
+    // Creates the play buttons
     playButton_Setup: function() {
 	this.playButton = this.add.button(this.world.centerX, this.world.height - 35, 'playButton', this.start, this, 0, 0, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
 	this.playButton.scale.setTo(0.04, 0.04);
 	buttons.add(this.playButton);
+
+	this.playButton1 = this.add.button(this.world.centerX + 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	this.playButton1.anchor.setTo(0.5, 0.5);
+	this.playButton1.scale.setTo(0.11, 0.11);
+	buttons.add(this.playButton1);
+
+	this.playButton2 = this.add.button(this.world.centerX - 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	this.playButton2.anchor.setTo(0.5, 0.5);
+	this.playButton2.scale.setTo(0.11, 0.11);
+	buttons.add(this.playButton2);
+
     },
 
     //DEPRECATED, USE DISPLAYS_SETUP INSTEAD
