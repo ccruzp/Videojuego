@@ -415,7 +415,7 @@ BasicGame.MainMenu.prototype = {
 	    }
 	}
     },
-
+    
     //This function detects the place in the grid of an object.
     //Use it for objects that belong to the grid space.
     find_Grid_Place: function() {
@@ -981,9 +981,17 @@ BasicGame.MainMenu.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    //enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
-	    console.log('I crash in enemyDistance');
+	    console.log('Remainder of Times passed:' + this.timesPassed%2);
+	    
 	    enemy.place = this.shuffleBag_X_Axis_Get();
-		    
+	    
+	    if(TOTAL_ENEMIES > 1){
+		while(enemy.place %2 != this.timesPassed%2){
+		    console.log('I have been there before');
+		    enemy.place = this.shuffleBag_X_Axis_Get();
+		}
+	    }
+	    
 	    aux1 = this.allign_X(enemy.place)-(GRID_SPACE/2);
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
@@ -1007,7 +1015,8 @@ BasicGame.MainMenu.prototype = {
 	this.enemyDistanceTextPool = this.add.group();
 	// Velocity of each enemy.
 	this.enemyDistancePool.forEach(function(enemy) {
-	    var text = this.add.text((this.allign_X(enemy.place))+38, 20, 'Velocidad: ' + enemy.speed, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyDistanceTextPool);
+	    /*var text = this.add.text((this.allign_X(enemy.place))+38, 20, 'Velocidad: ' + enemy.speed, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyDistanceTextPool);*/
+	    var text = this.add.text((this.allign_X(enemy.place))-19, 14, 'Velocidad: \n' + enemy.speed, { font: "14px Arial", fill: "#ffffff", align: "center" }, this.enemyDistanceTextPool);
 	    text.visible = true;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
