@@ -269,7 +269,8 @@ BasicGame.Nivel2.prototype = {
 	enemyShield = true; // Boolean that says if the shields are activated.
 	selectedSpeed = false; // Boolean that says if the player selected a speed for the cannon.
 	missileSpeed = 0; // The speed of the missiles.
-
+	placedBomb = false; // Says if a bomb has been placed on the grid.
+	lastValueHigh = true; //Auxiliar boolean to control variability of cases  		
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
 	//-------------------------------------------------------------

@@ -1175,6 +1175,21 @@ BasicGame.MainMenu.prototype = {
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
 	    this.get_Enemy_Distance_Speed(enemy);
+	    
+	    aux = 0;
+	    if(TOTAL_ENEMIES < 3){
+		while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
+		    //enemy.shieldTime = this.shuffleBag_Bomb_Get();
+		    this.get_Enemy_Distance_Speed(enemy);
+		    console.log('Im trying to change your case');
+		    aux = aux + 1;
+		}  
+	    }
+	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+	    lastValueHigh = !lastValueHigh;
+	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
+	    aux = 0;
+	    
 	    this.simulationTime = this.simulationTime + enemy.shieldTime;
 	    //initialY = 50 - (enemy.height/2);
 //	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
@@ -1182,8 +1197,17 @@ BasicGame.MainMenu.prototype = {
 	    //The commented lines are no longer used
  	    initialY =this.allign_Y(10-enemy.pos)/*+ (enemy.height/7)*/;
 // >>>>>>> 15591947b44f925a54d43b0defc9e55c25554336
+	    
 	    this.enemyPlace = this.shuffleBag_X_Axis_Get();
-	
+	    
+	    //This controls enemies X axis 
+	    if(TOTAL_ENEMIES > 1){
+		while(this.enemyPlace %2 != this.timesPassed%2){
+		    console.log('I have been there before in X');
+		    this.enemyPlace = this.shuffleBag_X_Axis_Get();
+		}
+	    }
+	    
 	    //this.enemyPlace = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
 	    
 	    //This can be erased at any time, is used to test the function
