@@ -1124,7 +1124,10 @@ BasicGame.MainMenu.prototype = {
 	this.enemyTimeTextPool = this.add.group();
 	// Velocity of each enemy.
 	this.enemyTimePool.forEach(function(enemy) {
-	    var text = this.add.text(/*(this.allign_X(this.enemyPlace))*/enemy.x+60, enemy.y, 'Velocidad: ' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyTimeTextPool);
+	    /*var text = this.add.text((this.allign_X(this.enemyPlace))enemy.x+60, enemy.y, 'Velocidad: \n' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "left" }, this.enemyTimeTextPool);*/
+	    
+	    var text = this.add.text(/*(this.allign_X(this.enemyPlace))*/enemy.x, enemy.y-55, 'Velocidad: \n' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "center" }, this.enemyTimeTextPool);
+	    
 	    text.visible = true;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
