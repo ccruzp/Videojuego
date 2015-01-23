@@ -710,9 +710,52 @@ BasicGame.MainMenu.prototype = {
 	    
 	    //Do this if there are Distance Enemies
 	    if(DISTANCE_ENEMIES > 0){
+		
 		//Setting the bomb time given the Distance enemies
 		var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
+		
 		bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
+		aux = 0;
+		console.log('This case: ' + enemy.speed*bomb.time);
+		if(TOTAL_ENEMIES < 3){
+		    while( (enemy.speed*bomb.time) == lastMultiplicationValue && aux != 10){
+			bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
+			console.log('Im trying to give you unrepeated cases');
+			console.log('New case: ' + enemy.speed*bomb.time);
+		
+			aux = aux + 1;
+		    }  
+		}
+		if(aux == 10) {
+		    console.log('Your game crashed and you have to restart your PC. Look! I Gave you a repeated case!');
+		    aux = 0;
+		    //
+		    // (enemy.speed > 2) == lastValueHigh)
+		    while(aux != 10 && (enemy.speed*bomb.time) == lastMultiplicationValue && (enemy.speed*bomb.time)<11){
+			enemy.speed = this.shuffleBag_Bomb_Get();
+			
+			console.log('Im trying to give you unrepeated cases. DEATH case');
+			console.log('New case: ' + enemy.speed*bomb.time);
+			
+			aux = aux + 1;
+			this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb))
+			var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+			text.text = 'Velocidad: \n' + enemy.speed;
+		    }
+		}
+		
+		if(aux == 10){
+		    console.log('Dude, I really tried');
+		    console.log('I do this so you can win your game');
+		    enemy.speed = 3;
+		    bomb.time = 3;
+		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
+		    text.text = 'Velocidad: \n' + enemy.speed;
+		}
+		
+		aux = 0;
+		lastMultiplicationValue = enemy.speed*bomb.time;
+		
 	    } else{
 		bomb.time = this.game.rnd.integerInRange(2, 10);
 	    }
@@ -981,13 +1024,14 @@ BasicGame.MainMenu.prototype = {
 	    // enemy.reset(this.rnd.integerInRange(200, 800), 100);
 	    initialY = 40 - (enemy.height/2);
 	    //enemy.place = this.game.rnd.integerInRange(1, COLUMNS_NUMBER);
-	    console.log('Remainder of Times passed:' + this.timesPassed%2);
+	    //console.log('Remainder of Times passed:' + this.timesPassed%2);
 	    
 	    enemy.place = this.shuffleBag_X_Axis_Get();
 	    
+	    //This controls enemies X axis 
 	    if(TOTAL_ENEMIES > 1){
 		while(enemy.place %2 != this.timesPassed%2){
-		    console.log('I have been there before');
+		    console.log('I have been there before in X');
 		    enemy.place = this.shuffleBag_X_Axis_Get();
 		}
 	    }
@@ -995,7 +1039,22 @@ BasicGame.MainMenu.prototype = {
 	    aux1 = this.allign_X(enemy.place)-(GRID_SPACE/2);
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
+	    
 	    enemy.speed = this.shuffleBag_Bomb_Get();
+	    
+	    aux = 0;
+	    if(TOTAL_ENEMIES < 3){
+		while( ((enemy.speed > 2) == lastValueHigh) && aux != 10 ){
+		    enemy.speed = this.shuffleBag_Bomb_Get();
+		    console.log('Im trying to change your speed');
+		    aux = aux + 1;
+		}  
+	    }
+	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+	    
+	    lastValueHigh = !lastValueHigh;
+	    aux = 0;
+
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
 	    
@@ -1813,7 +1872,7 @@ BasicGame.MainMenu.prototype = {
     shuffleBag_X_Axis_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
 	if (this.shuffleBagXAxis.countLiving() == 0){
-	    this.shuffleBagXAxis_Restart();
+	    this.shuffleBag_X_Axis_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
 	element = this.shuffleBagXAxis.getRandom( 16-(this.shuffleBagXAxis.countLiving()));

@@ -241,6 +241,8 @@ BasicGame.Nivel1.prototype = {
 	usingCannon = false;
 	usingShield = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
+	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
+	lastMultiplicationValue = 88; //Auxiliar to avoid repeated cases
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	
 	numberOfBombs = DISTANCE_ENEMIES; // Number of bombPool available in this level.
