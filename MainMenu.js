@@ -986,7 +986,9 @@ BasicGame.MainMenu.prototype = {
 	this.shieldTimeText = this.add.group();
 	
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
-	    var display = this.add.text(enemy.x + 25, enemy.y, 'Tiempo: ' + enemy.shieldTime, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.shieldTimeText);
+	    /*var display = this.add.text(enemy.x + 25, enemy.y, 'Tiempo: ' + enemy.shieldTime, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.shieldTimeText);*/
+	    var display = this.add.text(enemy.x-32, enemy.y-54, 'Tiempo: \n' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "center" }, this.shieldTimeText);
+	    
 	},this);
     },
      
