@@ -269,7 +269,9 @@ BasicGame.Nivel3.prototype = {
 	shot = false; // Boolean that says if the cannons have shot.
 	enemyShield = true; // Boolean that says if the shields are activated.
 	enemyShot = false; // Boolean that says if the enemy has shoot.
-	shotRebound = false // Boolean that says if the bullet rebounded on a shield.
+	//shotRebound = false // Boolean that says if the bullet rebounded on a shield.
+	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
+	lastMultiplicationValue = 88;
 
 	missileSpeed = 0; // The speed of the missile shot by the player.
 	shieldTime = 0; // The time in which the shield will activate.
@@ -637,7 +639,7 @@ BasicGame.Nivel3.prototype = {
 		shot = false;
 		placedBomb = false;
 		enemyShield = false;
-		shotRebound = false;
+		//shotRebound = false;
 		enemyShot = false;
 		started = false;
 		//------------------------------------------------------------
