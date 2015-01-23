@@ -378,7 +378,7 @@ BasicGame.Nivel3.prototype = {
     update: function() {
 	// If an enemy and a bomb overlaps this.try_To_Destroy is activated.
 	// this.physics.arcade.overlap(this.enemyVelocityPool, this.bulletPool, this.try_To_Destroy_Time, null, this);
-	this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
+	//this.physics.arcade.overlap(this.cannonPool, this.missilePool, this.you_Got_Shot, null, this);
 	this.physics.arcade.overlap(this.shieldPool, this.enemyBulletPool, this.shield_Hit, null, this);
 	this.physics.arcade.overlap(this.enemyTimePool, this.enemyBulletPool, this.enemy_Hit, null, this);
 
@@ -498,7 +498,7 @@ BasicGame.Nivel3.prototype = {
 	    	    this.enemy_Fire(enemy);
 		}, this);
 		this.shieldPool.forEachAlive(function(shield) {
-		    this.time.events.add(Phaser.Timer.SECOND * (shield.time - 0.14), function(shield) {
+		    this.time.events.add(Phaser.Timer.SECOND * (shield.time - 0.4), function(shield) {
 			shield.shieldActive = true;
 		    }, this, shield);
 		    this.time.events.add(Phaser.Timer.SECOND * (shield.time + 0.2), function(shield) {

@@ -964,7 +964,7 @@ BasicGame.MainMenu.prototype = {
 	var bullet = this.enemyBulletPool.getAt(this.enemyTimePool.getIndex(enemy));
 	bullet.reset(enemy.x, enemy.y /* enemy.height/2*/);
 	bullet.angle = 180;
-	console.log(enemyBulletSpeed);
+	//console.log(enemyBulletSpeed);
 	console.log("Bala: "+this.enemyBulletPool.getIndex(bullet));
 	/*bullet.body.velocity.y = enemyBulletSpeed * GRID_SPACE;*/
 	bullet.body.velocity.y = enemy.shieldTime * GRID_SPACE;
@@ -974,7 +974,7 @@ BasicGame.MainMenu.prototype = {
 
     // If the enemy is shot.
     enemy_Hit: function(enemy, bullet) {
-	if (shotRebound) {
+	if (bullet.shotRebound) {
 	    enemy.kill();
 	    bullet.kill();
 	    this.score = this.score+80;
@@ -1003,6 +1003,9 @@ BasicGame.MainMenu.prototype = {
 	this.enemyBulletPool.setAll('angle', 180);
 	// this.enemyBulletPool.setAll('outOfBoundsKill', true);
 	// this.enemyBulletPool.setAll('checkWorldBounds', true);
+	this.enemyBulletPool.forEach(function(bullet) {
+	    bullet.shotRebound = false;
+	},this);
     },
 
     // Creates the distance enemies of the level.
@@ -1721,23 +1724,38 @@ BasicGame.MainMenu.prototype = {
     },
 
     shield_Hit: function(shieldGen, bullet) {
-	var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
+	
+	//var enemy = this.enemyTimePool.getAt(this.enemyBulletPool.getIndex(bullet));
 	// console.log("POS" +  enemy.pos);
 	// console.log("VEL" + enemy.shieldTime);
 	// console.log("TIME" + shieldGen.time);
+	/*
 	console.log("GOLA" + (enemy.pos == enemy.shieldTime * shieldGen.time));
 	console.log("ACTIVE" + shieldGen.shieldActive);
+	*/
 	// if (shieldGen.shieldActive && (enemy.pos == enemy.shieldTime * shieldGen.time)) {
+	/*
 	if (enemy.pos == enemy.shieldTime * shieldGen.time) {
 	    console.log("GOL");
 	    bullet.angle = 0;
 	    bullet.body.velocity.y = -(bullet.body.velocity.y);
-	    shotRebound = true;
+	    bullet.shotRebound = true;
+	} else {
+	    lost = true;
+	    shieldGen.kill();
+	    bullet.kill();
+	}*/
+	if (shieldGen.shieldActive) {
+	    //console.log("GOL");
+	    bullet.angle = 0;
+	    bullet.body.velocity.y = -(bullet.body.velocity.y);
+	    bullet.shotRebound = true;
 	} else {
 	    lost = true;
 	    shieldGen.kill();
 	    bullet.kill();
 	}
+	
     },
     
     // Creates the shield button.
