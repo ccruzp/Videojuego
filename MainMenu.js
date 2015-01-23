@@ -1095,13 +1095,18 @@ BasicGame.MainMenu.prototype = {
 	this.enemyTimePool.setAll('checkWorldBounds', true);
 	//this.enemyTimePool.setAll('scale.x', 0.075);
 	//this.enemyTimePool.setAll('scale.y', 0.075);
-	this.enemyTimePool.setAll('scale.x', 0.055);
-	this.enemyTimePool.setAll('scale.y', 0.055);
+	this.enemyTimePool.setAll('scale.x', 0.5);
+	this.enemyTimePool.setAll('scale.y', 0.5);
+	
+
+	//Used with the enemy that occupies two freaking spaces in the grid
+	//this.enemyTimePool.setAll('scale.x', 0.055);
+	//this.enemyTimePool.setAll('scale.y', 0.055);
 	console.log('Time Enemies');
 	this.enemyTimePool.forEach(function(enemy) {
 	    this.get_Enemy_Distance_Speed(enemy);
 	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
-	    initialY =this.allign_Y(10-enemy.pos)
+	    initialY = this.allign_Y(10-enemy.pos) + (GRID_SPACE/2)
 	    //initialY = 55 - (enemy.height/2);
 	    //initialY = 50 - (enemy.height/2);
 	    //this.enemyPlace= this.game.rnd.integerInRange(1, COLUMNS_NUMBER);

@@ -58,7 +58,9 @@ BasicGame.Preloader.prototype = {
 	// Loading enemies' spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
 	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip_spritesheet.png', 499, 500, 2);
-	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
+	this.load.image('timeEnemy', 'assets/enemy1.png');
+
+	//this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 
 	// Velocity enemy's laser
 	this.load.spritesheet('velocityEnemyLaser', 'assets/Spritesheets/velocityEnemyLaser_spritesheet.png', 491, 4970, 11);
