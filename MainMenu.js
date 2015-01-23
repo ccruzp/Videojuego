@@ -397,8 +397,7 @@ BasicGame.MainMenu.prototype = {
 		this.quit_Game(true);
 	    }
 	    //placedBomb should be a number, not a boolean
-	    if (placedBomb) {
-		
+	    if (placedBomb) {	
 		//This should be changed to work with each bomb counter
 		// this.explosionTimeCounter -= 1;
 		// if(this.explosionTimeCounter >= 1){ bombBeep.play('',0,1,false);}
@@ -413,6 +412,49 @@ BasicGame.MainMenu.prototype = {
 		    }
 		}, this);
 	    }
+	    
+	    if(VELOCITY_ENEMIES>0){
+		this.enemyVelocityPool.forEachAlive(function(enemy) {
+		    enemy.shieldTimeCounter -= 1;
+		    /*if (bomb.counter >= 1) { 
+			bombBeep.play('', 0, 1, false);
+		    }
+		    if (bomb.counter == 0 ) { 
+			blackHoleSound.play('', 0, 1, false);
+		    }*/
+		    var text = this.shieldTimeText.getAt(this.enemyVelocityPool.getIndex(enemy));
+		    text.text = '        \n' + enemy.shieldTimeCounter;
+		    text.align = 'right';
+		    text.visible = (enemy.shieldTimeCounter > 0);
+		}, this);
+	    }
+
+	    if(TIME_ENEMIES>0){
+		
+		this.shieldPool.forEachAlive(function(shield) {
+		    shield.timeCounter -= 1;
+		    var text = this.shieldTextPool.getAt(this.shieldPool.getIndex(shield));
+
+		    text.text = shield.timeCounter;
+		    text.visible = (shield.timeCounter > 0);
+		}, this);
+		
+		this.enemyTimePool.forEachAlive(function(enemy) {
+		   // enemy.shieldTimeCounter -= 1;
+		    /*if (bomb.counter >= 1) { 
+			bombBeep.play('', 0, 1, false);
+		    }
+		    if (bomb.counter == 0 ) { 
+			blackHoleSound.play('', 0, 1, false);
+		    }*/
+		    var text = this.enemyTimeTextPool.getAt(this.enemyTimePool.getIndex(enemy));
+		    text.text = '           \n' + enemy.shieldTime;
+		    text.align = 'center';
+		    text.visible = (enemy.shieldTime > 0);
+		}, this);
+				
+	    }
+	    
 	}
     },
     
@@ -977,6 +1019,8 @@ BasicGame.MainMenu.prototype = {
 	if (bullet.shotRebound) {
 	    enemy.kill();
 	    bullet.kill();
+	    var text = this.enemyTimeTextPool.getAt(this.enemyTimePool.getIndex(enemy));
+	    text.visible = false; 
 	    this.score = this.score+80;
 	}
     },
@@ -987,7 +1031,7 @@ BasicGame.MainMenu.prototype = {
 	
 	this.enemyVelocityPool.forEachAlive(function(enemy) {
 	    /*var display = this.add.text(enemy.x + 25, enemy.y, 'Tiempo: ' + enemy.shieldTime, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.shieldTimeText);*/
-	    var display = this.add.text(enemy.x-32, enemy.y-54, 'Tiempo: \n' + enemy.shieldTime, { font: "17px Arial", fill: "#ffffff", align: "center" }, this.shieldTimeText);
+	    var display = this.add.text(enemy.x-32, enemy.y-54, 'Tiempo: \n' + enemy.shieldTimeCounter, { font: "17px Arial", fill: "#ffffff", align: "center" }, this.shieldTimeText);
 	    
 	},this);
     },
@@ -1123,7 +1167,7 @@ BasicGame.MainMenu.prototype = {
 	    lastValueHigh = !lastValueHigh;
 	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
 	    aux = 0;
-	    
+	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
 	    initialY = this.allign_Y(10-enemy.pos) + (GRID_SPACE/2)
 	    //initialY = 55 - (enemy.height/2);
@@ -1224,7 +1268,7 @@ BasicGame.MainMenu.prototype = {
 	    lastValueHigh = !lastValueHigh;
 	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
 	    aux = 0;
-	    
+	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + enemy.shieldTime;
 	    //initialY = 50 - (enemy.height/2);
 //	    initialY = initialY + this.allign_Y(10 - enemy.pos) - UP_MARGIN;
@@ -1641,13 +1685,14 @@ BasicGame.MainMenu.prototype = {
 		shield.body.setSize(10, 10);
 		shield.reset(x, y);
 		shield.time = shieldTime;
+		shield.timeCounter = shield.time; 
 		shield.shieldActive = false;
 		numberOfShields -= 1;
 		var text = this.shieldTextPool.getAt(this.shieldPool.getIndex(shield));
 		text.visible = true;
 		text.x = shield.x - 1;
 		text.y = shield.y;
-		text.text = shield.time;
+		text.text = shield.timeCounter;
 		
 		this.selector.getAt(1).frame = 0;
 		this.shieldSelectorButtonsPool.setAll('visible', false);
