@@ -22,7 +22,8 @@ BasicGame.Preloader.prototype = {
 	this.load.image('background', 'assets/img/background_purple_1.png');
 	this.load.image('blackScreen', 'assets/img/background4.png');
 	this.load.image('buttonPanel', 'assets/Mockup/PNGs/Buttons_HUD.png');
-
+	this.load.image('homeButton', 'assets/img/homeButton2.png');
+	
 	// Cannon and shield selectors and buttons.
 	this.load.spritesheet('selectorCannon', 'assets/Spritesheets/Selector/Selector_Cannon.png', 505, 498, 2);
 	this.load.spritesheet('selectorShield', 'assets/Spritesheets/Selector/Selector_Shield.png', 503, 500, 2);
@@ -39,13 +40,17 @@ BasicGame.Preloader.prototype = {
 	this.load.spritesheet('button9', 'assets/Spritesheets/Selector/Selector_Number_9.png', 171, 200, 2);
 	this.load.spritesheet('button10', 'assets/Spritesheets/Selector/Selector_Number_10.png', 171, 200, 2);
 
-	this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
+	//this.load.image('lockedButton', 'assets/Mockup/PNGs/lockedButton.png');
+	this.load.image('lockedButton', 'assets/Mockup/PNGs/lock4.png');
+	
 	this.load.image('ground', 'assets/platform2.png');
 	
 	this.load.image('missile', 'assets/missile.png');
 
 	// Loading menu buttons' spritesheets
-	this.load.spritesheet('newGameButton', 'assets/Spritesheets/newGameButton.png', 1993, 570, 2);
+	this.load.spritesheet('level1', 'assets/Spritesheets/level1Button.png', 1990, 570, 2);
+	this.load.spritesheet('level2', 'assets/Spritesheets/level2Button.png', 1990, 570, 2);
+	this.load.spritesheet('level3', 'assets/Spritesheets/level3Button.png', 1990, 570, 2);
 	this.load.spritesheet('nextLevelButton', 'assets/Spritesheets/nextLevelButton.png', 2000, 585, 2);
 	this.load.spritesheet('playAgainButton', 'assets/Spritesheets/playAgainButton.png', 1998, 584, 2);
 	this.load.spritesheet('instructionsButton', 'assets/Spritesheets/instructionsButton.png', 1992, 555, 2);
@@ -53,7 +58,9 @@ BasicGame.Preloader.prototype = {
 	// Loading enemies' spritesheets
 	this.load.spritesheet('distanceEnemy', 'assets/Spritesheets/distanceShip_spritesheet_z.png', 399, 500, 20);
 	this.load.spritesheet('velocityEnemy', 'assets/Spritesheets/velocityShip_spritesheet.png', 499, 500, 2);
-	this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
+	this.load.image('timeEnemy', 'assets/enemy1.png');
+
+	//this.load.image('timeEnemy', 'assets/Mockup/PNGs/timeShip.png');
 
 	// Velocity enemy's laser
 	this.load.spritesheet('velocityEnemyLaser', 'assets/Spritesheets/velocityEnemyLaser_spritesheet.png', 491, 4970, 11);
