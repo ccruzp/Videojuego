@@ -747,6 +747,38 @@ BasicGame.MainMenu.prototype = {
 	this.bombPool.setAll('scale.y', 0.15);
 	this.bombPool.forEach(function(bomb) {
 	   
+	    bomb.inputEnabled = true;
+	    bomb.input.enableDrag(true);
+	    bomb.events.onDragStart.add(function() {
+		bomb.visible = false;
+		// this.bombOnMouse.reset(this.input.x, this.input.y);
+		following = true;
+		usingBlackHole = false;
+	    }, this);
+	    bomb.events.onDragStop.add(function() {
+		// // usingBlackHole = true;
+		// this.put_Weapon();
+		this.find_Grid_Place();
+		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
+		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
+		bomb.reset(x, y);
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
+		this.bombOnMouseText.visible = false;
+		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+		// text.x = bomb.x;
+		// text.y = bomb.y;
+		text.x = x + 6;
+		text.y = y + 6;
+		following = false;
+		// this.bombOnMouseText.x = this.bombOnMouse.x;
+		// this.bombOnMouseText.y = this.bombOnMouse.y;
+	    }, this);
+	    // bomb.events.onDragStop.add(function() {
+	    // 	// console.log("STOPPED");
+	    // 	usingBlackHole = true;
+	    // 	this.put_Weapon();
+	    // }, this);
+
 	    // Adding the bomb animation to each bomb.
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
 	    
@@ -787,6 +819,7 @@ BasicGame.MainMenu.prototype = {
 		}
 		
 		if(aux == 10){
+		    // K lol xD
 		    console.log('Dude, I really tried');
 		    console.log('I do this so you can win your game');
 		    enemy.speed = 3;
@@ -804,7 +837,7 @@ BasicGame.MainMenu.prototype = {
 	    //Setting the counter, to track the time to explosion of each bomb
 	    bomb.counter = bomb.time;
 	    // Enabling the input for bombs.
-	    bomb.inputEnabled = true;
+	    // bomb.inputEnabled = true;
 	    // Adding hand cursor for hovering over the bombs before game has started.
 	    bomb.events.onInputOver.add(function(bomb) {
 		if (!started) {
@@ -815,15 +848,18 @@ BasicGame.MainMenu.prototype = {
 	    }, this);
 
 	    // Making invisible the text display and killing bomb clicked before has not started.
-	    bomb.events.onInputDown.add(function(bomb) {
-		if (!started) {
-		    var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
-		    text.visible = false;
-		    bomb.kill();
-		    numberOfBombs += 1;
-		    usingBlackHoleBomb = true;
-		}
-	    }, this);
+	    // bomb.events.onInputDown.add(function(bomb) {
+	    // 	if (!started) {
+	    // 	    console.log("Ola bale");
+	    // 	    // bomb.events.onDragStop.add(function() {
+			
+	    // 	    // var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
+	    // 	    // text.visible = false;
+	    // 	    // bomb.kill();
+	    // 	    // numberOfBombs += 1;
+	    // 	    usingBlackHoleBomb = true;
+	    // 	}
+	    // }, this);
 	}, this);
 
 	// Group for the text displays

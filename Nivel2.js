@@ -272,6 +272,7 @@ BasicGame.Nivel2.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
+	following = false;
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
 	//-------------------------------------------------------------
@@ -419,12 +420,19 @@ BasicGame.Nivel2.prototype = {
 	     this.cannonOnMouse.reset(x, y);
 	}
 
+	if (following) {
+	    this.bombOnMouse.reset(this.input.x, this.input.y);
+	}
+
 	// The amount of bombs remaining.
 	if(DISTANCE_ENEMIES > 0){
 	    this.bombOnMouseText.x = this.bombOnMouse.x;
 	    this.bombOnMouseText.y = this.bombOnMouse.y;
 	    var bomb = this.bombPool.getFirstExists(false);	
-	    if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	    if(bomb!= null) {
+		this.bombOnMouseText.text = '' + bomb.time;
+		this.bombOnMouseText.visible = true;
+	    }
 	}
 	// Update Displays
 	this.bombsRemainingText.text = 'x' + numberOfBombs;

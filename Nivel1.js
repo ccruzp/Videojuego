@@ -242,6 +242,7 @@ BasicGame.Nivel1.prototype = {
 	usingShield = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
+	following = false; // Some endogenous solution for the problem of dragging a bomb that has already been placed
 	lastMultiplicationValue = 88; //Auxiliar to avoid repeated cases
 	lastTime = this.time.now + 2500 // Keeps time for the explosion counter.
 	
@@ -377,12 +378,17 @@ BasicGame.Nivel1.prototype = {
 	    text.x = x;
 	    text.y = y;
 	}
-	
+	if (following) {
+	    this.bombOnMouse.reset(this.input.x, this.input.y);
+	}
 	// Update displays.
 	this.bombOnMouseText.x = this.bombOnMouse.x;
 	this.bombOnMouseText.y = this.bombOnMouse.y;
 	var bomb = this.bombPool.getFirstExists(false);	
-	if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	if(bomb!= null) {
+	    this.bombOnMouseText.text = '' + bomb.time;
+	    this.bombOnMouseText.visible = true;
+	}
 		
 	this.bombsRemainingText.text = 'x' + numberOfBombs;
 	this.scoreText.text = '' + this.score;
@@ -496,6 +502,10 @@ BasicGame.Nivel1.prototype = {
 		    // this.explosionTimeCounter = bomb.time; // Time counter
 		}, this);
 		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		// this.bombOnMouseText.x = this.bombOnMouse.x;
+		// this.bombOnMouseText.y = this.bombOnMouse.y;
+		// this.bombOnMouseText.visible = true;
+
 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		// Display for the time of the bomb.
 		/*var bomb = this.bombPool.getFirstExists(false);	

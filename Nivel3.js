@@ -273,6 +273,8 @@ BasicGame.Nivel3.prototype = {
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
 
+	following = false;
+
 	missileSpeed = 0; // The speed of the missile shot by the player.
 	shieldTime = 0; // The time in which the shield will activate.
 	enemyBulletSpeed = 2; // Speed of the bullets shot by the timeEnemy.
@@ -440,6 +442,10 @@ BasicGame.Nivel3.prototype = {
 	    this.shieldOnMouse.reset(x, y);
 	    
 	}
+
+	If (following) {
+	    this.bombOnMouse.reset(this.input.x, this.input.y);
+	}
 	
 	// The amount of bombs remaining.
 	if(DISTANCE_ENEMIES > 0){
@@ -447,7 +453,10 @@ BasicGame.Nivel3.prototype = {
 	    this.bombOnMouseText.y = this.bombOnMouse.y;
 	    this.bombsRemainingText.text = 'x' + numberOfBombs;
 	    var bomb = this.bombPool.getFirstExists(false);	
-	    if(bomb!= null) this.bombOnMouseText.text = '' + bomb.time;
+	    if(bomb!= null) {
+		this.bombOnMouseText.text = '' + bomb.time;
+		this.bombOnMouseText.visible = false;
+	    }
 	}
 	// Updating existing bomb's text display.
 	this.bombPool.forEachAlive(function(bomb) {
