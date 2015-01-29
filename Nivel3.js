@@ -443,7 +443,7 @@ BasicGame.Nivel3.prototype = {
 	    
 	}
 
-	If (following) {
+	if (following) {
 	    this.bombOnMouse.reset(this.input.x, this.input.y);
 	}
 	

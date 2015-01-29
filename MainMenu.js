@@ -38,19 +38,19 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 1
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY - 150, 'level1', this.startGame, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.3, 0.3);
+	newGameButton.scale.setTo(0.25, 0.25);
 	// text.anchor.setTo(0.5, 0.5);    
 	
 	//Button to jump to level 2
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY, 'level2', this.startGame2, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.3, 0.3);
+	newGameButton.scale.setTo(0.25, 0.25);
 	// text = this.add.text(this.world.centerX, 50, 'Defensa lineal', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	
 	//Button to jump to level 3
 	newGameButton = this.add.button(this.world.centerX, this.world.centerY + 150, 'level3', this.startGame3, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.3, 0.3);
+	newGameButton.scale.setTo(0.25, 0.25);
 	// text = this.add.text(this.world.centerX, 50, 'Defensa lineal', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	// text.anchor.setTo(0.5, 0.5);    
     },
