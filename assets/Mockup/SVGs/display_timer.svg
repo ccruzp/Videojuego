@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg13499"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="New document 33">
+  <defs
+     id="defs13501">
+    <filter
+       id="filter13451"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur13453"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite13455"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite13457"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter13255"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur13257"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite13259"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite13261"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter13263"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur13265"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite13267"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite13269"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter13271"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur13273"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite13275"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite13277"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="395.08024"
+     inkscape:cy="588.9368"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="463"
+     inkscape:window-height="423"
+     inkscape:window-x="52"
+     inkscape:window-y="52"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata13504">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g13446"
+       style="filter:url(#filter13451)"
+       transform="matrix(0,-1,-1,0,907.75377,515.31124)">
+      <path
+         sodipodi:type="arc"
+         style="fill:#03cdf4;fill-opacity:1;stroke:none;filter:url(#filter13255)"
+         id="path9148"
+         sodipodi:cx="212"
+         sodipodi:cy="286"
+         sodipodi:rx="94"
+         sodipodi:ry="94"
+         d="m 306,286 c 0,51.91477 -42.08523,94 -94,94 -51.91477,0 -94,-42.08523 -94,-94 0,-51.91477 42.08523,-94 94,-94 25.60005,0 50.09271,10.44114 67.81909,28.91106 L 212,286 z"
+         transform="matrix(0.3256131,0,0,0.30371293,2.4905092,420.89187)"
+         sodipodi:start="0"
+         sodipodi:end="5.5183259" />
+      <path
+         sodipodi:end="5.5183259"
+         sodipodi:start="0"
+         transform="matrix(0.28361014,0,0,0.26453502,11.175788,432.21608)"
+         d="m 306,286 c 0,51.91477 -42.08523,94 -94,94 -51.91477,0 -94,-42.08523 -94,-94 0,-51.91477 42.08523,-94 94,-94 25.60005,0 50.09271,10.44114 67.81909,28.91106 L 212,286 z"
+         sodipodi:ry="94"
+         sodipodi:rx="94"
+         sodipodi:cy="286"
+         sodipodi:cx="212"
+         id="path9172"
+         style="fill:#03e7f4;fill-opacity:1;stroke:none;filter:url(#filter13263)"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.82721609,0,0,0.82721609,-39.188486,454.01899)"
+         d="m 150.61374,66.399544 c 0,9.421398 -7.63755,17.05895 -17.05895,17.05895 -9.42139,0 -17.05895,-7.637552 -17.05895,-17.05895 0,-9.421398 7.63756,-17.058951 17.05895,-17.058951 9.4214,0 17.05895,7.637553 17.05895,17.058951 z"
+         sodipodi:ry="17.05895"
+         sodipodi:rx="17.05895"
+         sodipodi:cy="66.399544"
+         sodipodi:cx="133.55479"
+         id="path10598"
+         style="fill:#e7ffff;fill-opacity:1;stroke:none;filter:url(#filter13271)"
+         sodipodi:type="arc" />
+    </g>
+  </g>
+</svg>

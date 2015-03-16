@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg13483"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="shadowedbutton_minus.svg"
+   inkscape:export-filename="C:\Users\Gamar\Desktop\Mockuop\shadowedbutton_minus.png"
+   inkscape:export-xdpi="4909.1372"
+   inkscape:export-ydpi="4909.1372">
+  <defs
+     id="defs13485">
+    <filter
+       id="filter11973"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur11975"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite11977"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite11979"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter11981"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur11983"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite11985"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite11987"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+    <filter
+       id="filter11965"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur11967"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite11969"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite11971"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="356.87488"
+     inkscape:cy="597.43069"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="768"
+     inkscape:window-height="739"
+     inkscape:window-x="26"
+     inkscape:window-y="26"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata13488">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g12555"
+       transform="translate(212.85256,-589.14472)">
+      <path
+         sodipodi:type="arc"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter11973)"
+         id="path7696"
+         sodipodi:cx="177.28177"
+         sodipodi:cy="295.439"
+         sodipodi:rx="23.738585"
+         sodipodi:ry="24.243662"
+         d="m 201.02035,295.439 c 0,13.3894 -10.62812,24.24366 -23.73858,24.24366 -13.11046,0 -23.73859,-10.85426 -23.73859,-24.24366 0,-13.38941 10.62813,-24.24367 23.73859,-24.24367 13.11046,0 23.73858,10.85426 23.73858,24.24367 z"
+         transform="matrix(0.67985373,0,0,0.67985373,22.19546,816.37733)" />
+      <g
+         id="g12529">
+        <g
+           id="g12531">
+          <path
+             transform="matrix(0.82656915,0,0,0.8492149,-8.82426,810.94893)"
+             d="m 200.51528,242.91107 c 0,9.48416 -7.68844,17.1726 -17.1726,17.1726 -9.48416,0 -17.17259,-7.68844 -17.17259,-17.1726 0,-9.48416 7.68843,-17.17259 17.17259,-17.17259 9.48416,0 17.1726,7.68843 17.1726,17.17259 z"
+             sodipodi:ry="17.172594"
+             sodipodi:rx="17.172594"
+             sodipodi:cy="242.91107"
+             sodipodi:cx="183.34268"
+             id="path12533"
+             style="fill:#03a9f4;fill-opacity:1;stroke:none;filter:url(#filter11981)"
+             sodipodi:type="arc" />
+          <path
+             id="path12535"
+             d="m 134.58428,1015.1984 16.27373,0 0,4.0685 -16.27373,0 z"
+             style="opacity:0.98999999;fill:#fd0102;fill-opacity:1;stroke:#000000;stroke-opacity:1;filter:url(#filter11965)"
+             inkscape:connector-curvature="0" />
+        </g>
+        <g
+           id="g12537"
+           transform="translate(5.5,40.810574)">
+          <path
+             style="fill:#03c8f4;fill-opacity:0.95238097;stroke:none"
+             d="m 145.91748,969.88416 c 0,3.2865 -4.47774,-2.6858 -9.0671,-2.6858 -4.58938,0 -9.15052,5.7757 -9.15052,2.4892 0,-3.2865 4.35964,-5.5576 8.94901,-5.5576 4.58937,0 9.26861,2.4677 9.26861,5.7542 z"
+             id="path12539"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="sssss" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path12541"
+             d="m 132.83276,966.46786 c 0.29892,0.3728 -0.24945,1.116 -1.22485,1.6599 -0.97538,0.544 -2.00841,0.6827 -2.30734,0.3098 -0.29892,-0.3728 0.24946,-1.116 1.22485,-1.6599 0.97538,-0.544 2.00842,-0.6827 2.30734,-0.3098 z"
+             style="fill:#03d8fb;fill-opacity:1;stroke:none" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
