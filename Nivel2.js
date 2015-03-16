@@ -420,18 +420,22 @@ BasicGame.Nivel2.prototype = {
 	     this.cannonOnMouse.reset(x, y);
 	}
 
-	if (following) {
-	    this.bombOnMouse.reset(this.input.x, this.input.y);
-	}
-
-	// The amount of bombs remaining.
 	if(DISTANCE_ENEMIES > 0){
-	    this.bombOnMouseText.x = this.bombOnMouse.x;
-	    this.bombOnMouseText.y = this.bombOnMouse.y;
-	    var bomb = this.bombPool.getFirstExists(false);	
-	    if(bomb!= null) {
-		this.bombOnMouseText.text = '' + bomb.time;
-		this.bombOnMouseText.visible = true;
+	    if (following) {
+		this.bombOnMouse.reset(this.input.x, this.input.y);
+		this.bombOnMouseText.x = this.input.x;
+		this.bombOnMouseText.y = this.input.y;
+		this.bombOnMouseText.text = '' + this.bombTextPool.getAt(movingBombID).text;
+	    } else {
+
+		// The amount of bombs remaining.
+		this.bombOnMouseText.x = this.bombOnMouse.x;
+		this.bombOnMouseText.y = this.bombOnMouse.y;
+		var bomb = this.bombPool.getFirstExists(false);	
+		if(bomb!= null) {
+		    this.bombOnMouseText.text = '' + bomb.time;
+		    this.bombOnMouseText.visible = true;
+		}
 	    }
 	}
 	// Update Displays

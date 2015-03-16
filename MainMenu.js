@@ -376,7 +376,8 @@ BasicGame.MainMenu.prototype = {
 	//     console.log("STARTED")
 	// }, this);
 	this.bombOnMouse.events.onDragStop.add(function() {
-	    // console.log("STOPPED");
+	    console.log("STOPPED");
+	    
 	    usingBlackHole = true;
 	    this.put_Weapon();
 	}, this);
@@ -751,13 +752,13 @@ BasicGame.MainMenu.prototype = {
 	    bomb.input.enableDrag(true);
 	    bomb.events.onDragStart.add(function() {
 		bomb.visible = false;
-		// this.bombOnMouse.reset(this.input.x, this.input.y);
 		following = true;
 		usingBlackHole = false;
+		movingBombID = this.bombPool.getIndex(bomb);
+		this.bombOnMouseText.visible = true;
+		this.bombTextPool.getAt(this.bombPool.getIndex(bomb)).y = 1000;
 	    }, this);
 	    bomb.events.onDragStop.add(function() {
-		// // usingBlackHole = true;
-		// this.put_Weapon();
 		this.find_Grid_Place();
 		x = (this.allign_X(this.gridX-1)) + (GRID_SPACE/3);
 		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
@@ -765,13 +766,9 @@ BasicGame.MainMenu.prototype = {
 		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		this.bombOnMouseText.visible = false;
 		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
-		// text.x = bomb.x;
-		// text.y = bomb.y;
 		text.x = x + 6;
 		text.y = y + 6;
 		following = false;
-		// this.bombOnMouseText.x = this.bombOnMouse.x;
-		// this.bombOnMouseText.y = this.bombOnMouse.y;
 	    }, this);
 	    // bomb.events.onDragStop.add(function() {
 	    // 	// console.log("STOPPED");
