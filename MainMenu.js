@@ -1986,7 +1986,7 @@ BasicGame.MainMenu.prototype = {
     shuffleBag_Velocity_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
 	if (this.shuffleBagVelocity.countLiving() == 0){
-	    this.shuffleBagVelocity_Restart();
+	    this.shuffleBag_Velocity_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
 	element = this.shuffleBagVelocity.getRandom( 27-(this.shuffleBagVelocity.countLiving()));

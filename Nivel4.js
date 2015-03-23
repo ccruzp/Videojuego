@@ -1,4 +1,4 @@
-BasicGame.Nivel3 = function(game) {
+BasicGame.Nivel4 = function(game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -96,7 +96,7 @@ BasicGame.Nivel3 = function(game) {
     // this.enemyGridDistance = 1;
 };
 
-BasicGame.Nivel3.prototype = {
+BasicGame.Nivel4.prototype = {
 
     init: function(lastTime,level,score,
 		   activate_Enemy_Shield,
