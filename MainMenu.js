@@ -1,58 +1,73 @@
 BasicGame.MainMenu = function (game) {
-    // this.background = null;
-    // this.music = null;
-    // this.newGameButton = null;
-    // this.text = null;
+
 };
 
 BasicGame.MainMenu.prototype = {
     create: function () {
-	
-	//	We've already preloaded our assets, so let's kick right into the Main Menu itself.
-	//	Here all we're doing is playing some music and adding a picture and button
-	//	Naturally I expect you to do something significantly better :)
-	
-	// this.music = this.add.audio('titleMusic');
-	// this.music.play();
-	
-	// this.add.sprite(0, 0, 'titlepage');
-	
-	// this.playButton = this.add.button(400, 600, 'playButton', this.startGame, this, 'buttonOver', 'buttonOut', 'buttonOver');
-
-	// this.background = this.add.sprite(0, 0, 'menuBackground');
-
-	// this.newGameButton = this.add.button(this.world.centerX, this.world.centerY, 'newGameButton', this.startGame, this, 1, 0, 1, 0);
-	// this.newGameButton.anchor.setTo(0.5, 0.5);
-	// this.newGameButton.scale.setTo(0.5, 0.5);
-	// this.text = this.add.text(this.world.centerX, 50, 'Menú', { font: "50px Arial", fill: "#ffffff", align: "left" });
-	// this.text.anchor.setTo(0.5, 0.5);
 	background = this.add.sprite(0, 0, 'menuBackground');
 
-	// instructionsButton = this.add.button(this.world.centerX, this.world.centerY - 100, 'instructionsButton', this.startGame, this, 1, 0, 1, 0);
-	// instructionsButton.anchor.setTo(0.5, 0.5);
-	// instructionsButton.scale.setTo(0.3, 0.3);
-	
 	text = this.add.text(this.world.centerX, 50, 'Defensa lineal', { font: "50px Arial", fill: "#ffffff", align: "left" });
 	text.anchor.setTo(0.5, 0.5);    
 
+	// Group of level buttons
+	levelButtons = this.add.group();
+
 	//Button to jump to level 1
-	newGameButton = this.add.button(this.world.centerX, this.world.centerY - 150, 'level1', this.startGame, this, 1, 0, 1, 0);
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 175, 'level1', this.startGame, this, 1, 0, 1, 0);
+	// newGameButton.anchor.setTo(0.5, 0.5);
+	// newGameButton.scale.setTo(0.15, 0.15);
+	// levelButtons.add(newGameButton);
+	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY - 175, 'level1', function() {
+	    this.startGame('Nivel1', 1);
+	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.25, 0.25);
-	// text.anchor.setTo(0.5, 0.5);    
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
 	
 	//Button to jump to level 2
-	newGameButton = this.add.button(this.world.centerX, this.world.centerY, 'level2', this.startGame2, this, 1, 0, 1, 0);
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 75, 'level2', this.startGame2, this, 1, 0, 1, 0);
+	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY - 175, 'level2', function() {
+	    this.startGame('Nivel2', 2);
+	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.25, 0.25);
-	// text = this.add.text(this.world.centerX, 50, 'Defensa lineal', { font: "50px Arial", fill: "#ffffff", align: "left" });
-	
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
+
 	//Button to jump to level 3
-	newGameButton = this.add.button(this.world.centerX, this.world.centerY + 150, 'level3', this.startGame3, this, 1, 0, 1, 0);
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY + 25, 'level3', this.startGame3, this, 1, 0, 1, 0);
+	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY - 75, 'level3', function() {
+	    this.startGame('Nivel3', 3);
+	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
-	newGameButton.scale.setTo(0.25, 0.25);
-	// text = this.add.text(this.world.centerX, 50, 'Defensa lineal', { font: "50px Arial", fill: "#ffffff", align: "left" });
-	// text.anchor.setTo(0.5, 0.5);    
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
+
+	//Button to jump to level 4
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 175, 'level4', this.startGame4, this, 1, 0, 1, 0);
+	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY - 75, 'level1', function() {
+	    this.startGame('Nivel4', 4);
+	}, this, 1, 0, 1, 0);
+	newGameButton.anchor.setTo(0.5, 0.5);
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
+	
+	//Button to jump to level 5
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 75, 'level2', this.startGame5, this, 1, 0, 1, 0);
+	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY + 25, 'level2', function() {
+	    this.startGame('Nivel5', 5);
+	}, this, 1, 0, 1, 0);
+	newGameButton.anchor.setTo(0.5, 0.5);
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
+	
+	//Button to jump to level 6
+	// newGameButton = this.add.button(this.world.centerX, this.world.centerY + 25, 'level6', this.startGame6, this, 1, 0, 1, 0);
+	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY + 25, 'level3', function() {
+	    this.startGame('Nivel6', 6);
+	}, this, 1, 0, 1, 0);
+	newGameButton.anchor.setTo(0.5, 0.5);
+	newGameButton.scale.setTo(0.15, 0.15);
+	levelButtons.add(newGameButton);
     },
 
     update: function () {
@@ -61,7 +76,7 @@ BasicGame.MainMenu.prototype = {
 	
     },
     
-    startGame: function (pointer) {
+    startGame: function (levelName, level) {
 	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 	// this.music.stop();
 	
@@ -71,13 +86,15 @@ BasicGame.MainMenu.prototype = {
 	// this.background.destroy();
 	// this.state.start('Distance');
 	// newGameButton.destroy();
+	console.log("OLA BALE");
 	text.destroy();
+	levelButtons.destroy(true);
 	background.destroy();
 	time = 0;
-	level = 1;
+	// level = 1;
 	score = 0;
 	console.log(level);
-	this.state.start('Nivel1',true,false,time,level,score,
+	this.state.start(levelName, true, false, time, level, score,
 			 this.activate_Enemy_Shield,
 			 this.allign_X,
 			 this.allign_Y,
@@ -151,185 +168,278 @@ BasicGame.MainMenu.prototype = {
 			 this.you_Got_Shot);
     },
 
-    startGame2: function (pointer) {
-	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-	// this.music.stop();
+    // startGame1: function (pointer) {
+    // 	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+    // 	// this.music.stop();
+	
+    // 	//	And start the actual game
+    // 	// this.newGameButton.destroy();
+    // 	// this.text.destroy();
+    // 	// this.background.destroy();
+    // 	// this.state.start('Distance');
+    // 	// newGameButton.destroy();
+    // 	text.destroy();
+    // 	levelButtons.destroy(true);
+    // 	background.destroy();
+    // 	time = 0;
+    // 	level = 1;
+    // 	score = 0;
+    // 	console.log(level);
+    // 	this.state.start('Nivel1',true,false,time,level,score,
+    // 			 this.activate_Enemy_Shield,
+    // 			 this.allign_X,
+    // 			 this.allign_Y,
+    // 			 this.begin_Game,
+    // 			 this.blackHoleButton_Setup,
+    // 			 this.blackScreen_Displays_Setup,
+    // 			 this.bombOnMouse_Setup,
+    // 			 this.bombPool_Setup,
+    // 			 this.buttonPanel_Setup,
+    // 			 this.cannonButton_Setup,
+    // 			 this.cannonOnMouse_Setup,
+    // 			 this.cannonPool_Setup,
+    // 			 this.cannonSelectorButtonsPool_Setup,
+    // 			 this.countdown,
+    // 			 this.deactivate_Enemy_Shield,
+    // 			 this.decrease_Fire,
+    // 			 this.decrease_Time_Shield,
+    // 			 this.desallign_X,
+    // 			 this.desallign_Y,
+    // 			 this.displays_Setup,
+    // 			 this.find_Grid_Place,
+    // 			 this.enemy_Fire,
+    // 			 this.enemy_Hit,
+    // 			 this.enemy_ShieldTime_Text_Setup,
+    // 			 this.enemyBulletPool_Setup,
+    // 			 this.enemyDistancePool_Setup,
+    // 			 this.enemyTimePool_Setup,
+    // 			 this.enemyVelocityLaserPool_Setup,
+    // 			 this.enemyVelocityPool_Setup,
+    // 			 this.fire,
+    // 			 this.get_Enemy_Distance_Speed,
+    // 			 this.go_To_Home,
+    // 			 this.homeButton_Setup,
+    // 			 this.increase_Fire,
+    // 			 this.increase_Time_Shield,
+    // 			 this.lockedButtons_Setup,
+    // 			 this.make_Grid,
+    // 			 this.minusButton_Setup,
+    // 			 this.missilePool_Setup,
+    // 			 this.out_Of_GridY,
+    // 			 this.playButton_Setup,
+    // 			 this.plusButton_Setup,
+    // 			 this.put_Weapon,
+    // 			 this.select_Bomb,
+    // 			 this.select_Cannon,
+    // 			 this.select_Shield,
+    // 			 this.selector_Setup,
+    // 			 this.set_Missile_Speed,
+    // 			 this.set_Shield_Time,
+    // 			 this.shield_Hit,
+    // 			 this.shieldButton_Setup,
+    // 			 this.shieldOnMouse_Setup,
+    // 			 this.shieldPool_Setup,
+    // 			 this.shieldSelectorButtonsPool_Setup,
+    // 			 this.shuffleBag_Bomb_Get,
+    // 			 this.shuffleBag_Bomb_Restart,
+    // 			 this.shuffleBag_Bomb_Setup,
+    // 			 this.shuffleBag_Velocity_Get,
+    // 			 this.shuffleBag_Velocity_Restart,
+    // 			 this.shuffleBag_Velocity_Setup,
+    // 			 this.shuffleBag_X_Axis_Get,
+    // 			 this.shuffleBag_X_Axis_Restart,
+    // 			 this.shuffleBag_X_Axis_Setup,
+    // 			 /*this.shuffleBag_Get,
+    // 			 this.shuffleBag_Restart,
+    // 			 this.shuffleBag_Setup,*/
+    // 			 this.start,
+    // 			 this.try_To_Destroy,
+    // 			 this.try_To_Destroy_Time,
+    // 			 this.try_To_Destroy_Velocity,
+    // 			 this.you_Got_Shot);
+    // },
+
+    // startGame2: function (pointer) {
+    // 	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+    // 	// this.music.stop();
 	
 
-	//	And start the actual game
-	// this.newGameButton.destroy();
-	// this.text.destroy();
-	// this.background.destroy();
-	// this.state.start('Distance');
-	// newGameButton.destroy();
-	text.destroy();
-	background.destroy();
-	time = 0;
-	level = 2;
-	score = 0;
-	console.log(level);
-	this.state.start('Nivel2',true,false,time,level,score,
-			 this.activate_Enemy_Shield,
-			 this.allign_X,
-			 this.allign_Y,
-			 this.begin_Game,
-			 this.blackHoleButton_Setup,
-			 this.blackScreen_Displays_Setup,
-			 this.bombOnMouse_Setup,
-			 this.bombPool_Setup,
-			 this.buttonPanel_Setup,
-			 this.cannonButton_Setup,
-			 this.cannonOnMouse_Setup,
-			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
-			 this.countdown,
-			 this.deactivate_Enemy_Shield,
-			 this.decrease_Fire,
-			 this.decrease_Time_Shield,
-			 this.desallign_X,
-			 this.desallign_Y,
-			 this.displays_Setup,
-			 this.find_Grid_Place,
-			 this.enemy_Fire,
-			 this.enemy_Hit,
-			 this.enemy_ShieldTime_Text_Setup,
-			 this.enemyBulletPool_Setup,
-			 this.enemyDistancePool_Setup,
-			 this.enemyTimePool_Setup,
-			 this.enemyVelocityLaserPool_Setup,
-			 this.enemyVelocityPool_Setup,
-			 this.fire,
-			 this.get_Enemy_Distance_Speed,
-			 this.go_To_Home,
-			 this.homeButton_Setup,
-			 this.increase_Fire,
-			 this.increase_Time_Shield,
-			 this.lockedButtons_Setup,
-			 this.make_Grid,
-			 this.minusButton_Setup,
-			 this.missilePool_Setup,
-			 this.out_Of_GridY,
-			 this.playButton_Setup,
-			 this.plusButton_Setup,
-			 this.put_Weapon,
-			 this.select_Bomb,
-			 this.select_Cannon,
-			 this.select_Shield,
-			 this.selector_Setup,
-			 this.set_Missile_Speed,
-			 this.set_Shield_Time,
-			 this.shield_Hit,
-			 this.shieldButton_Setup,
-			 this.shieldOnMouse_Setup,
-			 this.shieldPool_Setup,
+    // 	//	And start the actual game
+    // 	// this.newGameButton.destroy();
+    // 	// this.text.destroy();
+    // 	// this.background.destroy();
+    // 	// this.state.start('Distance');
+    // 	// newGameButton.destroy();
+    // 	text.destroy();
+    // 	levelButtons.destroy(true);
+    // 	background.destroy();
+    // 	time = 0;
+    // 	level = 2;
+    // 	score = 0;
+    // 	console.log(level);
+    // 	this.state.start('Nivel2',true,false,time,level,score,
+    // 			 this.activate_Enemy_Shield,
+    // 			 this.allign_X,
+    // 			 this.allign_Y,
+    // 			 this.begin_Game,
+    // 			 this.blackHoleButton_Setup,
+    // 			 this.blackScreen_Displays_Setup,
+    // 			 this.bombOnMouse_Setup,
+    // 			 this.bombPool_Setup,
+    // 			 this.buttonPanel_Setup,
+    // 			 this.cannonButton_Setup,
+    // 			 this.cannonOnMouse_Setup,
+    // 			 this.cannonPool_Setup,
+    // 			 this.cannonSelectorButtonsPool_Setup,
+    // 			 this.countdown,
+    // 			 this.deactivate_Enemy_Shield,
+    // 			 this.decrease_Fire,
+    // 			 this.decrease_Time_Shield,
+    // 			 this.desallign_X,
+    // 			 this.desallign_Y,
+    // 			 this.displays_Setup,
+    // 			 this.find_Grid_Place,
+    // 			 this.enemy_Fire,
+    // 			 this.enemy_Hit,
+    // 			 this.enemy_ShieldTime_Text_Setup,
+    // 			 this.enemyBulletPool_Setup,
+    // 			 this.enemyDistancePool_Setup,
+    // 			 this.enemyTimePool_Setup,
+    // 			 this.enemyVelocityLaserPool_Setup,
+    // 			 this.enemyVelocityPool_Setup,
+    // 			 this.fire,
+    // 			 this.get_Enemy_Distance_Speed,
+    // 			 this.go_To_Home,
+    // 			 this.homeButton_Setup,
+    // 			 this.increase_Fire,
+    // 			 this.increase_Time_Shield,
+    // 			 this.lockedButtons_Setup,
+    // 			 this.make_Grid,
+    // 			 this.minusButton_Setup,
+    // 			 this.missilePool_Setup,
+    // 			 this.out_Of_GridY,
+    // 			 this.playButton_Setup,
+    // 			 this.plusButton_Setup,
+    // 			 this.put_Weapon,
+    // 			 this.select_Bomb,
+    // 			 this.select_Cannon,
+    // 			 this.select_Shield,
+    // 			 this.selector_Setup,
+    // 			 this.set_Missile_Speed,
+    // 			 this.set_Shield_Time,
+    // 			 this.shield_Hit,
+    // 			 this.shieldButton_Setup,
+    // 			 this.shieldOnMouse_Setup,
+    // 			 this.shieldPool_Setup,
 			 
-			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Bomb_Get,
-			 this.shuffleBag_Bomb_Restart,
-			 this.shuffleBag_Bomb_Setup,
-			 this.shuffleBag_Velocity_Get,
-			 this.shuffleBag_Velocity_Restart,
-			 this.shuffleBag_Velocity_Setup,
-			 this.shuffleBag_X_Axis_Get,
-			 this.shuffleBag_X_Axis_Restart,
-			 this.shuffleBag_X_Axis_Setup,
-			 /*this.shuffleBag_Get,
-			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,*/
-			 this.start,
-			 this.try_To_Destroy,
-			 this.try_To_Destroy_Time,
-			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
-    },
+    // 			 this.shieldSelectorButtonsPool_Setup,
+    // 			 this.shuffleBag_Bomb_Get,
+    // 			 this.shuffleBag_Bomb_Restart,
+    // 			 this.shuffleBag_Bomb_Setup,
+    // 			 this.shuffleBag_Velocity_Get,
+    // 			 this.shuffleBag_Velocity_Restart,
+    // 			 this.shuffleBag_Velocity_Setup,
+    // 			 this.shuffleBag_X_Axis_Get,
+    // 			 this.shuffleBag_X_Axis_Restart,
+    // 			 this.shuffleBag_X_Axis_Setup,
+    // 			 /*this.shuffleBag_Get,
+    // 			 this.shuffleBag_Restart,
+    // 			 this.shuffleBag_Setup,*/
+    // 			 this.start,
+    // 			 this.try_To_Destroy,
+    // 			 this.try_To_Destroy_Time,
+    // 			 this.try_To_Destroy_Velocity,
+    // 			 this.you_Got_Shot);
+    // },
 
-    startGame3: function (pointer) {
-	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-	// this.music.stop();
+    // startGame3: function (pointer) {
+    // 	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+    // 	// this.music.stop();
 	
-	//	And start the actual game
-	// this.newGameButton.destroy();
-	// this.text.destroy();
-	// this.background.destroy();
-	// this.state.start('Distance');
-	// newGameButton.destroy();
-	text.destroy();
-	background.destroy();
-	time = 0;
-	level = 3;
-	score = 0;
-	console.log(level);
-	this.state.start('Nivel3',true,false,time,level,score,
-			 this.activate_Enemy_Shield,
-			 this.allign_X,
-			 this.allign_Y,
-			 this.begin_Game,
-			 this.blackHoleButton_Setup,
-			 this.blackScreen_Displays_Setup,
-			 this.bombOnMouse_Setup,
-			 this.bombPool_Setup,
-			 this.buttonPanel_Setup,
-			 this.cannonButton_Setup,
-			 this.cannonOnMouse_Setup,
-			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
-			 this.countdown,
-			 this.deactivate_Enemy_Shield,
-			 this.decrease_Fire,
-			 this.decrease_Time_Shield,
-			 this.desallign_X,
-			 this.desallign_Y,
-			 this.displays_Setup,
-			 this.find_Grid_Place,
-			 this.enemy_Fire,
-			 this.enemy_Hit,
-			 this.enemy_ShieldTime_Text_Setup,
-			 this.enemyBulletPool_Setup,
-			 this.enemyDistancePool_Setup,
-			 this.enemyTimePool_Setup,
-			 this.enemyVelocityLaserPool_Setup,
-			 this.enemyVelocityPool_Setup,
-			 this.fire,
-			 this.get_Enemy_Distance_Speed,
-			 this.go_To_Home,
-			 this.homeButton_Setup,
+    // 	//	And start the actual game
+    // 	// this.newGameButton.destroy();
+    // 	// this.text.destroy();
+    // 	// this.background.destroy();
+    // 	// this.state.start('Distance');
+    // 	// newGameButton.destroy();
+    // 	text.destroy();
+    // 	levelButtons.destroy(true);
+    // 	background.destroy();
+    // 	time = 0;
+    // 	level = 3;
+    // 	score = 0;
+    // 	console.log(level);
+    // 	this.state.start('Nivel3',true,false,time,level,score,
+    // 			 this.activate_Enemy_Shield,
+    // 			 this.allign_X,
+    // 			 this.allign_Y,
+    // 			 this.begin_Game,
+    // 			 this.blackHoleButton_Setup,
+    // 			 this.blackScreen_Displays_Setup,
+    // 			 this.bombOnMouse_Setup,
+    // 			 this.bombPool_Setup,
+    // 			 this.buttonPanel_Setup,
+    // 			 this.cannonButton_Setup,
+    // 			 this.cannonOnMouse_Setup,
+    // 			 this.cannonPool_Setup,
+    // 			 this.cannonSelectorButtonsPool_Setup,
+    // 			 this.countdown,
+    // 			 this.deactivate_Enemy_Shield,
+    // 			 this.decrease_Fire,
+    // 			 this.decrease_Time_Shield,
+    // 			 this.desallign_X,
+    // 			 this.desallign_Y,
+    // 			 this.displays_Setup,
+    // 			 this.find_Grid_Place,
+    // 			 this.enemy_Fire,
+    // 			 this.enemy_Hit,
+    // 			 this.enemy_ShieldTime_Text_Setup,
+    // 			 this.enemyBulletPool_Setup,
+    // 			 this.enemyDistancePool_Setup,
+    // 			 this.enemyTimePool_Setup,
+    // 			 this.enemyVelocityLaserPool_Setup,
+    // 			 this.enemyVelocityPool_Setup,
+    // 			 this.fire,
+    // 			 this.get_Enemy_Distance_Speed,
+    // 			 this.go_To_Home,
+    // 			 this.homeButton_Setup,
 			 
-			 this.increase_Fire,
-			 this.increase_Time_Shield,
-			 this.lockedButtons_Setup,
-			 this.make_Grid,
-			 this.minusButton_Setup,
-			 this.missilePool_Setup,
-			 this.out_Of_GridY,
-			 this.playButton_Setup,
-			 this.plusButton_Setup,
-			 this.put_Weapon,
-			 this.select_Bomb,
-			 this.select_Cannon,
-			 this.select_Shield,
-			 this.selector_Setup,
-			 this.set_Missile_Speed,
-			 this.set_Shield_Time,
-			 this.shield_Hit,
-			 this.shieldButton_Setup,
-			 this.shieldOnMouse_Setup,
-			 this.shieldPool_Setup,
-			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Bomb_Get,
-			 this.shuffleBag_Bomb_Restart,
-			 this.shuffleBag_Bomb_Setup,
-			 this.shuffleBag_Velocity_Get,
-			 this.shuffleBag_Velocity_Restart,
-			 this.shuffleBag_Velocity_Setup,
-			 this.shuffleBag_X_Axis_Get,
-			 this.shuffleBag_X_Axis_Restart,
-			 this.shuffleBag_X_Axis_Setup,
-			 this.start,
-			 this.try_To_Destroy,
-			 this.try_To_Destroy_Time,
-			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
-    },
+    // 			 this.increase_Fire,
+    // 			 this.increase_Time_Shield,
+    // 			 this.lockedButtons_Setup,
+    // 			 this.make_Grid,
+    // 			 this.minusButton_Setup,
+    // 			 this.missilePool_Setup,
+    // 			 this.out_Of_GridY,
+    // 			 this.playButton_Setup,
+    // 			 this.plusButton_Setup,
+    // 			 this.put_Weapon,
+    // 			 this.select_Bomb,
+    // 			 this.select_Cannon,
+    // 			 this.select_Shield,
+    // 			 this.selector_Setup,
+    // 			 this.set_Missile_Speed,
+    // 			 this.set_Shield_Time,
+    // 			 this.shield_Hit,
+    // 			 this.shieldButton_Setup,
+    // 			 this.shieldOnMouse_Setup,
+    // 			 this.shieldPool_Setup,
+    // 			 this.shieldSelectorButtonsPool_Setup,
+    // 			 this.shuffleBag_Bomb_Get,
+    // 			 this.shuffleBag_Bomb_Restart,
+    // 			 this.shuffleBag_Bomb_Setup,
+    // 			 this.shuffleBag_Velocity_Get,
+    // 			 this.shuffleBag_Velocity_Restart,
+    // 			 this.shuffleBag_Velocity_Setup,
+    // 			 this.shuffleBag_X_Axis_Get,
+    // 			 this.shuffleBag_X_Axis_Restart,
+    // 			 this.shuffleBag_X_Axis_Setup,
+    // 			 this.start,
+    // 			 this.try_To_Destroy,
+    // 			 this.try_To_Destroy_Time,
+    // 			 this.try_To_Destroy_Velocity,
+    // 			 this.you_Got_Shot);
+    // },
 
 //Functions used in every level, ordered alphabetically
     
