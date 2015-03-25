@@ -81,6 +81,7 @@ BasicGame.WinnerMenu.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -148,7 +149,6 @@ BasicGame.WinnerMenu.prototype = {
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
 	this.shieldPool_Setup = shieldPool_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-	
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
 	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
 	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
@@ -158,8 +158,8 @@ BasicGame.WinnerMenu.prototype = {
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-	
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -251,10 +251,12 @@ BasicGame.WinnerMenu.prototype = {
 
     next_Level: function () {
 	if(!this.rankBoolean){
-	winnerText.destroy();
-	// this.playAgainButton.destroy();
-	background.destroy();
-	this.state.start(this.nextLevelName , true, false,
+	    winnerText.destroy();
+	    // this.playAgainButton.destroy();
+	    background.destroy();
+	    this.start_Game(this.nextLevelName,time,this.nextLevel,this.score);
+	    /*
+	    this.state.start(this.nextLevelName , true, false,
 			 time,this.nextLevel,this.score,
 			 this.activate_Enemy_Shield,
 			 this.allign_X,
@@ -324,7 +326,7 @@ BasicGame.WinnerMenu.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
 	}
     },
 
@@ -370,14 +372,10 @@ BasicGame.WinnerMenu.prototype = {
 		} else {
 		    rankLetterText.text = 'E';
 		    /* E Rank */
-		}
-	    
+		}	    
 		this.rankBoolean = false;
 		rankSound.play('',0,1,false);
-	    
-	    }
-	    
+	    }	    
 	}
     },
-    
 };
