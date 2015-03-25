@@ -1062,7 +1062,7 @@ BasicGame.MainMenu.prototype = {
 	this.scoreText.anchor.set(0.5);
 
 
-	this.roundText = this.add.text(65.45, 200,'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7' , { font: "bold 20px Arial", fill: "#00ffff", align: "center" },this.otherTextPool);
+	this.roundText = this.add.text(65.45, 200,'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS , { font: "bold 20px Arial", fill: "#00ffff", align: "center" },this.otherTextPool);
 	this.roundText.anchor.setTo(0.5,0.5);
 	
     },

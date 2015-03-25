@@ -522,7 +522,7 @@ BasicGame.Nivel1.prototype = {
 		// this.bombOnMouseText.y = this.bombOnMouse.y;
 		// this.bombOnMouseText.visible = true;
 
-		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS;
 		// Display for the time of the bomb.
 		/*var bomb = this.bombPool.getFirstExists(false);	
 		this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
