@@ -275,6 +275,7 @@ BasicGame.Nivel4.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
+	tutorial = false;
 	following = false;
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time

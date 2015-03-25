@@ -1160,7 +1160,7 @@ BasicGame.MainMenu.prototype = {
 	    }
 	    else{
 		if(this.timesPassed == 3){
-		    enemy.speed = 1;
+		    enemy.speed = 3;
 		    enemy.time = 1;
 		}
 		else if(this.timesPassed == 2){
@@ -1236,21 +1236,36 @@ BasicGame.MainMenu.prototype = {
 	console.log('Time Enemies');
 	this.enemyTimePool.forEach(function(enemy) {
 	    
-	    this.get_Enemy_Distance_Speed(enemy);
-	    
-	    aux = 0;
-	    if(TOTAL_ENEMIES < 3){
-		while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
-		    //enemy.shieldTime = this.shuffleBag_Bomb_Get();
-		    this.get_Enemy_Distance_Speed(enemy);
-		    console.log('Im trying to change your case');
-		    aux = aux + 1;
-		}  
+	    if(!tutorial){
+		this.get_Enemy_Distance_Speed(enemy);
+		aux = 0;
+		if(TOTAL_ENEMIES < 3){
+		    while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
+			//enemy.shieldTime = this.shuffleBag_Bomb_Get();
+			this.get_Enemy_Distance_Speed(enemy);
+			console.log('Im trying to change your case');
+			aux = aux + 1;
+		    }  
+		}
+		if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+		aux = 0;
 	    }
-	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.pos = 3;
+		    enemy.shieldTime = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.pos = 6;
+		    enemy.shieldTime = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.pos = 10;
+		    enemy.shieldTime = 2;
+		}
+	    }
 	    lastValueHigh = !lastValueHigh;
 	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
-	    aux = 0;
 	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
 	    initialY = this.allign_Y(10-enemy.pos) + (GRID_SPACE/2)
@@ -1266,7 +1281,7 @@ BasicGame.MainMenu.prototype = {
 		    this.enemyPlace = this.shuffleBag_X_Axis_Get();
 		}
 	    }
-
+	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
@@ -1337,21 +1352,39 @@ BasicGame.MainMenu.prototype = {
 	// //Sets the value of enemyShieldSpeed and enemyGridDistance
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
-	    this.get_Enemy_Distance_Speed(enemy);
-	    
-	    aux = 0;
-	    if(TOTAL_ENEMIES < 3){
-		while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
-		    //enemy.shieldTime = this.shuffleBag_Bomb_Get();
-		    this.get_Enemy_Distance_Speed(enemy);
-		    console.log('Im trying to change your case');
-		    aux = aux + 1;
-		}  
+	    if(!tutorial){
+		this.get_Enemy_Distance_Speed(enemy);
+		
+		aux = 0;
+		if(TOTAL_ENEMIES < 3){
+		    while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
+			//enemy.shieldTime = this.shuffleBag_Bomb_Get();
+			this.get_Enemy_Distance_Speed(enemy);
+			console.log('Im trying to change your case');
+			aux = aux + 1;
+		    }  
+		}
+		if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+		lastValueHigh = !lastValueHigh;
+		lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
+		aux = 0;
 	    }
-	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
-	    lastValueHigh = !lastValueHigh;
-	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
-	    aux = 0;
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.pos = 3;
+		    enemy.shieldTime = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.pos = 6;
+		    enemy.shieldTime = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.pos = 10;
+		    enemy.shieldTime = 2;
+		}
+	    
+	    }
+		
 	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + enemy.shieldTime;
 	    //initialY = 50 - (enemy.height/2);

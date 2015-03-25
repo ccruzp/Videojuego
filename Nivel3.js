@@ -249,7 +249,7 @@ BasicGame.Nivel3.prototype = {
 	BOMB_TOTAL_TIME = 3;
 	ENEMY_VELOCITY = 3; // Velocity of the enemy
 	//--------------------------------
-	TIMES_TO_PASS = 5;	
+	TIMES_TO_PASS = 3;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
 
@@ -262,7 +262,7 @@ BasicGame.Nivel3.prototype = {
 	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
 	TIME_ENEMIES = 0;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
-	TIMES_TO_PASS = 7;
+	TIMES_TO_PASS = 3;
 	this.timesPassed = TIMES_TO_PASS;
     
 	// Initializing boolean variables.
@@ -275,6 +275,7 @@ BasicGame.Nivel3.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
+	tutorial = true;
 	following = false;
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -509,20 +510,27 @@ BasicGame.Nivel3.prototype = {
 		this.shieldTimeText.destroy(true);
 		
 		//Set number of enemies in the next wave
-		if(this.timesPassed > 5){
+		if(!tutorial){
+		    if(this.timesPassed > 5){
+			DISTANCE_ENEMIES = 0; 
+			VELOCITY_ENEMIES = 1; 
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
+		    } else if (this.timesPassed > 3){
+			DISTANCE_ENEMIES = 0; 
+			VELOCITY_ENEMIES = 2; 
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
+		    }else {
+			DISTANCE_ENEMIES = 0; 
+			VELOCITY_ENEMIES = 3; 
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
+		    }   
+		}
+		else{
 		    DISTANCE_ENEMIES = 0; 
 		    VELOCITY_ENEMIES = 1; 
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		} else if (this.timesPassed > 3){
-		    DISTANCE_ENEMIES = 0; 
-		    VELOCITY_ENEMIES = 2; 
-		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		}else {
-		    DISTANCE_ENEMIES = 0; 
-		    VELOCITY_ENEMIES = 3; 
-		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		}
-		
+		}		
+
 		//Reconstruct every sheet
 		this.enemyVelocityPool_Setup(); // Setup the enemies.
 		this.bombPool_Setup(); // Create the bombs.
@@ -533,7 +541,7 @@ BasicGame.Nivel3.prototype = {
 		if(DISTANCE_ENEMIES > 0){
 		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 		}
-		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS;
 		/*
 		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
