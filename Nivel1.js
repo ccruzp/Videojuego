@@ -234,7 +234,7 @@ BasicGame.Nivel1.prototype = {
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 	VELOCITY_ENEMIES = 0;
 	TIME_ENEMIES = 0;
-	TIMES_TO_PASS = 7;
+	TIMES_TO_PASS = 3;
 	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
@@ -246,6 +246,7 @@ BasicGame.Nivel1.prototype = {
 	usingShield = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
+	tutorial = true; // Says if this level is a tutorial
 	following = false; // Some endogenous solution for the problem of dragging a bomb that has already been placed
 	movingBombID = null;
 	lastMultiplicationValue = 88; //Auxiliar to avoid repeated cases
@@ -488,17 +489,22 @@ BasicGame.Nivel1.prototype = {
 		    text.text = 'Velocidad: ' + enemy.speed;
 		},this);
 		*/
-		if(this.timesPassed > 5){
+		if(!tutorial){
+		    if(this.timesPassed > 5){
+			TOTAL_ENEMIES = 1;
+			DISTANCE_ENEMIES = 1;
+		    } else if (this.timesPassed > 3){
+			TOTAL_ENEMIES = 2;
+			DISTANCE_ENEMIES = 2;
+		    }else {
+			TOTAL_ENEMIES = 3;
+			DISTANCE_ENEMIES = 3;		
+		    }
+		}
+		else{
 		    TOTAL_ENEMIES = 1;
 		    DISTANCE_ENEMIES = 1;
-		} else if (this.timesPassed > 3){
-		    TOTAL_ENEMIES = 2;
-		    DISTANCE_ENEMIES = 2;
-		}else {
-		    TOTAL_ENEMIES = 3;
-		    DISTANCE_ENEMIES = 3;		
 		}
-		
 		this.enemyDistancePool.destroy(true);
 		this.enemyDistanceTextPool.destroy(true);
 		this.bombPool.destroy(true);

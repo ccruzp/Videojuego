@@ -1155,8 +1155,24 @@ BasicGame.MainMenu.prototype = {
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
 	    
-	    this.get_Enemy_Time_Speed(enemy);
-	    
+	    if(!tutorial){
+		this.get_Enemy_Time_Speed(enemy);
+	    }
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.speed = 1;
+		    enemy.time = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.speed = 2;
+		    enemy.time = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.speed = 5;
+		    enemy.time = 2;
+		}
+
+	    }
 	    //enemy.speed = this.shuffleBag_Bomb_Get();	    
 	    /*
 	    aux = 0;
