@@ -127,6 +127,7 @@ BasicGame.Nivel6.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   get_Enemy_Time_Speed,
 		   go_To_Home,
 		   homeButton_Setup,	 
 		   increase_Fire,
@@ -198,6 +199,7 @@ BasicGame.Nivel6.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.get_Enemy_Time_Speed = get_Enemy_Time_Speed;
 	this.go_To_Home = go_To_Home;
 	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
@@ -871,6 +873,7 @@ BasicGame.Nivel6.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
 			 this.go_To_Home,
 			 this.homeButton_Setup,
 			 this.increase_Fire,

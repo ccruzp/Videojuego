@@ -1,3 +1,4 @@
+
 BasicGame.MainMenu = function (game) {
 
 };
@@ -126,6 +127,7 @@ BasicGame.MainMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
 			 this.go_To_Home,
 			 this.homeButton_Setup,
 			 this.increase_Fire,
@@ -894,7 +896,8 @@ BasicGame.MainMenu.prototype = {
 		
 		//Setting the bomb time given the Distance enemies
 		var enemy = this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb));
-		
+		bomb.time = enemy.time;
+		/*
 		bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 		aux = 0;
 		console.log('This case: ' + enemy.speed*bomb.time);
@@ -903,28 +906,23 @@ BasicGame.MainMenu.prototype = {
 			bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 			console.log('Im trying to give you unrepeated cases');
 			console.log('New case: ' + enemy.speed*bomb.time);
-		
 			aux = aux + 1;
 		    }  
 		}
 		if(aux == 10) {
 		    console.log('Your game crashed and you have to restart your PC. Look! I Gave you a repeated case!');
 		    aux = 0;
-		    //
 		    // (enemy.speed > 2) == lastValueHigh)
 		    while(aux != 10 && (enemy.speed*bomb.time) == lastMultiplicationValue && (enemy.speed*bomb.time)<11){
 			enemy.speed = this.shuffleBag_Bomb_Get();
-			
 			console.log('Im trying to give you unrepeated cases. DEATH case');
 			console.log('New case: ' + enemy.speed*bomb.time);
-			
 			aux = aux + 1;
 			this.enemyDistancePool.getAt(this.bombPool.getIndex(bomb))
 			var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
 			text.text = 'Velocidad: \n' + enemy.speed;
 		    }
 		}
-		
 		if(aux == 10){
 		    // K lol xD
 		    console.log('Dude, I really tried');
@@ -934,8 +932,9 @@ BasicGame.MainMenu.prototype = {
 		    var text = this.enemyDistanceTextPool.getAt(this.enemyDistancePool.getIndex(enemy));
 		    text.text = 'Velocidad: \n' + enemy.speed;
 		}
-		
 		aux = 0;
+		*/
+
 		lastMultiplicationValue = enemy.speed*bomb.time;
 		
 	    } else{
@@ -1232,8 +1231,10 @@ BasicGame.MainMenu.prototype = {
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
 	    
-	    enemy.speed = this.shuffleBag_Bomb_Get();
+	    this.get_Enemy_Time_Speed(enemy);
 	    
+	    //enemy.speed = this.shuffleBag_Bomb_Get();	    
+	    /*
 	    aux = 0;
 	    if(TOTAL_ENEMIES < 3){
 		while( ((enemy.speed > 2) == lastValueHigh) && aux != 10 ){
@@ -1242,10 +1243,10 @@ BasicGame.MainMenu.prototype = {
 		    aux = aux + 1;
 		}  
 	    }
-	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
-	    
+	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');	    
 	    lastValueHigh = !lastValueHigh;
 	    aux = 0;
+	    */
 
 	    enemy.body.setSize(100, 100, 0, enemy.height/2);
 	    enemy.inputEnabled = true;
@@ -1634,6 +1635,66 @@ BasicGame.MainMenu.prototype = {
 	// console.log(aux);
 	// console.log("ENEPOS"+enemy.pos);
 	// console.log("ENETIME"+enemy.shieldTime);
+    },
+
+    // Function used for Multiplication enemies (Time x Speed)
+    // Used in Distance Enemies
+    // The variable enemy.time is used in bomb.time 
+    get_Enemy_Time_Speed: function(enemy){
+	aux = this.shuffleBag_Bomb_Get();
+	//aux = this.game.rnd.integerInRange(1, 10);
+	if (aux > 5){
+	    if (aux > 8){
+		if(aux == 9) {
+		    enemy.speed = 5;
+		    enemy.time = 1;
+		}
+		if(aux == 10) {
+		    enemy.speed = 5;
+		    enemy.time = 2;
+		}
+	    }else{
+		if(aux == 8) {
+		    enemy.speed = 4;
+		    enemy.time = 2;
+		}
+		if(aux == 7) {
+		    enemy.speed = 4;
+		    enemy.time = 1;
+		}
+		if(aux == 6) {
+		    enemy.speed = 3;
+		    enemy.time = 3;
+		}
+	    }
+	}else{
+	    if(aux>3){
+		if(aux == 4) {
+		    enemy.speed = 3;
+		    enemy.time = 1;
+		}
+		if(aux == 5) {
+		    enemy.speed = 3;
+		    enemy.time = 2;
+		}
+	    }else{
+		if(aux == 1) {
+		    enemy.speed = 1;
+		    enemy.time = 2;
+		}
+		if(aux == 2) {
+		    enemy.speed = 2;
+		    enemy.time = 3;
+		}
+		if(aux == 3) {
+		    enemy.speed = 2;
+		    enemy.time = 4;
+		}
+	    }
+	}
+    	console.log(aux);
+	console.log("ENE_SPEED"+enemy.speed);
+	console.log("ENE_TIME"+enemy.time);
     },
 
     // Function used to return to the main menu
@@ -2054,14 +2115,13 @@ BasicGame.MainMenu.prototype = {
 
     //-----------------------------------------------------------------------------
     // Gets next element from the shuffle Bag
-    
     shuffleBag_Bomb_Get: function(/*random*/){
 	// If shuffleBag is empty, restart the shuffleBag (function)
 	if (this.shuffleBagBomb.countLiving() == 0){
 	    this.shuffleBag_Bomb_Restart();
 	}
 	// Set random values to match values of next element in shuffle Bag 
-	element = this.shuffleBagBomb.getRandom( 5-(this.shuffleBagBomb.countLiving()));
+	element = this.shuffleBagBomb.getRandom( 10-(this.shuffleBagBomb.countLiving()));
 	random = element.value;
 	// Kill the element used
 	element.kill();
@@ -2086,7 +2146,7 @@ BasicGame.MainMenu.prototype = {
     shuffleBag_Bomb_Setup: function(){
 	// Create the Shuffle Bag with "SHUFFLEBAG_ELEMENTS" elements
 	this.shuffleBagBomb = this.add.group();
-	this.shuffleBagBomb.createMultiple(/*SHUFFLEBAG_ELEMENTS*/5,'','',true);   
+	this.shuffleBagBomb.createMultiple(/*SHUFFLEBAG_ELEMENTS*/10,'','',true);   
 	// Initializes the shuffle bag, each element having its index value
 	this.shuffleBagBomb.forEach(function(element) {
 	    element.value = this.shuffleBagBomb.getIndex(element);
@@ -2481,4 +2541,10 @@ this.shieldPool_Setup
 Added: 
 this.homeButton_Setup
 this.go_To_Home:
+*/
+
+// Added-Erased 25-03-2015
+/*
+Added: 
+this.get_Enemy_Time_Speed
 */
