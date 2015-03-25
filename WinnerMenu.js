@@ -191,7 +191,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.timeOfGame = Math.floor(this.timeOfGame);
 	console.log('timeOfGame ' + this.timeOfGame);
 	this.scoreTime = this.maxTime - this.timeOfGame;
-	
+	this.sound = true; //Enables coin sound
 	music = this.add.audio('coin');
 	rankSound = this.add.audio('rankS');
 
@@ -328,9 +328,15 @@ BasicGame.WinnerMenu.prototype = {
 			 this.try_To_Destroy_Velocity,
 			 this.you_Got_Shot);*/
 	}
+	else{
+	    this.sound = false;
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
+	}
     },
 
-    update_Score: function(){
+    update_Score: function(sound){
 	
 	if (this.rankBoolean){
 	    if (this.scoreTime > 0){
@@ -342,8 +348,7 @@ BasicGame.WinnerMenu.prototype = {
 	    
 		scoreText.text =  'Score: '+ this.score;
 		/*scoreTimeText.text = 'TiempoAux: '+ this.scoreTime;*/
-		music.play('',0,1,false);
-	    
+		if(this.sound) music.play('',0,1,false);
 	    
 	    } else {
 		this.score = this.score + this.lastScore;
