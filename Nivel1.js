@@ -313,10 +313,10 @@ BasicGame.Nivel1.prototype = {
 	//this.timeOfGame = this.time.now;
 
 	// The button panel.
-	this.buttonPanel_Setup();
+	// this.buttonPanel_Setup();
 
 	// The selector.
-	this.selector_Setup();
+	// this.selector_Setup();
 
 	// Group for the buttons
 	buttons = this.add.group();
@@ -509,9 +509,7 @@ BasicGame.Nivel1.prototype = {
 		    this.simulationTime = this.simulationTime + bomb.time; 
 		    // this.explosionTimeCounter = bomb.time; // Time counter
 		}, this);
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
-		// this.bombOnMouseText.x = this.bombOnMouse.x;
-		// this.bombOnMouseText.y = this.bombOnMouse.y;
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		// this.bombOnMouseText.visible = true;
 
 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
@@ -549,10 +547,10 @@ BasicGame.Nivel1.prototype = {
     // over menu.
     quit_Game: function (won) {	
 	this.playButton.destroy();
-	this.buttonPanel.kill();
+	// this.buttonPanel.kill();
 	this.blackHoleButton.destroy();
 	buttons.destroy(true);
-	this.selector.destroy(true);
+	// this.selector.destroy(true);
 	this.bombTextPool.destroy(true);
 	this.enemyDistanceTextPool.destroy(true);
 	this.otherTextPool.destroy(true);

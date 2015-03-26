@@ -530,7 +530,7 @@ BasicGame.Nivel3.prototype = {
 		this.enemyVelocityLaserPool_Setup();
 		this.enemy_ShieldTime_Text_Setup(); // Enemy's shieldTime text
 		if(DISTANCE_ENEMIES > 0){
-		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		    // this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		}
 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		/*

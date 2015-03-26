@@ -607,7 +607,7 @@ BasicGame.Nivel6.prototype = {
 		this.missilePool_Setup(); // Creating the bullets
 		//this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
-		//this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		
 		//------------------------------------------------------------

@@ -458,7 +458,8 @@ BasicGame.MainMenu.prototype = {
     // Creates the black hole bomb button.
     blackHoleButton_Setup: function() {
 	// this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', this.select_Bomb, this, null, null, 1, 1);
-	this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', function() {
+	// this.blackHoleButton = this.add.button(this.world.width/2, this.world.height - 82, 'blackHoleButton', function() {
+	this.blackHoleButton = this.add.button(this.world.width/5, this.world.height - 70, 'blackHoleButton', function() {
 	    this.bombPool.forEachAlive(function(bomb) {
 		bomb.kill();
 	    }, this);
@@ -467,12 +468,13 @@ BasicGame.MainMenu.prototype = {
 	    }, this);
 	    numberOfBombs = DISTANCE_ENEMIES;
 	    if(DISTANCE_ENEMIES > 0){
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		// this.bombOnMouse.reset(this.world.width/5, this.world.height - 82);
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		this.bombOnMouseText.visible = true;
 	    }
 	}, this, null, null, 1, 0);
 	this.blackHoleButton.anchor.setTo(0.5, 0.5);
-	this.blackHoleButton.scale.setTo(0.25, 0.25);
+	this.blackHoleButton.scale.setTo(0.45, 0.45);
 	buttons.add(this.blackHoleButton);
     },
     
@@ -480,16 +482,17 @@ BasicGame.MainMenu.prototype = {
     bombOnMouse_Setup: function() {
 	this.bombOnMouse = this.add.sprite(this.blackHoleButton.x, this.blackHoleButton.y, 'bomb');
 	this.bombOnMouse.anchor.setTo(0.5, 0.5);
-	this.bombOnMouse.scale.setTo(0.15, 0.15);
+	this.bombOnMouse.scale.setTo(0.4, 0.4);
 	// this.physics.enable(this.bombOnMouse, Phaser.Physics.ARCADE);
 	this.bombOnMouse.inputEnabled = true;
 	this.bombOnMouse.input.enableDrag(true);
-	// this.bombOnMouse.events.onDragStart.add(function() {
-	//     console.log("STARTED")
-	// }, this);
+	this.bombOnMouse.events.onDragStart.add(function() {
+	    console.log("STARTED");
+	    this.bombOnMouse.scale.setTo(0.15, 0.15);
+	}, this);
 	this.bombOnMouse.events.onDragStop.add(function() {
 	    console.log("STOPPED");
-	    
+	    this.bombOnMouse.scale.setTo(0.4, 0.4);	    
 	    usingBlackHole = true;
 	    this.put_Weapon();
 	}, this);
@@ -667,20 +670,21 @@ BasicGame.MainMenu.prototype = {
 
     // Creates the play buttons
     playButton_Setup: function() {
-	this.playButton = this.add.button(this.world.centerX, this.world.height - 35, 'playButton', this.start, this, 0, 0, 1, 0);
+	// this.playButton = this.add.button(this.world.centerX, this.world.height - 35, 'playButton', this.start, this, 0, 0, 1, 0);
+	this.playButton = this.add.button(this.world.width * 4 / 5, this.world.height - 70, 'playButton', this.start, this, 0, 0, 1, 0);
 	this.playButton.anchor.setTo(0.5, 0.5);
-	this.playButton.scale.setTo(0.04, 0.04);
+	this.playButton.scale.setTo(0.15, 0.15);
 	buttons.add(this.playButton);
 
-	this.playButton1 = this.add.button(this.world.centerX + 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
-	this.playButton1.anchor.setTo(0.5, 0.5);
-	this.playButton1.scale.setTo(0.11, 0.11);
-	buttons.add(this.playButton1);
+	// this.playButton1 = this.add.button(this.world.centerX + 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	// this.playButton1.anchor.setTo(0.5, 0.5);
+	// this.playButton1.scale.setTo(0.11, 0.11);
+	// buttons.add(this.playButton1);
 
-	this.playButton2 = this.add.button(this.world.centerX - 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
-	this.playButton2.anchor.setTo(0.5, 0.5);
-	this.playButton2.scale.setTo(0.11, 0.11);
-	buttons.add(this.playButton2);
+	// this.playButton2 = this.add.button(this.world.centerX - 200, this.world.height - 60, 'playButton', this.start, this, 0, 0, 1, 0);
+	// this.playButton2.anchor.setTo(0.5, 0.5);
+	// this.playButton2.scale.setTo(0.11, 0.11);
+	// buttons.add(this.playButton2);
 
     },
 
@@ -867,6 +871,7 @@ BasicGame.MainMenu.prototype = {
 		following = true;
 		usingBlackHole = false;
 		movingBombID = this.bombPool.getIndex(bomb);
+		this.bombOnMouse.scale.setTo(0.15, 0.15);
 		this.bombOnMouseText.visible = true;
 		this.bombTextPool.getAt(this.bombPool.getIndex(bomb)).y = 1000;
 	    }, this);
@@ -876,17 +881,13 @@ BasicGame.MainMenu.prototype = {
 		y = (this.allign_Y(this.gridY-1)) + (GRID_SPACE/3);
 		bomb.reset(x, y);
 		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
+		this.bombOnMouse.scale.setTo(0.4, 0.4);
 		this.bombOnMouseText.visible = false;
 		var text = this.bombTextPool.getAt(this.bombPool.getIndex(bomb));
 		text.x = x + 6;
 		text.y = y + 6;
 		following = false;
 	    }, this);
-	    // bomb.events.onDragStop.add(function() {
-	    // 	// console.log("STOPPED");
-	    // 	usingBlackHole = true;
-	    // 	this.put_Weapon();
-	    // }, this);
 
 	    // Adding the bomb animation to each bomb.
 	    bomb.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], 10, false);
@@ -981,7 +982,8 @@ BasicGame.MainMenu.prototype = {
     
     // Creates the button for the cannon.
     cannonButton_Setup: function() {
-	this.cannonButton = this.add.button(this.world.width/2 - 67, this.world.height - 50, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	// this.cannonButton = this.add.button(this.world.width/2 - 67, this.world.height - 50, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
+	this.cannonButton = this.add.button(this.world.width/5 * 2, this.world.height - 50, 'cannonButton', this.select_Cannon, this, null, null, 1, 1);
 	this.cannonButton.anchor.setTo(0.5, 0.5);
 	this.cannonButton.scale.setTo(0.27, 0.27);
 	buttons.add(this.cannonButton);
@@ -1114,7 +1116,7 @@ BasicGame.MainMenu.prototype = {
 	/*this.velocityText = this.add.text((this.allign_X(this.enemyPlace)), 20, 'Velocidad: ' + enemy.speed, { font: "20px Arial", fill: "#ffffff", align: "left" }, this.otherTextPool);*/
 
 	// Display for the amount of bombPool left.
-	this.bombsRemainingText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y - 44, '' + numberOfBombs, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	this.bombsRemainingText = this.add.text(this.blackHoleButton.x + 50, this.blackHoleButton.y + 44, 'x' + numberOfBombs, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
 	this.bombsRemainingText.anchor.setTo(0.5, 0.5);
 
 	// Display for the time of the bomb.
@@ -1738,10 +1740,10 @@ BasicGame.MainMenu.prototype = {
 	lockedButtons.setAll('anchor.y', 0.5);
 	lockedButtons.setAll('outOfBoundsKill', true);
 	lockedButtons.setAll('checkWorldBounds', true);
-	lockedButtons.setAll('alpha',0.85);
+	// lockedButtons.setAll('alpha',0.85);
 	//This is used with lock4.png
-	lockedButtons.setAll('scale.x', 0.03);
-	lockedButtons.setAll('scale.y', 0.03);
+	lockedButtons.setAll('scale.x', 0.06);
+	lockedButtons.setAll('scale.y', 0.06);
 	
 	/* This is used with lockedButton.png
 	lockedButtons.setAll('scale.x', 0.12);
@@ -1774,17 +1776,19 @@ BasicGame.MainMenu.prototype = {
 	// If there are not distance enemies, lock the bombs
 	if(DISTANCE_ENEMIES == 0){
 	    var button = lockedButtons.getFirstExists(false);	
-	    button.reset(this.world.width/2, this.world.height - 82);
+	    button.reset(this.world.width / 5, this.world.height - 70);
 	}
 	// If there are not velocity enemies, lock the cannons
 	if(VELOCITY_ENEMIES == 0){
 	    var button = lockedButtons.getFirstExists(false);	
-	    button.reset(this.world.width/2 - 67, this.world.height - 50);
+	    // button.reset(this.world.width/2 - 67, this.world.height - 50);
+	    button.reset(this.world.width*2 / 5, this.world.height - 70);
 	}
 	// If there are not time enemies, lock the shields
 	if(TIME_ENEMIES == 0){
 	    var button = lockedButtons.getFirstExists(false);	
-	    button.reset(this.world.width/2 + 67, this.world.height - 50);
+	    // button.reset(this.world.width/2 + 67, this.world.height - 50);
+	    button.reset(this.world.width*3 / 5, this.world.height - 70);
 	}
 
     },
@@ -1845,7 +1849,7 @@ BasicGame.MainMenu.prototype = {
 		//}
 		this.blackHoleButton.frame = 0;
 		if (numberOfBombs > 0) {
-		    this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		    this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		} else {
 		    this.bombOnMouse.reset(1000, 1000);
 		}

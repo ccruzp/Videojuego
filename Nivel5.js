@@ -331,7 +331,7 @@ BasicGame.Nivel5.prototype = {
 	this.enemyTimePool_Setup(); // Setup the enemies.
 	this.bombPool_Setup(); // Create the bombs.
 	this.missilePool_Setup(); // Creating the bullets for the cannons.
-	//this.cannonPool_Setup(); // Create the cannonPool.
+	this.cannonPool_Setup(); // Create the cannonPool.
 	this.shieldPool_Setup(); // Create the shieldPool.
 	
 	// Counters.
@@ -351,10 +351,10 @@ BasicGame.Nivel5.prototype = {
 	this.playButton_Setup(); // Creates the play button.
 	this.homeButton_Setup(); // Create the Home Button
 	
+	// this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 	this.lockedButtons_Setup(); // Creates the locked buttons.
 
-	//this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
-	//this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
+	// this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 
 	// Creating the text displays.
@@ -607,7 +607,7 @@ BasicGame.Nivel5.prototype = {
 		this.missilePool_Setup(); // Creating the bullets
 		//this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
-		//this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		// this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 
 		//------------------------------------------------------------

@@ -510,7 +510,7 @@ BasicGame.Nivel2.prototype = {
 		    this.simulationTime = this.simulationTime + bomb.time; 
 		    // this.explosionTimeCounter = bomb.time; // Time counter
 		}, this);
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		// this.bombOnMouseText.x = this.bombOnMouse.x;
 		// this.bombOnMouseText.y = this.bombOnMouse.y;
 		// this.bombOnMouseText.visible = true;
