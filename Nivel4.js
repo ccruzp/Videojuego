@@ -164,6 +164,7 @@ BasicGame.Nivel4.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -235,8 +236,8 @@ BasicGame.Nivel4.prototype = {
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-	
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -274,6 +275,7 @@ BasicGame.Nivel4.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
+	tutorial = false;
 	following = false;
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -639,6 +641,8 @@ BasicGame.Nivel4.prototype = {
 	if(goHome){
 	    nextState = 'MainMenu';
 	}
+	this.start_Game(nextState,time,this.level,this.score);
+	/*
 	this.state.start(nextState, true, false, 
 			 time, this.level,this.score,
 			 this.activate_Enemy_Shield,
@@ -709,7 +713,7 @@ BasicGame.Nivel4.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
     },
         
 // <<<<<<< HEAD

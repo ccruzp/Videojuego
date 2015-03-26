@@ -19,7 +19,10 @@ BasicGame.MainMenu.prototype = {
 	// newGameButton.scale.setTo(0.15, 0.15);
 	// levelButtons.add(newGameButton);
 	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY - 175, 'level1', function() {
-	    this.startGame('Nivel1', 1);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel1', 0, 1, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -28,7 +31,10 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 2
 	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 75, 'level2', this.startGame2, this, 1, 0, 1, 0);
 	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY - 175, 'level2', function() {
-	    this.startGame('Nivel2', 2);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel2', 0, 2, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -37,7 +43,10 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 3
 	// newGameButton = this.add.button(this.world.centerX, this.world.centerY + 25, 'level3', this.startGame3, this, 1, 0, 1, 0);
 	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY - 75, 'level3', function() {
-	    this.startGame('Nivel3', 3);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel3', 0, 3, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -46,7 +55,10 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 4
 	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 175, 'level4', this.startGame4, this, 1, 0, 1, 0);
 	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY - 75, 'level1', function() {
-	    this.startGame('Nivel4', 4);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel4', 0, 4, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -55,7 +67,10 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 5
 	// newGameButton = this.add.button(this.world.centerX, this.world.centerY - 75, 'level2', this.startGame5, this, 1, 0, 1, 0);
 	newGameButton = this.add.button(this.world.centerX - 200, this.world.centerY + 25, 'level2', function() {
-	    this.startGame('Nivel5', 5);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel5', 0, 5, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -64,7 +79,10 @@ BasicGame.MainMenu.prototype = {
 	//Button to jump to level 6
 	// newGameButton = this.add.button(this.world.centerX, this.world.centerY + 25, 'level6', this.startGame6, this, 1, 0, 1, 0);
 	newGameButton = this.add.button(this.world.centerX + 200, this.world.centerY + 25, 'level3', function() {
-	    this.startGame('Nivel6', 6);
+	    text.destroy();
+	    levelButtons.destroy(true);
+	    background.destroy();
+	    this.start_Game('Nivel6', 0, 6, 0);
 	}, this, 1, 0, 1, 0);
 	newGameButton.anchor.setTo(0.5, 0.5);
 	newGameButton.scale.setTo(0.15, 0.15);
@@ -75,99 +93,6 @@ BasicGame.MainMenu.prototype = {
 
 	//	Do some nice funky main menu effect here
 	
-    },
-    
-    startGame: function (levelName, level) {
-	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-	// this.music.stop();
-	
-	//	And start the actual game
-	// this.newGameButton.destroy();
-	// this.text.destroy();
-	// this.background.destroy();
-	// this.state.start('Distance');
-	// newGameButton.destroy();
-	console.log("OLA BALE");
-	text.destroy();
-	levelButtons.destroy(true);
-	background.destroy();
-	time = 0;
-	// level = 1;
-	score = 0;
-	console.log(level);
-	this.state.start(levelName, true, false, time, level, score,
-			 this.activate_Enemy_Shield,
-			 this.allign_X,
-			 this.allign_Y,
-			 this.begin_Game,
-			 this.blackHoleButton_Setup,
-			 this.blackScreen_Displays_Setup,
-			 this.bombOnMouse_Setup,
-			 this.bombPool_Setup,
-			 this.buttonPanel_Setup,
-			 this.cannonButton_Setup,
-			 this.cannonOnMouse_Setup,
-			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
-			 this.countdown,
-			 this.deactivate_Enemy_Shield,
-			 this.decrease_Fire,
-			 this.decrease_Time_Shield,
-			 this.desallign_X,
-			 this.desallign_Y,
-			 this.displays_Setup,
-			 this.find_Grid_Place,
-			 this.enemy_Fire,
-			 this.enemy_Hit,
-			 this.enemy_ShieldTime_Text_Setup,
-			 this.enemyBulletPool_Setup,
-			 this.enemyDistancePool_Setup,
-			 this.enemyTimePool_Setup,
-			 this.enemyVelocityLaserPool_Setup,
-			 this.enemyVelocityPool_Setup,
-			 this.fire,
-			 this.get_Enemy_Distance_Speed,
-			 this.get_Enemy_Time_Speed,
-			 this.go_To_Home,
-			 this.homeButton_Setup,
-			 this.increase_Fire,
-			 this.increase_Time_Shield,
-			 this.lockedButtons_Setup,
-			 this.make_Grid,
-			 this.minusButton_Setup,
-			 this.missilePool_Setup,
-			 this.out_Of_GridY,
-			 this.playButton_Setup,
-			 this.plusButton_Setup,
-			 this.put_Weapon,
-			 this.select_Bomb,
-			 this.select_Cannon,
-			 this.select_Shield,
-			 this.selector_Setup,
-			 this.set_Missile_Speed,
-			 this.set_Shield_Time,
-			 this.shield_Hit,
-			 this.shieldButton_Setup,
-			 this.shieldOnMouse_Setup,
-			 this.shieldPool_Setup,
-			 this.shieldSelectorButtonsPool_Setup,
-			 this.shuffleBag_Bomb_Get,
-			 this.shuffleBag_Bomb_Restart,
-			 this.shuffleBag_Bomb_Setup,
-			 this.shuffleBag_Velocity_Get,
-			 this.shuffleBag_Velocity_Restart,
-			 this.shuffleBag_Velocity_Setup,
-			 this.shuffleBag_X_Axis_Get,
-			 this.shuffleBag_X_Axis_Restart,
-			 this.shuffleBag_X_Axis_Setup,
-			 /*this.shuffleBag_Get,
-			 this.shuffleBag_Restart,
-			 this.shuffleBag_Setup,*/
-			 this.start,
-			 this.try_To_Destroy,
-			 this.try_To_Destroy_Time,
-			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
     },
 
     // startGame1: function (pointer) {
@@ -697,8 +622,7 @@ BasicGame.MainMenu.prototype = {
 	this.scoreText = this.add.text(65.45, 100, '' + this.score, { font: "30px Arial", fill: "#000000", align: "center" }, this.otherTextPool);
 	this.scoreText.anchor.set(0.5);
     },*/
-    //DEPRECATED, USE DISPLAYS_SETUP INSTEAD
-    
+    //DEPRECATED, USE DISPLAYS_SETUP INSTEAD    
   
     // Lets the player use the bombs.
     select_Bomb: function () {
@@ -1140,7 +1064,7 @@ BasicGame.MainMenu.prototype = {
 	this.scoreText.anchor.set(0.5);
 
 
-	this.roundText = this.add.text(65.45, 200,'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7' , { font: "bold 20px Arial", fill: "#00ffff", align: "center" },this.otherTextPool);
+	this.roundText = this.add.text(65.45, 200,'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS , { font: "bold 20px Arial", fill: "#00ffff", align: "center" },this.otherTextPool);
 	this.roundText.anchor.setTo(0.5,0.5);
 	
     },
@@ -1233,8 +1157,24 @@ BasicGame.MainMenu.prototype = {
 	    enemy.frame = enemy.speed;
 	    enemy.reset(aux1, initialY);
 	    
-	    this.get_Enemy_Time_Speed(enemy);
-	    
+	    if(!tutorial){
+		this.get_Enemy_Time_Speed(enemy);
+	    }
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.speed = 3;
+		    enemy.time = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.speed = 2;
+		    enemy.time = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.speed = 5;
+		    enemy.time = 2;
+		}
+
+	    }
 	    //enemy.speed = this.shuffleBag_Bomb_Get();	    
 	    /*
 	    aux = 0;
@@ -1298,21 +1238,36 @@ BasicGame.MainMenu.prototype = {
 	console.log('Time Enemies');
 	this.enemyTimePool.forEach(function(enemy) {
 	    
-	    this.get_Enemy_Distance_Speed(enemy);
-	    
-	    aux = 0;
-	    if(TOTAL_ENEMIES < 3){
-		while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
-		    //enemy.shieldTime = this.shuffleBag_Bomb_Get();
-		    this.get_Enemy_Distance_Speed(enemy);
-		    console.log('Im trying to change your case');
-		    aux = aux + 1;
-		}  
+	    if(!tutorial){
+		this.get_Enemy_Distance_Speed(enemy);
+		aux = 0;
+		if(TOTAL_ENEMIES < 3){
+		    while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
+			//enemy.shieldTime = this.shuffleBag_Bomb_Get();
+			this.get_Enemy_Distance_Speed(enemy);
+			console.log('Im trying to change your case');
+			aux = aux + 1;
+		    }  
+		}
+		if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+		aux = 0;
 	    }
-	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.pos = 3;
+		    enemy.shieldTime = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.pos = 6;
+		    enemy.shieldTime = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.pos = 10;
+		    enemy.shieldTime = 2;
+		}
+	    }
 	    lastValueHigh = !lastValueHigh;
 	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
-	    aux = 0;
 	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + 2*(enemy.pos/enemy.shieldTime);
 	    initialY = this.allign_Y(10-enemy.pos) + (GRID_SPACE/2)
@@ -1328,7 +1283,7 @@ BasicGame.MainMenu.prototype = {
 		    this.enemyPlace = this.shuffleBag_X_Axis_Get();
 		}
 	    }
-
+	    
 	    aux1 = this.allign_X(this.enemyPlace) -(GRID_SPACE/2);
 	    enemy.frame = 1;
 	    enemy.reset(aux1, initialY);
@@ -1399,21 +1354,39 @@ BasicGame.MainMenu.prototype = {
 	// //Sets the value of enemyShieldSpeed and enemyGridDistance
 	this.enemyVelocityPool.forEach(function(enemy) {
 // <<<<<<< HEAD
-	    this.get_Enemy_Distance_Speed(enemy);
-	    
-	    aux = 0;
-	    if(TOTAL_ENEMIES < 3){
-		while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
-		    //enemy.shieldTime = this.shuffleBag_Bomb_Get();
-		    this.get_Enemy_Distance_Speed(enemy);
-		    console.log('Im trying to change your case');
-		    aux = aux + 1;
-		}  
+	    if(!tutorial){
+		this.get_Enemy_Distance_Speed(enemy);
+		
+		aux = 0;
+		if(TOTAL_ENEMIES < 3){
+		    while( (enemy.shieldTime > 5) == lastValueHigh && aux != 40 && (enemy.shieldTime*enemy.pos) != lastMultiplicationValue ){
+			//enemy.shieldTime = this.shuffleBag_Bomb_Get();
+			this.get_Enemy_Distance_Speed(enemy);
+			console.log('Im trying to change your case');
+			aux = aux + 1;
+		    }  
+		}
+		if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
+		lastValueHigh = !lastValueHigh;
+		lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
+		aux = 0;
 	    }
-	    if(aux == 10) console.log('Your game crashed and you have to restart your PC.');
-	    lastValueHigh = !lastValueHigh;
-	    lastMultiplicationValue = enemy.shieldTime*enemy.pos; 
-	    aux = 0;
+	    else{
+		if(this.timesPassed == 3){
+		    enemy.pos = 3;
+		    enemy.shieldTime = 1;
+		}
+		else if(this.timesPassed == 2){
+		    enemy.pos = 6;
+		    enemy.shieldTime = 3;
+		}
+		else if(this.timesPassed == 1){
+		    enemy.pos = 10;
+		    enemy.shieldTime = 2;
+		}
+	    
+	    }
+		
 	    enemy.shieldTimeCounter = enemy.shieldTime;
 	    this.simulationTime = this.simulationTime + enemy.shieldTime;
 	    //initialY = 50 - (enemy.height/2);
@@ -2237,6 +2210,103 @@ BasicGame.MainMenu.prototype = {
 
     //-----------------------------------------------------------------------------
 
+    //This function calls the next level
+    start_Game: function (levelName, time, level, score) {
+	//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
+	// this.music.stop();
+	
+	//	And start the actual game
+	// this.newGameButton.destroy();
+	// this.text.destroy();
+	// this.background.destroy();
+	// this.state.start('Distance');
+	// newGameButton.destroy();
+	console.log("OLA BALE");
+	/*
+	text.destroy();
+	levelButtons.destroy(true);
+	background.destroy();
+	*/
+	//time = 0;
+	// level = 1;
+	//score = 0;
+	console.log(level);
+	this.state.start(levelName, true, false, time, level, score,
+			 this.activate_Enemy_Shield,
+			 this.allign_X,
+			 this.allign_Y,
+			 this.begin_Game,
+			 this.blackHoleButton_Setup,
+			 this.blackScreen_Displays_Setup,
+			 this.bombOnMouse_Setup,
+			 this.bombPool_Setup,
+			 this.buttonPanel_Setup,
+			 this.cannonButton_Setup,
+			 this.cannonOnMouse_Setup,
+			 this.cannonPool_Setup,
+			 this.cannonSelectorButtonsPool_Setup,
+			 this.countdown,
+			 this.deactivate_Enemy_Shield,
+			 this.decrease_Fire,
+			 this.decrease_Time_Shield,
+			 this.desallign_X,
+			 this.desallign_Y,
+			 this.displays_Setup,
+			 this.find_Grid_Place,
+			 this.enemy_Fire,
+			 this.enemy_Hit,
+			 this.enemy_ShieldTime_Text_Setup,
+			 this.enemyBulletPool_Setup,
+			 this.enemyDistancePool_Setup,
+			 this.enemyTimePool_Setup,
+			 this.enemyVelocityLaserPool_Setup,
+			 this.enemyVelocityPool_Setup,
+			 this.fire,
+			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
+			 this.go_To_Home,
+			 this.homeButton_Setup,
+			 this.increase_Fire,
+			 this.increase_Time_Shield,
+			 this.lockedButtons_Setup,
+			 this.make_Grid,
+			 this.minusButton_Setup,
+			 this.missilePool_Setup,
+			 this.out_Of_GridY,
+			 this.playButton_Setup,
+			 this.plusButton_Setup,
+			 this.put_Weapon,
+			 this.select_Bomb,
+			 this.select_Cannon,
+			 this.select_Shield,
+			 this.selector_Setup,
+			 this.set_Missile_Speed,
+			 this.set_Shield_Time,
+			 this.shield_Hit,
+			 this.shieldButton_Setup,
+			 this.shieldOnMouse_Setup,
+			 this.shieldPool_Setup,
+			 this.shieldSelectorButtonsPool_Setup,
+			 this.shuffleBag_Bomb_Get,
+			 this.shuffleBag_Bomb_Restart,
+			 this.shuffleBag_Bomb_Setup,
+			 this.shuffleBag_Velocity_Get,
+			 this.shuffleBag_Velocity_Restart,
+			 this.shuffleBag_Velocity_Setup,
+			 this.shuffleBag_X_Axis_Get,
+			 this.shuffleBag_X_Axis_Restart,
+			 this.shuffleBag_X_Axis_Setup,
+			 /*this.shuffleBag_Get,
+			 this.shuffleBag_Restart,
+			 this.shuffleBag_Setup,*/
+			 this.start,
+			 this.start_Game,
+			 this.try_To_Destroy,
+			 this.try_To_Destroy_Time,
+			 this.try_To_Destroy_Velocity,
+			 this.you_Got_Shot);
+    },
+
     // If the enemy's shild is deactivated the enemy is killed.
     try_To_Destroy_Time: function(enemy, bullet) {
 	if (!enemyShield) {
@@ -2551,4 +2621,6 @@ this.go_To_Home:
 /*
 Added: 
 this.get_Enemy_Time_Speed
+this.start_Next_Level
 */
+

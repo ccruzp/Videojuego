@@ -161,6 +161,7 @@ BasicGame.Nivel5.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -232,9 +233,9 @@ BasicGame.Nivel5.prototype = {
 	this.shuffleBag_Velocity_Setup = shuffleBag_Velocity_Setup;
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
-	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-		
+	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;	
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -256,7 +257,7 @@ BasicGame.Nivel5.prototype = {
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES; // Total amount of enemies on the level
 	//Why is this here????------------------------------------------------
 	
-	TIMES_TO_PASS = 7;	
+	TIMES_TO_PASS = 3;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
 	//The message given to the player this level
@@ -275,8 +276,8 @@ BasicGame.Nivel5.prototype = {
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
 
+	tutorial = true;
 	following = false;
-
 	missileSpeed = 0; // The speed of the missile shot by the player.
 	shieldTime = 0; // The time in which the shield will activate.
 	enemyBulletSpeed = 2; // Speed of the bullets shot by the timeEnemy.
@@ -584,31 +585,40 @@ BasicGame.Nivel5.prototype = {
 		this.shieldTextPool.destroy(true);
 
 		//Set number of enemies in the next wave
-		if(this.timesPassed > 5){
+		if(!tutorial){
+		    if(this.timesPassed > 5){
+			DISTANCE_ENEMIES = 0; // Amount of distance enemies
+			VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+			TIME_ENEMIES = 1;
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		    } else if (this.timesPassed > 3){
+			DISTANCE_ENEMIES = 0; // Amount of distance enemies
+			VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+			TIME_ENEMIES = 2;
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		    }else {
+			DISTANCE_ENEMIES = 0; // Amount of distance enemies
+			VELOCITY_ENEMIES = 0; // Amount of velocity enemies
+			TIME_ENEMIES = 3;
+			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
+		    }
+		}
+		else{
 		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
 		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
 		    TIME_ENEMIES = 1;
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
-		} else if (this.timesPassed > 3){
-		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
-		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
-		    TIME_ENEMIES = 2;
-		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
-		}else {
-		    DISTANCE_ENEMIES = 0; // Amount of distance enemies
-		    VELOCITY_ENEMIES = 0; // Amount of velocity enemies
-		    TIME_ENEMIES = 3;
-		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES + TIME_ENEMIES;
 		}
-		
 		this.enemyBulletPool_Setup(); // Creating the enemies' bullets.
 		this.enemyTimePool_Setup(); // Setup the enemies.
 		this.bombPool_Setup(); // Create the bombs.
 		this.missilePool_Setup(); // Creating the bullets
 		//this.cannonPool_Setup(); // Create the cannonPool.
 		this.shieldPool_Setup(); // Create the shieldPool.
-		// this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
-		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
+// 		// this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
+// 		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
+		//this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS;
 
 		//------------------------------------------------------------
 		// this.get_Enemy_Distance_Speed();
@@ -839,6 +849,8 @@ BasicGame.Nivel5.prototype = {
 	if(goHome){
 	    nextState = 'MainMenu';
 	}
+	this.start_Game(nextState,time,this.level,this.score);
+	/*
 	this.state.start(nextState, true, false, 
 			 time, this.level,this.score,
 			 this.activate_Enemy_Shield,
@@ -909,7 +921,7 @@ BasicGame.Nivel5.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
     },
 /*
     shield_Hit: function(shieldGen, bullet) {
