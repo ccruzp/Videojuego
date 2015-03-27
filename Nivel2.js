@@ -315,11 +315,11 @@ BasicGame.Nivel2.prototype = {
 	// Score counter---> Now is set in "Begin Game"
 	//this.timeOfGame = this.time.now;
 
-	// The button panel.
-	this.buttonPanel_Setup();
+	// // The button panel.
+	// this.buttonPanel_Setup();
 
-	// The selector.
-	this.selector_Setup();
+	// // The selector.
+	// this.selector_Setup();
 
 	// Group for the buttons
 	buttons = this.add.group();
