@@ -337,10 +337,10 @@ BasicGame.Nivel3.prototype = {
 	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
 
 	// Creates the button's panel.
-	this.buttonPanel_Setup();
+	// this.buttonPanel_Setup();
 	
 	// Creates the cannon's and shield's selector panels.
-	this.selector_Setup();
+	// this.selector_Setup();
 	
 	// Creates the cannon's selector's buttons.
 	this.cannonSelectorButtonsPool_Setup();
@@ -458,7 +458,7 @@ BasicGame.Nivel3.prototype = {
 	}, this);
 	
 	// Updating buttons displays
-	this.cannonButtonText.text = '' + missileSpeed;
+	// this.cannonButtonText.text = '' + missileSpeed;
 	
 	// If the game started move enemies.
 	if (started) {
@@ -627,8 +627,8 @@ BasicGame.Nivel3.prototype = {
 	this.shieldTimeText.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
-	this.selector.destroy(true);
-	this.buttonPanel.kill();
+	// this.selector.destroy(true);
+	// this.buttonPanel.kill();
 	background.kill();
 	if (won) {
 	    time = this.time.elapsedSecondsSince(this.timeOfGame);

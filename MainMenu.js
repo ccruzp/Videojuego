@@ -959,38 +959,48 @@ BasicGame.MainMenu.prototype = {
 	this.cannonSelectorButtonsPool = this.add.group();
 	// var button = this.add.button(195, 555, 'okButton', function() {this.put_Cannon()}, this, 2, 1, 2, 1);
 	// this.cannonSelectorButtonsPool.add(button);
-	var chosen = this.add.sprite(196, 554, 'chosen');
-	this.cannonSelectorButtonsPool.add(chosen);
-	var button = this.add.button(100, 460, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
+	// var chosen = this.add.sprite(196, 554, 'chosen');
+	// this.cannonSelectorButtonsPool.add(chosen);
+	var button = this.add.button(this.world.width / 7, this.world.height -70, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(87, 481, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
+	button = this.add.button(this.world.width*2 / 7, this.world.height - 70, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(113, 481, 'button3', function() {this.set_Missile_Speed(3)}, this, 1, 0, 1, 0);
+	button = this.add.button(this.world.width*3 / 7, this.world.height - 70, 'button3', function() {this.set_Missile_Speed(3)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(74, 502, 'button4', function() {this.set_Missile_Speed(4)}, this, 1, 0, 1, 0);
+	button = this.add.button(this.world.width*4 / 7, this.world.height - 70, 'button4', function() {this.set_Missile_Speed(4)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(100, 502, 'button5', function() {this.set_Missile_Speed(5)}, this, 1, 0, 1, 0);
+	button = this.add.button(this.world.width*5 / 7, this.world.height - 70, 'button5', function() {this.set_Missile_Speed(5)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(126, 502, 'button6', function() {this.set_Missile_Speed(6)}, this, 1, 0, 1, 0);
-	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(61, 524, 'button7', function() {this.set_Missile_Speed(7)}, this, 1, 0, 1, 0);
-	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(87, 524, 'button8', function() {this.set_Missile_Speed(8)}, this, 1, 0, 1, 0);
-	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(113, 524, 'button9', function() {this.set_Missile_Speed(9)}, this, 1, 0, 1, 0);
-	this.cannonSelectorButtonsPool.add(button);
-	button = this.add.button(139, 524, 'button10', function() {this.set_Missile_Speed(10)}, this, 1, 0, 1, 0);
-	this.cannonSelectorButtonsPool.add(button);
+	// var button = this.add.button(100, 460, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(87, 481, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(113, 481, 'button3', function() {this.set_Missile_Speed(3)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(74, 502, 'button4', function() {this.set_Missile_Speed(4)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(100, 502, 'button5', function() {this.set_Missile_Speed(5)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(126, 502, 'button6', function() {this.set_Missile_Speed(6)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(61, 524, 'button7', function() {this.set_Missile_Speed(7)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(87, 524, 'button8', function() {this.set_Missile_Speed(8)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(113, 524, 'button9', function() {this.set_Missile_Speed(9)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.button(139, 524, 'button10', function() {this.set_Missile_Speed(10)}, this, 1, 0, 1, 0);
+	// this.cannonSelectorButtonsPool.add(button);
 
 	this.cannonSelectorButtonsPool.setAll('anchor.x', 0.5);
 	this.cannonSelectorButtonsPool.setAll('anchor.y', 0.5);
-	this.cannonSelectorButtonsPool.setAll('scale.x', 0.15);
-	this.cannonSelectorButtonsPool.setAll('scale.y', 0.15);
+	this.cannonSelectorButtonsPool.setAll('scale.x', 0.5);
+	this.cannonSelectorButtonsPool.setAll('scale.y', 0.5);
 	this.cannonSelectorButtonsPool.setAll('frame', 0);
 	this.cannonSelectorButtonsPool.setAll('visible', false);
-	button = this.cannonSelectorButtonsPool.getAt(0);
-	button.scale.setTo(0.17, 0.17);
-	button.frame = 1;
+	// button = this.cannonSelectorButtonsPool.getAt(0);
+	// button.scale.setTo(0.17, 0.17);
+	// button.frame = 1;
     },
 
     //Disables the velocity enemies shield
@@ -1052,11 +1062,11 @@ BasicGame.MainMenu.prototype = {
 	
 	//THIS IS NOT IN THE DISPLAYS_SETUP OF LEVEL 1, check if errors happens
 	//------------------------------------------------
-	if(VELOCITY_ENEMIES > 0){
-	    // Display for the velocity of the missile.
-	    this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
-	    this.cannonButtonText.anchor.setTo(0.5, 0.5);
-	}
+	// if(VELOCITY_ENEMIES > 0){
+	//     // Display for the velocity of the missile.
+	//     this.cannonButtonText = this.add.text(this.cannonButton.x, this.cannonButton.y - 2, '' + missileSpeed, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
+	//     this.cannonButtonText.anchor.setTo(0.5, 0.5);
+	// }
 	//------------------------------------------------	
 
 	// Game score display.
@@ -1852,10 +1862,12 @@ BasicGame.MainMenu.prototype = {
 	    	text.y = this.cannon.y + 15;
 	    	text.text = '' + this.cannon.shotVelocity;
 
-		this.selector.getAt(0).frame = 0;
+		// this.selector.getAt(0).frame = 0;
 		this.cannonSelectorButtonsPool.setAll('visible', false);
 		this.cannonSelectorButtonsPool.getAt(0).frame = 1;
 	    	this.cannonButton.frame = 0;
+		buttons.setAll('y', this.world.height -70);
+		lockedButtons.setAll('visible', true);
 	    	usingCannon = false;
 		selectedSpeed = false;
 		missileSpeed = 0;
@@ -1925,22 +1937,16 @@ BasicGame.MainMenu.prototype = {
     select_Cannon: function() {
 	if (!started){
 	    usingCannon = (numberOfCannons > 0);
-	    this.selector.getAt(0).frame = 1;
+	    // this.selector.getAt(0).frame = 1;
+	    buttons.setAll('y', 1000);
+	    lockedButtons.setAll('visible', false);
 	    this.cannonSelectorButtonsPool.setAll('visible', true);
 	    if (!usingCannon) {
-		// this.bombPool.removeAll();
 		this.cannonPool.forEachAlive(function(cannon) {
 		    cannon.kill();
 		    var text = this.cannonTextPool.getAt(this.cannonPool.getIndex(cannon));
-		text.visible = false;
-		//text.x = cannon.x;
-		//text.y = cannon.y + 15;
-		//text.text = '' + cannon.shotVelocity;
-
+		    text.visible = false;
 		}, this);
-		/*this.bombTextPool.forEach(function(display) {
-		  display.visible = false;
-		  }, this);*/
 		numberOfCannons = VELOCITY_ENEMIES;
 	    }
 	}
@@ -2047,11 +2053,6 @@ BasicGame.MainMenu.prototype = {
 	    text.visible = false;
 	    text.anchor.setTo(0.5, 0.5);
 	}, this);
-
-	// this.shieldPool.forEach(function(shield) {
-	//     // Adding the bomb animation to each bomb.
-	//     shield.animations.add('shield', [0, 1, 0], 10, false);
-	// }, this);
     },
      
     shieldSelectorButtonsPool_Setup: function() {
