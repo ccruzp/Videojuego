@@ -434,7 +434,7 @@ BasicGame.Nivel6.prototype = {
 	    this.find_Grid_Place();
 	    x = this.allign_X(this.gridX - 0.5);
 	    y = 460;
-	    this.cannonOnMouse.reset(x, y);
+	    // this.cannonOnMouse.reset(x, y);
 	    
 	} else if(usingShield){
 	    this.find_Grid_Place();
@@ -811,6 +811,7 @@ BasicGame.Nivel6.prototype = {
 	this.bombPool.destroy(true);
 	this.missilePool.destroy(true);
 	this.enemyBulletPool.destroy(true);
+	this.homeButton.destroy();
 	//this.cannonPool.destroy(true);
 	buttons.destroy(true);
 	// lockedButtons.destroy(true);
@@ -822,8 +823,8 @@ BasicGame.Nivel6.prototype = {
 	// this.bombTextPool.destroy(true);
 	// this.otherTextPool.destroy(true);
 	// this.bombPool.destroy(true);
-	this.selector.destroy(true);
-	this.buttonPanel.kill();
+	// this.selector.destroy(true);
+	// this.buttonPanel.kill();
 	background.kill();
 	if (won) {
 	    time = this.time.elapsedSecondsSince(this.timeOfGame);

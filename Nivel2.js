@@ -559,7 +559,8 @@ BasicGame.Nivel2.prototype = {
     quit_Game: function (won) {	
 	this.playButton.destroy();
 	// this.buttonPanel.kill();
-	this.blackHoleButton.destroy();
+	// this.blackHoleButton.destroy();
+	this.homeButton.destroy();
 	buttons.destroy(true);
 	// this.selector.destroy(true);
 	this.bombTextPool.destroy(true);

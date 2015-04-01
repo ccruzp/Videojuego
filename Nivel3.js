@@ -401,8 +401,10 @@ BasicGame.Nivel3.prototype = {
 
 	//Hide the weapons cursors
 	// this.bombOnMouse.reset(1000, 1000);
-	this.cannonOnMouse.reset(1000, 1000);
-
+	// this.cannonOnMouse.reset(1000, 1000);
+	// this.cannonOnMousePool.forEach(function(cannon) {
+	//     cannon.reset(1000, 1000);
+	// }, this);
 	
 	if (usingBlackHole) {
 	    this.find_Grid_Place();
@@ -421,7 +423,7 @@ BasicGame.Nivel3.prototype = {
 	     this.find_Grid_Place();
 	     x = this.allign_X(this.gridX - 0.5);
 	     y = 460;
-	     this.cannonOnMouse.reset(x, y);
+	     // this.cannonOnMouse.reset(x, y);
 	}
 
 	if(DISTANCE_ENEMIES > 0){
@@ -619,8 +621,7 @@ BasicGame.Nivel3.prototype = {
     quit_Game: function(won) {	
 	bombBeep.stop();
 	clockSound.stop();
-	this.playButton.destroy();
-	this.blackHoleButton.destroy();
+	this.homeButton.destroy();
 	buttons.destroy(true);
 	lockedButtons.destroy(true);
 	this.bombTextPool.destroy(true);

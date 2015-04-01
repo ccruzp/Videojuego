@@ -915,10 +915,28 @@ BasicGame.MainMenu.prototype = {
 
     cannonOnMouse_Setup: function() {
 	// Image that appears on the mouse when the cannon button is pressed.
-	this.cannonOnMouse = this.add.sprite(1000, 1000, 'cannon');
-	this.cannonOnMouse.anchor.setTo(0.5, 0.5);
-	this.cannonOnMouse.scale.setTo(0.06, 0.06);
-	this.physics.enable(this.cannonOnMouse, Phaser.Physics.ARCADE);
+	this.cannonOnMousePool = this.add.group();
+	this.cannonOnMousePool.createMultiple(5, 'cannon');
+	this.cannonOnMousePool.setAll('anchor.x', 0.5);
+	this.cannonOnMousePool.setAll('anchor.y', 0.5);
+	this.cannonOnMousePool.setAll('scale.x', 0.06);
+	this.cannonOnMousePool.setAll('scale.y', 0.06);
+	this.cannonOnMousePool.setAll('inputEnabled', true);
+	this.cannonOnMousePool.forEach(function(cannon) {
+	    cannon.input.enableDrag(true);
+	    cannon.events.onDragStart.add(function() {
+	    	console.log("Cannon #" + this.cannonOnMousePool.getIndex(cannon) + " is moving");
+	    }, this);
+	    cannon.events.onDragStop.add(function(cannon) {
+	    	console.log("Cannon #" + this.cannonOnMousePool.getIndex(cannon) + " stopped moving");
+	    	usingCannon = true;
+		missileSpeed = this.cannonOnMousePool.getIndex(cannon) + 1;
+	    	console.log("Antes de entrar");
+	    	this.put_Weapon();
+		console.log("Salí");
+	    }, this);
+	}, this);
+	this.cannonOnMousePool.setAll('visible', false);
     },
     
     // Creates the cannons.
@@ -1696,7 +1714,7 @@ BasicGame.MainMenu.prototype = {
 	this.homeButton = this.add.button(this.world.width - 65.45, this.world.centerY - 100 , 'homeButton', this.go_To_Home, this, 0, 0, 1, 0);
 	this.homeButton.anchor.setTo(0.5, 0.5);
 	this.homeButton.scale.setTo(0.7, 0.7);
-	buttons.add(this.homeButton);
+	// buttons.add(this.homeButton);
     },
 
 
@@ -1868,6 +1886,7 @@ BasicGame.MainMenu.prototype = {
 	    	this.cannonButton.frame = 0;
 		buttons.setAll('y', this.world.height -70);
 		lockedButtons.setAll('visible', true);
+		this.cannonOnMousePool.setAll('visible', false);
 	    	usingCannon = false;
 		selectedSpeed = false;
 		missileSpeed = 0;
@@ -1940,6 +1959,12 @@ BasicGame.MainMenu.prototype = {
 	    // this.selector.getAt(0).frame = 1;
 	    buttons.setAll('y', 1000);
 	    lockedButtons.setAll('visible', false);
+	    var i = 1;
+	    this.cannonOnMousePool.forEach(function(cannon) {
+		cannon.reset(this.world.width/7 * i, this.world.height - 70);
+		i++;
+	    },this);
+	    this.cannonOnMousePool.setAll('visible', true);
 	    this.cannonSelectorButtonsPool.setAll('visible', true);
 	    if (!usingCannon) {
 		this.cannonPool.forEachAlive(function(cannon) {
