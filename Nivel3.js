@@ -112,6 +112,7 @@ BasicGame.Nivel3.prototype = {
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
 		   cannonSelectorButtonsPool_Setup,
+		   cannonSelectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -185,6 +186,7 @@ BasicGame.Nivel3.prototype = {
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
 	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
+	this.cannonSelectorTextPool_Setup = cannonSelectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -357,7 +359,7 @@ BasicGame.Nivel3.prototype = {
 	//this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
-
+	this.cannonSelectorTextPool_Setup();
 	// Creating the text displays.
 	this.displays_Setup();
 

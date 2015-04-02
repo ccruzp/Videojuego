@@ -979,6 +979,16 @@ BasicGame.MainMenu.prototype = {
 	// this.cannonSelectorButtonsPool.add(button);
 	// var chosen = this.add.sprite(196, 554, 'chosen');
 	// this.cannonSelectorButtonsPool.add(chosen);
+	// var button = this.add.sprite(this.world.width / 7, this.world.height -70, 'cannonSpeed1');
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.sprite(this.world.width*2 / 7, this.world.height - 70, 'cannonSpeed2');
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.sprite(this.world.width*3 / 7, this.world.height - 70, 'cannonSpeed3');
+	// this.cannonSelectorButtonsPool.add(button);
+		// button = this.add.sprite(this.world.width*4 / 7, this.world.height - 70, 'cannonSpeed4');
+	// this.cannonSelectorButtonsPool.add(button);
+	// button = this.add.sprite(this.world.width*5 / 7, this.world.height - 70, 'cannonSpeed5');
+	// this.cannonSelectorButtonsPool.add(button);
 	var button = this.add.button(this.world.width / 7, this.world.height -70, 'button1', function() {this.set_Missile_Speed(1)}, this, 1, 0, 1, 0);
 	this.cannonSelectorButtonsPool.add(button);
 	button = this.add.button(this.world.width*2 / 7, this.world.height - 70, 'button2', function() {this.set_Missile_Speed(2)}, this, 1, 0, 1, 0);
@@ -1014,11 +1024,23 @@ BasicGame.MainMenu.prototype = {
 	this.cannonSelectorButtonsPool.setAll('anchor.y', 0.5);
 	this.cannonSelectorButtonsPool.setAll('scale.x', 0.5);
 	this.cannonSelectorButtonsPool.setAll('scale.y', 0.5);
-	this.cannonSelectorButtonsPool.setAll('frame', 0);
+	// this.cannonSelectorButtonsPool.setAll('frame', 0);
 	this.cannonSelectorButtonsPool.setAll('visible', false);
 	// button = this.cannonSelectorButtonsPool.getAt(0);
 	// button.scale.setTo(0.17, 0.17);
 	// button.frame = 1;
+    },
+
+    cannonSelectorTextPool_Setup: function() {
+	this.cannonSelectorTextPool = this.add.group();
+	this.add.text(this.world.width/7, this.world.height - 70, '1', {font: "30px Arial", fill: "#000000", align: "left"}, this.cannonSelectorTextPool);
+	this.add.text(this.world.width/7 * 2, this.world.height - 70, '2', {font: "30px Arial", fill: "#000000", align: "left"}, this.cannonSelectorTextPool);
+	this.add.text(this.world.width/7 * 3, this.world.height - 70, '3', {font: "30px Arial", fill: "#000000", align: "left"}, this.cannonSelectorTextPool);
+	this.add.text(this.world.width/7 * 4, this.world.height - 70, '4', {font: "30px Arial", fill: "#000000", align: "left"}, this.cannonSelectorTextPool);
+	this.add.text(this.world.width/7 * 5, this.world.height - 70, '5', {font: "30px Arial", fill: "#000000", align: "left"}, this.cannonSelectorTextPool);
+	this.cannonSelectorTextPool.setAll('anchor.x', 0.5);
+	this.cannonSelectorTextPool.setAll('anchor.y', 0.5);
+	this.cannonSelectorTextPool.setAll('visible', false);
     },
 
     //Disables the velocity enemies shield
@@ -1882,6 +1904,7 @@ BasicGame.MainMenu.prototype = {
 
 		// this.selector.getAt(0).frame = 0;
 		this.cannonSelectorButtonsPool.setAll('visible', false);
+		this.cannonSelectorTextPool.setAll('visible', false);
 		this.cannonSelectorButtonsPool.getAt(0).frame = 1;
 	    	this.cannonButton.frame = 0;
 		buttons.setAll('y', this.world.height -70);
@@ -1966,6 +1989,7 @@ BasicGame.MainMenu.prototype = {
 	    },this);
 	    this.cannonOnMousePool.setAll('visible', true);
 	    this.cannonSelectorButtonsPool.setAll('visible', true);
+	    this.cannonSelectorTextPool.setAll('visible', true);
 	    if (!usingCannon) {
 		this.cannonPool.forEachAlive(function(cannon) {
 		    cannon.kill();
@@ -2247,7 +2271,6 @@ BasicGame.MainMenu.prototype = {
 	// this.background.destroy();
 	// this.state.start('Distance');
 	// newGameButton.destroy();
-	console.log("OLA BALE");
 	/*
 	text.destroy();
 	levelButtons.destroy(true);
@@ -2271,6 +2294,7 @@ BasicGame.MainMenu.prototype = {
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
 			 this.cannonSelectorButtonsPool_Setup,
+			 this.cannonSelectorTextPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,
@@ -2650,3 +2674,9 @@ this.get_Enemy_Time_Speed
 this.start_Next_Level
 */
 
+
+// Added-Erased 02-04-2015
+/*
+Added:
+this.cannonSelectorTextPool_Setup
+*/

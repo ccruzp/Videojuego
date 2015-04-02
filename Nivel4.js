@@ -112,6 +112,7 @@ BasicGame.Nivel4.prototype = {
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
 		   cannonSelectorButtonsPool_Setup,
+		   cannonSelectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -185,6 +186,7 @@ BasicGame.Nivel4.prototype = {
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
 	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
+	this.cannonSelectorTextPool_Setup = cannonSelectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
