@@ -22,7 +22,8 @@ BasicGame.GameOverMenu.prototype = {
 		   cannonButton_Setup,
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
-		   cannonSelectorButtonsPool_Setup,
+		   selectorButtonsPool_Setup,
+		   selectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -41,6 +42,7 @@ BasicGame.GameOverMenu.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   get_Enemy_Time_Speed,
 		   go_To_Home,
 		   homeButton_Setup,	 
 		   increase_Fire,
@@ -74,6 +76,7 @@ BasicGame.GameOverMenu.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -95,7 +98,8 @@ BasicGame.GameOverMenu.prototype = {
 	this.cannonButton_Setup = cannonButton_Setup;
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
-	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
+	this.selectorButtonsPool_Setup = selectorButtonsPool_Setup;
+	this.selectorTextPool_Setup = selectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -114,6 +118,7 @@ BasicGame.GameOverMenu.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.get_Enemy_Time_Speed = get_Enemy_Time_Speed;
 	this.go_To_Home = go_To_Home;
 	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
@@ -147,6 +152,7 @@ BasicGame.GameOverMenu.prototype = {
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -214,6 +220,8 @@ BasicGame.GameOverMenu.prototype = {
 	background.destroy();
 	time = 0;
 	score = 0;
+	this.start_Game(this.nextLevelName,time,this.nextLevel,score);
+	/*
 	this.state.start(this.nextLevelName , true, false, 
 			 time,this.nextLevel,score,
 			 this.activate_Enemy_Shield,
@@ -228,7 +236,7 @@ BasicGame.GameOverMenu.prototype = {
 			 this.cannonButton_Setup,
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
+			 this.selectorButtonsPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,
@@ -247,6 +255,7 @@ BasicGame.GameOverMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
 			 this.go_To_Home,
 			 this.homeButton_Setup,
 			 this.increase_Fire,
@@ -283,7 +292,6 @@ BasicGame.GameOverMenu.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
     },
-    
 };

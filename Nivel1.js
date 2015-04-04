@@ -95,7 +95,8 @@ BasicGame.Nivel1.prototype = {
 		   cannonButton_Setup,
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
-		   cannonSelectorButtonsPool_Setup,
+		   selectorButtonsPool_Setup,
+		   selectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -114,6 +115,7 @@ BasicGame.Nivel1.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   get_Enemy_Time_Speed,
 		   go_To_Home,
 		   homeButton_Setup,	 
 		   increase_Fire,
@@ -147,6 +149,7 @@ BasicGame.Nivel1.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -166,7 +169,8 @@ BasicGame.Nivel1.prototype = {
 	this.cannonButton_Setup = cannonButton_Setup;
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
-	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
+	this.selectorButtonsPool_Setup = selectorButtonsPool_Setup;
+	this.selectorTextPool_Setup = selectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -185,6 +189,7 @@ BasicGame.Nivel1.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.get_Enemy_Time_Speed = get_Enemy_Time_Speed;
 	this.go_To_Home = go_To_Home;
 	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
@@ -218,6 +223,7 @@ BasicGame.Nivel1.prototype = {
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -230,7 +236,7 @@ BasicGame.Nivel1.prototype = {
 	DISTANCE_ENEMIES = 1; // Amount of distance enemies
 	VELOCITY_ENEMIES = 0;
 	TIME_ENEMIES = 0;
-	TIMES_TO_PASS = 7;
+	TIMES_TO_PASS = 3;
 	this.enemyVelocityPool = null;
 	// Initializing boolean variables.
 	started = false; // Boolean that says if the game has begun.
@@ -242,6 +248,7 @@ BasicGame.Nivel1.prototype = {
 	usingShield = false;
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
+	tutorial = true; // Says if this level is a tutorial
 	following = false; // Some endogenous solution for the problem of dragging a bomb that has already been placed
 	movingBombID = null;
 	lastMultiplicationValue = 88; //Auxiliar to avoid repeated cases
@@ -311,10 +318,10 @@ BasicGame.Nivel1.prototype = {
 	//this.timeOfGame = this.time.now;
 
 	// The button panel.
-	this.buttonPanel_Setup();
+	// this.buttonPanel_Setup();
 
 	// The selector.
-	this.selector_Setup();
+	// this.selector_Setup();
 
 	// Group for the buttons
 	buttons = this.add.group();
@@ -455,8 +462,7 @@ BasicGame.Nivel1.prototype = {
 		// bomb.time = this.game.rnd.integerInRange(2, Math.floor((10/enemy.speed)));
 		// this.simulationTime = this.simulationTime + bomb.time;
 		// this.explosionTimeCounter = bomb.time;
-		// this.bombOnMouseText.text =  '' + this.explosionTimeCounter
-		;
+		// this.bombOnMouseText.text =  '' + this.explosionTimeCounter;
 		/*
 		this.enemyDistancePool.forEach(function(enemy) {
 		    // var enemy = this.enemyDistancePool.getFirstExists(false);
@@ -485,17 +491,22 @@ BasicGame.Nivel1.prototype = {
 		    text.text = 'Velocidad: ' + enemy.speed;
 		},this);
 		*/
-		if(this.timesPassed > 5){
+		if(!tutorial){
+		    if(this.timesPassed > 5){
+			TOTAL_ENEMIES = 1;
+			DISTANCE_ENEMIES = 1;
+		    } else if (this.timesPassed > 3){
+			TOTAL_ENEMIES = 2;
+			DISTANCE_ENEMIES = 2;
+		    }else {
+			TOTAL_ENEMIES = 3;
+			DISTANCE_ENEMIES = 3;		
+		    }
+		}
+		else{
 		    TOTAL_ENEMIES = 1;
 		    DISTANCE_ENEMIES = 1;
-		} else if (this.timesPassed > 3){
-		    TOTAL_ENEMIES = 2;
-		    DISTANCE_ENEMIES = 2;
-		}else {
-		    TOTAL_ENEMIES = 3;
-		    DISTANCE_ENEMIES = 3;		
 		}
-		
 		this.enemyDistancePool.destroy(true);
 		this.enemyDistanceTextPool.destroy(true);
 		this.bombPool.destroy(true);
@@ -508,12 +519,10 @@ BasicGame.Nivel1.prototype = {
 		    this.simulationTime = this.simulationTime + bomb.time; 
 		    // this.explosionTimeCounter = bomb.time; // Time counter
 		}, this);
-		this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
-		// this.bombOnMouseText.x = this.bombOnMouse.x;
-		// this.bombOnMouseText.y = this.bombOnMouse.y;
+		this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
 		// this.bombOnMouseText.visible = true;
 
-		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS;
 		// Display for the time of the bomb.
 		/*var bomb = this.bombPool.getFirstExists(false);	
 		this.bombOnMouseText = this.add.text(this.blackHoleButton.x, this.blackHoleButton.y, '' + bomb.time, { font: "20px Arial", fill : "#000000", align: "left"}, this.otherTextPool);
@@ -548,10 +557,11 @@ BasicGame.Nivel1.prototype = {
     // over menu.
     quit_Game: function (won) {	
 	this.playButton.destroy();
-	this.buttonPanel.kill();
-	this.blackHoleButton.destroy();
+	// this.buttonPanel.kill();
+	// this.blackHoleButton.destroy();
+	this.homeButton.destroy();
 	buttons.destroy(true);
-	this.selector.destroy(true);
+	// this.selector.destroy(true);
 	this.bombTextPool.destroy(true);
 	this.enemyDistanceTextPool.destroy(true);
 	this.otherTextPool.destroy(true);
@@ -575,6 +585,8 @@ BasicGame.Nivel1.prototype = {
 	if(goHome){
 	    nextState = 'MainMenu';
 	}
+	this.start_Game(nextState,time,this.level,this.score);
+	/*
 	this.state.start(nextState, true, false, time, this.level,this.score,
 			 this.activate_Enemy_Shield,
 			 this.allign_X,
@@ -588,7 +600,7 @@ BasicGame.Nivel1.prototype = {
 			 this.cannonButton_Setup,
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
+			 this.selectorButtonsPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,
@@ -607,6 +619,7 @@ BasicGame.Nivel1.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
 			 this.go_To_Home,
 			 this.homeButton_Setup,
 			 this.increase_Fire,
@@ -643,7 +656,7 @@ BasicGame.Nivel1.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
     },
     
     // This function is for debug (and other stuff xD, but we're using it for

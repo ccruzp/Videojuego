@@ -28,7 +28,8 @@ BasicGame.WinnerMenu.prototype = {
 		   cannonButton_Setup,
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
-		   cannonSelectorButtonsPool_Setup,
+		   selectorButtonsPool_Setup,
+		   selectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -47,6 +48,7 @@ BasicGame.WinnerMenu.prototype = {
 		   enemyVelocityPool_Setup,
 		   fire,
 		   get_Enemy_Distance_Speed,
+		   get_Enemy_Time_Speed,
 		   go_To_Home,
 		   homeButton_Setup,	 
 		   increase_Fire,
@@ -80,6 +82,7 @@ BasicGame.WinnerMenu.prototype = {
 		   shuffleBag_X_Axis_Restart,
 		   shuffleBag_X_Axis_Setup,
 		   start,
+		   start_Game,
 		   try_To_Destroy,
 		   try_To_Destroy_Time,
 		   try_To_Destroy_Velocity,
@@ -104,7 +107,8 @@ BasicGame.WinnerMenu.prototype = {
 	this.cannonButton_Setup = cannonButton_Setup;
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
-	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
+	this.selectorButtonsPool_Setup = selectorButtonsPool_Setup;
+	this.selectorTextPool_Setup = selectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -123,6 +127,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.enemyVelocityPool_Setup = enemyVelocityPool_Setup;
 	this.fire = fire;
 	this.get_Enemy_Distance_Speed = get_Enemy_Distance_Speed;
+	this.get_Enemy_Time_Speed = get_Enemy_Time_Speed;
 	this.go_To_Home = go_To_Home;
 	this.homeButton_Setup = homeButton_Setup;
 	this.increase_Fire = increase_Fire;
@@ -146,7 +151,6 @@ BasicGame.WinnerMenu.prototype = {
 	this.shieldOnMouse_Setup = shieldOnMouse_Setup;
 	this.shieldPool_Setup = shieldPool_Setup;
 	this.shieldSelectorButtonsPool_Setup = shieldSelectorButtonsPool_Setup;
-	
 	this.shuffleBag_Bomb_Get = shuffleBag_Bomb_Get;
 	this.shuffleBag_Bomb_Restart = shuffleBag_Bomb_Restart;	
 	this.shuffleBag_Bomb_Setup = shuffleBag_Bomb_Setup;
@@ -156,8 +160,8 @@ BasicGame.WinnerMenu.prototype = {
 	this.shuffleBag_X_Axis_Get = shuffleBag_X_Axis_Get;
 	this.shuffleBag_X_Axis_Restart = shuffleBag_X_Axis_Restart;
 	this.shuffleBag_X_Axis_Setup = shuffleBag_X_Axis_Setup;
-	
 	this.start = start;
+	this.start_Game = start_Game; 
 	this.try_To_Destroy = try_To_Destroy;
 	this.try_To_Destroy_Time = try_To_Destroy_Time;
 	this.try_To_Destroy_Velocity = try_To_Destroy_Velocity;
@@ -189,7 +193,7 @@ BasicGame.WinnerMenu.prototype = {
 	this.timeOfGame = Math.floor(this.timeOfGame);
 	console.log('timeOfGame ' + this.timeOfGame);
 	this.scoreTime = this.maxTime - this.timeOfGame;
-	
+	this.sound = true; //Enables coin sound
 	music = this.add.audio('coin');
 	rankSound = this.add.audio('rankS');
 
@@ -249,10 +253,12 @@ BasicGame.WinnerMenu.prototype = {
 
     next_Level: function () {
 	if(!this.rankBoolean){
-	winnerText.destroy();
-	// this.playAgainButton.destroy();
-	background.destroy();
-	this.state.start(this.nextLevelName , true, false,
+	    winnerText.destroy();
+	    // this.playAgainButton.destroy();
+	    background.destroy();
+	    this.start_Game(this.nextLevelName,time,this.nextLevel,this.score);
+	    /*
+	    this.state.start(this.nextLevelName , true, false,
 			 time,this.nextLevel,this.score,
 			 this.activate_Enemy_Shield,
 			 this.allign_X,
@@ -266,7 +272,7 @@ BasicGame.WinnerMenu.prototype = {
 			 this.cannonButton_Setup,
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
+			 this.selectorButtonsPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,
@@ -285,6 +291,7 @@ BasicGame.WinnerMenu.prototype = {
 			 this.enemyVelocityPool_Setup,
 			 this.fire,
 			 this.get_Enemy_Distance_Speed,
+			 this.get_Enemy_Time_Speed,
 			 this.go_To_Home,
 			 this.homeButton_Setup,
 			 this.increase_Fire,
@@ -321,11 +328,17 @@ BasicGame.WinnerMenu.prototype = {
 			 this.try_To_Destroy,
 			 this.try_To_Destroy_Time,
 			 this.try_To_Destroy_Velocity,
-			 this.you_Got_Shot);
+			 this.you_Got_Shot);*/
+	}
+	else{
+	    this.sound = false;
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
+	    this.time.events.loop(Phaser.Timer.QUARTER/10000, this.update_Score, this);
 	}
     },
 
-    update_Score: function(){
+    update_Score: function(sound){
 	
 	if (this.rankBoolean){
 	    if (this.scoreTime > 0){
@@ -337,8 +350,7 @@ BasicGame.WinnerMenu.prototype = {
 	    
 		scoreText.text =  'Score: '+ this.score;
 		/*scoreTimeText.text = 'TiempoAux: '+ this.scoreTime;*/
-		music.play('',0,1,false);
-	    
+		if(this.sound) music.play('',0,1,false);
 	    
 	    } else {
 		this.score = this.score + this.lastScore;
@@ -367,14 +379,10 @@ BasicGame.WinnerMenu.prototype = {
 		} else {
 		    rankLetterText.text = 'E';
 		    /* E Rank */
-		}
-	    
+		}	    
 		this.rankBoolean = false;
 		rankSound.play('',0,1,false);
-	    
-	    }
-	    
+	    }	    
 	}
     },
-    
 };

@@ -1,4 +1,4 @@
-BasicGame.Nivel3 = function(game) {
+BasicGame.Nivel4 = function(game) {
 
     //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -96,7 +96,7 @@ BasicGame.Nivel3 = function(game) {
     // this.enemyGridDistance = 1;
 };
 
-BasicGame.Nivel3.prototype = {
+BasicGame.Nivel4.prototype = {
 
     init: function(lastTime,level,score,
 		   activate_Enemy_Shield,
@@ -251,7 +251,7 @@ BasicGame.Nivel3.prototype = {
 	BOMB_TOTAL_TIME = 3;
 	ENEMY_VELOCITY = 3; // Velocity of the enemy
 	//--------------------------------
-	TIMES_TO_PASS = 3;	
+	TIMES_TO_PASS = 5;	
 	this.timesPassed = TIMES_TO_PASS;
 	this.simulationTime = 0;
 
@@ -264,7 +264,7 @@ BasicGame.Nivel3.prototype = {
 	VELOCITY_ENEMIES = 1; // Amount of velocity enemies
 	TIME_ENEMIES = 0;
 	TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES; // Total amount of enemies on the level
-	TIMES_TO_PASS = 3;
+	TIMES_TO_PASS = 7;
 	this.timesPassed = TIMES_TO_PASS;
     
 	// Initializing boolean variables.
@@ -277,7 +277,7 @@ BasicGame.Nivel3.prototype = {
 	placedBomb = false; // Says if a bomb has been placed on the grid.
 	lastValueHigh = true; //Auxiliar boolean to control variability of cases  
 	lastMultiplicationValue = 88;
-	tutorial = true;
+	tutorial = false;
 	following = false;
 	// Booleans that says if the player is using a weapon.
 	// A player should not be able of using more than a weapon at a time
@@ -360,6 +360,7 @@ BasicGame.Nivel3.prototype = {
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	this.selectorTextPool_Setup();
+
 	// Creating the text displays.
 	this.displays_Setup();
 
@@ -404,9 +405,7 @@ BasicGame.Nivel3.prototype = {
 	//Hide the weapons cursors
 	// this.bombOnMouse.reset(1000, 1000);
 	// this.cannonOnMouse.reset(1000, 1000);
-	// this.cannonOnMousePool.forEach(function(cannon) {
-	//     cannon.reset(1000, 1000);
-	// }, this);
+
 	
 	if (usingBlackHole) {
 	    this.find_Grid_Place();
@@ -461,7 +460,7 @@ BasicGame.Nivel3.prototype = {
 	    text.visible = (bomb.counter > 0);
 	}, this);
 	
-	// Updating buttons displays
+	// // Updating buttons displays
 	// this.cannonButtonText.text = '' + missileSpeed;
 	
 	// If the game started move enemies.
@@ -514,27 +513,20 @@ BasicGame.Nivel3.prototype = {
 		this.shieldTimeText.destroy(true);
 		
 		//Set number of enemies in the next wave
-		if(!tutorial){
-		    if(this.timesPassed > 5){
-			DISTANCE_ENEMIES = 0; 
-			VELOCITY_ENEMIES = 1; 
-			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		    } else if (this.timesPassed > 3){
-			DISTANCE_ENEMIES = 0; 
-			VELOCITY_ENEMIES = 2; 
-			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		    }else {
-			DISTANCE_ENEMIES = 0; 
-			VELOCITY_ENEMIES = 3; 
-			TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		    }   
-		}
-		else{
+		if(this.timesPassed > 5){
 		    DISTANCE_ENEMIES = 0; 
 		    VELOCITY_ENEMIES = 1; 
 		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
-		}		
-
+		} else if (this.timesPassed > 3){
+		    DISTANCE_ENEMIES = 0; 
+		    VELOCITY_ENEMIES = 2; 
+		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
+		}else {
+		    DISTANCE_ENEMIES = 0; 
+		    VELOCITY_ENEMIES = 3; 
+		    TOTAL_ENEMIES = DISTANCE_ENEMIES + VELOCITY_ENEMIES;
+		}
+		
 		//Reconstruct every sheet
 		this.enemyVelocityPool_Setup(); // Setup the enemies.
 		this.bombPool_Setup(); // Create the bombs.
@@ -543,9 +535,10 @@ BasicGame.Nivel3.prototype = {
 		this.enemyVelocityLaserPool_Setup();
 		this.enemy_ShieldTime_Text_Setup(); // Enemy's shieldTime text
 		if(DISTANCE_ENEMIES > 0){
-		    // this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
+		    this.bombOnMouse.reset(this.blackHoleButton.x, this.blackHoleButton.y);
+		    // this.bombOnMouse.reset(this.world.width/2, this.world.height - 82);
 		}
-		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/' + TIMES_TO_PASS;
+		this.roundText.text = 'Ronda \n' +(TIMES_TO_PASS-this.timesPassed+1)+ '/7';
 		/*
 		this.enemyVelocity = this.shuffleBag_Bomb_Get();
 		this.bombTime = this.game.rnd.integerInRange(2, Math.floor((10/this.enemyVelocity)));
@@ -632,7 +625,6 @@ BasicGame.Nivel3.prototype = {
 	this.bombPool.destroy(true);
 	this.selectorButtonsPool.destroy(true);
 	this.selectorTextPool.destroy(true);
-
 	// this.selector.destroy(true);
 	// this.buttonPanel.kill();
 	background.kill();

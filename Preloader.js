@@ -27,6 +27,11 @@ BasicGame.Preloader.prototype = {
 	// Cannon and shield selectors and buttons.
 	this.load.spritesheet('selectorCannon', 'assets/Spritesheets/Selector/Selector_Cannon.png', 505, 498, 2);
 	this.load.spritesheet('selectorShield', 'assets/Spritesheets/Selector/Selector_Shield.png', 503, 500, 2);
+	// this.load.spritesheet('cannonSpeed1', 'assets/Spritesheets/Button_cannon_spritesheetfull.png', 0, 518, 2);
+	// this.load.spritesheet('cannonSpeed2', 'assets/Spritesheets/Button_cannon_spritesheetfull.png', 517, 1035, 2);
+	// this.load.spritesheet('cannonSpeed3', 'assets/Spritesheets/Button_cannon_spritesheetfull.png', 1035, 1553, 2);
+	// this.load.spritesheet('cannonSpeed4', 'assets/Spritesheets/Button_cannon_spritesheetfull.png', 1553, 2071, 2);
+	// this.load.spritesheet('cannonSpeed5', 'assets/Spritesheets/Button_cannon_spritesheetfull.png', 2071, 2591, 2);
 	this.load.spritesheet('okButton', 'assets/Spritesheets/Selector/Selector_OK.png', 174, 200, 3);
 	this.load.spritesheet('chosen', 'assets/Spritesheets/Selector/Selector_Chosen.png', 419, 500, 12);
 	this.load.spritesheet('button1', 'assets/Spritesheets/Selector/Selector_Number_1.png', 171, 200, 2);
