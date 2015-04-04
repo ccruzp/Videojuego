@@ -1,4 +1,3 @@
-
 BasicGame.MainMenu = function (game) {
 
 };
@@ -1929,10 +1928,15 @@ BasicGame.MainMenu.prototype = {
 		text.y = shield.y;
 		text.text = shield.timeCounter;
 		
-		this.selector.getAt(1).frame = 0;
-		this.shieldSelectorButtonsPool.setAll('visible', false);
-		this.shieldSelectorButtonsPool.getAt(0).frame = 1;
-		this.shieldButton.frame = 0;		
+		// this.selector.getAt(1).frame = 0;
+		this.cannonSelectorButtonsPool.setAll('visible', false);
+		// this.shieldSelectorButtonsPool.setAll('visible', false);
+		this.cannonSelectorTextPool.setAll('visible', false);
+		// this.shieldSelectorButtonsPool.getAt(0).frame = 1;
+		this.shieldButton.frame = 0;
+		buttons.setAll('y', this.world.height - 70);
+		lockedButtons.setAll('visible', true);
+		this.shieldOnMousePool.setAll('visible', false);
 		usingShield = false;
 		shieldTime = 0;
 	    }
@@ -2005,8 +2009,18 @@ BasicGame.MainMenu.prototype = {
     select_Shield: function() {
 	if (!started){
 	    usingShield = (numberOfShields > 0);
-	    this.selector.getAt(1).frame = 1;
-	    this.shieldSelectorButtonsPool.setAll('visible', true);
+	    // this.selector.getAt(1).frame = 1;
+	    buttons.setAll('y', 1000);
+	    lockedButtons.setAll('visible', false);
+	    var i = 1;
+	    this.shieldOnMousePool.forEach(function(shield) {
+		shield.reset(this.world.width/7 * i, this.world.height -70);
+		i++;
+	    },this);
+	    this.shieldOnMousePool.setAll('visible', true);
+	    this.cannonSelectorButtonsPool.setAll('visible', true);
+	    this.cannonSelectorTextPool.setAll('visible', true);
+	    // this.shieldSelectorButtonsPool.setAll('visible', true);
 	    if (!usingShield) {
 		this.shieldPool.forEachAlive(function(shield) {
 		    this.shieldTextPool.getAt(this.shieldPool.getIndex(shield)).visible = false;
@@ -2065,18 +2079,39 @@ BasicGame.MainMenu.prototype = {
     
     // Creates the shield button.
     shieldButton_Setup: function() {
-	this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	// this.shieldButton = this.add.button(this.world.width/2 + 67, this.world.height - 50, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
+	this.shieldButton = this.add.button(this.world.width/5 * 3, this.world.height - 70, 'shieldButton', this.select_Shield, this, null, null, 1, 1);
 	this.shieldButton.anchor.setTo(0.5, 0.5);
-	this.shieldButton.scale.setTo(0.27, 0.27);
+	this.shieldButton.scale.setTo(0.5, 0.5);
 	buttons.add(this.shieldButton);
      },
 
     shieldOnMouse_Setup: function() {
 	// Image that appears on the mouse when the cannon button is pressed.
-	this.shieldOnMouse = this.add.sprite(1000, 1000, 'shield');
-	this.shieldOnMouse.anchor.setTo(0.5, 0.5);
-	this.shieldOnMouse.scale.setTo(0.12, 0.12);
-	this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
+	this.shieldOnMousePool = this.add.group();
+	this.shieldOnMousePool.createMultiple(5, 'shield');
+	this.shieldOnMousePool.setAll('anchor.x', 0.5);
+	this.shieldOnMousePool.setAll('anchor.y', 0.5);
+	this.shieldOnMousePool.setAll('scale.x', 0.12);
+	this.shieldOnMousePool.setAll('scale.y', 0.12);
+	this.shieldOnMousePool.setAll('inputEnabled', true);
+	this.shieldOnMousePool.forEach(function(shield) {
+	    shield.input.enableDrag(true);
+	    shield.events.onDragStart.add(function(shield) {
+		console.log("Shield # " + this.shieldOnMousePool.getIndex(shield) + " is moving");
+	    }, this);
+	    shield.events.onDragStop.add(function(shield) {
+		console.log("Shield #" + this.shieldOnMousePool.getIndex(shield) + " stopped moving");
+		usingShield = true;
+		shieldTime = this.shieldOnMousePool.getIndex(shield) + 1;
+		this.put_Weapon();
+	    }, this);
+	},this);
+	this.shieldOnMousePool.setAll('visible', false);
+	// this.shieldOnMouse = this.add.sprite(1000, 1000, 'shield');
+	// this.shieldOnMouse.anchor.setTo(0.5, 0.5);
+	// this.shieldOnMouse.scale.setTo(0.12, 0.12);
+	// this.physics.enable(this.shieldOnMouse, Phaser.Physics.ARCADE);
     },
 
     // Creates the cannons.

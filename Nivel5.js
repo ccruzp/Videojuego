@@ -109,7 +109,7 @@ BasicGame.Nivel5.prototype = {
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
 		   cannonSelectorButtonsPool_Setup,
-		   cannonSelectorTextPool,
+		   cannonSelectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -342,10 +342,10 @@ BasicGame.Nivel5.prototype = {
 	this.explosionTimeCounter = BOMB_TOTAL_TIME; // Bomb's time counter.
 
 	// The buttons panel
-	this.buttonPanel_Setup();
-	this.selector_Setup();
-	//this.cannonSelectorButtonsPool_Setup();
-	this.shieldSelectorButtonsPool_Setup();
+	// this.buttonPanel_Setup();
+	// this.selector_Setup();
+	this.cannonSelectorButtonsPool_Setup();
+	// this.shieldSelectorButtonsPool_Setup();
 	buttons = this.add.group(); // Group for buttons.
 
 	this.blackHoleButton_Setup(); // Creates the black hole button.
@@ -359,6 +359,7 @@ BasicGame.Nivel5.prototype = {
 
 	// this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
+	this.cannonSelectorTextPool_Setup();
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -394,7 +395,7 @@ BasicGame.Nivel5.prototype = {
 	//Hide the weapons cursors
 	// this.bombOnMouse.reset(1000, 1000);
 	//this.cannonOnMouse.reset(1000, 1000);
-	this.shieldOnMouse.reset(1000, 1000);
+	// this.shieldOnMouse.reset(1000, 1000);
 	
 	if (usingBlackHole) {
 	    // this.find_Grid_Place();
@@ -444,7 +445,7 @@ BasicGame.Nivel5.prototype = {
 	    //This should be added later
 	    x = this.allign_X(this.gridX - 0.5);
 	    y = 460;
-	    this.shieldOnMouse.reset(x, y);
+	    // this.shieldOnMouse.reset(x, y);
 	    
 	}
 
