@@ -111,8 +111,8 @@ BasicGame.Nivel4.prototype = {
 		   cannonButton_Setup,
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
-		   cannonSelectorButtonsPool_Setup,
-		   cannonSelectorTextPool_Setup,
+		   selectorButtonsPool_Setup,
+		   selectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -185,8 +185,8 @@ BasicGame.Nivel4.prototype = {
 	this.cannonButton_Setup = cannonButton_Setup;
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
-	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
-	this.cannonSelectorTextPool_Setup = cannonSelectorTextPool_Setup;
+	this.selectorButtonsPool_Setup = selectorButtonsPool_Setup;
+	this.selectorTextPool_Setup = selectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -345,7 +345,7 @@ BasicGame.Nivel4.prototype = {
 	// this.selector_Setup();
 	
 	// Creates the cannon's selector's buttons.
-	this.cannonSelectorButtonsPool_Setup();
+	this.selectorButtonsPool_Setup();
 	
 	buttons = this.add.group(); // Group for buttons.
 
@@ -359,6 +359,7 @@ BasicGame.Nivel4.prototype = {
 	//this.bombOnMouse_Setup(); // Image that appears on the mouse when the black hole bomb button is pressed.
 
 	this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
+	this.selectorTextPool_Setup();
 
 	// Creating the text displays.
 	this.displays_Setup();
@@ -622,6 +623,8 @@ BasicGame.Nivel4.prototype = {
 	this.shieldTimeText.destroy(true);
 	this.otherTextPool.destroy(true);
 	this.bombPool.destroy(true);
+	this.selectorButtonsPool.destroy(true);
+	this.selectorTextPool.destroy(true);
 	// this.selector.destroy(true);
 	// this.buttonPanel.kill();
 	background.kill();
@@ -658,7 +661,7 @@ BasicGame.Nivel4.prototype = {
 			 this.cannonButton_Setup,
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
+			 this.selectorButtonsPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,

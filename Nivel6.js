@@ -108,8 +108,8 @@ BasicGame.Nivel6.prototype = {
 		   cannonButton_Setup,
 		   cannonOnMouse_Setup,
 		   cannonPool_Setup,
-		   cannonSelectorButtonsPool_Setup,
-		   cannonSelectorTextPool_Setup,
+		   selectorButtonsPool_Setup,
+		   selectorTextPool_Setup,
 		   countdown,
 		   deactivate_Enemy_Shield,
 		   decrease_Fire,
@@ -182,8 +182,8 @@ BasicGame.Nivel6.prototype = {
 	this.cannonButton_Setup = cannonButton_Setup;
 	this.cannonOnMouse_Setup = cannonOnMouse_Setup;
 	this.cannonPool_Setup = cannonPool_Setup;
-	this.cannonSelectorButtonsPool_Setup = cannonSelectorButtonsPool_Setup;
-	this.cannonSelectorTextPool_Setup = cannonSelectorTextPool_Setup;
+	this.selectorButtonsPool_Setup = selectorButtonsPool_Setup;
+	this.selectorTextPool_Setup = selectorTextPool_Setup;
 	this.countdown = countdown;
 	this.deactivate_Enemy_Shield = deactivate_Enemy_Shield;
 	this.decrease_Fire = decrease_Fire;
@@ -344,7 +344,7 @@ BasicGame.Nivel6.prototype = {
 	// The buttons panel
 	// this.buttonPanel_Setup();
 	// this.selector_Setup();
-	this.cannonSelectorButtonsPool_Setup();
+	this.selectorButtonsPool_Setup();
 	// this.shieldSelectorButtonsPool_Setup();
 	buttons = this.add.group(); // Group for buttons.
 	
@@ -360,7 +360,7 @@ BasicGame.Nivel6.prototype = {
 	//this.cannonOnMouse_Setup(); // Image that appears on the mouse when the cannon button is pressed.
 	this.shieldOnMouse_Setup(); // Image that appears on the mouse when the shield button is pressed.
 	
-	this.cannonSelectorTextPool_Setup();
+	this.selectorTextPool_Setup();
 	// Creating the text displays.
 	this.displays_Setup();
 	// Score Texts
@@ -756,8 +756,8 @@ BasicGame.Nivel6.prototype = {
 	    	text.text = '' + this.cannon.shotVelocity;
 		
 		this.selector.getAt(0).frame = 0;
-		this.cannonSelectorButtonsPool.setAll('visible', false);
-		this.cannonSelectorButtonsPool.getAt(0).frame = 1;
+		this.selectorButtonsPool.setAll('visible', false);
+		this.selectorButtonsPool.getAt(0).frame = 1;
 	    	this.cannonButton.frame = 0;
 	    	usingCannon = false;
 		selectedSpeed = false;
@@ -820,6 +820,8 @@ BasicGame.Nivel6.prototype = {
 	buttons.destroy(true);
 	// lockedButtons.destroy(true);
 	this.otherTextPool.destroy(true);
+	this.selectorButtonsPool.destroy(true);
+	this.selectorTextPool.destroy(true);
 	// this.playButton.destroy();
 	// this.blackHoleButton.destroy();
 	// buttons.destroy(true);
@@ -861,7 +863,7 @@ BasicGame.Nivel6.prototype = {
 			 this.cannonButton_Setup,
 			 this.cannonOnMouse_Setup,
 			 this.cannonPool_Setup,
-			 this.cannonSelectorButtonsPool_Setup,
+			 this.selectorButtonsPool_Setup,
 			 this.countdown,
 			 this.deactivate_Enemy_Shield,
 			 this.decrease_Fire,
